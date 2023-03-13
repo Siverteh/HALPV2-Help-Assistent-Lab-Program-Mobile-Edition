@@ -14,7 +14,7 @@ build-job:
   # Packages installation before running script
   before_script:
     - apt-get --quiet update --yes
-    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle
+    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb
     #- sudo apt update
     - curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
     - apt-get install -y nodejs
@@ -46,6 +46,8 @@ build-job:
 
 
     - avdmanager create avd --name Test --package "system-images;android-33;google_apis;x86_64" --device "Nexus 5X" --force
+    - which adb
+
 
 
     - npm i react-native-eject
