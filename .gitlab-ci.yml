@@ -42,8 +42,7 @@ build-job:
     - sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}"
     - sdkmanager "platform-tools"
     - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
-    - echo no | Android/Sdk/tools/bin/avdmanager create avd --force --name testAVD --abi google_apis/x86_64 --package 'system-images;android-${ANDROID_COMPILE_SDK}3;google_apis;x86_64'
-    - emulator -avd testAVD
+    - sdkmanager "system-images;android-${ANDROID_COMPILE_SDK};google_apis;x86_64"
 
 
     #- chmod +x ./gradlew
