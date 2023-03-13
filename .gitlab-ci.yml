@@ -16,6 +16,7 @@ build-job:
     - apt-get --quiet update --yes
     - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
     #- sudo apt update
+    - curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
     - apt-get install nodejs npm -y
 
     # Setup path as ANDROID_SDK_ROOT for moving/exporting the downloaded sdk into it
@@ -48,8 +49,6 @@ build-job:
     - npm i react-native-eject
     - npx react-native eject
 
-    # Not necessary, but just for surity
-    - chmod +x ./gradlew
 
   script:
     - echo "Hello World!"
