@@ -27,13 +27,15 @@ build-job:
 
     #Installing gradle
     - wget https://services.gradle.org/distributions/gradle-${Gradel}-bin.zip -P /tmp
-    - unzip -d /opt/gradle /tmp/gradle-*.zip
+    - unzip -d /opt/gradle /tmp/gradle-${Gradel}-bin.zip
+    - ln -s /opt/gradle/gradle-${Gradel} /opt/gradle/latest
     #Setting path
     - touch /etc/profile.d/gradle.sh
-    - echo "export GRADLE_HOME=/opt/gradle/gradle-${Gradel}" >> /etc/profile.d/gradle.sh
+    - echo "export GRADLE_HOME=/opt/gradle/latest" >> /etc/profile.d/gradle.sh
     - echo "export PATH=${GRADLE_HOME}/bin:${PATH}" >> /etc/profile.d/gradle.sh
     - chmod +x /etc/profile.d/gradle.sh
     - source /etc/profile.d/gradle.sh
+    - cat /etc/profile.d/gradle.sh
     - gradle -v
 
     #Installing the Android SDK
