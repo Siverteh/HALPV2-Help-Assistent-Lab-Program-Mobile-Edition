@@ -11,20 +11,17 @@ build-job:
     ANDROID_COMPILE_SDK: "33"
     ANDROID_BUILD_TOOLS: "33.0.0"
     ANDROID_SDK_TOOLS:   "9477386"
-  image: unitedclassifiedsapps/gitlab-ci-android-fastlane
+  image: openjdk:8-jdk
   before_script:
     - apt-get --quiet update --yes
     - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
     #Installing the Android SDK
     - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
-    - export GRADLE_USER_HOME=$(pwd)/.gradle
-    - chmod +x ./gradlew
-    # use yes to accept all licenses
-    - yes | sdkmanager --sdk_root=${ANDROID_HOME} --licenses || true
-    # - unzip -d android-sdk-linux android-sdk.zip
-    # - echo y | android-sdk-linux/tools/bin/sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
-    # - echo y | android-sdk-linux/tools/bin/sdkmanager "platform-tools" >/dev/null
-    # - echo y | android-sdk-linux/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null
+    - unzip -d android-sdk-linux android-sdk.zip
+    - ls -al
+    - echo y | android-sdk-linux/tools/bin/sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
+    - echo y | android-sdk-linux/tools/bin/sdkmanager "platform-tools" >/dev/null
+    - echo y | android-sdk-linux/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null
   script:
     -echo "Hello World!"
 
