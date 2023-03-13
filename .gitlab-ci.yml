@@ -18,6 +18,7 @@ build-job:
     #Installing the Android SDK
     - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
     - unzip -d android-sdk-linux android-sdk.
+    - sleep 10
     - cd android-sdk-linux/tools/bin/
     - ls -al
     - echo y | android-sdk-linux/tools/bin/sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
