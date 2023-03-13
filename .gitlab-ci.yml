@@ -51,7 +51,7 @@ build-job:
     - ls /${ANDROID_SDK_ROOT}
     - cd /${ANDROID_SDK_ROOT}/emulator
     - ls
-    - emulator -avd Test
+    - ./emulator -avd Test
     - cd
 
     - npm i react-native-eject
