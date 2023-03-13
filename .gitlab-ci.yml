@@ -21,7 +21,7 @@ build-job:
 
     # Set environment variables
     - export ANDROID_HOME=$PWD
-    - export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+    - export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools/bin
 
     # Install required SDK components
     - yes | sdkmanager --licenses
