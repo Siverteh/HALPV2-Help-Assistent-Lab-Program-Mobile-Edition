@@ -1,0 +1,41 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build-job:
+  stage: build
+  image: ubuntu:stable
+  script:
+    # Install JDK
+    - apt-get update
+    - apt-get install default-jdk
+
+    # Download Android SDK command-line tools
+    - mkdir android-sdk
+    - cd android-sdk
+    - wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+    - unzip commandlinetools-linux-7583922_latest.zip
+    - rm commandlinetools-linux-7583922_latest.zip
+    - cd
+
+    # Set environment variables
+    - export ANDROID_HOME=$PWD
+    - export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+
+    # Install required SDK components
+    - yes | sdkmanager --licenses
+    - sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3" "system-images;android-30;google_apis;x86_64"
+
+    # Create Android Virtual Device (AVD)
+    - echo no | avdmanager create avd --force --name "test" --package "system-images;android-30;google_apis;x86_64" --device "pixel"
+
+    # Start emulator
+    - emulator -avd test -no-window -no-audio &
+
+
+    - apt update
+    - apt install snapd
+    - snap install node --classic
+
+
