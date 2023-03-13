@@ -17,7 +17,7 @@ build-job:
     - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb libpulse0 qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
 
     - usermod -aG libvirt $USER && usermod -aG kvm $USER
-    - reboot
+    - shutdown -r now
     - kvm-ok
 
     #- sudo apt update
