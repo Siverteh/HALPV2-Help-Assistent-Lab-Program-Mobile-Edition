@@ -9,7 +9,7 @@ build-job:
   script:
     # Install JDK
     - apt-get update
-    - apt-get install default-jdk
+    - apt-get install default-jdk -y
 
     # Download Android SDK command-line tools
     - mkdir android-sdk
