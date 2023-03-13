@@ -45,7 +45,8 @@ build-job:
     - sdkmanager "system-images;android-${ANDROID_COMPILE_SDK};google_apis;x86_64"
 
 
-    #- chmod +x ./gradlew
+    - avdmanager create avd --name Test --package "system-images;android-30;google_apis;x86_64" --device "Nexus 5X" --force
+
 
     - npm i react-native-eject
     - npx react-native eject
