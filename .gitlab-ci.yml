@@ -17,6 +17,7 @@ build-job:
     - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb libpulse0 kmod qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
 
     - systemctl enable libvirtd
+    - service libvirtd start
     - systemctl start libvirtd
     - systemctl status libvirtd
     - kvm-ok
