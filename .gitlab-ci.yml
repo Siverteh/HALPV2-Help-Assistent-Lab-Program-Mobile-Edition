@@ -51,4 +51,4 @@ build-job:
 
 
   script:
-    - echo "Hello World!"
+    - npx react-native run-android
