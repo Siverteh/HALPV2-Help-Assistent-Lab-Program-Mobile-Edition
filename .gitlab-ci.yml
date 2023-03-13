@@ -14,9 +14,10 @@ build-job:
   # Packages installation before running script
   before_script:
     - apt-get --quiet update --yes
-    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb libpulse0
+    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb libpulse0 kmod
     - apt update -y
     - apt -y install bridge-utils cpu-checker libvirt-clients libvirt-daemon qemu qemu-kvm
+    - modprobe kvm_intel
 
     - kvm-ok
 
