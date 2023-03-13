@@ -14,10 +14,10 @@ build-job:
   # Packages installation before running script
   before_script:
     - apt-get --quiet update --yes
-    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle
-    #- sudo apt update
-    - curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
-    - apt-get install -y nodejs
+    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 npm gradle
+    - n install -g n
+    - n lts
+
 
     # Setup path as ANDROID_SDK_ROOT for moving/exporting the downloaded sdk into it
     - export ANDROID_SDK_ROOT="${PWD}/android-home"
