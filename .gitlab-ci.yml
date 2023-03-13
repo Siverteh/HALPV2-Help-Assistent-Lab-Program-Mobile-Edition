@@ -43,8 +43,6 @@ build-job:
     - sdkmanager "platform-tools"
     - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
 
-    - export ANDROID_HOME=$PWD/android-home
-    - export PATH=$PATH:$PWD/android-home/platform-tools/
     #- chmod +x ./gradlew
 
     - npm i react-native-eject
