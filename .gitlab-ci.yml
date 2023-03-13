@@ -23,6 +23,7 @@ build-job:
     - export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools/bin
 
     # Install required SDK components
+    - find $ANDROID_HOME -name sdkmanager
     - yes | sdkmanager --licenses
     - sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3" "system-images;android-30;google_apis;x86_64"
 
