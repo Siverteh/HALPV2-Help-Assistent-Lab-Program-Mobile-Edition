@@ -17,7 +17,6 @@ build-job:
     - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb libpulse0 kmod qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
     - apt update -y
     - apt -y install bridge-utils cpu-checker libvirt-clients libvirt-daemon qemu qemu-kvm
-    - modprobe kvm_intel
 
     - kvm-ok
 
