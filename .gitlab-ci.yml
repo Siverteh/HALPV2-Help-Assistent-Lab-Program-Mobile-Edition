@@ -29,9 +29,10 @@ build-job:
     - wget https://services.gradle.org/distributions/gradle-${Gradel}-bin.zip -P /tmp
     - unzip -d /opt/gradle /tmp/gradle-*.zip
     #Setting path
-    - vi /etc/profile.d/gradle.sh
-    - export GRADLE_HOME=/opt/gradle/gradle-${Gradel}
-    - export PATH=${GRADLE_HOME}/bin:${PATH}
+    - touch /etc/profile.d/gradle.sh
+    - echo "export GRADLE_HOME=/opt/gradle/gradle-${Gradel}" >> /etc/profile.d/gradle.sh
+    - echo "export PATH=${GRADLE_HOME}/bin:${PATH}" >> /etc/profile.d/gradle.sh
+    - chmod +x /etc/profile.d/gradle.sh
     - source /etc/profile.d/gradle.sh
     - gradle -v
 
