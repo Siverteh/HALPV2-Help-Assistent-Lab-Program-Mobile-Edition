@@ -15,8 +15,10 @@ build-job:
   before_script:
     - apt-get --quiet update --yes
     - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb
-    - apt update
-    - apt install qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils -y
+
+    - cd platforms/linux/
+    - make
+    - cd
 
     #- sudo apt update
     - curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
