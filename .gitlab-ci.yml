@@ -46,7 +46,7 @@ build-job:
     - sdkmanager "system-images;android-${ANDROID_COMPILE_SDK};google_apis;x86_64"
 
 
-    - android  create avd --name Test --package "system-images;android-33;google_apis;x86_64" --device "Nexus 5X" --force
+    - avdmanager create avd --name Test --package "system-images;android-33;google_apis;x86_64" --device "Nexus 5X" --force
 
     - ls /${ANDROID_SDK_ROOT}
     - cd /${ANDROID_SDK_ROOT}/emulator
