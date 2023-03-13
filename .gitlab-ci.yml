@@ -3,38 +3,26 @@ stages:
   - test
   - deploy
 
+  
+
 build-job:
   stage: build
-  image: ubuntu
+  variables:
+    ANDROID_COMPILE_SDK: "33"
+    ANDROID_BUILD_TOOLS: "33.0.0"
+    ANDROID_SDK_TOOLS:   "9477386"
+  image: openjdk:19-jdk
+  before_script:
+    - apt-get --quiet update --yes
+    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
+    #Installing the Android SDK
+    - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS}.zip
+    - unzip -d android-sdk-linux android-sdk.zip
+    - echo y | android-sdk-linux/tools/bin/sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}" >/dev/null
+    - echo y | android-sdk-linux/tools/bin/sdkmanager "platform-tools" >/dev/null
+    - echo y | android-sdk-linux/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}" >/dev/null
   script:
-    # Install JDK
-    - apt-get update
-    - apt-get install default-jdk wget unzip -y
+    -echo "Hello World!"
 
-    # Download Android SDK command-line tools
-    - mkdir android-sdk
-    - cd android-sdk
-    - wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-    - unzip commandlinetools-linux-7583922_latest.zip
-    - rm commandlinetools-linux-7583922_latest.zip
-
-    # Set environment variables
-    - export ANDROID_HOME=$PWD
-    - export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools/bin
-
-    # Install required SDK components
-    - yes | /builds/sondreho/halp/android-sdk/cmdline-tools/bin/sdkmanager --licenses
-    - sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3" "system-images;android-30;google_apis;x86_64"
-
-    # Create Android Virtual Device (AVD)
-    - echo no | avdmanager create avd --force --name "test" --package "system-images;android-30;google_apis;x86_64" --device "pixel"
-
-    # Start emulator
-    - emulator -avd test -no-window -no-audio &
-
-
-    - apt update
-    - apt install snapd
-    - snap install node --classic
 
 
