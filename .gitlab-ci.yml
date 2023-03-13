@@ -15,9 +15,10 @@ build-job:
   before_script:
     - apt-get --quiet update --yes
     - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb libpulse0 kmod qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
-    - apt update -y
-    - apt -y install bridge-utils cpu-checker libvirt-clients libvirt-daemon qemu qemu-kvm
 
+    - systemctl enable libvirtd
+    - systemctl start libvirtd
+    - systemctl status libvirtd
     - kvm-ok
 
     #- sudo apt update
