@@ -32,7 +32,7 @@ build-job:
     - mv cmdline-tools tools || true
     - popd
     - popd
-    - export PATH=$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/
+    - export PATH=$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/tools/
 
     # Nothing fancy here, just checking sdkManager version
     - sdkmanager --version
@@ -48,7 +48,6 @@ build-job:
     - avdmanager create avd --name Test --package "system-images;android-33;google_apis;x86_64" --device "Nexus 5X" --force
 
     - echo $PATH
-    - export PATH=$PATH:/$ANDROID_SDK_ROOT/tools
 
     - emulator -avd Test
 
