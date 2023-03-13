@@ -5,7 +5,7 @@ stages:
 
 build-job:
   stage: build
-  image: ubuntu:stable
+  image: ubuntu
   script:
     # Install JDK
     - apt-get update
