@@ -45,6 +45,9 @@ build-job:
     - export ANDROID_HOME=$PWD/android-home
     - export PATH=$PATH:$PWD/android-home/platform-tools/
 
+    - npm i react-native-eject
+    - npx react-native eject
+
     # Not necessary, but just for surity
     - chmod +x ./gradlew
 
