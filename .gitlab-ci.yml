@@ -48,6 +48,7 @@ build-job:
 
     - npm i react-native-eject
     - npx react-native eject
+    - npm install
 
 
   script:
