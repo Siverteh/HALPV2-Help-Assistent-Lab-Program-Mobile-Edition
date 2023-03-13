@@ -15,7 +15,7 @@ build-job:
   # Packages installation before running script
   before_script:
     - apt-get --quiet update --yes
-    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm
+    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradel
     #- sudo apt update
     - curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
     - apt-get install -y nodejs
@@ -26,17 +26,18 @@ build-job:
     - install -d $ANDROID_SDK_ROOT
 
     #Installing gradle
-    - wget https://services.gradle.org/distributions/gradle-${Gradel}-bin.zip -P /tmp
-    - unzip -d /opt/gradle /tmp/gradle-${Gradel}-bin.zip
-    - ln -s /opt/gradle/gradle-${Gradel} /opt/gradle/latest
-    #Setting path
-    - touch /etc/profile.d/gradle.sh
-    - echo "export GRADLE_HOME=/opt/gradle/latest" >> /etc/profile.d/gradle.sh
-    - echo "export PATH=${GRADLE_HOME}/bin:${PATH}" >> /etc/profile.d/gradle.sh
-    - chmod +x /etc/profile.d/gradle.sh
-    - source /etc/profile.d/gradle.sh
-    - cat /etc/profile.d/gradle.sh
+    # - wget https://services.gradle.org/distributions/gradle-${Gradel}-bin.zip -P /tmp
+    # - unzip -d /opt/gradle /tmp/gradle-${Gradel}-bin.zip
+    # - ln -s /opt/gradle/gradle-${Gradel} /opt/gradle/latest
+    # #Setting path
+    # - touch /etc/profile.d/gradle.sh
+    # - echo "export GRADLE_HOME=/opt/gradle/latest" >> /etc/profile.d/gradle.sh
+    # - echo "export PATH=${GRADLE_HOME}/bin:${PATH}" >> /etc/profile.d/gradle.sh
+    # - chmod +x /etc/profile.d/gradle.sh
+    # - source /etc/profile.d/gradle.sh
+    # - cat /etc/profile.d/gradle.sh
     - gradle -v
+    - npx react-native run-android
 
     #Installing the Android SDK
     - wget --quiet --output-document=$ANDROID_SDK_ROOT/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
