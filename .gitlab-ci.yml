@@ -16,9 +16,6 @@ build-job:
     - apt-get --quiet update --yes
     - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb libpulse0 kmod qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
 
-    - systemctl status libvirtd.service
-    - kvm-ok
-
     #- sudo apt update
     - curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
     - apt-get install -y nodejs
@@ -49,13 +46,10 @@ build-job:
     - sdkmanager "system-images;android-${ANDROID_COMPILE_SDK};google_apis;x86_64"
 
 
-    - avdmanager create avd --name Test --package "system-images;android-33;google_apis;x86_64" --device "Nexus 5X" --force
+    #- avdmanager create avd --name Test --package "system-images;android-33;google_apis;x86_64" --device "Nexus 5X" --force
 
     - ls /${ANDROID_SDK_ROOT}
-    - cd /${ANDROID_SDK_ROOT}/emulator
-    - ls
-    - ./emulator -avd Test
-    - cd
+    - ./${ANDROID_SDK_ROOT}/emulator/emulator -avd Test -no-window
 
     - npm i react-native-eject
     - npx react-native eject
