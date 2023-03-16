@@ -55,7 +55,7 @@ build-job:
     - cd /${ANDROID_SDK_ROOT}
     - sdkmanager emulator
     - cd /${ANDROID_SDK_ROOT}/emulator
-    - ./emulator -avd Test -no-window
+    - ./emulator -avd Test -no-audio -no-window
     - cd
 
   script:
