@@ -50,10 +50,11 @@ build-job:
     - npm i react-native-eject
     - npx react-native eject
     - npm install
+    
     - adb kill-server && adb start-server
-    - ls /${ANDROID_SDK_ROOT}
-    - cd /${ANDROID_SDK_ROOT}/emulator
-    - ls
+    - cd /${ANDROID_SDK_ROOT}
+    - sdkmanager emulator
+    - cd /emulator
     - ./emulator -avd Test -no-window
     - cd
 
