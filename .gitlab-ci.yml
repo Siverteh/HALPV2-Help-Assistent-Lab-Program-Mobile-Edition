@@ -54,7 +54,8 @@ build-job:
     - ls /${ANDROID_SDK_ROOT}
     - cd /${ANDROID_SDK_ROOT}/emulator
     - ls
-    - ./emulator -avd Test -no-window
+    - ./emulator -avd -list-avds
+    #- ./emulator -avd Test -no-window
     - cd
 
   script:
