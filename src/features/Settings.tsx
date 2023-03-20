@@ -1,25 +1,38 @@
 import Styles from "../styles/styles";
-import { Button } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { Box } from "@react-native-material/core";
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { View, StyleSheet, Dimensions, StatusBar } from 'react-native';
+import { TabView, SceneMap, TabBar, NavigationState, Route, SceneRendererProps, TabBarIndicatorProps, TabBarItemProps } from 'react-native-tab-view';
+import { View, StyleSheet, Dimensions, StatusBar, PressableAndroidRippleConfig, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import * as React from 'react';
+import { Scene, Event } from "react-native-tab-view/lib/typescript/src/types";
 
 
 
 const Settings = () => (
-  <Box style={Styles.lm_background}>
-    <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>PROFILE</Button>
-    <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>CHANGE PASSWORD</Button>
-    <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>EXTERNAL SERVICES</Button>
-    <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>DELETE PERSONAL DATA</Button>
-  </Box>
+  <>
+    <Box style={{ ...Styles.lm_background, justifyContent: 'center', alignItems: 'center', height: "100%" }}>
+      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>PROFILE</Button>
+      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>CHANGE PASSWORD</Button>
+      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>EXTERNAL SERVICES</Button>
+      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>DELETE PERSONAL DATA</Button>
+    </Box>
+  </>
 );
 const TimeEdit = () => (
   <View/>
 );
 const Roles = () => (
   <View/>
+);
+
+const renderTabBar = (props: JSX.IntrinsicAttributes & SceneRendererProps & { navigationState: NavigationState<Route>; scrollEnabled?: boolean | undefined; bounces?: boolean | undefined; activeColor?: string | undefined; inactiveColor?: string | undefined; pressColor?: string | undefined; pressOpacity?: number | undefined; getLabelText?: ((scene: Scene<Route>) => string | undefined) | undefined; getAccessible?: ((scene: Scene<Route>) => boolean | undefined) | undefined; getAccessibilityLabel?: ((scene: Scene<Route>) => string | undefined) | undefined; getTestID?: ((scene: Scene<Route>) => string | undefined) | undefined; renderLabel?: ((scene: Scene<Route> & { focused: boolean; color: string; }) => React.ReactNode) | undefined; renderIcon?: ((scene: Scene<Route> & { focused: boolean; color: string; }) => React.ReactNode) | undefined; renderBadge?: ((scene: Scene<Route>) => React.ReactNode) | undefined; renderIndicator?: ((props: TabBarIndicatorProps<Route>) => React.ReactNode) | undefined; renderTabBarItem?: ((props: TabBarItemProps<Route> & { key: string; }) => React.ReactElement<any, string | React.JSXElementConstructor<any>>) | undefined; onTabPress?: ((scene: Scene<Route> & Event) => void) | undefined; onTabLongPress?: ((scene: Scene<Route>) => void) | undefined; tabStyle?: StyleProp<ViewStyle>; indicatorStyle?: StyleProp<ViewStyle>; indicatorContainerStyle?: StyleProp<ViewStyle>; labelStyle?: StyleProp<TextStyle>; contentContainerStyle?: StyleProp<ViewStyle>; style?: StyleProp<ViewStyle>; gap?: number | undefined; testID?: string | undefined; android_ripple?: PressableAndroidRippleConfig | undefined; }) => (
+  <TabBar
+    {...props}
+    indicatorStyle={{ backgroundColor: 'black' }}
+    style={{...Styles.lm_background, paddingTop: 40}}
+    labelStyle={{ ...Styles.lm_text }}
+    pressColor='#E0EEF7'
+  />
 );
 
 export default class Tabs extends React.Component {
@@ -33,36 +46,21 @@ export default class Tabs extends React.Component {
   };
 
   render() {
+    const { index, routes } = this.state;
     return (
-      <TabView
-        navigationState={this.state}
-        renderScene={SceneMap({
-          1: Settings,
-          2: TimeEdit,
-          3: Roles,
-        })}
-        onIndexChange={index => this.setState({ index })}
-        initialLayout={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-        style={{...Styles.lm_boxes,}}
-      />
+      <>
+        <Text style={{...Styles.lm_text, ...Styles.lm_background, fontSize: 24, textAlign: 'center', paddingTop: 80}}>{routes[index].title}</Text>
+        <TabView
+          navigationState={this.state}
+          renderScene={SceneMap({
+            1: Settings,
+            2: TimeEdit,
+            3: Roles,
+          })}
+          onIndexChange={index => this.setState({ index })}
+          renderTabBar={renderTabBar}
+        />
+      </>
     );
   }
 }
-
-
-/*const Settings = () => {
-  return (
-    <>
-    <Box style={Styles.lm_background}>
-      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>PROFILE</Button>
-      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>CHANGE PASSWORD</Button>
-      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>EXTERNAL SERVICES</Button>
-      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>DELETE PERSONAL DATA</Button>
-    </Box>
-    </>
-  );
-};
-
-*/
-//export default Settings;
-

@@ -11,9 +11,6 @@ const Styles = StyleSheet.create({
   },
   lm_background: {
     backgroundColor: "#E0EEF7",
-    height: "100%",
-    justifyContent: 'center', 
-    alignItems: 'center'
   },
   lm_boxes: {
     backgroundColor: "#FFFFFF",
