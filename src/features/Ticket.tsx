@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem"
 import Button from "@mui/material/Button"
 import { useState } from "react"
 import isEmpty from "lodash/isEmpty"
-import v from "lodash/value"
+import v from "lodash/values"
 import every from "lodash/every"
 
 
