@@ -4,7 +4,7 @@ import { useState } from "react";
 import isEmpty from "lodash/isEmpty";
 import v from "lodash/values";
 import every from "lodash/every";
-import { StyleSheet } from "react-native";
+import Styles from "../styles/styles";
 
 
 type Props = {
@@ -56,66 +56,6 @@ const TicketComponent = ({
 
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#E0EEF7',
-  },
-  rectangle: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    padding: 32,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    width: '90%',
-  },
-  topContent: {
-    flex: 1,
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  bottomContent: {
-    alignSelf: 'stretch',
-    justifyContent: 'space-between',
-  },
-  hiText: {
-    fontSize: 24,
-    color: '#000000',
-  },
-  statusText: {
-    fontSize: 20,
-    color: '#000000',
-  },
-  queueNumber: {
-    fontSize: 48,
-    color: '#000000',
-  },
-  button: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 4,
-    width: '100%',
-    marginBottom: 8,
-  },
-  buttonEdit: {
-    backgroundColor: '#94CCFF',
-  },
-  buttonCancel: {
-    backgroundColor: '#94CCFF',
-  },
-  buttonText: {
-    fontSize: 16,
-    color: '#000000',
-    textAlign: 'center',
-  },
-});
+
 
 export default TicketComponent;
