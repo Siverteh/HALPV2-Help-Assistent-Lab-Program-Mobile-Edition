@@ -19,6 +19,7 @@ import {
 
 import TicketComponent from "../features/Ticket";
 import Queue from "../features/Queue";
+import Settings from "../features/Settings";
 import Styles from "../styles/styles";
 
 type SectionProps = PropsWithChildren<{
@@ -35,10 +36,7 @@ function App(): JSX.Element {
 
   return (
     <>
-      <Button style={Styles.lm_button} labelStyle={Styles.lm_textButton}>Yeah</Button>
-      <TicketComponent rooms={[]} onSubmit={() => {
-        return {};
-      }} />
+      <Settings />
     </>
   );
 

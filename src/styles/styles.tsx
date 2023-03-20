@@ -9,7 +9,10 @@ const Styles = StyleSheet.create({
     marginBottom: 20
   },
   lm_background: {
-    backgroundColor: "#E0EEF7"
+    backgroundColor: "#E0EEF7",
+    height: "100%",
+    justifyContent: 'center', 
+    alignItems: 'center'
   },
   lm_boxes: {
     backgroundColor: "#FFFFFF",
@@ -26,7 +29,7 @@ const Styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 4,
-    marginBottom: 8,
+    marginBottom: 30,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
