@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 const Queue = () => {
 
     const handleEdit = () => {
-
+        
     }
 
     const handleCancel = () => {
