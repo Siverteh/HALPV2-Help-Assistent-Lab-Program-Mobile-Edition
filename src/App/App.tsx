@@ -19,7 +19,7 @@ import {
 
 import TicketComponent from "../features/Ticket";
 import Queue from "../features/Queue";
-import Settings from "../features/Settings";
+import Tabs from "../features/Settings";
 import Styles from "../styles/styles";
 
 type SectionProps = PropsWithChildren<{
@@ -31,12 +31,12 @@ function App(): JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter
+    backgroundColor: isDarkMode ? Styles.dm_background : Styles.lm_background
   };
 
   return (
     <>
-      <Settings />
+      <Tabs />
     </>
   );
 
