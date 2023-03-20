@@ -1,35 +1,48 @@
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React from "react";
+import type { PropsWithChildren } from "react";
 import {
-  SafeAreaView,
-  StatusBar,
-  useColorScheme,
-  View,
-} from 'react-native';
+  useColorScheme
+} from "react-native";
+import {
+  Provider as PaperProvider,
+  Button
+} from "react-native-paper";
+
 
 import {
   Colors,
-} from 'react-native/Libraries/NewAppScreen';
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions
+} from "react-native/Libraries/NewAppScreen";
 
-import Queue from '../features/Queue';
+import TicketComponent from "../features/Ticket";
+import Queue from "../features/Queue";
+import Styles from "../styles/styles";
+
+type SectionProps = PropsWithChildren<{
+  title: string;
+}>;
+
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === "dark";
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    flex: 1,
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <Queue />
-    </SafeAreaView>
+    <>
+      <Button style={Styles.lm_button} labelStyle={Styles.lm_textButton}>Yeah</Button>
+      <TicketComponent rooms={[]} onSubmit={() => {
+        return {};
+      }} />
+    </>
   );
+
 }
+
 
 export default App;
