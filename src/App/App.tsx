@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -17,6 +17,8 @@ import {
   View,
 } from 'react-native';
 
+//import CheckBox from '@react-native-community/checkbox';
+
 import {
   Colors,
   DebugInstructions,
@@ -25,86 +27,77 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import { Button, TextInput, Checkbox } from 'react-native-paper';
+import { fontFamily, style } from '@mui/system';
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+function Password() {
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <TextInput style={styles.TextInput}
+      label="Password"
+      mode="outlined"
+      secureTextEntry={secureTextEntry}
+      right={
+        <TextInput.Icon
+          icon="eye"
+          onPress={() => {
+            setSecureTextEntry(!secureTextEntry);
+            return false;
+          }}
+        />
+      }
+    />
   );
 }
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <View style={styles.View}>
+      <TextInput style={styles.TextInput}
+        label="Email Address"
+        mode="outlined"
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <Password></Password>
+      <Checkbox
+      status={'checked'}
+      />
+      <Text>Remember me</Text>
+      <Button style={styles.Button}
+        mode="contained" 
+        onPress={() => console.log('Pressed')}>
+        LOG IN
+      </Button>
+      <Text>Forgot your password?</Text>
+      <Text>Register as a new user</Text>
+      <Text>Use another service to log in</Text>
+      <Button style={styles.Button}
+        mode="contained" 
+        onPress={() => console.log('Pressed')}>
+        DISCORD
+      </Button>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
+  View: {
     marginTop: 32,
     paddingHorizontal: 24,
+    width: 336
+    },
+  TextInput: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+    width: 336
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
+  Button: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+    width: 336
+    },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
@@ -114,5 +107,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
+
 
 export default App;
