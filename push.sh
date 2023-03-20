@@ -14,7 +14,7 @@ git add *
 
 # Commit the changes with a message
 read -p "Enter commit message: " commit_message
-git commit -m "$commit_message"
+git commit -m "$current_branch $commit_message"
 
 # Push the changes to the remote repository
 git push origin "$current_branch"
