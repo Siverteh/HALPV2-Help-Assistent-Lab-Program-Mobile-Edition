@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { shadow } from "react-native-paper";
 
 
 const Styles = StyleSheet.create({
@@ -9,12 +10,12 @@ const Styles = StyleSheet.create({
     marginBottom: 20
   },
   lm_background: {
-    backgroundColor: "#E0EEF7"
+    backgroundColor: "#E0EEF7",
   },
   lm_boxes: {
     backgroundColor: "#FFFFFF",
-    padding: 32,
-    borderRadius: 8,
+    padding: 0,
+    borderRadius: 0,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -26,12 +27,12 @@ const Styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 4,
-    marginBottom: 8,
+    marginBottom: 30,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   lm_outline: {
     color: "#B0B4BC"
@@ -43,7 +44,6 @@ const Styles = StyleSheet.create({
   lm_textButton: {
     color: "#686464",
     fontFamily: 'Roboto',
-    fontSize: 25
   },
   dm_background: {
     backgroundColor: "#004082"
