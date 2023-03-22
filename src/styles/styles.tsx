@@ -27,7 +27,6 @@ const Styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 4,
-    marginBottom: 30,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -63,7 +62,6 @@ const Styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 4,
-    marginBottom: 8
   },
   dm_outline: {
     color: "#083464"

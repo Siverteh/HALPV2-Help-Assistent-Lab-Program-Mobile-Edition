@@ -32,7 +32,7 @@ import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
 
 import Styles from '../styles/styles';
 
-function Password(dm: Boolean) {
+function Password(dm: any) {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   return (
@@ -121,6 +121,7 @@ function Login(): JSX.Element {
         onPress={handleLogin}>
         SIGN IN
       </Button>
+      <View style={{height:10}}></View>
       <Button
         mode="text"
         textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
