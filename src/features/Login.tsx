@@ -28,22 +28,26 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { Button, TextInput, Checkbox } from 'react-native-paper';
+import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
 
 import Styles from '../styles/styles';
 
-function Password() {
+function Password(dm: Boolean) {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   return (
     <TextInput style={styles.textInput}
       label="Password"
       mode="outlined"
-      activeOutlineColor ="#201C24"
+      activeOutlineColor = {dm ? '#E0E0E0' : '#201C24'}
+      outlineColor = {dm ? '#0070C0' : '#201C24'}
       secureTextEntry={secureTextEntry}
+      theme={{ colors: { background: dm ? '#0070C0' : '#FFFFFF',
+                        onSurfaceVariant: dm ? '#FFFFFF' : '#201C24' } }}
       right={
         <TextInput.Icon
           icon="eye"
+          iconColor = {dm ? '#E0E0E0' : '#201C24'}
           onPress={() => {
             setSecureTextEntry(!secureTextEntry);
             return false;
@@ -55,7 +59,8 @@ function Password() {
 }
 
 function Login(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  //const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = false;
 
   const [checked, setChecked] = React.useState(true);
 
@@ -64,7 +69,7 @@ function Login(): JSX.Element {
   }
 
   const handleLogin = () => {
-
+    console.log(isDarkMode);
   }
 
   const handleForgottenPassword = () => {
@@ -76,58 +81,67 @@ function Login(): JSX.Element {
   }
 
   const handleRegister = () => {
-
+    
   }
 
   return (
-    <View style={[Styles.lm_background, styles.view]}>
+    <View style={
+        [isDarkMode ? Styles.dm_background : Styles.lm_background,
+        styles.view]}>
       <Image
       style={styles.image}
       source={require('.././img/halpy3.png')} />
       <TextInput style={styles.textInput}
-        activeOutlineColor ="#201C24"
+        activeOutlineColor = {isDarkMode ? '#FFFFFF' : '#201C24'}
+        outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
+        theme={{ colors: { background: isDarkMode ? '#0070C0' : '#FFFFFF',
+                            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24' } }}
         label="Email Address"
         mode="outlined"
       />
       <View style={{height:20}}></View>
-      <Password></Password>
+      <Password dm={isDarkMode}></Password>
       <View style={{height:10}}></View>
       <View style={{flexDirection: "row"}}>
         <Checkbox
-        color='#0070C0'
+        color={isDarkMode ? '#FFFFFF' : '#0070C0'}
+        uncheckedColor={isDarkMode ? '#FFFFFF' : '#201C24'}
         status={checked ? 'checked' : 'unchecked'}
         onPress={handleChecked}
         />
-        <Text style={[Styles.lm_text, styles.text_sm]}>Remember me</Text>
+        <Text style={
+            [isDarkMode ? Styles.dm_text : Styles.lm_text, styles.text_sm]}>
+            Remember me
+        </Text>
       </View>
       <View style={{height:20}}></View>
-      <Button style={[Styles.lm_button, styles.button]}
+      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, styles.button]}
         mode="contained"
-        textColor='#201C24'
+        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
         onPress={handleLogin}>
-        LOG IN
+        SIGN IN
       </Button>
       <Button
         mode="text"
-        textColor='#201C24'
+        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
         onPress={handleForgottenPassword}>
           FORGOT YOUR PASSWORD?
       </Button>
       <Button
         mode="text"
-        textColor='#201C24'
+        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
         onPress={handleRegister}>
           REGISTER AS A USER
       </Button>
       <View style={{height:40}}></View>
       <Text
-        style={[Styles.lm_text, styles.text_lg]}>
+        style={[isDarkMode ? Styles.dm_text : Styles.lm_text, styles.text_lg]}>
           USE ANOTHER SERVICE TO LOG IN
       </Text>
       <View style={{height:10}}></View>
-      <Button style={[Styles.lm_button, styles.button]}
+      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, styles.button]}
         mode="contained"
-        textColor='#201C24'
+        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
         onPress={handleDiscord}
         contentStyle={{flexDirection: 'row-reverse'}}
         icon="discord">
