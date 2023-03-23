@@ -18,3 +18,5 @@ git branch --set-upstream-to Sprint_$sprint_number
 git push -u origin CHANV2-$branch_name
 
 echo "Branch created and pushed to the remote repository."
+
+echo "Branch created and pushed to the remote repository."
