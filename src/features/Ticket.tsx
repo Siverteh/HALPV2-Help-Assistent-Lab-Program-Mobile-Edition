@@ -1,4 +1,4 @@
-import { Ticket } from "../types/ticket";
+/*import { Ticket } from "../types/ticket";
 import { Button, Typography, Box, TextInput, Selector } from "@react-native-material/core";
 import { useState } from "react";
 import isEmpty from "lodash/isEmpty";
@@ -59,3 +59,4 @@ const TicketComponent = ({
 
 
 export default TicketComponent;
+*/

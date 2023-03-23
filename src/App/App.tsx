@@ -17,9 +17,9 @@ import {
   ReloadInstructions
 } from "react-native/Libraries/NewAppScreen";
 
-import TicketComponent from "../features/Ticket";
+//import TicketComponent from "../features/Ticket";
 import Queue from "../features/Queue";
-import Styles from "../styles/styles";
+import Styles from "../Styles/styles";
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -35,10 +35,7 @@ function App(): JSX.Element {
 
   return (
     <>
-      <Button style={Styles.lm_button} labelStyle={Styles.lm_textButton}>Yeah</Button>
-      <TicketComponent rooms={[]} onSubmit={() => {
-        return {};
-      }} />
+      <Queue/>
     </>
   );
 
