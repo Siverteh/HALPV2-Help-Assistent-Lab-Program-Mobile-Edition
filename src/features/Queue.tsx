@@ -3,7 +3,7 @@ import { Image, View, TouchableOpacity } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import { Dimensions } from 'react-native';
-import Styles from '../Styles/styles';
+import Styles from '../styles/styles';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
