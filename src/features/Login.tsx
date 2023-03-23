@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   Image,
@@ -32,44 +32,19 @@ import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
 
 import Styles from '../styles/styles';
 
-function Password(dm: any) {
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
-
-  return (
-    <TextInput style={styles.textInput}
-      label="Password"
-      mode="outlined"
-      activeOutlineColor = {dm ? '#E0E0E0' : '#201C24'}
-      outlineColor = {dm ? '#0070C0' : '#201C24'}
-      secureTextEntry={secureTextEntry}
-      theme={{ colors: { background: dm ? '#0070C0' : '#FFFFFF',
-                        onSurfaceVariant: dm ? '#FFFFFF' : '#201C24' } }}
-      right={
-        <TextInput.Icon
-          icon="eye"
-          iconColor = {dm ? '#E0E0E0' : '#201C24'}
-          onPress={() => {
-            setSecureTextEntry(!secureTextEntry);
-            return false;
-          }}
-        />
-      }
-    />
-  );
-}
-
 function Login(): JSX.Element {
   //const isDarkMode = useColorScheme() === 'dark';
   const isDarkMode = false;
 
   const [checked, setChecked] = React.useState(true);
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const handleChecked = () => {
     setChecked(!checked);
   }
 
   const handleLogin = () => {
-    console.log(isDarkMode);
+
   }
 
   const handleForgottenPassword = () => {
@@ -100,7 +75,25 @@ function Login(): JSX.Element {
         mode="outlined"
       />
       <View style={{height:20}}></View>
-      <Password dm={isDarkMode}></Password>
+      <TextInput style={styles.textInput}
+      label="Password"
+      mode="outlined"
+      activeOutlineColor = {isDarkMode ? '#E0E0E0' : '#201C24'}
+      outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
+      secureTextEntry={secureTextEntry}
+      theme={{ colors: { background: isDarkMode ? '#0070C0' : '#FFFFFF',
+                        onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24' } }}
+      right={
+        <TextInput.Icon
+          icon="eye"
+          iconColor = {isDarkMode ? '#E0E0E0' : '#201C24'}
+          onPress={() => {
+            setSecureTextEntry(!secureTextEntry);
+            return false;
+          }}
+        />
+      }
+    />
       <View style={{height:10}}></View>
       <View style={{flexDirection: "row"}}>
         <Checkbox
