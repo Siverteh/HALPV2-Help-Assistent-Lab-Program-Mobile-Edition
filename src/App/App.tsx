@@ -36,7 +36,7 @@ function App(): JSX.Element {
 
   return (
     <>
-      <Tabs />
+      <TicketComponent  onSubmit={ticket => []} rooms={[]}/>
     </>
   );
 

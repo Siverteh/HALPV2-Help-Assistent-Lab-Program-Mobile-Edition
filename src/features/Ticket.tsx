@@ -1,10 +1,12 @@
 import { Ticket } from "../types/ticket";
-import { Button, Typography, Box, TextInput, Selector } from "@react-native-material/core";
+import { Typography, Box, Selector } from "@react-native-material/core";
+import { TextInput, Button } from "react-native-paper";
 import { useState } from "react";
 import isEmpty from "lodash/isEmpty";
 import v from "lodash/values";
 import every from "lodash/every";
 import Styles from "../styles/styles";
+import * as React from "react";
 
 
 type Props = {
@@ -19,43 +21,37 @@ const TicketComponent = ({
                            rooms
                          }: Props) => {
 
-  const [value, setValue] = useState<Ticket | null>(ticket ?? null);
-
-  const handleChange = (name: string) => (event: any) => {
-    setValue(prev => {
-      return { ...prev, [name]: event.target.value } as any;
-    });
-  };
+  const [value, setValue] = React.useState<Ticket | null>(ticket ?? null);
 
   const isValidValue = value && v(value).every(isEmpty);
 
+
+
   return (
-    <Box>
-      <TextInput
-        label="Name"
-        onChange={handleChange("name")}
-        value={value?.name}
+    <Box style={{ ...Styles.lm_background, justifyContent: "center", alignItems: "center", height: "100%" }}>
+
+      <TextInput style={{ ...Styles.lm_text, ...Styles.lm_boxes, width: 230, height: 50, paddingTop: 0 }}
+                 label="Name"
+                 value={value?.name}
       />
 
-      <TextInput
-        label="Description"
-        onChange={handleChange("description")}
-        value={value?.description}
+      <TextInput style={{ ...Styles.lm_text, ...Styles.lm_boxes, width: 230, height: 50, paddingTop: 0 }}
+                 label="Room"
+                 value={value?.room}
       />
 
+      <TextInput style={{ ...Styles.lm_text, ...Styles.lm_boxes, width: 230, height: 50, paddingTop: 0 }}
+                 label="Description"
+                 value={value?.description}
+      />
 
-      <Button
-        variant="contained"
-        disabled={!isValidValue}
-        onPress={() => onSubmit(value!)}
-        title="Save">
-      </Button>
+      <Button style={{ ...Styles.lm_button, width: 230, height: 50 }}
+              labelStyle={Styles.lm_textButton}>SAVE</Button>
 
     </Box>
   );
 
 };
-
 
 
 export default TicketComponent;
