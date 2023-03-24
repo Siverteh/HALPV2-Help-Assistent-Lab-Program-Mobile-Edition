@@ -50,7 +50,7 @@ const Light_Styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    //elevation: 5
   },
   lm_bluelist: {
     backgroundColor: "#94CCFF",
@@ -59,7 +59,7 @@ const Light_Styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    //elevation: 5
   },
   lm_outline: {
     color: "#B0B4BC"

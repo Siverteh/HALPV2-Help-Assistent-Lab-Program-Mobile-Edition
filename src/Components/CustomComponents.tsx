@@ -15,6 +15,9 @@ export const Header = ({ title }: Props) => {
   );
 };
 
+
+
+
 // Descripton component
 interface DescriptionItemProps {
   description: string;
@@ -73,7 +76,6 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     expanded,
     onPress,
     title,
-    titleStyle,
     style,
     description,
     descriptionStyle,
@@ -82,8 +84,8 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
   }) => {
     const firstSentence = description.split('. ')[0];
     const subtitle = firstSentence + (firstSentence !== description ? '.' : '');
-    const rest = description.substring(subtitle.length).trim().split('\n').join('\n');
-  
+    //const rest = description.substring(subtitle.length).trim().split('\n').join('\n');
+    
     return (
       <View style={style}>
         <TouchableOpacity
@@ -94,7 +96,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
             justifyContent: 'space-between',
           }}>
           <View style={{ flex: 1 }}>
-            <Text style={titleStyle}>{title}</Text>
+            <Text style={Light_Styles.lm_text}>{title}</Text>
             <Text style={[Light_Styles.lm_text, {fontSize:14}]} numberOfLines={1}>
               {subtitle}
             </Text>

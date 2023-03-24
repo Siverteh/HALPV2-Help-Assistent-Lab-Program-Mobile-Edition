@@ -1,7 +1,7 @@
 
 import  { useState } from 'react';
 import { View, Image  } from 'react-native';
-import { List, } from "react-native-paper";
+import { Button, List, Text, } from "react-native-paper";
 import {Light_Styles, Dark_Styles, Misc_Style} from "../styles/styles";
 import { Header, CustomAccordion}  from "../Components/CustomComponents"
 
@@ -15,11 +15,15 @@ import { Header, CustomAccordion}  from "../Components/CustomComponents"
     { id: "6", title: "Charlotte", description: "Heeeeeeelp" }
   ];
 
+
+
+
 // Helplist
 const Helplist = () => {
 
   const [checked, setChecked] = useState(new Map());
   const [expanded, setExpanded] = useState(new Map());
+  const [Mode, setMode] = useState(false);
 
   const handleCheck = (id: string) => {
     const currentChecked = checked.get(id) || false;
@@ -31,13 +35,24 @@ const Helplist = () => {
     setExpanded(new Map(expanded.set(id, !currentExpanded)));
   };
 
-  
+  const handleToggle = () => {
+    setMode(!Mode);
+  }
 
+  const styles = Mode ? Dark_Styles : Light_Styles;
+
+
+  
   return (
-    <View style={Light_Styles.lm_background}>
+    <View>
+        <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+        <Button onPress={() => handleToggle()}>
+          <Text>Toggle</Text>
+        </Button>
+      </View>
       <Image style={[Misc_Style.logo]} source={require('../features/HALP.png')} />
-      <Header title='Helplist' />
-      <List.Section>
+      <Header title='Helplist'/>
+      <List.Section style= {styles ?  Dark_Styles.dm_background : Light_Styles.lm_background}>
         {helplistData.map((item, index) => (
           <CustomAccordion
             key={item.id}
@@ -45,14 +60,13 @@ const Helplist = () => {
             titleStyle={[Light_Styles.lm_text,
               { paddingHorizontal: 16, paddingVertical: 2, fontSize:14 },
             ]}
-            style={[
-              index % 2 === 0 ? Light_Styles.lm_whitelist : Light_Styles.lm_bluelist,
-              { marginVertical: 2 },
-            ]}
+            style={styles ? [
+              index % 2 === 0 ? Light_Styles.lm_whitelist : Light_Styles.lm_bluelist] 
+              : [index % 2 === 0 ? Dark_Styles.dm_boxes : Dark_Styles.dm_boxes]}
             expanded={expanded.get(item.id) || false}
             onPress={() => handleExpand(item.id)}
             description={item.description}
-            descriptionStyle={{ paddingHorizontal: 16, paddingVertical: 6 }}
+            descriptionStyle={{ paddingHorizontal: 2, paddingVertical: 5 }}
             onCheck={() => handleCheck(item.id)}
             checked={checked.get(item.id) || false}
           />
