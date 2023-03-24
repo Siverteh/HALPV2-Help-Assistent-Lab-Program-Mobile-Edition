@@ -2,7 +2,7 @@
 import  { useState } from 'react';
 import { View, Image  } from 'react-native';
 import { Button, List, Text, } from "react-native-paper";
-import {Light_Styles, Dark_Styles, Misc_Style} from "../styles/styles";
+import Styles from "../styles/styles";
 import { Header, CustomAccordion}  from "../Components/CustomComponents"
 
 // Data to helplist
@@ -39,30 +39,29 @@ const Helplist = () => {
     setMode(!Mode);
   }
 
-  const styles = Mode ? Dark_Styles : Light_Styles;
+  //const styles = Mode ? Styles : Styles;
 
 
   
   return (
-    <View>
+    <View style={Styles.lm_background}>
         <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
         <Button onPress={() => handleToggle()}>
           <Text>Toggle</Text>
         </Button>
       </View>
-      <Image style={[Misc_Style.logo]} source={require('../features/HALP.png')} />
+      <Image style={[Styles.logo]} source={require('../features/HALP.png')} />
       <Header title='Helplist'/>
-      <List.Section style= {styles ?  Dark_Styles.dm_background : Light_Styles.lm_background}>
+      <List.Section style= {Styles.lm_background}>
         {helplistData.map((item, index) => (
           <CustomAccordion
             key={item.id}
             title={item.title}
-            titleStyle={[Light_Styles.lm_text,
+            titleStyle={[Styles.lm_text,
               { paddingHorizontal: 16, paddingVertical: 2, fontSize:14 },
             ]}
-            style={styles ? [
-              index % 2 === 0 ? Light_Styles.lm_whitelist : Light_Styles.lm_bluelist] 
-              : [index % 2 === 0 ? Dark_Styles.dm_boxes : Dark_Styles.dm_boxes]}
+            style={[
+              index % 2 === 0 ? Styles.lm_whitelist : Styles.lm_bluelist]}
             expanded={expanded.get(item.id) || false}
             onPress={() => handleExpand(item.id)}
             description={item.description}

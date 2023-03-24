@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, ViewStyle  } from 'react-native';
-import {Light_Styles, Dark_Styles, Misc_Style} from "../styles/styles";
+import Styles from "../styles/styles";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Header component
@@ -10,12 +10,10 @@ interface Props {
 export const Header = ({ title }: Props) => {
   return (
     <View>
-      <Text style={Misc_Style.Header}>{title}</Text>
+      <Text style={Styles.Header}>{title}</Text>
     </View>
   );
 };
-
-
 
 
 // Descripton component
@@ -27,7 +25,7 @@ interface DescriptionItemProps {
 export const DescriptionItem: React.FC<DescriptionItemProps> = ({ description, style }) => {
   return (
     <View style={style}>
-      <Text style={[Light_Styles.lm_text, {fontSize:14}]}>{description}</Text>
+      <Text style={[Styles.lm_text, {fontSize:14}]}>{description}</Text>
     </View>
   );
 };
@@ -96,8 +94,8 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
             justifyContent: 'space-between',
           }}>
           <View style={{ flex: 1 }}>
-            <Text style={Light_Styles.lm_text}>{title}</Text>
-            <Text style={[Light_Styles.lm_text, {fontSize:14}]} numberOfLines={1}>
+            <Text style={Styles.lm_text}>{title}</Text>
+            <Text style={[Styles.lm_text, {fontSize:14}]} numberOfLines={1}>
               {subtitle}
             </Text>
           </View>

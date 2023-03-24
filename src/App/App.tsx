@@ -1,33 +1,42 @@
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import "../features/Helplist"
+import React, { useState } from "react";
+import type { PropsWithChildren } from "react";
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+  Settings,
+  useColorScheme, View
+} from "react-native";
+import {
+  Provider as PaperProvider,
+  Button
+} from "react-native-paper";
 
 
-import Helplist from '../features/Helplist';
-import {Light_Styles, Dark_Styles, Misc_Style} from '../styles/styles';
+import {
+  Colors,
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions
+} from "react-native/Libraries/NewAppScreen";
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+//import TicketComponent from "../features/Ticket";
+import Queue from "../features/Queue";
+import Tabs from "../features/Settings";
+import Styles from "../styles/styles";
+import Login from "../features/Login";
+import Helplist from "../features/Helplist";
+
 
 function App(): JSX.Element {
+  const isDarkMode = useColorScheme() === "dark";
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Styles.dm_background : Styles.lm_background
+  };
 
   return (
-    <View style={Light_Styles.lm_background}>
-      <ScrollView>
-      <Helplist></Helplist>
-      </ScrollView>
-    </View>
-  );
+    <Helplist></Helplist>
+    );
 }
+
 
 export default App;
