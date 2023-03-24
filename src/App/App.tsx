@@ -21,11 +21,8 @@ import CreateTicket from "../features/CreateTicket";
 import Queue from "../features/Queue";
 import Tabs from "../features/Settings";
 import Styles from "../styles/styles";
-
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import Login from "../features/Login";
+import Helplist from "../features/Helplist";
 
 
 function App(): JSX.Element {
@@ -36,11 +33,8 @@ function App(): JSX.Element {
   };
 
   return (
-    <>
-      <CreateTicket  onSubmit={ticket => []} rooms={[]}/>
-    </>
-  );
-
+    <Helplist></Helplist>
+    );
 }
 
 

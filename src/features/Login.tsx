@@ -9,12 +9,8 @@ import React, { useEffect, useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   Image,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
 } from 'react-native';
 
@@ -23,8 +19,6 @@ import {
 import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
 
 import Styles from '../styles/styles';
-import { alignProperty } from '@mui/material/styles/cssUtils';
-import { border } from '@mui/system';
 
 function Login(): JSX.Element {
   //const isDarkMode = useColorScheme() === 'dark';

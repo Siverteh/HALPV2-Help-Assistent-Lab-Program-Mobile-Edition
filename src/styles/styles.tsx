@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import { shadow } from "react-native-paper";
 
-
 const Styles = StyleSheet.create({
   logo: {
     width: "100%",
@@ -58,8 +57,35 @@ const Styles = StyleSheet.create({
   dm_textButton: {
     color: "#E0E0E0",
     fontFamily: "Roboto"
-  }
+  }, 
+  Header:{
+    fontSize: 24,
+    height: 100,
+    padding: 30,
+    color: "#000000",
+    fontFamily: "Roboto",
+    textAlign: "center"
+  },
+  lm_whitelist: {
+    backgroundColor: "#FFFFFF",
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    //elevation: 5
+  },
+  lm_bluelist: {
+    backgroundColor: "#94CCFF",
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    //elevation: 5
+  },
 
 });
 
 export default Styles;
+

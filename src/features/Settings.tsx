@@ -1,11 +1,8 @@
 import Styles from "../styles/styles";
 import { Button, Text } from "react-native-paper";
-import { Box } from "@react-native-material/core";
-import { TabView, SceneMap, TabBar, NavigationState, Route, SceneRendererProps, TabBarIndicatorProps, TabBarItemProps } from 'react-native-tab-view';
-import { View, StyleSheet, Dimensions, StatusBar, PressableAndroidRippleConfig, StyleProp, TextStyle, ViewStyle, useColorScheme, TouchableOpacity } from 'react-native';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { View} from 'react-native';
 import * as React from 'react';
-import { Scene, Event } from "react-native-tab-view/lib/typescript/src/types";
-
 
 
 const Settings = (isDarkMode: Boolean) => (
@@ -85,7 +82,7 @@ export default class Tabs extends React.Component {
             2: TimeEdit,
             3: Roles,
           })}
-          onIndexChange={index => this.setState({ index })}
+          onIndexChange={(index: any) => this.setState({ index })}
           renderTabBar={renderTabBar}
         />
       </>
