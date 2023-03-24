@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import type { PropsWithChildren } from "react";
 import {
-  useColorScheme
+  Settings,
+  useColorScheme, View
 } from "react-native";
 import {
   Provider as PaperProvider,
@@ -22,9 +23,8 @@ import Queue from "../features/Queue";
 import Tabs from "../features/Settings";
 import Styles from "../styles/styles";
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import { fontFamily, style } from '@mui/system';
+import Login from "../features/Login";
 
 
 function App(): JSX.Element {
@@ -35,11 +35,8 @@ function App(): JSX.Element {
   };
 
   return (
-    <>
-      <Tabs />
-    </>
+    <Login></Login>
   );
-
 }
 
 
