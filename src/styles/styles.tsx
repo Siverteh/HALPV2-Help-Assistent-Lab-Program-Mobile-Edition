@@ -24,14 +24,7 @@ const Styles = StyleSheet.create({
   },
   lm_button: {
     backgroundColor: "#94CCFF",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
     borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
   lm_outline: {
     color: "#B0B4BC"
@@ -59,8 +52,6 @@ const Styles = StyleSheet.create({
   },
   dm_button: {
     backgroundColor: "#0070C0",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
     borderRadius: 4,
   },
   dm_outline: {

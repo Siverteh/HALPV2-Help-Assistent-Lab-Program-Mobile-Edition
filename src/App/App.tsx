@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import type { PropsWithChildren } from "react";
 import {
+  Settings,
   useColorScheme, View
 } from "react-native";
 import {
@@ -34,7 +35,7 @@ function App(): JSX.Element {
   };
 
   return (
-    <View></View>
+    <Login></Login>
   );
 }
 

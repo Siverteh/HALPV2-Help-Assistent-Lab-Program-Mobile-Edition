@@ -20,21 +20,15 @@ import {
 
 //import CheckBox from '@react-native-community/checkbox';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
 
 import Styles from '../styles/styles';
+import { alignProperty } from '@mui/material/styles/cssUtils';
+import { border } from '@mui/system';
 
 function Login(): JSX.Element {
   //const isDarkMode = useColorScheme() === 'dark';
-  const isDarkMode = true;
+  const isDarkMode = false;
 
   const [checked, setChecked] = React.useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -75,7 +69,7 @@ function Login(): JSX.Element {
         label="Email Address"
         mode="outlined"
       />
-      <View style={{height:20}}></View>
+      <View style={{height:"2%"}}></View>
       <TextInput style={styles.textInput}
       label="Password"
       mode="outlined"
@@ -96,9 +90,9 @@ function Login(): JSX.Element {
         />
       }
     />
-      <View style={{height:10}}></View>
-      <View style={{flexDirection: "row"}}>
-        <Checkbox
+      <View style={{height:"2%"}}></View>
+      <View style={{flexDirection: "row", justifyContent:"flex-start", width:"85%"}}>
+        <Checkbox 
         color={isDarkMode ? '#FFFFFF' : '#0070C0'}
         uncheckedColor={isDarkMode ? '#FFFFFF' : '#201C24'}
         status={checked ? 'checked' : 'unchecked'}
@@ -108,14 +102,15 @@ function Login(): JSX.Element {
             Remember me
         </Text>
       </View>
-      <View style={{height:20}}></View>
-      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, styles.button]}
+      <View style={{height:"2%"}}></View>
+      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "6%", width:"85%"}]}
         mode="contained"
         textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
         onPress={handleLogin}>
         SIGN IN
       </Button>
-      <View style={{height:10}}></View>
+      <View style={{height:"1%"}}></View>
       <Button
         mode="text"
         textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
@@ -128,17 +123,17 @@ function Login(): JSX.Element {
         onPress={handleRegister}>
           REGISTER AS A USER
       </Button>
-      <View style={{height:40}}></View>
+      <View style={{height:"4%"}}></View>
       <Text
         style={[isDarkMode ? Styles.dm_text : Styles.lm_text, styles.text_lg]}>
           USE ANOTHER SERVICE TO LOG IN
       </Text>
-      <View style={{height:10}}></View>
-      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, styles.button]}
+      <View style={{height:"1%"}}></View>
+      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "6%", width:"85%"}]}
         mode="contained"
         textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
         onPress={handleDiscord}
-        contentStyle={{flexDirection: 'row-reverse'}}
+        contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
         icon="discord">
         DISCORD
       </Button>
@@ -148,16 +143,13 @@ function Login(): JSX.Element {
 
 const styles = StyleSheet.create({
   view: {
-    paddingHorizontal: 24,
+    alignItems: "center",
     width: "100%",
     height: "100%"
     },
   textInput: {
-    width: 336
+    width: "85%"
   },
-  button: {
-    width: 336
-    },
   text_lg: {
     fontWeight: "bold",
     alignItems: "center",
@@ -170,17 +162,9 @@ const styles = StyleSheet.create({
   image: {
     alignSelf: "center",
     width: "100%",
-    height: 200,
+    height: "25%",
     aspectRatio:1
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  }
 });
 
 
