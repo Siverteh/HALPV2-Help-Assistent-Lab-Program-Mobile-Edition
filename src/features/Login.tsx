@@ -34,7 +34,7 @@ import Styles from '../styles/styles';
 
 function Login(): JSX.Element {
   //const isDarkMode = useColorScheme() === 'dark';
-  const isDarkMode = false;
+  const isDarkMode = true;
 
   const [checked, setChecked] = React.useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -67,6 +67,7 @@ function Login(): JSX.Element {
       style={styles.image}
       source={require('.././img/halpy3.png')} />
       <TextInput style={styles.textInput}
+        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
         activeOutlineColor = {isDarkMode ? '#FFFFFF' : '#201C24'}
         outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
         theme={{ colors: { background: isDarkMode ? '#0070C0' : '#FFFFFF',
@@ -78,6 +79,7 @@ function Login(): JSX.Element {
       <TextInput style={styles.textInput}
       label="Password"
       mode="outlined"
+      textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
       activeOutlineColor = {isDarkMode ? '#E0E0E0' : '#201C24'}
       outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
       secureTextEntry={secureTextEntry}
@@ -102,8 +104,7 @@ function Login(): JSX.Element {
         status={checked ? 'checked' : 'unchecked'}
         onPress={handleChecked}
         />
-        <Text style={
-            [isDarkMode ? Styles.dm_text : Styles.lm_text, styles.text_sm]}>
+        <Text style={[isDarkMode ? Styles.dm_text : Styles.lm_text, styles.text_sm]}>
             Remember me
         </Text>
       </View>
