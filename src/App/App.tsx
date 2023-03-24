@@ -17,7 +17,7 @@ import {
   ReloadInstructions
 } from "react-native/Libraries/NewAppScreen";
 
-import TicketComponent from "../features/Ticket";
+//import TicketComponent from "../features/Ticket";
 import Queue from "../features/Queue";
 import Tabs from "../features/Settings";
 import Styles from "../styles/styles";
