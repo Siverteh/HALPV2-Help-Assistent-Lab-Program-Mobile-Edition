@@ -1,8 +1,6 @@
 import { StyleSheet } from "react-native";
-import { ScreenWidth } from "react-native-elements/dist/helpers";
 
-
-const Styles = StyleSheet.create({
+const Misc_Style = StyleSheet.create({
   logo: {
     width: "100%",
     height: 150,
@@ -16,6 +14,9 @@ const Styles = StyleSheet.create({
     fontFamily: "Roboto",
     textAlign: "center"
   },
+})
+
+const Light_Styles = StyleSheet.create({
   lm_background: {
     backgroundColor: "#E0EEF7",
     ScreenWidth: "100%"
@@ -29,12 +30,6 @@ const Styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5
-  },
-  text_size16 : {
-    fontSize: 16
-  },
-  text_size14 : {
-    fontSize: 14
   },
   lm_button: {
     backgroundColor: "#94CCFF",
@@ -51,7 +46,6 @@ const Styles = StyleSheet.create({
   lm_whitelist: {
     backgroundColor: "#FFFFFF",
     padding: 10,
-    borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -61,14 +55,12 @@ const Styles = StyleSheet.create({
   lm_bluelist: {
     backgroundColor: "#94CCFF",
     padding: 10,
-    borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5
   },
-  
   lm_outline: {
     color: "#B0B4BC"
   },
@@ -80,7 +72,10 @@ const Styles = StyleSheet.create({
     color: "#686464",
     fontFamily: 'Roboto',
   },
-  dm_background: {
+});
+
+const Dark_Styles = StyleSheet.create({
+    dm_background: {
     backgroundColor: "#004082"
   },
   dm_boxes: {
@@ -110,8 +105,6 @@ const Styles = StyleSheet.create({
   dm_textButton: {
     color: "#E0E0E0",
     fontFamily: "Roboto"
-  }
+  }})
 
-});
-
-export default Styles;
+export {Light_Styles, Dark_Styles, Misc_Style};
