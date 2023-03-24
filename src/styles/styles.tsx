@@ -14,12 +14,7 @@ const Styles = StyleSheet.create({
   lm_boxes: {
     backgroundColor: "#FFFFFF",
     padding: 0,
-    borderRadius: 0,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
+    borderRadius: 8,
   },
   lm_button: {
     backgroundColor: "#94CCFF",
@@ -30,7 +25,6 @@ const Styles = StyleSheet.create({
   },
   lm_text: {
     color: "#000000",
-    fontFamily: "Roboto"
   },
   lm_textButton: {
     color: "#686464",
@@ -41,7 +35,7 @@ const Styles = StyleSheet.create({
   },
   dm_boxes: {
     backgroundColor: "#0070C0",
-    padding: 32,
+    padding: 0,
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -58,7 +52,6 @@ const Styles = StyleSheet.create({
   },
   dm_text: {
     color: "#FFFFFF",
-    fontFamily: "Roboto"
   },
   dm_textButton: {
     color: "#E0E0E0",
