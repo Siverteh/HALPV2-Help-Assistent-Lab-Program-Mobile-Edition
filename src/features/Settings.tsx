@@ -2,21 +2,46 @@ import Styles from "../styles/styles";
 import { Button, Text } from "react-native-paper";
 import { Box } from "@react-native-material/core";
 import { TabView, SceneMap, TabBar, NavigationState, Route, SceneRendererProps, TabBarIndicatorProps, TabBarItemProps } from 'react-native-tab-view';
-import { View, StyleSheet, Dimensions, StatusBar, PressableAndroidRippleConfig, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { View, StyleSheet, Dimensions, StatusBar, PressableAndroidRippleConfig, StyleProp, TextStyle, ViewStyle, useColorScheme, TouchableOpacity } from 'react-native';
 import * as React from 'react';
 import { Scene, Event } from "react-native-tab-view/lib/typescript/src/types";
 
 
 
-const Settings = () => (
-  <>
-    <Box style={{ ...Styles.lm_background, justifyContent: 'center', alignItems: 'center', height: "100%" }}>
-      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>PROFILE</Button>
-      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>CHANGE PASSWORD</Button>
-      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>EXTERNAL SERVICES</Button>
-      <Button style={{ ...Styles.lm_button, width: 230, height: 50,  }} labelStyle={Styles.lm_textButton}>DELETE PERSONAL DATA</Button>
-    </Box>
-  </>
+const Settings = (isDarkMode: Boolean) => (
+    <View style={{ ...Styles.lm_background, justifyContent: 'center', alignItems: 'center', height: "100%" }}>
+      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "8%", width:"60%"}]}
+        mode="contained"
+        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
+        onPress={() => console.log("hei")}>
+        PROFILE
+      </Button>
+      <View style={{height:"5%"}}></View>
+      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "10%", width:"60%"}]}
+        mode="contained"
+        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
+        onPress={() => console.log("hei")}>
+        CHANGE PASSWORD
+      </Button>
+      <View style={{height:"5%"}}></View>
+      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "10%", width:"60%"}]}
+        mode="contained"
+        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
+        onPress={() => console.log("hei")}>
+        EXTERNAL SERVICES
+      </Button>
+      <View style={{height:"5%"}}></View>
+      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "10%", width:"60%"}]}
+        mode="contained"
+        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
+        onPress={() => console.log("hei")}>
+        DELETE PERSONAL DATA
+      </Button>
+    </View>
 );
 const TimeEdit = () => (
   <View/>
@@ -38,6 +63,7 @@ const renderTabBar = (props:any) => {
 };
 
 export default class Tabs extends React.Component {
+
   state = {
     index: 0,
     routes: [
