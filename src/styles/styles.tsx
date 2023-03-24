@@ -4,10 +4,9 @@ import { shadow } from "react-native-paper";
 
 const Styles = StyleSheet.create({
   logo: {
-    width: 150,
-    height: 150,
-    resizeMode: "contain",
-    marginBottom: 20
+    width: "100%",
+    height: "25%",
+    resizeMode: "contain"
   },
   lm_background: {
     backgroundColor: "#E0EEF7",

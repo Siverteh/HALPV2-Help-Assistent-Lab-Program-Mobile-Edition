@@ -30,18 +30,18 @@ const createTicket = ({
 
 
   return (
-    <View style={[Styles.lm_background, { flex: 1, justifyContent: "center", alignItems: "center" }]}>
+    <View style={[Styles.lm_background, { flex: 1, alignItems: "center" }]}>
       <Image source={require("./HALP.png")} style={Styles.logo} />
-      <Text style={[Styles.lm_text, { fontSize: 24, paddingBottom: 20}]}>NEW TICKET</Text>
-      <TextInput style={{ ...Styles.lm_text, ...Styles.lm_boxes, width: screenWidth * 0.8, height: 50, margin: 10 }}
+      <Text style={[Styles.lm_text, { fontSize: 24, paddingBottom: 0, marginBottom: "7%"}]}>NEW TICKET</Text>
+      <TextInput style={{ ...Styles.lm_text, ...Styles.lm_boxes, width: "85%", margin: "2%" }}
                  label="Name"
                  value={value?.name}
       />
-      <TextInput style={{ ...Styles.lm_text, ...Styles.lm_boxes, width: screenWidth * 0.8, height: 50, margin: 10 }}
+      <TextInput style={{ ...Styles.lm_text, ...Styles.lm_boxes, width: "85%", margin: "2%" }}
                  label="Room"
                  value={value?.room}
       />
-      <TextInput style={{ ...Styles.lm_text, ...Styles.lm_boxes, width: screenWidth * 0.8, height: 300, margin: 10, textAlignVertical: "top" }}
+      <TextInput style={{ ...Styles.lm_text, ...Styles.lm_boxes, width: "85%", height: screenHeight * 0.2, margin: "2%", textAlignVertical: "top" }}
                  label="Description"
                  value={value?.description}
                  multiline={true}

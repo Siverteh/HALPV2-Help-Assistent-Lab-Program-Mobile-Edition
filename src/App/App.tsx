@@ -22,6 +22,7 @@ import Queue from "../features/Queue";
 import Tabs from "../features/Settings";
 import Styles from "../styles/styles";
 
+
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
