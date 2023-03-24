@@ -14,11 +14,12 @@ const Styles = StyleSheet.create({
   lm_boxes: {
     backgroundColor: "#FFFFFF",
     padding: 0,
-    borderRadius: 8,
+    borderRadius: 0,
   },
   lm_button: {
     backgroundColor: "#94CCFF",
     borderRadius: 4,
+    justifyContent: 'center'
   },
   lm_outline: {
     color: "#B0B4BC"
@@ -46,6 +47,7 @@ const Styles = StyleSheet.create({
   dm_button: {
     backgroundColor: "#0070C0",
     borderRadius: 4,
+    justifyContent: 'center'
   },
   dm_outline: {
     color: "#083464"

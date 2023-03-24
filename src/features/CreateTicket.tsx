@@ -28,28 +28,46 @@ const createTicket = ({
   const [value, setValue] = React.useState<Ticket | null>(ticket ?? null);
 
   const isValidValue = value && v(value).every(isEmpty);
-  const isDarkMode = useColorScheme() === 'dark';
-  const stylePrefix = isDarkMode ? 'dm' : 'lm';
+  //const isDarkMode = useColorScheme() === "dark";
+  const isDarkMode = false;
+  const stylePrefix = isDarkMode ? "dm" : "lm";
 
 
   return (
     <View style={[Styles[`${stylePrefix}_background`], { flex: 1, alignItems: "center" }]}>
       <Image source={require("./HALP.png")} style={Styles.logo} />
-      <Text style={[Styles[`${stylePrefix}_text`], { fontSize: 24, paddingBottom: 0, marginBottom: "7%"}]}>NEW TICKET</Text>
-      <TextInput style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
-                 label="Name"
-                 value={value?.name}
+      <Text style={[Styles[`${stylePrefix}_text`], { fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>NEW
+        TICKET</Text>
+      <TextInput
+        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
+        mode={"outlined"}
+        label="Name"
+        outlineColor={"transparent"}
+        activeOutlineColor={"grey"}
+        value={value?.name}
       />
-      <TextInput style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
-                 label="Room"
-                 value={value?.room}
+      <TextInput
+        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
+        mode={"outlined"}
+        label="Room"
+        outlineColor={"transparent"}
+        activeOutlineColor={"grey"}
+        value={value?.room}
       />
-      <TextInput style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", height: screenHeight * 0.2, margin: "2%", textAlignVertical: "top" }}
-                 label="Description"
+      <TextInput style={{
+        ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`],
+        width: "85%",
+        margin: "2%"
+      }}
+                 mode={"outlined"}
+                 label={"Description"}
+                 outlineColor={"transparent"}
+                 activeOutlineColor={"grey"}
                  value={value?.description}
                  multiline={true}
       />
-      <Button style={{ ...Styles[`${stylePrefix}_button`], width: 230, height: 50, margin: 10 }} labelStyle={Styles[`${stylePrefix}_textButton`]}>
+      <Button style={{ ...Styles[`${stylePrefix}_button`], width: 230, height: 50, margin: "2%" }}
+              labelStyle={Styles[`${stylePrefix}_textButton`]}>
         CREATE TICKET
       </Button>
     </View>
