@@ -17,7 +17,7 @@ import {
   ReloadInstructions
 } from "react-native/Libraries/NewAppScreen";
 
-import TicketComponent from "../features/Ticket";
+import CreateTicket from "../features/CreateTicket";
 import Queue from "../features/Queue";
 import Tabs from "../features/Settings";
 import Styles from "../styles/styles";
@@ -36,7 +36,7 @@ function App(): JSX.Element {
 
   return (
     <>
-      <TicketComponent  onSubmit={ticket => []} rooms={[]}/>
+      <CreateTicket  onSubmit={ticket => []} rooms={[]}/>
     </>
   );
 

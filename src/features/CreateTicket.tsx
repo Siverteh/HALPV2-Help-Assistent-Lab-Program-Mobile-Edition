@@ -18,7 +18,7 @@ type Props = {
   onSubmit: (ticket: Ticket) => {}
 }
 
-const TicketComponent = ({
+const createTicket = ({
                            onSubmit,
                            ticket,
                            rooms
@@ -56,4 +56,4 @@ const TicketComponent = ({
 };
 
 
-export default TicketComponent;
+export default createTicket;
