@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import type { PropsWithChildren } from "react";
 import {
-  Settings,
-  useColorScheme, View
+  useColorScheme
 } from "react-native";
 import {
   Provider as PaperProvider,
@@ -18,7 +17,7 @@ import {
   ReloadInstructions
 } from "react-native/Libraries/NewAppScreen";
 
-//import TicketComponent from "../features/Ticket";
+import CreateTicket from "../features/CreateTicket";
 import Queue from "../features/Queue";
 import Tabs from "../features/Settings";
 import Styles from "../styles/styles";
