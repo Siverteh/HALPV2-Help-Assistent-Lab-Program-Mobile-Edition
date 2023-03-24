@@ -34,9 +34,8 @@ function App(): JSX.Element {
   };
 
   return (
-    <Login></Login>
+    <View></View>
   );
-
 }
 
 
