@@ -50,7 +50,7 @@ const Helplist = () => {
           <Text>Toggle</Text>
         </Button>
       </View>
-      <Image style={[Styles.logo]} source={require('../features/HALP.png')} />
+      <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
       <Header title='Helplist'/>
       <List.Section style= {Styles.lm_background}>
         {helplistData.map((item, index) => (
