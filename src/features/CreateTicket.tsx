@@ -35,7 +35,7 @@ const createTicket = ({
 
   return (
     <View style={[Styles[`${stylePrefix}_background`], { flex: 1, alignItems: "center" }]}>
-      <Image source={require("./HALP.png")} style={Styles.logo} />
+      <Image source={require('.././img/halpy3.png')} style={Styles.logo} />
       <Text style={[Styles[`${stylePrefix}_text`], { fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>NEW
         TICKET</Text>
       <TextInput

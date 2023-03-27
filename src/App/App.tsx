@@ -1,7 +1,10 @@
 import React from "react";
 import type { PropsWithChildren } from "react";
 import {
-  useColorScheme
+  Dimensions,
+  ScrollView,
+  useColorScheme,
+  View
 } from "react-native";
 import {
   Provider as PaperProvider,
@@ -17,23 +20,42 @@ import {
   ReloadInstructions
 } from "react-native/Libraries/NewAppScreen";
 
+import Styles from "../styles/styles";
+
 import CreateTicket from "../features/CreateTicket";
 import Queue from "../features/Queue";
 import Tabs from "../features/Settings";
-import Styles from "../styles/styles";
 import Login from "../features/Login";
 import Helplist from "../features/Helplist";
 
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
-
+  
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Styles.dm_background : Styles.lm_background
   };
-
+  
+  const screenHeight = Dimensions.get("window").height;
   return (
-    <Helplist></Helplist>
+    <ScrollView style={{height: screenHeight*5}}>
+      <View style={{height: screenHeight}}>
+        <CreateTicket  onSubmit={ticket => []} rooms={[]}/>
+      </View>
+      <View style={{height: screenHeight}}>
+        <Queue/>
+      </View>
+      <View style={{height: screenHeight}}>
+        <Tabs/>
+      </View>
+      <View style={{height: screenHeight}}>
+        <Login/>
+      </View>
+      <View style={{height: screenHeight}}>
+        <Helplist ></Helplist>
+      </View>
+
+    </ScrollView>
     );
 }
 

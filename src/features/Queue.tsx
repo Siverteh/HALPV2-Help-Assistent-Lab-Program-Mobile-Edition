@@ -18,7 +18,7 @@ const Queue = () => {
 
   return (
     <View style={[Styles.lm_background, { flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 0, paddingBottom: 100 }]}>
-      <Image source={require('./HALP.png')} style={Styles.logo} />
+      <Image source={require('.././img/halpy3.png')} style={Styles.logo} />
       <View style={{ justifyContent: 'space-between', alignItems: 'center', ...Styles.lm_boxes, width: '90%', height: screenHeight * 0.75, maxWidth: screenWidth * 0.9, maxHeight: screenHeight * 0.75, marginTop: -25, borderRadius: 20}}>
         <View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }}>
           <Text style={[Styles.lm_text, { fontSize: 24 }]}>Hi Charlie</Text>
