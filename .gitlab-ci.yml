@@ -96,6 +96,7 @@ build:
   stage: build
   script:
     # Set up Android SDK
+    - install -d andriod-sdk
     - wget --quiet --output-document=andriod-sdk/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
     - pushd andriod-sdk
     - unzip -d cmdline-tools cmdline-tools.zip
