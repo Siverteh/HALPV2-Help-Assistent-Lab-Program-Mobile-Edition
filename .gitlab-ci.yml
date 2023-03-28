@@ -95,7 +95,10 @@ build-job:
     - mv cmdline-tools tools || true
     - popd
     - popd
-    - export PATH=$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/
+    - export PATH=$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/    
+    - export PATH=$PATH:${ANDROID_SDK_ROOT}/emulator
+    - export PATH=$PATH:${ANDROID_SDK_ROOT}/tools
+    - export PATH=$PATH:$ANDROID_HOME/platform-tools
 
     # Nothing fancy here, just checking sdkManager version
     - sdkmanager --version
