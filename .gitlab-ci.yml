@@ -54,8 +54,8 @@ build-job:
     - adb kill-server && adb start-server
     - cd /${ANDROID_SDK_ROOT}
     - sdkmanager emulator
-    - cd /${ANDROID_SDK_ROOT}/emulator
-    - ./emulator -avd Test -no-audio -no-window
+    #- cd /${ANDROID_SDK_ROOT}/emulator
+    #- ./emulator -avd Test -no-audio -no-window
     - cd
 
   script:
