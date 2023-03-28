@@ -103,7 +103,7 @@ build:
     - mkdir $PWD/android-sdk/tools
     - mv $PWD/android-sdk/cmdline-tools $PWD/android-sdk/tools
     - ls $PWD/android-sdk/tools -l
-    - export PATH=$PATH:$PWD/android-sdk/tools/bin
+    - export PATH=$PATH:$PWD/android-sdk/tools/cmdline-tools/bin
     
 
     - yes | sdkmanager --licenses
