@@ -61,5 +61,5 @@ build-job:
     #- cd
 
   script:
-    - npx react-native run-android
+    - npx react-native build-android
 
