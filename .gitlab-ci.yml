@@ -89,12 +89,12 @@ build:
     - unzip -q android-sdk.zip -d android-sdk
     - export ANDROID_HOME=$PWD/android-sdk
     - export PATH=$PATH:$PWD/android-sdk/cmdline-tools/bin:$PWD/android-sdk/platform-tools:$PWD/android-sdk/tools/bin
-    - yes | sdkmanager --licenses
 
     - echo $ANDROID_HOME
     - --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-$ANDROID_COMPILE_SDK" "build-tools;$ANDROID_BUILD_TOOLS"
     - echo $ANDROID_HOME
 
+    - yes | sdkmanager --licenses
     - sdkmanager --update
     - sdkmanager "platform-tools" "platforms;android-$ANDROID_COMPILE_SDK" "build-tools;$ANDROID_BUILD_TOOLS"
 
