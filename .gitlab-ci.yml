@@ -97,7 +97,8 @@ build:
   script:
     # Set up Android SDK
     - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
-    - unzip -q android-sdk.zip -d android-sdk
+    - mkdir android-sdk/cmdline-tools
+    - unzip -q android-sdk.zip -d android-sdk/cmdline-tools
     - export ANDROID_HOME=$PWD/android-sdk
     - ls $PWD/android-sdk/ -l
     - ls $PWD/android-sdk/cmdline-tools -l
