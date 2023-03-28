@@ -14,7 +14,7 @@ build-job:
   # Packages installation before running script
   before_script:
     - apt-get --quiet update --yes
-    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb libpulse0 kmod qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle # adb libpulse0 kmod qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
 
     #- sudo apt update
     - curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
@@ -51,12 +51,12 @@ build-job:
     - npx react-native eject
     - npm install
 
-    - adb kill-server && adb start-server
-    - cd /${ANDROID_SDK_ROOT}
-    - sdkmanager emulator
+    #- adb kill-server && adb start-server
+    #- cd /${ANDROID_SDK_ROOT}
+    #- sdkmanager emulator
     #- cd /${ANDROID_SDK_ROOT}/emulator
     #- ./emulator -avd Test -no-audio -no-window
-    - cd
+    #- cd
 
   script:
     - npx react-native run-android
