@@ -71,6 +71,17 @@ variables:
   ANDROID_BUILD_TOOLS: "33.0.0"
   ANDROID_SDK_TOOLS:   "9477386"
 
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - android/.gradle/
+    - android/.idea/
+    - android/app/build/
+    - android/build/
+    - node_modules/
+    - /usr/local/share/.cache/yarn/
+    - $ANDROID_HOME/
+
 # Install dependencies
 before_script:
   - apk add --no-cache openjdk11
@@ -92,7 +103,7 @@ build:
 
     - echo $ANDROID_HOME
     - which sdkmanager
-    - sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-$ANDROID_COMPILE_SDK" "build-tools;$ANDROID_BUILD_TOOLS"
+    - yes | sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-$ANDROID_COMPILE_SDK" "build-tools;$ANDROID_BUILD_TOOLS"
     - echo $ANDROID_HOME
 
     - yes | sdkmanager --licenses
