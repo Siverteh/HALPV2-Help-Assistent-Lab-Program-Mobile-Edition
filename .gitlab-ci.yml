@@ -102,7 +102,6 @@ build:
     - export PATH=$PATH:$PWD/android-sdk/cmdline-tools/bin:$PWD/android-sdk/platform-tools:$PWD/android-sdk/tools/bin
 
     - echo $ANDROID_HOME
-    - which sdkmanager
     - yes | sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-$ANDROID_COMPILE_SDK" "build-tools;$ANDROID_BUILD_TOOLS"
     - echo $ANDROID_HOME
 
@@ -116,6 +115,12 @@ build:
   artifacts:
     paths:
       - android/app/build/outputs/apk/debug/app-debug.apk
+
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - /usr/local/share/.cache/yarn
+      - node_modules
 
 test:
   stage: test
