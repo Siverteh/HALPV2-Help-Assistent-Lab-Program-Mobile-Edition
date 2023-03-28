@@ -101,7 +101,7 @@ build:
     - export ANDROID_HOME=$PWD/android-sdk
     - ls $PWD/android-sdk/ -l
     - mkdir $PWD/android-sdk/tools
-    - mv -rf $PWD/android-sdk/cmdline-tools $PWD/android-sdk/tools
+    - mv $PWD/android-sdk/cmdline-tools $PWD/android-sdk/tools
     - ls $PWD/android-sdk/cmdline-tools -l
     - export PATH=$PATH:$PWD/android-sdk/tools/bin
     
