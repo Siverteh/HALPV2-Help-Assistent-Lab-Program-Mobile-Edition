@@ -110,6 +110,9 @@ build-job:
 
     - avdmanager create avd --name Test --package "system-images;android-33;google_apis;x86_64" --device "Nexus 5X" --force
 
+    - cd android && ./gradlew clean
+    - chmod +x gradlew
+    - cd
 
     - npm i react-native-eject
     - npx react-native eject
