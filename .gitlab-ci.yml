@@ -1,3 +1,66 @@
+# stages:
+#   - build
+#   - test
+#   - deploy
+
+# build-job:
+#   stage: build
+#   variables:
+#     ANDROID_COMPILE_SDK: "33"
+#     ANDROID_BUILD_TOOLS: "33.0.0"
+#     ANDROID_SDK_TOOLS: "9477386"
+#   image: openjdk:11-jdk
+
+#   # Packages installation before running script
+#   before_script:
+#     - apt-get --quiet update --yes
+#     - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb libpulse0 kmod qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+
+#     #- sudo apt update
+#     - curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
+#     - apt-get install -y nodejs
+
+#     # Setup path as ANDROID_SDK_ROOT for moving/exporting the downloaded sdk into it
+#     - export ANDROID_SDK_ROOT="${PWD}/android-home"
+#     # Create a new directory at specified location
+#     - install -d $ANDROID_SDK_ROOT
+
+#     #Installing the Android SDK
+#     - wget --quiet --output-document=$ANDROID_SDK_ROOT/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
+#     - pushd $ANDROID_SDK_ROOT
+#     - unzip -d cmdline-tools cmdline-tools.zip
+#     - pushd cmdline-tools
+#     - mv cmdline-tools tools || true
+#     - popd
+#     - popd
+#     - export PATH=$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/
+
+#     # Nothing fancy here, just checking sdkManager version
+#     - sdkmanager --version
+
+#     # use yes to accept all licenses
+#     - yes | sdkmanager --licenses || true
+#     - sdkmanager "platforms;android-${ANDROID_COMPILE_SDK}"
+#     - sdkmanager "platform-tools"
+#     - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
+#     - sdkmanager "system-images;android-${ANDROID_COMPILE_SDK};google_apis;x86_64"
+
+#     - avdmanager create avd --name Test --package "system-images;android-33;google_apis;x86_64" --device "Nexus 5X" --force
+
+#     - npm i react-native-eject
+#     - npx react-native eject
+#     - npm install
+
+#     - adb kill-server && adb start-server
+#     #- cd /${ANDROID_SDK_ROOT}
+#     #- sdkmanager emulator
+#     #- cd /${ANDROID_SDK_ROOT}/emulator
+#     #- ./emulator -avd Test -no-audio -no-window
+#     #- cd
+
+#   script:
+#     - npx react-native run-android
+
 stages:
   - build
   - test
@@ -14,8 +77,7 @@ build-job:
   # Packages installation before running script
   before_script:
     - apt-get --quiet update --yes
-    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle adb libpulse0 kmod qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
-
+    - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1 nodejs npm gradle
     #- sudo apt update
     - curl -fsSL https://deb.nodesource.com/setup_19.x | bash - &&\
     - apt-get install -y nodejs
@@ -45,18 +107,15 @@ build-job:
     - sdkmanager "build-tools;${ANDROID_BUILD_TOOLS}"
     - sdkmanager "system-images;android-${ANDROID_COMPILE_SDK};google_apis;x86_64"
 
+
     - avdmanager create avd --name Test --package "system-images;android-33;google_apis;x86_64" --device "Nexus 5X" --force
+
 
     - npm i react-native-eject
     - npx react-native eject
     - npm install
 
-    - adb kill-server && adb start-server
-    #- cd /${ANDROID_SDK_ROOT}
-    #- sdkmanager emulator
-    #- cd /${ANDROID_SDK_ROOT}/emulator
-    #- ./emulator -avd Test -no-audio -no-window
-    #- cd
 
   script:
     - npx react-native run-android
+
