@@ -51,7 +51,7 @@ build-job:
     - npx react-native eject
     - npm install
 
-    #- adb kill-server && adb start-server
+    - adb kill-server && adb start-server
     #- cd /${ANDROID_SDK_ROOT}
     #- sdkmanager emulator
     #- cd /${ANDROID_SDK_ROOT}/emulator
