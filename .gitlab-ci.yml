@@ -99,7 +99,9 @@ build:
     - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip
     - unzip -q android-sdk.zip -d android-sdk
     - export ANDROID_HOME=$PWD/android-sdk
-    - install -d $ANDROID_HOME
+    - ls $PWD/android-sdk/ -l
+    - ls $PWD/android-sdk/cmdline-tools -l
+    - ls $PWD/android-sdk/platform-tools -l
     - export PATH=$PATH:$PWD/android-sdk/cmdline-tools/bin:$PWD/android-sdk/platform-tools:$PWD/android-sdk/tools/bin
     
 
