@@ -73,7 +73,7 @@ variables:
 
 # Install dependencies
 before_script:
-  - apk add --no-cache openjdk8
+  - apk add --no-cache openjdk11
   - apk add --no-cache python2
   - apk add --no-cache bash
   - apk add --no-cache git
@@ -89,7 +89,6 @@ build:
     - unzip -q android-sdk.zip -d android-sdk
     - export ANDROID_HOME=$PWD/android-sdk
     - export PATH=$PATH:$PWD/android-sdk/cmdline-tools/bin:$PWD/android-sdk/platform-tools:$PWD/android-sdk/tools/bin
-    - sdkmanager --version
     - yes | sdkmanager --licenses
     - sdkmanager --update
     - sdkmanager "platform-tools" "platforms;android-$ANDROID_COMPILE_SDK" "build-tools;$ANDROID_BUILD_TOOLS"
