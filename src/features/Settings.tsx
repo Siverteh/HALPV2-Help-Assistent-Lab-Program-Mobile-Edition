@@ -25,25 +25,10 @@ const Text_Input = ({isDarkMode}: {isDarkMode: boolean}, lable:string, defaultVa
 }
 
 
-const Button_Settings = ({isDarkMode}: {isDarkMode: boolean}, Value:string, onPress:any) => {
+const Button_ = ({isDarkMode}: {isDarkMode: boolean}, Value:string, onPress:any, Height:string = '8%') => {
   return(
     <>
-      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "8%", width:"60%"}]}
-          mode="contained"
-          textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
-          contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
-          onPress={onPress}>
-          {Value}
-      </Button>
       <View style={{height:"5%"}}></View>
-    </>
-  )
-}
-
-const Button_Modal = ({isDarkMode}: {isDarkMode: boolean}, Value:string, onPress:any, Height:string = '15%' ) => {
-  return(
-    <>
-      <View style={{height:"10%"}}></View>
       <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: Height, width:"60%"}]}
           mode="contained"
           textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
@@ -54,6 +39,7 @@ const Button_Modal = ({isDarkMode}: {isDarkMode: boolean}, Value:string, onPress
     </>
   )
 }
+
 
 const Settings = ({isDarkMode}: {isDarkMode: boolean}) => {
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
@@ -78,29 +64,29 @@ const Settings = ({isDarkMode}: {isDarkMode: boolean}) => {
 
   return (
     <View style={[isDarkMode ? Styles.dm_background: Styles.lm_background, {justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
-      {Button_Settings({isDarkMode}, "PROFILE", openProfileModal)}
-      {Button_Settings({isDarkMode}, "PASSWORD", openPasswordModal)}
-      {Button_Settings({isDarkMode}, "EXTERNAL-SERVICE", openExserviceModal)}
-      {Button_Settings({isDarkMode}, "DELETE ACCOUNT", openDeleteModal)}
+      {Button_({isDarkMode}, "PROFILE", openProfileModal)}
+      {Button_({isDarkMode}, "PASSWORD", openPasswordModal)}
+      {Button_({isDarkMode}, "EXTERNAL-SERVICE", openExserviceModal)}
+      {Button_({isDarkMode}, "DELETE ACCOUNT", openDeleteModal)}
 
       <Portal>
         <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8}]}>
           {Text_Input({isDarkMode}, "Name", "Doe")}
           {Text_Input({isDarkMode}, "Discord", "Doe#1234")}
           {Text_Input({isDarkMode}, "Email", "Doe@uia.no")}
-          {Button_Modal({isDarkMode}, "SAVE", closeProfileModal)}
+          {Button_({isDarkMode}, "SAVE", closeProfileModal, '15%')}
         </Modal>
         <Modal visible={isPasswordModalVisible} onDismiss={closePasswordModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8}]} >
           {Text_Input({isDarkMode}, "Old Password", '', true)}
           {Text_Input({isDarkMode}, "New Password", '', true)}
           {Text_Input({isDarkMode}, "Confirm Password", '', true)}
-          {Button_Modal({isDarkMode}, "SAVE", closePasswordModal)}
+          {Button_({isDarkMode}, "SAVE", closePasswordModal, '15%')}
         </Modal>
         <Modal visible={isExserviceModalVisible} onDismiss={closeExserviceModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight*0.20}]} >
-          {Button_Modal({isDarkMode}, "CONECT DISCORD", closeExserviceModal, '30%')}
+          {Button_({isDarkMode}, "CONECT DISCORD", closeExserviceModal, '30%')}
         </Modal>
         <Modal visible={isDeleteModalVisible} onDismiss={closeDeleteModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight*0.20}]} >
-          {Button_Modal({isDarkMode}, "DELETE ACCOUNT", closeDeleteModal, '30%')}
+          {Button_({isDarkMode}, "DELETE ACCOUNT", closeDeleteModal, '30%')}
         </Modal>
       </Portal>
     </View>
