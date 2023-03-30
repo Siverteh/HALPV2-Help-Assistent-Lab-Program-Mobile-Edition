@@ -70,13 +70,13 @@ const Settings = ({isDarkMode}: {isDarkMode: boolean}) => {
       {Button_({isDarkMode}, "DELETE ACCOUNT", openDeleteModal)}
 
       <Portal>
-        <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8}]}>
+        <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop:'-35%'}]}>
           {Text_Input({isDarkMode}, "Name", "Doe")}
           {Text_Input({isDarkMode}, "Discord", "Doe#1234")}
           {Text_Input({isDarkMode}, "Email", "Doe@uia.no")}
           {Button_({isDarkMode}, "SAVE", closeProfileModal, '15%')}
         </Modal>
-        <Modal visible={isPasswordModalVisible} onDismiss={closePasswordModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8}]} >
+        <Modal visible={isPasswordModalVisible} onDismiss={closePasswordModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop:'-35%'}]} >
           {Text_Input({isDarkMode}, "Old Password", '', true)}
           {Text_Input({isDarkMode}, "New Password", '', true)}
           {Text_Input({isDarkMode}, "Confirm Password", '', true)}
@@ -143,7 +143,8 @@ export default function Tabs() {
       <Text style={[isDarkMode ? 
         {...Styles.dm_text, ...Styles.dm_background}: 
         {...Styles.lm_text, ...Styles.lm_background}, 
-        {fontSize: 24, textAlign: 'center', paddingTop: 80}]}>
+        {fontSize: 24, textAlign: 'center', paddingTop: 80}]}
+        >
           {routes[index].title}
       </Text>
       <TabView

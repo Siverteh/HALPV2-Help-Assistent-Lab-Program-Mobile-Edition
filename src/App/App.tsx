@@ -40,9 +40,13 @@ function App(): JSX.Element {
   
   const screenHeight = Dimensions.get("window").height;
   return (
-    <PaperProvider>
-      <Tabs/>
-    </PaperProvider>
+    <View style={[{height: screenHeight}]}>
+      <PaperProvider>
+        <Tabs/>
+      </PaperProvider>
+      <View style={[{height: screenHeight*0.05, backgroundColor:'red'}]}>
+      </View>
+    </View>
     );
 }
 
