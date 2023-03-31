@@ -38,9 +38,11 @@ function App(): JSX.Element {
   
   const screenHeight = Dimensions.get("window").height;
   return (
+ 
       <View style={{height: screenHeight}}>
         <Helplist ></Helplist>
       </View>
+     
     );
 }
 
