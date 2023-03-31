@@ -1,8 +1,10 @@
 import Styles from "../styles/styles";
-import { Button, Text, Modal, Portal, TextInput } from "react-native-paper";
+import { Button, Text, Modal, Portal, TextInput, List } from "react-native-paper";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { Dimensions, useColorScheme, View} from 'react-native';
+import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View} from 'react-native';
 import * as React from 'react';
+import { CustomAccordion } from "../Components/CustomComponents";
+import { useState } from "react";
 
 const Text_Input = ({isDarkMode}: {isDarkMode: boolean}, lable:string, defaultValue:string = '', password:boolean = false) => {
   return(
@@ -19,6 +21,26 @@ const Text_Input = ({isDarkMode}: {isDarkMode: boolean}, lable:string, defaultVa
               mode="outlined"
               defaultValue={defaultValue}
               secureTextEntry={password}>
+    </TextInput>
+  </>
+  )
+}
+const Text_Input_CB = ({isDarkMode}: {isDarkMode: boolean}, lable:string, defaultValue:string = '', password:boolean = false, onChangeText:(text: string) => void) => {
+  return(
+    <>
+      <View style={{height:'7%'}}></View>
+      <TextInput 
+      style={{width: "80%"}}
+              textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
+              activeOutlineColor = {isDarkMode ? '#FFFFFF' : '#201C24'}
+              outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
+              theme={{ colors: { background: isDarkMode ? '#0070C0' : '#FFFFFF',
+              onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24' } }}
+              label={lable}
+              mode="outlined"
+              defaultValue={defaultValue}
+              secureTextEntry={password}
+              onChangeText={onChangeText}>
     </TextInput>
   </>
   )
@@ -93,13 +115,102 @@ const Settings = ({isDarkMode}: {isDarkMode: boolean}) => {
   );
 };
 const TimeEdit = ({isDarkMode}: {isDarkMode: boolean}) => {
+  const [timeeditData, setTimeeditData] = useState<Array<{courseLink: string }>>([]);
   const screenHeight = Dimensions.get("window").height;
-  return(
-    <View style={[isDarkMode ? Styles.dm_background: Styles.lm_background, {justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
+  const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
+  const openAddModal = () => setIsAddModalVisible(true);
+  const closeAddModal = () => setIsAddModalVisible(false);
+  const containerStyle = [isDarkMode ? Styles.dm_background : Styles.lm_background, {height: screenHeight*0.45, width: "70%", borderRadius: 20}];
+  const [newLink, setNewLink] = useState('');
+  const handleAddNewLink = () => {
+    fetch(`http://chanv2.duckdns.org:5084/api/Timeedit?link=${newLink}`, {
+      method: 'POST',
+    })
+    .then(response => response.text())
+    .then(data => {
+      // Update the timeeditData state variable with the new data
+      setTimeeditData([...timeeditData, {courseLink: newLink }]);
+      // Close the modal
+      closeAddModal();
+      // Clear the input field
+      setNewLink('');
+    })
+    .catch(error => {
+      console.error(error.response);
+      console.error(error);
+    });
+  }
   
+
+  React.useEffect(() => {
+    fetch('http://chanv2.duckdns.org:5084/api/Timeedit')
+      .then(response => response.json())
+      .then(data => {
+        setTimeeditData(data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
+  const renderItem = ({ item, index }: { item: { id: string, courseLink: string }, index: number }) => (
+    <View style={[isDarkMode ? 
+      {backgroundColor: index % 2 == 0 ? '#0070C0' : '#004082'}:
+      {backgroundColor: index % 2 == 0 ? '#FFFFFF' : '#94CCFF'},
+      {padding: 10}]}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text
+        style={[isDarkMode ? 
+          {color: index % 2 == 0 ? '#FFFFFF' : '#E0E0E0'}:
+          {color: index % 2 == 0 ? '#686464' : '#201C24'},
+          {width:'80%'}]}>
+            {item.courseLink}
+        </Text>
+        <TouchableOpacity 
+          onPress={() => {
+            const newData = [...timeeditData];
+            newData.splice(index, 1);
+            setTimeeditData(newData);
+          }}
+          style={[isDarkMode ? 
+            {backgroundColor: index % 2 == 0 ? '#004082' : '#0070C0' }:
+            {backgroundColor: index % 2 == 0 ? '#94CCFF' : '#FFFFFF'},
+            , {padding: 10}]}>
+          <Text style={[isDarkMode ? 
+          {color: index % 2 == 0 ? '#E0E0E0' : '#FFFFFF'}:
+          {color: index % 2 == 0 ? '#201C24' : '#686464'}
+          ]}>
+            Delete
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+
+  return (
+    <View style={[isDarkMode ? Styles.dm_background: Styles.lm_background, {justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
+      <FlatList 
+        data={timeeditData.map((item, index) => ({...item, id: index.toString()}))}
+        renderItem={renderItem}
+        style={{width: '100%'}}
+        keyExtractor={item => item.id}
+      />
+      {Button_({isDarkMode}, "ADD NEW", openAddModal, '10%')}
+      <View style={{height:'5%'}}/>
+
+      
+      <Portal>
+        <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop:'-35%', height: screenHeight*0.30}]}>
+          {Text_Input_CB({isDarkMode}, "TimeEdit Link", newLink, false, setNewLink)}
+          {Button_({isDarkMode}, "Add", handleAddNewLink, '25%')
+          }
+        </Modal>
+      </Portal>
     </View>
   );
 };
+
 
 const Roles = ({isDarkMode}: {isDarkMode: boolean}) => {
   const screenHeight = Dimensions.get("window").height;
