@@ -27,23 +27,30 @@ const createTicket = ({ onSubmit, ticket, rooms }: Props) => {
   const handleCreateTicket = async () => {
     console.log(JSON.stringify(value));
     try {
-      const response = await fetch("http://localhost:7006/api/ticket", {
+      const response = await fetch("http://chanv2.duckdns.org:5084/api/Ticket", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer YOUR_TOKEN_HERE",
           "Accept": "application/json",
           "Cache-Control": "no-cache"
         },
         body: JSON.stringify(value)
       });
 
-      const responseData = await response.json();
-      onSubmit(responseData);
+      if (response.ok) {
+        setValue({ description: "", name: "", room: "" });
+        if (response.headers.get("Content-Length") !== "0") {
+          const responseData = await response.json();
+          onSubmit(responseData || { name: "", description: "", room: "" });
+        }
+      } else {
+        console.error(`Error: ${response.status} - ${response.statusText}`);
+      }
     } catch (error) {
       console.error(error);
     }
   };
+
 
 
   return (
