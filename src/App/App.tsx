@@ -38,24 +38,9 @@ function App(): JSX.Element {
   
   const screenHeight = Dimensions.get("window").height;
   return (
-    <ScrollView style={{height: screenHeight*5}}>
-      <View style={{height: screenHeight}}>
-        <CreateTicket  onSubmit={ticket => []} rooms={[]}/>
-      </View>
-      <View style={{height: screenHeight}}>
-        <Queue/>
-      </View>
-      <View style={{height: screenHeight}}>
-        <Tabs/>
-      </View>
-      <View style={{height: screenHeight}}>
-        <Login/>
-      </View>
       <View style={{height: screenHeight}}>
         <Helplist ></Helplist>
       </View>
-
-    </ScrollView>
     );
 }
 
