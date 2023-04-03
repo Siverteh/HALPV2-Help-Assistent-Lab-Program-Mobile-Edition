@@ -63,7 +63,7 @@ const Button_ = ({isDarkMode}: {isDarkMode: boolean}, Value:string, onPress:any,
 }
 
 
-const Settings = ({isDarkMode}: {isDarkMode: boolean}) => {
+const Settings = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
@@ -113,23 +113,40 @@ const Settings = ({isDarkMode}: {isDarkMode: boolean}) => {
       </Portal>
     </View>
   );
-};
-const TimeEdit = ({isDarkMode}: {isDarkMode: boolean}) => {
-  const [timeeditData, setTimeeditData] = useState<Array<{courseLink: string }>>([]);
+});
+
+const TimeEdit = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
+  const [timeeditData, setTimeeditData] = useState<Array<{id: string, courseLink: string }>>([]);
   const screenHeight = Dimensions.get("window").height;
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
   const openAddModal = () => setIsAddModalVisible(true);
   const closeAddModal = () => setIsAddModalVisible(false);
   const containerStyle = [isDarkMode ? Styles.dm_background : Styles.lm_background, {height: screenHeight*0.45, width: "70%", borderRadius: 20}];
   const [newLink, setNewLink] = useState('');
+  
+  const fetchData = () => {
+    fetch('http://chanv2.duckdns.org:5084/api/Timeedit')
+      .then(response => response.json())
+      .then(data => {
+        setTimeeditData(data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  
+  //Fetch data every 5 seconds
+  React.useEffect(() => { const interval = setInterval(() => { fetchData(); }, 5000); return () => clearInterval(interval); }, []);
+  
   const handleAddNewLink = () => {
     fetch(`http://chanv2.duckdns.org:5084/api/Timeedit?link=${newLink}`, {
       method: 'POST',
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
-      // Update the timeeditData state variable with the new data
-      setTimeeditData([...timeeditData, {courseLink: newLink }]);
+      // Fetch the updated data after adding a new link
+      fetchData();
       // Close the modal
       closeAddModal();
       // Clear the input field
@@ -141,17 +158,24 @@ const TimeEdit = ({isDarkMode}: {isDarkMode: boolean}) => {
     });
   }
   
-
-  React.useEffect(() => {
-    fetch('http://chanv2.duckdns.org:5084/api/Timeedit')
-      .then(response => response.json())
+  const deleteItem = (index: number) => {
+    const item = timeeditData[index];
+    const newData = [...timeeditData];
+    newData.splice(index, 1);
+    setTimeeditData(newData);
+    fetch(`http://chanv2.duckdns.org:5084/api/Timeedit?id=${item.id}`, {
+      method: 'DELETE'
+    })
+      .then(response => response.text())
       .then(data => {
-        setTimeeditData(data);
+        console.log('Item deleted successfully', data);
       })
       .catch(error => {
-        console.error(error);
+        console.log(item.id)
+        console.error('Error deleting item', error);
       });
-  }, []);
+  };
+  
 
   const renderItem = ({ item, index }: { item: { id: string, courseLink: string }, index: number }) => (
     <View style={[isDarkMode ? 
@@ -167,11 +191,7 @@ const TimeEdit = ({isDarkMode}: {isDarkMode: boolean}) => {
             {item.courseLink}
         </Text>
         <TouchableOpacity 
-          onPress={() => {
-            const newData = [...timeeditData];
-            newData.splice(index, 1);
-            setTimeeditData(newData);
-          }}
+          onPress={() => deleteItem(index)}
           style={[isDarkMode ? 
             {backgroundColor: index % 2 == 0 ? '#004082' : '#0070C0' }:
             {backgroundColor: index % 2 == 0 ? '#94CCFF' : '#FFFFFF'},
@@ -191,7 +211,7 @@ const TimeEdit = ({isDarkMode}: {isDarkMode: boolean}) => {
   return (
     <View style={[isDarkMode ? Styles.dm_background: Styles.lm_background, {justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
       <FlatList 
-        data={timeeditData.map((item, index) => ({...item, id: index.toString()}))}
+        data={timeeditData}
         renderItem={renderItem}
         style={{width: '100%'}}
         keyExtractor={item => item.id}
@@ -209,17 +229,17 @@ const TimeEdit = ({isDarkMode}: {isDarkMode: boolean}) => {
       </Portal>
     </View>
   );
-};
+});
 
 
-const Roles = ({isDarkMode}: {isDarkMode: boolean}) => {
+const Roles = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
   const screenHeight = Dimensions.get("window").height;
   return(
     <View style={[isDarkMode ? Styles.dm_background: Styles.lm_background, {justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
   
     </View>
   );
-};
+});
 
 const renderTabBar = (props:any) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -244,11 +264,18 @@ export default function Tabs() {
     { key: '3', title: 'Roles' },
   ]);
 
-  const renderScene = SceneMap({
-    1: () => <Settings isDarkMode={isDarkMode} />,
-    2: () => <TimeEdit isDarkMode={isDarkMode} />,
-    3: () => <Roles isDarkMode={isDarkMode} />,
-  });
+  const renderScene = ({ route }: { route: { key: string } }) => {
+    switch (route.key) {
+      case '1':
+        return <Settings isDarkMode={isDarkMode} />;
+      case '2':
+        return <TimeEdit isDarkMode={isDarkMode} />;
+      case '3':
+        return <Roles isDarkMode={isDarkMode} />;
+      default:
+        return null;
+    }
+  };
   return (
     <>
       <Text style={[isDarkMode ? 
