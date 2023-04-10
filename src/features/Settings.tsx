@@ -129,6 +129,7 @@ const TimeEdit = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
       .then(response => response.json())
       .then(data => {
         setTimeeditData(data);
+        console.log('data fetched');
       })
       .catch(error => {
         console.error(error);
@@ -136,8 +137,15 @@ const TimeEdit = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
   };
 
   
-  //Fetch data every 5 seconds
-  React.useEffect(() => { const interval = setInterval(() => { fetchData(); }, 5000); return () => clearInterval(interval); }, []);
+  //Fetch data when the page is entered then every minute
+  React.useEffect(() => {
+    fetchData(); // call fetchData() initially when the component is mounted
+    const interval = setInterval(() => {
+      fetchData(); // call fetchData() every 60 seconds
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
   
   const handleAddNewLink = () => {
     fetch(`http://chanv2.duckdns.org:5084/api/Timeedit?link=${newLink}`, {
