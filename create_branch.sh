@@ -2,9 +2,9 @@
 
 # Read the input parameters
 echo "Enter the branch name (e.g. ticket_number/new_feature): "
-read branch_name
+read -r branch_name
 echo "Enter the sprint number (e.g. 1): "
-read sprint_number
+read -r sprint_number
 
 # Create and checkout the new branch
 git pull -p

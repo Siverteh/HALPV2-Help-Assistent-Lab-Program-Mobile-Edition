@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import {
   Provider as PaperProvider,
-  Button
+  Button,
+  Provider
 } from "react-native-paper";
 
 
@@ -19,6 +20,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions
 } from "react-native/Libraries/NewAppScreen";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Styles from "../styles/styles";
 
@@ -38,24 +40,13 @@ function App(): JSX.Element {
   
   const screenHeight = Dimensions.get("window").height;
   return (
-    <ScrollView style={{height: screenHeight*5}}>
-      <View style={{height: screenHeight}}>
-        <CreateTicket  onSubmit={ticket => []} rooms={[]}/>
-      </View>
-      <View style={{height: screenHeight}}>
-        <Queue/>
-      </View>
-      <View style={{height: screenHeight}}>
+    <View style={[{height: screenHeight}]}>
+      <PaperProvider>
         <Tabs/>
+      </PaperProvider>
+      <View style={[{height: screenHeight*0.05, backgroundColor:'red'}]}>
       </View>
-      <View style={{height: screenHeight}}>
-        <Login/>
-      </View>
-      <View style={{height: screenHeight}}>
-        <Helplist ></Helplist>
-      </View>
-
-    </ScrollView>
+    </View>
     );
 }
 
