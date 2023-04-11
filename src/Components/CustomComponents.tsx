@@ -36,7 +36,7 @@ interface CustomCheckboxProps {
   checked: boolean;
   onPress: () => void;
   size?: number;
-  color?: string;
+  iconStyle: object;
 }
 
 export const Customcheckbox: React.FC<CustomCheckboxProps> = (
@@ -44,14 +44,14 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     checked,
     onPress,
     size = 25,
-    color = '#000',
+    iconStyle,
   }) => {
     return (
       <TouchableOpacity onPress={onPress}>
         {checked ? (
-          <MaterialCommunityIcons name="checkbox-blank-outline" color={color} size={size} />
+          <MaterialCommunityIcons name="checkbox-blank-outline" style={iconStyle} size={size} />
         ) : (
-          <MaterialCommunityIcons name="checkbox-blank-outline" color={color} size={size} />
+          <MaterialCommunityIcons name="checkbox-blank-outline" style={iconStyle} size={size} />
         )}
       </TouchableOpacity>
     );
@@ -72,6 +72,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     checked: boolean;
     roomstyle: object;
     subtitleStyle: object;
+    iconColor: object;
   }
 
   export const CustomAccordion: React.FC<CustomAccordionProps> = ({
@@ -87,6 +88,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     checked,
     roomstyle,
     subtitleStyle,
+    iconColor,
   }) => {
     const firstSentence = description.split('. ')[0];
     const subtitle = firstSentence + (firstSentence !== description ? '.' : '');
@@ -117,7 +119,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
               margin: 10,
             }}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-           <Customcheckbox checked={checked} onPress={onCheck} color="#000" />
+           <Customcheckbox checked={checked} onPress={onCheck} iconStyle={iconColor}  />
           </TouchableOpacity>
         </TouchableOpacity>
         {expanded && (

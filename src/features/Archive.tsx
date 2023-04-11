@@ -121,6 +121,7 @@ const updateCourse = async (updatedData: Course) => {
                 descriptionStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text, { paddingHorizontal: 2, paddingVertical: 5 }]}
                 onCheck={() => handleCheck(item.id)}
                 checked={checked.get(item.id) || false}
+                iconColor={[isDarkMode ? Styles.lm_text : Styles.dm_text]}
               />
             ))}
           </List.Section>
