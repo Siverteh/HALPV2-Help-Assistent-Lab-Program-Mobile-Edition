@@ -31,6 +31,7 @@ import Login from "../features/Login";
 import Helplist from "../features/Helplist";
 import Archive from "../features/Archive";
 import Register from "../features/Register"
+import LabQueues from "../features/LabQueues";
 
 
 function App(): JSX.Element {
@@ -40,7 +41,7 @@ function App(): JSX.Element {
   return (
     <View style={[{height: screenHeight}]}>
       <PaperProvider>
-        <Tabs/>
+        <LabQueues/>
       </PaperProvider>
       <View style={[{height: screenHeight*0.05, backgroundColor:'red'}]}>
       </View>
