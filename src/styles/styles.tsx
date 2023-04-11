@@ -84,6 +84,22 @@ const Styles = StyleSheet.create({
     shadowRadius: 4,
     //elevation: 5
   },
+  dm_darkbluelist:{
+    backgroundColor: "#004082",
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  }, 
+  dm_lightbluelist: {
+    backgroundColor: "#0070C0",
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  }
 
 });
 
