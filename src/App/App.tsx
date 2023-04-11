@@ -1,11 +1,15 @@
 import React from "react";
-import type { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import {
-  useColorScheme
+  Dimensions,
+  ScrollView,
+  useColorScheme,
+  View,
 } from "react-native";
 import {
   Provider as PaperProvider,
-  Button
+  Button,
+  Provider
 } from "react-native-paper";
 
 
@@ -16,24 +20,31 @@ import {
   LearnMoreLinks,
   ReloadInstructions
 } from "react-native/Libraries/NewAppScreen";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import Styles from "../styles/styles";
 
 import CreateTicket from "../features/CreateTicket";
 import Queue from "../features/Queue";
 import Tabs from "../features/Settings";
-import Styles from "../styles/styles";
 import Login from "../features/Login";
 import Helplist from "../features/Helplist";
+import Archive from "../features/Archive";
+import Register from "../features/Register"
 
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === "dark";
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Styles.dm_background : Styles.lm_background
-  };
-
+  const screenHeight = Dimensions.get("window").height;
   return (
-    <Helplist></Helplist>
+    <View style={[{height: screenHeight}]}>
+      <PaperProvider>
+        <Tabs/>
+      </PaperProvider>
+      <View style={[{height: screenHeight*0.05, backgroundColor:'red'}]}>
+      </View>
+    </View>
     );
 }
 
