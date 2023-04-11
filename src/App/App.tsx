@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import {
   Provider as PaperProvider,
-  Button
+  Button,
+  Provider
 } from "react-native-paper";
 
 
@@ -19,6 +20,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions
 } from "react-native/Libraries/NewAppScreen";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Styles from "../styles/styles";
 
@@ -28,6 +30,7 @@ import Tabs from "../features/Settings";
 import Login from "../features/Login";
 import Helplist from "../features/Helplist";
 import Archive from "../features/Archive";
+import Register from "../features/Register"
 
 
 function App(): JSX.Element {
@@ -35,12 +38,13 @@ function App(): JSX.Element {
 
   const screenHeight = Dimensions.get("window").height;
   return (
- <ScrollView>
-      <View style={{height: 2*screenHeight}}>
-      { <Helplist isDarkMode={false}></Helplist>  }
-      { <Archive isDarkMode={false}></Archive> }
+    <View style={[{height: screenHeight}]}>
+      <PaperProvider>
+        <Tabs/>
+      </PaperProvider>
+      <View style={[{height: screenHeight*0.05, backgroundColor:'red'}]}>
       </View>
-    </ScrollView>
+    </View>
     );
 }
 
