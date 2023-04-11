@@ -27,6 +27,7 @@ import Queue from "../features/Queue";
 import Tabs from "../features/Settings";
 import Login from "../features/Login";
 import Helplist from "../features/Helplist";
+import Register from "../features/Register"
 
 
 function App(): JSX.Element {
@@ -40,19 +41,7 @@ function App(): JSX.Element {
   return (
     <ScrollView style={{height: screenHeight*5}}>
       <View style={{height: screenHeight}}>
-        <CreateTicket  onSubmit={ticket => []} rooms={[]}/>
-      </View>
-      <View style={{height: screenHeight}}>
-        <Queue/>
-      </View>
-      <View style={{height: screenHeight}}>
-        <Tabs/>
-      </View>
-      <View style={{height: screenHeight}}>
-        <Login/>
-      </View>
-      <View style={{height: screenHeight}}>
-        <Helplist ></Helplist>
+        <Register></Register>
       </View>
 
     </ScrollView>
