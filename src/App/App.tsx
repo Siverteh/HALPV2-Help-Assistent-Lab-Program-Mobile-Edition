@@ -47,8 +47,8 @@ function App(): JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login}/>
-        <Stack.Screen name="Register" component={Register}/>
+        <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
+        <Stack.Screen name="Register" component={Register} options={{title: ""}} />
       </Stack.Navigator>
     </NavigationContainer>
     );
