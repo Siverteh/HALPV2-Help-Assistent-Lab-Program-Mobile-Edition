@@ -30,7 +30,11 @@ import Tabs from "../features/Settings";
 import Login from "../features/Login";
 import Helplist from "../features/Helplist";
 import Register from "../features/Register"
+import { NavigationContainer } from "@react-navigation/native";
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
+
+const Stack = createNativeStackNavigator();
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
@@ -41,13 +45,12 @@ function App(): JSX.Element {
   
   const screenHeight = Dimensions.get("window").height;
   return (
-    <View style={[{height: screenHeight}]}>
-      <PaperProvider>
-        <Tabs/>
-      </PaperProvider>
-      <View style={[{height: screenHeight*0.05, backgroundColor:'red'}]}>
-      </View>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={Login}/>
+        <Stack.Screen name="Register" component={Register}/>
+      </Stack.Navigator>
+    </NavigationContainer>
     );
 }
 

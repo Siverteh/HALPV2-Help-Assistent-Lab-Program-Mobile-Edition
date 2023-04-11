@@ -1,165 +1,176 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React, { useEffect, useState } from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useState } from 'react';
 import {
   Image,
-  StyleSheet,
-  Text,
   View,
 } from 'react-native';
-
-//import CheckBox from '@react-native-community/checkbox';
-
-import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
-
+import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-function Register(): JSX.Element {
-  //const isDarkMode = useColorScheme() === 'dark';
+
+type RegisterScreenNavigationProp = StackNavigationProp<any, 'Register'>;
+
+interface RegisterProps {
+    navigation: RegisterScreenNavigationProp;
+  }
+  
+
+function Register({ navigation }: RegisterProps): JSX.Element {
   const isDarkMode = false;
+  const stylePrefix = isDarkMode ? "dm" : "lm";
 
-  const [checked, setChecked] = React.useState(true);
+  // States for form fields
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [discordtag, setDiscordtag] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true);
 
-  const handleChecked = () => {
-    setChecked(!checked);
-  }
+  const handleRegister = async () => {
+    // Implement your registration logic here
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, username, discordtag, password }),
+    };
 
-  const handleLogin = () => {
+    try {
+      const response = await fetch('https://chanv2.duckdns.org:7006/Auth/register', requestOptions);
+      const data = await response.json();
 
-  }
+      console.log(response.status);
 
-  const handleForgottenPassword = () => {
-
-  }
-
-  const handleDiscord = () => {
-
-  }
-
-  const handleRegister = () => {
-    
-  }
-
+      if (response.ok) {
+        console.log('Registration successful:', data);
+        navigation.navigate("Login");
+      } else {
+        console.log('Registration failed:', data);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
   return (
-    <View style={
-        [isDarkMode ? Styles.dm_background : Styles.lm_background,
-        styles.view]}>
-      <Image
-      style={styles.image}
-      source={require('.././img/halpy3.png')} />
-      <TextInput style={styles.textInput}
+    <View style={[Styles[`${stylePrefix}_background`], { flex: 1, alignItems: "center" }]}>
+      <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
+      <TextInput
+        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", height: 50, margin: "1%", marginBottom: -10 }}
         textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-        activeOutlineColor = {isDarkMode ? '#FFFFFF' : '#201C24'}
-        outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
-        theme={{ colors: { background: isDarkMode ? '#0070C0' : '#FFFFFF',
-                            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24' } }}
+        activeOutlineColor={isDarkMode ? '#FFFFFF' : '#201C24'}
+        outlineColor={isDarkMode ? '#0070C0' : '#201C24'}
+        onChangeText={text => setEmail(text)}
+        theme={{
+          colors: {
+            background: isDarkMode ? '#0070C0' : '#FFFFFF',
+            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24',
+          },
+        }}
         label="Email Address"
         mode="outlined"
       />
-      <View style={{height:"2%"}}></View>
-      <TextInput style={styles.textInput}
-      label="Password"
-      mode="outlined"
-      textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-      activeOutlineColor = {isDarkMode ? '#E0E0E0' : '#201C24'}
-      outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
-      secureTextEntry={secureTextEntry}
-      theme={{ colors: { background: isDarkMode ? '#0070C0' : '#FFFFFF',
-                        onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24' } }}
-      right={
-        <TextInput.Icon
-          icon="eye"
-          iconColor = {isDarkMode ? '#E0E0E0' : '#201C24'}
-          onPress={() => {
-            setSecureTextEntry(!secureTextEntry);
-            return false;
-          }}
-        />
-      }
-    />
-      <View style={{height:"2%"}}></View>
-      <View style={{flexDirection: "row", justifyContent:"flex-start", width:"85%"}}>
-        <Checkbox 
-        color={isDarkMode ? '#FFFFFF' : '#0070C0'}
-        uncheckedColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-        status={checked ? 'checked' : 'unchecked'}
-        onPress={handleChecked}
-        />
-        <Text style={[isDarkMode ? Styles.dm_text : Styles.lm_text, styles.text_sm]}>
-            Remember me
-        </Text>
-      </View>
-      <View style={{height:"2%"}}></View>
-      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "6%", width:"85%"}]}
+      <View style={{height: "2%"}}></View>
+      <TextInput
+        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", height: 50, margin: "2%", marginBottom: -10 }}
+        label="Nickname"
+        mode="outlined"
+        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
+        activeOutlineColor={isDarkMode ? '#E0E0E0' : '#201C24'}
+        outlineColor={isDarkMode ? '#0070C0' : '#201C24'}
+        onChangeText={text => setUsername(text)}
+        theme={{
+          colors: {
+            background: isDarkMode ? '#0070C0' : '#FFFFFF',
+            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24',
+          },
+        }}
+      />
+      <View style={{height: "2%"}}></View>
+      <TextInput
+        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", height: 50, margin: "2%", marginBottom: -10 }}
+        label="Discord Tag"
+        mode="outlined"
+        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
+        activeOutlineColor={isDarkMode ? '#E0E0E0' : '#201C24'}
+        outlineColor={isDarkMode ? '#0070C0' : '#201C24'}
+        onChangeText={text => setDiscordtag(text)}
+        theme={{
+          colors: {
+            background: isDarkMode ? '#0070C0' : '#FFFFFF',
+            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24',
+          },
+        }}
+      />
+      <View style={{height: "2%"}}></View>
+      <TextInput
+        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", height: 50, margin: "2%", marginBottom: -10 }}
+        label="Password"
+        mode="outlined"
+        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
+        activeOutlineColor={isDarkMode ? '#E0E0E0' : '#201C24'}
+        outlineColor={isDarkMode ? '#0070C0' : '#201C24'}
+        onChangeText={text => setPassword(text)}
+        secureTextEntry={secureTextEntry}
+        theme={{
+          colors: {
+            background: isDarkMode ? '#0070C0' : '#FFFFFF',
+            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24',
+          },
+        }}
+        right={
+          <TextInput.Icon
+            icon="eye"
+            iconColor={isDarkMode ? '#E0E0E0' : '#201C24'}
+            onPress={() => {
+              setSecureTextEntry(!secureTextEntry);
+              return false;
+            }}
+          />
+        }
+      />
+      <View style={{height: "2%"}}></View>
+      <TextInput
+        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", height: 50, margin: "2%", marginBottom: 10 }}
+        label="Confirm Password"
+        mode="outlined"
+        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
+        activeOutlineColor={isDarkMode ? '#E0E0E0' : '#201C24'}
+        outlineColor={isDarkMode ? '#0070C0' : '#201C24'}
+        secureTextEntry={secureConfirmTextEntry}
+        theme={{
+          colors: {
+            background: isDarkMode ? '#0070C0' : '#FFFFFF',
+            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24',
+          },
+        }}
+        right={
+          <TextInput.Icon
+            icon="eye"
+            iconColor={isDarkMode ? '#E0E0E0' : '#201C24'}
+            onPress={() => {
+                setSecureConfirmTextEntry(!secureConfirmTextEntry);
+                return false;
+            }}
+          />
+        }
+      />
+      <View style={{ height: "8%" }}></View>
+      <Button
+        style={[
+          isDarkMode ? Styles.dm_button : Styles.lm_button,
+          { height: "8%", width: "40%", alignSelf: "center" },
+        ]}
         mode="contained"
         textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
-        contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
-        onPress={handleLogin}>
-        SIGN IN
-      </Button>
-      <View style={{height:"1%"}}></View>
-      <Button
-        mode="text"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
-        onPress={handleForgottenPassword}>
-          FORGOT YOUR PASSWORD?
-      </Button>
-      <Button
-        mode="text"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
-        onPress={handleRegister}>
-          REGISTER AS A USER
-      </Button>
-      <View style={{height:"4%"}}></View>
-      <Text
-        style={[isDarkMode ? Styles.dm_text : Styles.lm_text, styles.text_lg]}>
-          USE ANOTHER SERVICE TO LOG IN
-      </Text>
-      <View style={{height:"1%"}}></View>
-      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "6%", width:"85%"}]}
-        mode="contained"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
-        onPress={handleDiscord}
-        contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
-        icon="discord">
-        DISCORD
+        contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
+        onPress={handleRegister}
+      >
+        REGISTER
       </Button>
     </View>
+
   );
 }
-
-const styles = StyleSheet.create({
-  view: {
-    alignItems: "center",
-    width: "100%",
-    height: "100%"
-    },
-  textInput: {
-    width: "85%"
-  },
-  text_lg: {
-    fontWeight: "bold",
-    alignItems: "center",
-    textAlign: "center"
-    },
-  text_sm: {
-    alignSelf: "center",
-    textAlignVertical: "center",
-  },
-  image: {
-    alignSelf: "center",
-    width: "100%",
-    height: "25%",
-    aspectRatio:1
-  }
-});
-
 
 export default Register;
