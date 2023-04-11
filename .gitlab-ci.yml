@@ -47,16 +47,19 @@ build-job:
 
     - avdmanager create avd --name Test --package "system-images;android-33;google_apis;x86_64" --device "Nexus 5X" --force
 
+    - pwd
+    - rm -rf android
     - npm i react-native-eject
     - npx react-native eject
     - npm install
 
     - adb kill-server && adb start-server
-    - cd /${ANDROID_SDK_ROOT}
-    - sdkmanager emulator
-    - cd /${ANDROID_SDK_ROOT}/emulator
-    - ./emulator -avd Test -no-audio -no-window
-    - cd
+    #- cd /${ANDROID_SDK_ROOT}
+    #- sdkmanager emulator
+    #- cd /${ANDROID_SDK_ROOT}/emulator
+    #- ./emulator -avd Test -no-audio -no-window
+    #- cd
 
   script:
-    - npx react-native run-android
+    - npx react-native build-android
+
