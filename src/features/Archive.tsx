@@ -33,7 +33,6 @@ const updateCourse = async (updatedData: Course) => {
 };
 
 
-
 // Archive
 const Archive = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const windowHeight = Dimensions.get('window').height;
@@ -91,8 +90,6 @@ const Archive = ({ isDarkMode }: { isDarkMode: boolean }) => {
       clearInterval(interval);
     };
   }, []); 
-
-
 
   return (
     <View style={[isDarkMode ? Styles.lm_background : Styles.dm_background, { height: windowHeight }]}>
