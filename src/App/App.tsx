@@ -1,10 +1,10 @@
 import React from "react";
-import type { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import {
   Dimensions,
   ScrollView,
   useColorScheme,
-  View
+  View,
 } from "react-native";
 import {
   Provider as PaperProvider,
@@ -29,16 +29,13 @@ import Queue from "../features/Queue";
 import Tabs from "../features/Settings";
 import Login from "../features/Login";
 import Helplist from "../features/Helplist";
+import Archive from "../features/Archive";
 import Register from "../features/Register"
 
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === "dark";
-  
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Styles.dm_background : Styles.lm_background
-  };
-  
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
   const screenHeight = Dimensions.get("window").height;
   return (
     <View style={[{height: screenHeight}]}>
