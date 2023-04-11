@@ -12,12 +12,12 @@ const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
 type Props = {
-  rooms: Array<string> // can also be a hook
+  room: Array<string> // can also be a hook
   ticket?: Ticket
   onSubmit: (ticket: Ticket) => {}
 }
 
-const createTicket = ({ onSubmit, ticket, rooms }: Props) => {
+const createTicket = ({ onSubmit, ticket, room }: Props) => {
   const [value, setValue] = React.useState<Ticket>({ description: "", name: "", room: "", ...ticket });
 
   const isValidValue = value && v(value).every(isEmpty);
@@ -50,8 +50,6 @@ const createTicket = ({ onSubmit, ticket, rooms }: Props) => {
       console.error(error);
     }
   };
-
-
 
   return (
     <View style={[Styles[`${stylePrefix}_background`], { flex: 1, alignItems: "center" }]}>

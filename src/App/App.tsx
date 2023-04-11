@@ -31,6 +31,7 @@ import Login from "../features/Login";
 import Helplist from "../features/Helplist";
 import Archive from "../features/Archive";
 import Register from "../features/Register"
+import { Ticket } from "../types/ticket";
 
 
 function App(): JSX.Element {
@@ -38,13 +39,15 @@ function App(): JSX.Element {
 
   const screenHeight = Dimensions.get("window").height;
   return (
-    <View style={[{height: screenHeight}]}>
-      <PaperProvider>
-        <Tabs/>
-      </PaperProvider>
-      <View style={[{height: screenHeight*0.05, backgroundColor:'red'}]}>
-      </View>
+    <ScrollView>
+    <View style={[{height: 3* screenHeight}]}>
+    <CreateTicket room={[]} onSubmit={function (ticket: Ticket): {} {
+        throw new Error("Function not implemented.");
+      } }></CreateTicket>
+    <Helplist isDarkMode={isDarkMode}></Helplist>
+    <Archive  isDarkMode={isDarkMode}></Archive>
     </View>
+    </ScrollView>
     );
 }
 
