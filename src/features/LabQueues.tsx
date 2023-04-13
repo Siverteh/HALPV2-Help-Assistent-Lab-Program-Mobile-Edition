@@ -7,7 +7,6 @@ import Styles from '../styles/styles';
 import { useState } from "react";
 
 const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
 
 
 
@@ -65,6 +64,7 @@ const LabQueues = () => {
                     renderItem={renderItem}
                     style={{height:"100%"}}
                     keyExtractor={(item) => item}
+                    showsVerticalScrollIndicator={false}
                 />
                 <View style={{height:"5%"}}/>
             </View>
