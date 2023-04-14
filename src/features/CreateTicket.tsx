@@ -1,6 +1,5 @@
 import { Ticket } from "../types/ticket";
 import { TextInput, Button, Text } from "react-native-paper";
-import { useState } from "react";
 import isEmpty from "lodash/isEmpty";
 import v from "lodash/values";
 import every from "lodash/every";
