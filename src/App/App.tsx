@@ -41,7 +41,7 @@ function App(): JSX.Element {
   return (
     <View style={[{height: screenHeight}]}>
       <PaperProvider>
-        <LabQueues/>
+        <Tabs/>
       </PaperProvider>
       <View style={[{height: screenHeight*0.05, backgroundColor:'red'}]}>
       </View>
