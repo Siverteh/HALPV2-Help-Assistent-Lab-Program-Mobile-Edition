@@ -1,38 +1,44 @@
-import React from "react";
-import {
-  Dimensions,
-  ScrollView,
-  useColorScheme,
-  View
-} from "react-native";
-import Styles from "../styles/styles";
-
-import CreateTicket from "../features/CreateTicket";
-import Queue from "../features/Queue";
-import Tabs from "../features/Settings";
-import Login from "../features/Login";
-import Helplist from "../features/Helplist";
-import NavigationBar from "../Components/NavigationBar";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useMemo, useState } from "react";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  MD3DarkTheme as PaperDarkTheme,
+  DefaultTheme as PaperLightTheme,
+  Provider as PaperProvider,
+} from 'react-native-paper';
 import { routes } from "./routing";
+import NavigationBar from "../Components/NavigationBar/NavigationBar";
 
 const Stack = createNativeStackNavigator();
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === "dark";
-  
+  const [theme, setTheme] = useState(DefaultTheme);
+
+  const paperTheme = useMemo(() => {
+    const t = theme.dark ? PaperDarkTheme : PaperLightTheme;
+
+    return {
+      ...t,
+      colors: {
+        ...t.colors,
+        ...theme.colors,
+        surface: theme.colors.card,
+        accent: theme.dark ? 'rgb(255, 55, 95)' : 'rgb(255, 45, 85)',
+      },
+    };
+  }, [theme.colors, theme.dark]);
   
   return (
-    <>
-    hei </>
-    // <NavigationContainer>
-    //   <Stack.Navigator>
-    //     {routes.map(({ name, component}, i) => (
-    //       <Stack.Screen key={i} name={name} component={component} />
-    //     ))}
-    //   </Stack.Navigator>
-    // </NavigationContainer>
+  <PaperProvider theme={paperTheme}>
+    <NavigationContainer>
+      <NavigationBar/>
+      {/* <Stack.Navigator>
+        {routes.map(({ name, component}, i) => (
+          <Stack.Screen key={i} name={name} component={component} />
+        ))}
+      </Stack.Navigator> */}
+    </NavigationContainer>
+    </PaperProvider>
     );
 }
 
