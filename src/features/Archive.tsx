@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { View, Image, ScrollView, Text } from 'react-native';
 import { List } from "react-native-paper";
@@ -15,8 +14,6 @@ type Course = {
   isChecked: boolean;
   room: string;
 }
-
-
 
 // Archive
 const Archive = ({ isDarkMode }: { isDarkMode: boolean }) => {

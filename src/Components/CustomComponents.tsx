@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, ViewStyle  } from 'react-native';
 import Styles from "../styles/styles";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { isDarkMode, setIsDarkMode } from '../App/App';
 
 // Header component
 interface Props {
@@ -15,7 +16,6 @@ export const Header = ({ title, textStyle }: Props) => {
     </View>
   );
 };
-
 
 // Descripton component
 interface DescriptionItemProps {
@@ -90,6 +90,10 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     subtitleStyle,
     iconColor,
   }) => {
+    
+
+
+
     const firstSentence = description.split('. ')[0];
     const subtitle = firstSentence + (firstSentence !== description ? '.' : '');
     
