@@ -1,4 +1,7 @@
 import NavigationBar from "../Components/NavigationBar/NavigationBar"
+import Archive from "../features/Archive"
+import Helplist from "../features/Helplist"
+import Settings from "../features/Settings"
 
 type RoutingType = {
     name: string
@@ -7,11 +10,11 @@ type RoutingType = {
 
 export const routes: Array<RoutingType> = [{
     name: 'HelpList',
-    component: NavigationBar
+    component: Helplist
 }, {
     name: 'Archive',
-    component: NavigationBar
+    component: Archive
 }, {
     name: 'Settings',
-    component: NavigationBar
+    component: Settings
 }]

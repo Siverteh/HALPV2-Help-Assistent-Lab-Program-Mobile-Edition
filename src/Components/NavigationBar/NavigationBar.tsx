@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Text, View } from 'react-native';
 import CreateTicke from '../../features/CreateTicket'
+import { routes } from '../../App/routing';
 
 // denne fjernes og byttes ut med de andre sidene
 function DetailsScreen() {
@@ -21,7 +22,9 @@ const NavigationBar = () => {
   return (
       <Tab.Navigator
         initialRouteName={"Helplist"}
-        screenOptions={({ route }) => ({
+        screenOptions={
+          ({ route }) => ({
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
@@ -43,10 +46,13 @@ const NavigationBar = () => {
           activeBackgroundColor: '#E0EEF7'
         })}
         >
-
-        <Tab.Screen name={"Helplist"} component={DetailsScreen} />
-        <Tab.Screen name={"Archive"} component={DetailsScreen} />
-        <Tab.Screen name={"Settings"} component={DetailsScreen} />
+          {routes.map(({ name, component}, i) => (
+             <Tab.Screen
+              key={i}
+              name={name}
+              component={component}
+              />
+          ))}
 
       </Tab.Navigator>
   );

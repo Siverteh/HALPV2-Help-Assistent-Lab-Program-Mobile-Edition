@@ -1,12 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {
-  Dimensions,
-  ScrollView,
-  useColorScheme,
-  View,
-} from "react-native";
+
 import {
   MD3DarkTheme as PaperDarkTheme,
   DefaultTheme as PaperLightTheme,
@@ -14,7 +8,26 @@ import {
 } from 'react-native-paper';
 import NavigationBar from "../Components/NavigationBar/NavigationBar";
 
-const Stack = createNativeStackNavigator();
+import {
+  Colors,
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions
+} from "react-native/Libraries/NewAppScreen";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import Styles from "../styles/styles";
+
+import CreateTicket from "../features/CreateTicket";
+import Queue from "../features/Queue";
+import Tabs from "../features/Settings";
+import Login from "../features/Login";
+import Helplist from "../features/Helplist";
+import Archive from "../features/Archive";
+import Register from "../features/Register"
+import LabQueues from "../features/LabQueues";
+import { Text, View } from 'react-native';
 
 function App(): JSX.Element {
   const [theme, setTheme] = useState(DefaultTheme);
@@ -34,16 +47,14 @@ function App(): JSX.Element {
   }, [theme.colors, theme.dark]);
   
   return (
-  <PaperProvider theme={paperTheme}>
-    <NavigationContainer>
-      <NavigationBar/>
-      {/* <Stack.Navigator>
-        {routes.map(({ name, component}, i) => (
-          <Stack.Screen key={i} name={name} component={component} />
-        ))}
-      </Stack.Navigator> */}
-    </NavigationContainer>
-    </PaperProvider>
+    // <View>
+      <PaperProvider theme={paperTheme}>
+        <NavigationContainer>
+          <NavigationBar/>
+        </NavigationContainer>
+        </PaperProvider>
+
+    // </View>
     );
 }
 
