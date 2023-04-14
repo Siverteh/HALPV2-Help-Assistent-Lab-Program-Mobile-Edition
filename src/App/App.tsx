@@ -2,11 +2,16 @@ import React, { useMemo, useState } from "react";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
+  Dimensions,
+  ScrollView,
+  useColorScheme,
+  View,
+} from "react-native";
+import {
   MD3DarkTheme as PaperDarkTheme,
   DefaultTheme as PaperLightTheme,
   Provider as PaperProvider,
 } from 'react-native-paper';
-import { routes } from "./routing";
 import NavigationBar from "../Components/NavigationBar/NavigationBar";
 
 const Stack = createNativeStackNavigator();
