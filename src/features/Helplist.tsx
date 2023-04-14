@@ -28,7 +28,7 @@ const updateCourse = async (updatedData: Course) => {
       body: JSON.stringify([updatedData])
     });
     const json = await response.text();
-    
+
   } catch (error) {
     console.error(error);
   }
@@ -49,7 +49,7 @@ const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const handleCheck = async (id: string) => {
     const currentChecked = checked.get(id) || false;
     setChecked(new Map(checked.set(id, !currentChecked)));
-  
+
     const updatedData = data.map(item => {
       if (item.id === id) {
         return {
@@ -59,16 +59,16 @@ const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
       }
       return item;
     });
-  
+
     setData(updatedData);
-  
+
     const updatedItem = updatedData.find(item => item.id === id);
-  
+
     if (updatedItem) {
-   
+
       const filteredData = updatedData.filter(item => item.id !== id);
       setData(filteredData);
-  
+
       await updateCourse(updatedItem);
     }
   };
@@ -90,7 +90,7 @@ const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
     }
   };
   useEffect(() => {
-    
+
     const interval = setInterval(() => {
       getCourse();
     }, 500);
