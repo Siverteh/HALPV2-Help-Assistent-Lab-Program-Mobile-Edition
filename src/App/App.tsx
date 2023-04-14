@@ -19,7 +19,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Styles from "../styles/styles";
 
-import CreateTicket from "../features/CreateTicket";
+import CreateTicket from "../features/Ticket";
 import Queue from "../features/Queue";
 import Tabs from "../features/Settings";
 import Login from "../features/Login";
@@ -47,14 +47,11 @@ function App(): JSX.Element {
   }, [theme.colors, theme.dark]);
   
   return (
-    // <View>
       <PaperProvider theme={paperTheme}>
         <NavigationContainer>
-          <NavigationBar/>
+          <NavigationBar isStudass={true}/>
         </NavigationContainer>
         </PaperProvider>
-
-    // </View>
     );
 }
 
