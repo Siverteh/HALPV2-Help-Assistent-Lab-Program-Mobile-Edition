@@ -7,7 +7,6 @@ import React from 'react';
 import { Dimensions } from 'react-native';
 import { DarkModeContext } from '../Components/GlobalHook';
 
-
 type Course = {
   id: string;
   nickname: string;
@@ -19,6 +18,10 @@ type Course = {
 // Archive
 const Archive = () => {
   const windowHeight = Dimensions.get('window').height;
+  
+  const { background, text, listItem_dark, listItem_light  } = useContext(DarkModeContext)
+
+
 
   const [checked, setChecked] = useState(new Map());
   const [expanded, setExpanded] = useState(new Map());
@@ -92,20 +95,24 @@ const updateCourse = async (updatedData: Course) => {
   }
 };
 
-    const { background, text, listItem_dark, listItem_light  } = useContext(DarkModeContext)
-
   return (
     <View style={{backgroundColor: background,  height: windowHeight }}>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}></View>
       <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
-      <Header title='Archive' />
+      <Header titleStyle= {[Styles.Header, {color: text} ]}  title='Archive' />
       <ScrollView style={{ flex: 1 }}>
         {data && data.length > 0 ? (
-          <List.Section style={{backgroundColor: background}}>
+          <List.Section >
             {data.map((item, index) => (
               <CustomAccordion
                 key={item.id}
                 title={item.nickname}
+                titleStyle= {{
+                  color: text, 
+                  paddingHorizontal: 16,
+                  paddingVertical: 2,
+                  fontSize: 14,
+                  }}
                 room={item.room}
                 style={index % 2 === 0 ? listItem_dark  : listItem_light}
                 expanded={expanded.get(item.id) || false}
@@ -113,7 +120,7 @@ const updateCourse = async (updatedData: Course) => {
                 description={item.description}
                 onCheck={() => handleCheck(item.id)}
                 checked={checked.get(item.id) || false}
-                iconColor={{color:text}}
+                textStyle={{color:text}}
               />
             ))}
           </List.Section>

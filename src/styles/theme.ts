@@ -2,7 +2,9 @@ import { CustomTheme } from "../types/theme";
 
 export const theme: CustomTheme = {
     light: {
-        background: "E0EEF7",
+        text: "#000000",
+        outline: "#B0B4BC",
+        background: "#E0EEF7",
         boxes: {
             backgroundColor: "#FFFFFF",
         },
@@ -12,15 +14,13 @@ export const theme: CustomTheme = {
         textButton: {
             color: "#686464",
         },
-
         listItem_light: {
             backgroundColor: "#FFFFFF",
         },
         listItem_dark: {
             backgroundColor: "#94CCFF",
         },
-        text: "#000000",
-        outline: "#B0B4BC",
+      
     },
 
     dark: {

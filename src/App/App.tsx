@@ -32,22 +32,25 @@ import Helplist from "../features/Helplist";
 import Archive from "../features/Archive";
 import Register from "../features/Register"
 import { Ticket } from "../types/ticket";
-import { DarkModeContext } from "../Components/GlobalHook";
 import { theme } from "../styles/theme";
 import { Theme } from "../types/theme";
+import { DarkModeContext } from "../Components/GlobalHook";
 
 function App(): JSX.Element {
-
   const screenHeight = Dimensions.get("window").height;
+  const [currentTheme, setCurrentTheme] = useState(theme.dark);
 
-  const DarkModeContext = createContext<Theme>(theme.light);
+  const toggleDarkMode = () => {
+    setCurrentTheme(currentTheme === theme.light ? theme.dark : theme.light);
+  };
 
   return (
     <ScrollView>
-<DarkModeContext.Provider value={theme.light}>
+<DarkModeContext.Provider value={currentTheme}>
     <Helplist></Helplist>
     <Archive></Archive>
 </DarkModeContext.Provider>
+<Button onPress={toggleDarkMode}>Toggle dark mode</Button>
     </ScrollView>
     );
 }

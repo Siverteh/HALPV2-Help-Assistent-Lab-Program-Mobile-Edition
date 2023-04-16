@@ -28,6 +28,7 @@ const Helplist = () => {
   const [expanded, setExpanded] = useState(new Map());
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<Course[]>([]);
+  const { background, text, listItem_dark, listItem_light  } = useContext(DarkModeContext)
 
 
   const handleCheck = async (id: string) => {
@@ -98,30 +99,32 @@ const Helplist = () => {
     }
   };
   
-  const { background, text, listItem_dark, listItem_light  } = useContext(DarkModeContext)
-
-
   return (
     <View style={{backgroundColor: background,  height: windowHeight }}>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}></View>
       <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
-      <Header title='Helplist' />
+      <Header titleStyle= {[Styles.Header, {color: text} ]}  title='Helplist' />
       <ScrollView style={{ flex: 1 }}>
         {data && data.length > 0 ? (
-          <List.Section style={{backgroundColor: background}}>
+          <List.Section>
             {data.map((item, index) => (
               <CustomAccordion
                 key={item.id}
                 title={item.nickname}
                 room={item.room}
                 style={index % 2 === 0 ? listItem_dark  : listItem_light}
+                titleStyle= {{
+                  color: text, 
+                  paddingHorizontal: 16,
+                  paddingVertical: 2,
+                  fontSize: 14,
+                  }}
                 expanded={expanded.get(item.id) || false}
                 onPress={() => handleExpand(item.id)}
                 description={item.description}
                 onCheck={() => handleCheck(item.id)}
                 checked={checked.get(item.id) || false}
-                iconColor={{color:text}}
-              />
+                textStyle={{color: text}}/>
             ))}
           </List.Section>
         ) : (
