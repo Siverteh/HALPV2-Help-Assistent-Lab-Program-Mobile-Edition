@@ -1,21 +1,26 @@
 import { View, Text, TouchableOpacity, ViewStyle  } from 'react-native';
 import Styles from "../styles/styles";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { isDarkMode, setIsDarkMode } from '../App/App';
+import { DarkModeContext } from './GlobalHook';
+import { useContext } from 'react'
+import { theme } from '../styles/theme';
+
+
+const { text, background } = useContext(DarkModeContext)
+
 
 // Header component
 interface Props {
   title: string;
-  textStyle: object;
 }
-
-export const Header = ({ title, textStyle }: Props) => {
+export const Header = ({ title }: Props) => {
   return (
     <View>
-      <Text style={[textStyle, Styles.Header]}>{title}</Text>
+      <Text style={[Styles.Header, {color:text}]}>{title}</Text>
     </View>
   );
 };
+
 
 // Descripton component
 interface DescriptionItemProps {
@@ -63,37 +68,31 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     expanded: boolean;
     onPress: () => void;
     title: string;
-    titleStyle: object;
-    style: object;
     description: string;
-    descriptionStyle: object;
     room: string;
     onCheck: () => void;
     checked: boolean;
-    roomstyle: object;
-    subtitleStyle: object;
     iconColor: object;
+    style: object;
   }
 
   export const CustomAccordion: React.FC<CustomAccordionProps> = ({
     expanded,
     onPress,
     title,
-    style,
     room,
     description,
-    titleStyle,
-    descriptionStyle,
     onCheck,
     checked,
-    roomstyle,
-    subtitleStyle,
     iconColor,
+    style
   }) => {
-    
-
-
-
+    const titleStyle = {
+      color: text,
+      paddingHorizontal: 16,
+      paddingVertical: 2,
+      fontSize: 14,
+    };
     const firstSentence = description.split('. ')[0];
     const subtitle = firstSentence + (firstSentence !== description ? '.' : '');
     
@@ -107,13 +106,13 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
             justifyContent: 'space-between',
           }}>
           <View style={{ flex: 1 }}>
-            <Text style={titleStyle} >{title}</Text>
-            <Text style={[subtitleStyle,{fontSize:14}]} numberOfLines={1}>
+            <Text style={titleStyle}>{title}</Text>
+            <Text style={{color: text}} numberOfLines={1}>
               {subtitle}
             </Text>
           </View>
           <View>
-            <Text style={roomstyle}>Room:{room}</Text>
+            <Text style={{color: text}}>Room:{room}</Text>
             </View>         
           <TouchableOpacity
             onPress={onCheck}
@@ -128,7 +127,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
         </TouchableOpacity>
         {expanded && (
           <View >
-            <Text style={descriptionStyle}>{description}</Text>
+            <Text style={{color: text}}>{description}</Text>
           </View>
         )}
       </View>

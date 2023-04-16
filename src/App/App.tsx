@@ -1,4 +1,4 @@
-import React from "react";
+import React, {createContext} from "react";
 import { PropsWithChildren, useState } from "react";
 import {
   Dimensions,
@@ -32,21 +32,22 @@ import Helplist from "../features/Helplist";
 import Archive from "../features/Archive";
 import Register from "../features/Register"
 import { Ticket } from "../types/ticket";
-
-export const [isDarkMode, setIsDarkMode] = useState(true);
+import { DarkModeContext } from "../Components/GlobalHook";
+import { theme } from "../styles/theme";
+import { Theme } from "../types/theme";
 
 function App(): JSX.Element {
 
   const screenHeight = Dimensions.get("window").height;
+
+  const DarkModeContext = createContext<Theme>(theme.light);
+
   return (
     <ScrollView>
-    <View style={[{height: 3* screenHeight}]}>
-    <CreateTicket room={[]} onSubmit={function (ticket: Ticket): {} {
-        throw new Error("Function not implemented.");
-      } }></CreateTicket>
-    <Helplist isDarkMode={isDarkMode}></Helplist>
-    <Archive  isDarkMode={isDarkMode}></Archive>
-    </View>
+<DarkModeContext.Provider value={theme.light}>
+    <Helplist></Helplist>
+    <Archive></Archive>
+</DarkModeContext.Provider>
     </ScrollView>
     );
 }

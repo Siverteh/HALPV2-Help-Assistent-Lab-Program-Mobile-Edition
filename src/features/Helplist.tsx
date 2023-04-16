@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { View, Image, ScrollView, Text } from 'react-native';
 import { List } from "react-native-paper";
 import Styles from "../styles/styles";
@@ -8,7 +8,7 @@ import React from 'react';
 import { Dimensions } from 'react-native';
 import { update } from 'lodash';
 import { alignProperty } from '@mui/material/styles/cssUtils';
-
+import { DarkModeContext } from '../Components/GlobalHook';
 
 type Course = {
   id: string;
@@ -21,7 +21,7 @@ type Course = {
 
 
 // Helplist
-const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
+const Helplist = () => {
   const windowHeight = Dimensions.get('window').height;
 
   const [checked, setChecked] = useState(new Map());
@@ -97,41 +97,35 @@ const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
       console.error(error);
     }
   };
+  
+  const { background, text, listItem_dark, listItem_light  } = useContext(DarkModeContext)
 
 
   return (
-    <View style={[isDarkMode ? Styles.lm_background : Styles.dm_background, { height: windowHeight }]}>
+    <View style={{backgroundColor: background,  height: windowHeight }}>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}></View>
       <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
-
-      <Header textStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text]} title='Helplist' />
+      <Header title='Helplist' />
       <ScrollView style={{ flex: 1 }}>
         {data && data.length > 0 ? (
-          <List.Section style={isDarkMode ? Styles.lm_background : Styles.dm_background}>
+          <List.Section style={{backgroundColor: background}}>
             {data.map((item, index) => (
               <CustomAccordion
                 key={item.id}
                 title={item.nickname}
                 room={item.room}
-                roomstyle={[isDarkMode ? Styles.lm_text : Styles.dm_text]}
-                subtitleStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text]}
-                titleStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text,
-                { paddingHorizontal: 16, paddingVertical: 2, fontSize: 14 },
-                ]}
-                style={[isDarkMode ?
-                  [index % 2 === 0 ? Styles.lm_whitelist : Styles.lm_bluelist] : [index % 2 === 0 ? Styles.dm_lightbluelist : Styles.dm_darkbluelist]]}
+                style={index % 2 === 0 ? listItem_dark  : listItem_light}
                 expanded={expanded.get(item.id) || false}
                 onPress={() => handleExpand(item.id)}
                 description={item.description}
-                descriptionStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text, { paddingHorizontal: 2, paddingVertical: 5 }]}
                 onCheck={() => handleCheck(item.id)}
                 checked={checked.get(item.id) || false}
-                iconColor={[isDarkMode ? Styles.lm_text : Styles.dm_text]}
+                iconColor={{color:text}}
               />
             ))}
           </List.Section>
         ) : (
-          <Text style={{textAlign:'center'}} >No requests yet</Text>
+          <Text style={{ textAlign: 'center' }} >No requests yet</Text>
         )}
       </ScrollView>
     </View>
