@@ -31,7 +31,7 @@ import Login from "../features/Login";
 import Helplist from "../features/Helplist";
 import Archive from "../features/Archive";
 import Register from "../features/Register";
-import { Ticket } from "../types/ticket";
+import Ticket from "../features/Ticket";
 
 export const [isDarkMode, setIsDarkMode] = useState(true);
 
@@ -42,12 +42,11 @@ function App(): JSX.Element {
     <PaperProvider>
       <ScrollView>
         <View style={[{ height: screenHeight }]}>
-          <CreateTicket onSubmit={ticket => {
-            return ticket;
-          }} rooms={[]}></CreateTicket>
+          <Ticket onSubmit={() => {}}></Ticket>
+
         </View>
         <View style={[{ height: screenHeight }]}>
-          <Helplist isDarkMode={true}></Helplist>
+          <Helplist></Helplist>
         </View>
       </ScrollView>
     </PaperProvider>
