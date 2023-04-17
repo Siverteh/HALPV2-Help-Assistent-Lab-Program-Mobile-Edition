@@ -21,7 +21,7 @@ type Props = {
 }
 
 
-const createTicket = ({ onSubmit, ticket, rooms }: Props) => {
+const CreateTicket = ({ onSubmit, ticket, rooms }: Props) => {
   const [value, setValue] = React.useState<Ticket>({ description: "", name: "", room: "", ...ticket });
 
   const isValidValue = value && v(value).every(isEmpty);
@@ -42,7 +42,6 @@ const createTicket = ({ onSubmit, ticket, rooms }: Props) => {
       .catch(error => {
         console.error(error);
       });
-
 };
 
   React.useEffect(() => {
@@ -106,11 +105,19 @@ return (
         visible={showDropDown}
         showDropDown={() => setShowDropDown(true)}
         onDismiss={() => setShowDropDown(false)}
-        value={colors}
-        setValue={setColors}
+        value={value.room}
+        setValue={(selectedRoom) => setValue((prevValue) => ({ ...prevValue, room: selectedRoom }))}
         list={dropdownItems}
         activeColor={"grey"}
+        dropDownContainerHeight={300}
+        theme={{colors: { background: isDarkMode ? "#0070C0" : "#FFFFFF", text: isDarkMode ? 'white' : 'black', outline: 'transparent', onPrimary: 'red'}}}
+        dropDownItemStyle={{backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF"}}
+        dropDownItemTextStyle={{color: isDarkMode ? 'white' : 'black'}}
+        dropDownStyle={{backgroundColor: 'transparent'}}
+        dropDownItemSelectedStyle={{backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF"}}
+        dropDownItemSelectedTextStyle={{color: isDarkMode ? 'white' : 'black'}}
       />
+
     </View>
     <TextInput
       style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
@@ -135,4 +142,4 @@ return (
 }
 ;
 
-export default createTicket;
+export default CreateTicket;

@@ -80,7 +80,7 @@ const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
 
   const getCourse = async () => {
     try {
-      const response = await fetch('https://chanv2.duckdns.org:7006/api/Helplist?course=ikt201-g');
+      const response = await fetch('https://chanv2.duckdns.org:7006/api/Helplist?course=ikt205-g');
       const json = await response.json();
       setData(json);
     } catch (error) {
