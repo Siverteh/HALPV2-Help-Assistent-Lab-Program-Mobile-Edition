@@ -34,6 +34,29 @@ const Styles = StyleSheet.create({
     shadowRadius: 4,
     //elevation: 5
   },
+  view: {
+    alignItems: "center",
+    width: "100%",
+    height: "90%"
+    },
+  textInput: {
+    width: "85%"
+  },
+  text_lg: {
+    fontWeight: "bold",
+    alignItems: "center",
+    textAlign: "center"
+    },
+  text_sm: {
+    alignSelf: "center",
+    textAlignVertical: "center",
+  },
+  image: {
+    alignSelf: "center",
+    width: "100%",
+    height: "25%",
+    aspectRatio:1
+  }
 });
 
 export default Styles;

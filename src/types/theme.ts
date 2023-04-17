@@ -5,9 +5,7 @@ type  buttons = {
     backgroundColor: string,
     queueButton: string
 }
-type textButton = {
-    color: string,
-}
+
 type listItem_dark = {
     backgroundColor: string,
 }
@@ -22,11 +20,11 @@ type outline = {
 
 export type Theme = {
     text: string
+    text2: string
     background: string
     outline: outline
     boxes: boxes
     buttons:  buttons
-    textButton: textButton
     listItem_dark: listItem_dark
     listItem_light: listItem_light
     iconColor: string

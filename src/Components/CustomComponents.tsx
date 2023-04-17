@@ -1,5 +1,9 @@
 import { View, Text, TouchableOpacity, ViewStyle  } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { ComponentProps, forwardRef } from 'react';
+import { StyleSheet } from 'react-native';
+import DropDown from 'react-native-paper-dropdown';
+import { Provider, DefaultTheme } from 'react-native-paper';
 
 
 
@@ -89,7 +93,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
    
     const firstSentence = description.split('. ')[0];
     const subtitle = firstSentence + (firstSentence !== description ? '.' : '');
-    
+
     return (
       <View style={style}>
         <TouchableOpacity
@@ -128,5 +132,23 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     );
   };
 
-  export default {Header, CustomAccordion, Customcheckbox}
+  //custom dropdown component
+type DropDownProps = ComponentProps<typeof DropDown>;
+const customTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'transparent',
+  },
+};
+
+const CustomDropDown: React.FC<DropDownProps> = (props) => {
+  return (
+    <Provider theme={customTheme}>
+      <DropDown {...props} />
+    </Provider>
+  );
+};
+
+  export default {Header, CustomAccordion, Customcheckbox, CustomDropDown}
 

@@ -1,165 +1,182 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React, { useEffect, useState, useContext } from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useState, useContext } from 'react';
 import { DarkModeContext } from '../Components/GlobalHook';
 
 import {
   Image,
-  StyleSheet,
-  Text,
   View,
 } from 'react-native';
-
-//import CheckBox from '@react-native-community/checkbox';
-
-import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
-
+import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-function Register(): JSX.Element {
-  //const isDarkMode = useColorScheme() === 'dark';
-  const { background, text, buttons, boxes, outline, iconColor, checkUncheck  } = useContext(DarkModeContext)
 
-  const [checked, setChecked] = React.useState(true);
+type RegisterScreenNavigationProp = StackNavigationProp<any, 'Register'>;
+
+interface RegisterProps {
+  navigation: RegisterScreenNavigationProp;
+}
+
+
+function Register({ navigation }: RegisterProps): JSX.Element {
+  const { background, text, buttons, boxes, outline, iconColor, checkUncheck } = useContext(DarkModeContext)
+
+
+  // States for form fields
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [discordtag, setDiscordtag] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true);
 
-  const handleChecked = () => {
-    setChecked(!checked);
-  }
+  const handleRegister = async () => {
+    // Implement your registration logic here
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, username, discordtag, password }),
+    };
 
-  const handleLogin = () => {
+    try {
+      const response = await fetch('https://chanv2.duckdns.org:7006/Auth/register', requestOptions);
+      const data = await response.json();
 
-  }
+      console.log(response.status);
 
-  const handleForgottenPassword = () => {
-
-  }
-
-  const handleDiscord = () => {
-
-  }
-
-  const handleRegister = () => {
-    
-  }
+      if (response.ok) {
+        console.log('Registration successful:', data);
+        navigation.navigate("Login");
+      } else {
+        console.log('Registration failed:', data);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
-    <View style={[styles.view, {backgroundColor: background}]}>
+    <View style={[Styles.view, { backgroundColor: background }]}>
       <Image
-      style={styles.image}
-      source={require('.././img/halpy3.png')} />
-      <TextInput style={styles.textInput}
+        style={Styles.image}
+        source={require('.././img/halpy3.png')} />
+      <TextInput style={Styles.textInput}
         textColor={text}
-        activeOutlineColor = {outline.activeOutlineColor}
-        outlineColor = {outline.outlineColor}
-        theme={{ colors: { background: background,
-                            onSurfaceVariant: outline.outlineColor}}}
+        activeOutlineColor={outline.activeOutlineColor}
+        outlineColor={outline.outlineColor}
+        theme={{
+          colors: {
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
+        }}
         label="Email Address"
         mode="outlined"
       />
-      <View style={{height:"2%"}}></View>
-      <TextInput style={styles.textInput}
-      label="Password"
-      mode="outlined"
-      textColor={text}
-      activeOutlineColor = {outline.activeOutlineColor}
-      outlineColor = {outline.outlineColor}
-      secureTextEntry={secureTextEntry}
-      theme={{ colors: { background: background,
-                        onSurfaceVariant: outline.outlineColor} }}
-      right={
-        <TextInput.Icon
-          icon="eye"
-          iconColor = {iconColor}
-          onPress={() => {
-            setSecureTextEntry(!secureTextEntry);
-            return false;
-          }}
-        />
-      }
-    />
-      <View style={{height:"2%"}}></View>
-      <View style={{flexDirection: "row", justifyContent:"flex-start", width:"85%"}}>
-        <Checkbox 
-        color={checkUncheck}
-        uncheckedColor={outline.outlineColor}
-        status={checked ? 'checked' : 'unchecked'}
-        onPress={handleChecked}
-        />
-       <Text style={[styles.text_sm ,{color: text}]}>
-            Remember me
-        </Text>
-      </View>
-      <View style={{height:"2%"}}></View>
-      <Button style={[Styles.buttonStyle,{backgroundColor: background, height: "6%", width:"85%"}]}
+      <View style={{ height: "2%" }}></View>
+      <TextInput
+        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+        label="Nickname"
+        mode="outlined"
+        textColor={text}
+        activeOutlineColor={outline.activeOutlineColor}
+        outlineColor={outline.outlineColor}
+
+        onChangeText={text => setUsername(text)}
+        theme={{
+          colors: {
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
+        }}
+      />
+      <View style={{ height: "2%" }}></View>
+      <TextInput
+       style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+        label="Discord Tag"
+        mode="outlined"
+        textColor={text}
+        activeOutlineColor={outline.activeOutlineColor}
+        outlineColor={outline.outlineColor}
+        onChangeText={text => setDiscordtag(text)}
+        theme={{
+          colors: {
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
+        }}
+      />
+      <View style={{ height: "2%" }}></View>
+      <TextInput
+       style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+        label="Password"
+        mode="outlined"
+        textColor={text}
+        activeOutlineColor={outline.activeOutlineColor}
+        outlineColor={outline.outlineColor}
+
+        onChangeText={text => setPassword(text)}
+        secureTextEntry={secureTextEntry}
+        theme={{
+          colors: {
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
+        }}
+        right={
+          <TextInput.Icon
+            icon="eye"
+            iconColor={iconColor}
+            onPress={() => {
+              setSecureTextEntry(!secureTextEntry);
+              return false;
+            }}
+          />
+        }
+      />
+      <View style={{ height: "2%" }}></View>
+      <TextInput
+        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+        label="Confirm Password"
+        mode="outlined"
+        textColor={text}
+        activeOutlineColor={outline.activeOutlineColor}
+        outlineColor={outline.outlineColor}
+
+        secureTextEntry={secureConfirmTextEntry}
+        theme={{
+          colors: {
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
+        }}
+
+        right={
+          <TextInput.Icon
+            icon="eye"
+            iconColor={iconColor}
+            onPress={() => {
+              setSecureConfirmTextEntry(!secureConfirmTextEntry);
+              return false;
+            }}
+          />
+        }
+      />
+      <View style={{ height: "8%" }}></View>
+      <Button
+        style={[
+          Styles.buttonStyle,
+          {backgroundColor: buttons.backgroundColor, height: "8%", width: "40%", alignSelf: "center" },
+        ]}
         mode="contained"
         textColor={text}
-        contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
-        onPress={handleLogin}>
-        SIGN IN
-      </Button>
-      <View style={{height:"1%"}}></View>
-      <Button
-        mode="text"
-        textColor={text}
-        onPress={handleForgottenPassword}>
-          FORGOT YOUR PASSWORD?
-      </Button>
-      <Button
-        mode="text"
-        textColor={text}
-        onPress={handleRegister}>
-          REGISTER AS A USER
-      </Button>
-      <View style={{height:"4%"}}></View>
-      <Text
-        style={[styles.text_lg, {color:text}]}>
-          USE ANOTHER SERVICE TO LOG IN
-      </Text>
-      <View style={{height:"1%"}}></View>
-      <Button style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor ,height: "6%", width:"85%"}]}
-        mode="contained"
-        textColor={text}
-        onPress={handleDiscord}
-        contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
-        icon="discord">
-        DISCORD
+        contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
+        onPress={handleRegister}
+      >
+        REGISTER
       </Button>
     </View>
+
   );
 }
-
-const styles = StyleSheet.create({
-  view: {
-    alignItems: "center",
-    width: "100%",
-    height: "95%"
-    },
-  textInput: {
-    width: "85%"
-  },
-  text_lg: {
-    fontWeight: "bold",
-    alignItems: "center",
-    textAlign: "center"
-    },
-  text_sm: {
-    alignSelf: "center",
-    textAlignVertical: "center",
-  },
-  image: {
-    alignSelf: "center",
-    width: "100%",
-    height: "25%",
-    aspectRatio:1
-  }
-});
-
 
 export default Register;

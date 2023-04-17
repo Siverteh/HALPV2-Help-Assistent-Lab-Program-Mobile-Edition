@@ -3,6 +3,7 @@ import { CustomTheme } from "../types/theme";
 export const theme: CustomTheme = {
     light: {
         text: "#000000",
+        text2: "#E0E0E0",
         outline: {
            outlineColor: "#201C24",
            activeOutlineColor: "#201C24"
@@ -15,9 +16,6 @@ export const theme: CustomTheme = {
             backgroundColor: "#94CCFF",
             queueButton: "#90CAF9"
         },
-        textButton: {
-            color: "#686464",
-        },
         listItem_light: {
             backgroundColor: "#FFFFFF",
         },
@@ -26,11 +24,11 @@ export const theme: CustomTheme = {
         },
         iconColor: '#201C24',
         checkUncheck: '#0079C0'
-
     },
 
     dark: {
         text: "#FFFFFF",
+        text2: "#686464",
         outline:{
             outlineColor: '#FFFFFF',
             activeOutlineColor: '#0070C0'
@@ -43,10 +41,6 @@ export const theme: CustomTheme = {
             backgroundColor: "#0070C0",
             queueButton: "#004082"
         },
-        textButton: {
-            color: "#E0E0E0",
-        },
-
         listItem_light: {
             backgroundColor: "#94CCFF"
         },

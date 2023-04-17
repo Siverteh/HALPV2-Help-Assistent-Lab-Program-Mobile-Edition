@@ -81,7 +81,7 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 
 
 const Settings = React.memo(( ) => {
-    const { background, text, buttons, boxes, outline } = useContext(DarkModeContext)
+  const { background} = useContext(DarkModeContext);
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
@@ -134,13 +134,19 @@ const Settings = React.memo(( ) => {
   );
 });
 
-const TimeEdit = React.memo(({ isDarkMode }: { isDarkMode: boolean }) => {
+const TimeEdit = React.memo(( ) => {
+  const { background, text, listItem_dark, listItem_light, text2 } = useContext(DarkModeContext);
   const [timeeditData, setTimeeditData] = useState<Array<{ id: string, courseLink: string }>>([]);
   const screenHeight = Dimensions.get("window").height;
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
   const openAddModal = () => setIsAddModalVisible(true);
   const closeAddModal = () => setIsAddModalVisible(false);
-  const containerStyle = [isDarkMode ? Styles.dm_background : Styles.lm_background, { height: screenHeight * 0.45, width: "70%", borderRadius: 20 }];
+  const containerStyle = {
+    backgroundColor: background,
+    height: screenHeight * 0.45,
+    width: "70%", 
+    borderRadius: 20 
+  };
   const [newLink, setNewLink] = useState('');
 
   const fetchData = () => {
@@ -156,6 +162,7 @@ const TimeEdit = React.memo(({ isDarkMode }: { isDarkMode: boolean }) => {
   };
 
 
+
   //Fetch data when the page is entered then every minute
   React.useEffect(() => {
     fetchData(); // call fetchData() initially when the component is mounted
@@ -165,6 +172,7 @@ const TimeEdit = React.memo(({ isDarkMode }: { isDarkMode: boolean }) => {
 
     return () => clearInterval(interval);
   }, []);
+
 
   const handleAddNewLink = () => {
     fetch(`http://chanv2.duckdns.org:5084/api/Timeedit?link=${newLink}`, {
@@ -205,28 +213,17 @@ const TimeEdit = React.memo(({ isDarkMode }: { isDarkMode: boolean }) => {
 
 
   const renderItem = ({ item, index }: { item: { id: string, courseLink: string }, index: number }) => (
-    <View style={[isDarkMode ?
-      { backgroundColor: index % 2 == 0 ? '#0070C0' : '#004082' } :
-      { backgroundColor: index % 2 == 0 ? '#FFFFFF' : '#94CCFF' },
-    { padding: 10 }]}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+    <View style={[index % 2 == 0 ? listItem_dark : listItem_light,{padding: 10}]}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
-          style={[isDarkMode ?
-            { color: index % 2 == 0 ? '#FFFFFF' : '#E0E0E0' } :
-            { color: index % 2 == 0 ? '#686464' : '#201C24' },
-          { width: '80%' }]}>
-          {item.courseLink}
+        style={{color: text, width:'80%'}}>
+            {item.courseLink}
         </Text>
         <TouchableOpacity
           onPress={() => deleteItem(index)}
-          style={[isDarkMode ?
-            { backgroundColor: index % 2 == 0 ? '#004082' : '#0070C0' } :
-            { backgroundColor: index % 2 == 0 ? '#94CCFF' : '#FFFFFF' },
-            , { padding: 10 }]}>
-          <Text style={[isDarkMode ?
-            { color: index % 2 == 0 ? '#E0E0E0' : '#FFFFFF' } :
-            { color: index % 2 == 0 ? '#201C24' : '#686464' }
-          ]}>
+          style={[index % 2 === 0 ? listItem_light : listItem_dark, {padding: 10}]}>
+          <Text style={{color: text}}>
             Delete
           </Text>
         </TouchableOpacity>
@@ -236,21 +233,21 @@ const TimeEdit = React.memo(({ isDarkMode }: { isDarkMode: boolean }) => {
 
 
   return (
-    <View style={[isDarkMode ? Styles.dm_background : Styles.lm_background, { justifyContent: 'center', alignItems: 'center', height: screenHeight * 0.70 }]}>
+    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
       <FlatList
         data={timeeditData}
         renderItem={renderItem}
         style={{ width: '100%' }}
         keyExtractor={item => item.id}
       />
-      {Button_({ isDarkMode }, "ADD NEW", openAddModal, '10%')}
+      {Button_("ADD NEW", openAddModal, '10%')}
       <View style={{ height: '5%' }} />
 
 
       <Portal>
         <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: screenHeight * 0.30 }]}>
-          {Text_Input_CB({ isDarkMode }, "TimeEdit Link", newLink, false, setNewLink)}
-          {Button_({ isDarkMode }, "Add", handleAddNewLink, '25%')
+          {Text_Input_CB( "TimeEdit Link", newLink, false, setNewLink)}
+          {Button_("Add", handleAddNewLink, '25%')
           }
         </Modal>
       </Portal>
@@ -259,30 +256,31 @@ const TimeEdit = React.memo(({ isDarkMode }: { isDarkMode: boolean }) => {
 });
 
 
-const Roles = React.memo(({ isDarkMode }: { isDarkMode: boolean }) => {
+const Roles = React.memo(() => {
+  const { background, text, listItem_dark, listItem_light, text2 } = useContext(DarkModeContext);
   const screenHeight = Dimensions.get("window").height;
-  return (
-    <View style={[isDarkMode ? Styles.dm_background : Styles.lm_background, { justifyContent: 'center', alignItems: 'center', height: screenHeight * 0.70 }]}>
-
+  return(
+    <View style={[{backgroundColor: background, justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
     </View>
   );
 });
-
 const renderTabBar = (props: any) => {
+  const { background, text} = useContext(DarkModeContext);
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <TabBar
       {...props}
-      indicatorStyle={[isDarkMode ? { backgroundColor: 'white' } : { backgroundColor: 'black' }]}
-      style={[isDarkMode ? Styles.dm_background : Styles.lm_background, { paddingTop: '11%' }]}
-      labelStyle={[isDarkMode ? Styles.dm_text : Styles.lm_text, { fontSize: 18 }]}
-      pressColor={isDarkMode ? '#004082' : '#E0EEF7'}
+      indicatorStyle={[{backgroundColor: text}]}
+      style={[{backgroundColor: background, paddingTop: '11%' }]}
+      labelStyle={[{color: text, fontSize: 18 }]}
+      pressColor={{backgroundColor: background}}
     />
   );
 };
 
 export default function Tabs() {
   const isDarkMode = useColorScheme() === 'dark';
+  const { background, text } = useContext(DarkModeContext);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -290,27 +288,28 @@ export default function Tabs() {
     { key: '2', title: 'TimeEdit' },
     { key: '3', title: 'Roles' },
   ]);
-
+  
   const renderScene = ({ route }: { route: { key: string } }) => {
+  
+
     switch (route.key) {
       case '1':
-        return <Settings isDarkMode={isDarkMode} />;
+        return <Settings />;
       case '2':
-        return <TimeEdit isDarkMode={isDarkMode} />;
+        return <TimeEdit/>;
       case '3':
-        return <Roles isDarkMode={isDarkMode} />;
+        return <Roles />;
       default:
         return null;
     }
   };
   return (
     <>
-      <Text style={[isDarkMode ?
-        { ...Styles.dm_text, ...Styles.dm_background } :
-        { ...Styles.lm_text, ...Styles.lm_background },
-      { fontSize: 24, textAlign: 'center', paddingTop: 80 }]}
-      >
-        {routes[index].title}
+    
+      <Text style={
+        {color: text, backgroundColor: background, fontSize: 24, textAlign: 'center', paddingTop: 80}}
+        >
+          {routes[index].title}
       </Text>
       <TabView
         navigationState={{ index, routes }}

@@ -21,7 +21,16 @@ import { DarkModeContext } from '../Components/GlobalHook';
 import Styles from '../styles/styles';
 
 
-function Login(): JSX.Element {
+import { StackNavigationProp } from '@react-navigation/stack';
+
+type RegisterScreenNavigationProp = StackNavigationProp<any, 'Register'>;
+
+interface RegisterProps {
+    navigation: RegisterScreenNavigationProp;
+  }
+  
+
+function Login({ navigation }: RegisterProps): JSX.Element {
   //const isDarkMode = useColorScheme() === 'dark';
   const isDarkMode = false;
 
@@ -45,17 +54,17 @@ function Login(): JSX.Element {
   }
 
   const handleRegister = () => {
-    
+    navigation.navigate("Register");
   }
   const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(DarkModeContext)
 
   return (
     <View style={
-        [styles.view, {backgroundColor: background}]}>
+        [Styles.view, {backgroundColor: background}]}>
       <Image
-      style={styles.image}
+      style={Styles.image}
       source={require('.././img/halpy3.png')} />
-      <TextInput style={styles.textInput}
+      <TextInput style={Styles.textInput}
         textColor={text}
         activeOutlineColor = {outline.activeOutlineColor}
         outlineColor = {outline.outlineColor}
@@ -65,7 +74,7 @@ function Login(): JSX.Element {
         mode="outlined"
       />
       <View style={{height:"2%"}}></View>
-      <TextInput style={styles.textInput}
+      <TextInput style={Styles.textInput}
       label="Password"
       mode="outlined"
       textColor={text}
@@ -93,7 +102,7 @@ function Login(): JSX.Element {
         status={checked ? 'checked' : 'unchecked'}
         onPress={handleChecked}
         />
-        <Text style={[styles.text_sm ,{color: text}]}>
+        <Text style={[Styles.text_sm ,{color: text}]}>
             Remember me
         </Text>
       </View>
@@ -120,7 +129,7 @@ function Login(): JSX.Element {
       </Button>
       <View style={{height:"4%"}}></View>
       <Text
-        style={[styles.text_lg, {color:text}]}>
+        style={[Styles.text_lg, {color:text}]}>
           USE ANOTHER SERVICE TO LOG IN
       </Text>
       <View style={{height:"1%"}}></View>
@@ -137,29 +146,7 @@ function Login(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  view: {
-    alignItems: "center",
-    width: "100%",
-    height: "90%"
-    },
-  textInput: {
-    width: "85%"
-  },
-  text_lg: {
-    fontWeight: "bold",
-    alignItems: "center",
-    textAlign: "center"
-    },
-  text_sm: {
-    alignSelf: "center",
-    textAlignVertical: "center",
-  },
-  image: {
-    alignSelf: "center",
-    width: "100%",
-    height: "25%",
-    aspectRatio:1
-  }
+
 });
 
 
