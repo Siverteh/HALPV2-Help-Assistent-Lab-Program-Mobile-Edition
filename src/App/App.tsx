@@ -32,6 +32,7 @@ import Helplist from "../features/Helplist";
 import Archive from "../features/Archive";
 import Register from "../features/Register";
 import Ticket from "../features/Ticket";
+import ChangePassword from "../features/ChangePassword";
 
 function App(): JSX.Element {
 
@@ -40,11 +41,12 @@ function App(): JSX.Element {
     <PaperProvider>
       <ScrollView>
         <View style={[{ height: screenHeight }]}>
-          <Ticket onSubmit={() => {}}></Ticket>
+          <ChangePassword>
 
+          </ChangePassword>
         </View>
         <View style={[{ height: screenHeight }]}>
-          <Helplist></Helplist>
+          <Login></Login>
         </View>
       </ScrollView>
     </PaperProvider>
