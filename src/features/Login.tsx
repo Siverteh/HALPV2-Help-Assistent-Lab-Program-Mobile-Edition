@@ -14,18 +14,19 @@ import { RootStackParamList, Login as LoginType } from '../types';
 import { isEmpty } from 'lodash';
 
   
-
 function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
 
   const isDarkMode = false;
 
   const [value, setValue] = useState<LoginType>()
+  const [validation, setValidation] = useState({password: false, email: false})
   const [checked, setChecked] = useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const handleChecked = () => setChecked(x => !x)
 
   const handleLogin = async () => {
+    console.log(value)
     if (isEmpty(value)) {
       console.log('feiiillll')
     }
@@ -37,7 +38,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
   
     fetch('https://chanv2.duckdns.org:7006/Auth/login', requestOptions)
       .then(response => {
-
+        console.log(response)
       if (response.ok) {
         navigation.navigate("SettingScreen");
       }})
@@ -54,9 +55,27 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
 
   }
 
+  const handleValidation = (name: string) => {
+    if(isEmpty(value && (value as any)[name])) {
+      setValidation(prev => {return {...prev, [name]: true}})
+    }
+    if (name === 'email' && value && !isEmail(value.email)) {
+      setValidation(prev => {return {...prev, [name]: true}})
+    }
+    if (name === 'password' && value && !isValidPassword(value.password)) {
+      setValidation(prev => {return {...prev, [name]: true}})
+    }
+  }
+
   const handleChange = (name: string) => (text: string) => {
     setValue((prev) => {return {...prev, [name]: text} as any})
+    if(!isEmpty(text)) {
+      setValidation(prev => {return {...prev, [name]: false}})
+    }
   }
+
+  const isEmail = (value: string) =>  (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))
+  const isValidPassword = (value: string) =>(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(value))
 
   const handleRegister = () => navigation.navigate("Register")
 
@@ -78,6 +97,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
         mode="outlined"
         value={value?.email ?? ''}
         onChangeText={handleChange('email')}
+        onBlur={() => handleValidation('email')}
+        error={validation.email}
       />
       <View style={{height:"2%"}}></View>
       <TextInput style={styles.textInput}
@@ -101,6 +122,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
       }
       value={value?.password ?? ''}
       onChangeText={handleChange('password')}
+      onBlur={() => handleValidation('password')}
+      error={validation.password}
     />
       <View style={{height:"2%"}}></View>
       <View style={{flexDirection: "row", justifyContent:"flex-start", width:"85%"}}>
@@ -119,7 +142,9 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
         mode="contained"
         textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
         contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
-        onPress={handleLogin}>
+        onPress={handleLogin}
+        disabled={Object.values(validation).some(v => v === false)}
+      >
         SIGN IN
       </Button>
       <View style={{height:"1%"}}></View>

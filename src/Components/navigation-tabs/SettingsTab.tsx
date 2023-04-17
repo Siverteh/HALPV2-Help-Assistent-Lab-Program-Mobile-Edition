@@ -11,7 +11,7 @@ function SettingsTab() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="SettingScreen" component={Settings} options={{ headerShown: false }}/>
-      <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+      <Stack.Screen name="LoginScreen" component={Login} options={{ headerShown: false }}/>
       <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
     </Stack.Navigator>
