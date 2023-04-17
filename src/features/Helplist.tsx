@@ -6,15 +6,13 @@ import Styles from "../styles/styles";
 import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react';
 import { Dimensions } from 'react-native';
-import { update } from 'lodash';
-import { alignProperty } from '@mui/material/styles/cssUtils';
-
 
 type Course = {
   id: string;
   nickname: string;
   description: string;
   isChecked: boolean;
+  room: string;
 }
 
 const updateCourse = async (updatedData: Course) => {
@@ -28,7 +26,7 @@ const updateCourse = async (updatedData: Course) => {
       body: JSON.stringify([updatedData])
     });
     const json = await response.text();
-    
+
   } catch (error) {
     console.error(error);
   }
@@ -37,8 +35,10 @@ const updateCourse = async (updatedData: Course) => {
 
 
 // Helplist
-const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
+const Helplist = () => {
   const windowHeight = Dimensions.get('window').height;
+
+  const isDarkMode = true;
 
   const [checked, setChecked] = useState(new Map());
   const [expanded, setExpanded] = useState(new Map());
@@ -49,7 +49,7 @@ const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const handleCheck = async (id: string) => {
     const currentChecked = checked.get(id) || false;
     setChecked(new Map(checked.set(id, !currentChecked)));
-  
+
     const updatedData = data.map(item => {
       if (item.id === id) {
         return {
@@ -59,16 +59,16 @@ const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
       }
       return item;
     });
-  
+
     setData(updatedData);
-  
+
     const updatedItem = updatedData.find(item => item.id === id);
-  
+
     if (updatedItem) {
-   
+
       const filteredData = updatedData.filter(item => item.id !== id);
       setData(filteredData);
-  
+
       await updateCourse(updatedItem);
     }
   };
@@ -80,7 +80,7 @@ const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
 
   const getCourse = async () => {
     try {
-      const response = await fetch('https://chanv2.duckdns.org:7006/api/Helplist?course=ikt201-g');
+      const response = await fetch('https://chanv2.duckdns.org:7006/api/Helplist?course=ikt205-g');
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -90,21 +90,40 @@ const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
     }
   };
   useEffect(() => {
-    
+
     const interval = setInterval(() => {
       getCourse();
-    }, 500);
+    }, 5000);
     return () => {
       clearInterval(interval);
     };
   }, []);
+
+  const updateCourse = async (updatedData: Course) => {
+    try {
+      var link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.id
+      const response = await fetch(link, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify([updatedData])
+      });
+      const json = await response.text().then(data => {
+        getCourse();
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
   return (
     <View style={[isDarkMode ? Styles.lm_background : Styles.dm_background, { height: windowHeight }]}>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}></View>
       <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
-      <Header title='Helplist' />
+
+      <Header textStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text]} title='Helplist' />
       <ScrollView style={{ flex: 1 }}>
         {data && data.length > 0 ? (
           <List.Section style={isDarkMode ? Styles.lm_background : Styles.dm_background}>
@@ -112,6 +131,9 @@ const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
               <CustomAccordion
                 key={item.id}
                 title={item.nickname}
+                room={item.room}
+                roomstyle={[isDarkMode ? Styles.lm_text : Styles.dm_text]}
+                subtitleStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text]}
                 titleStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text,
                 { paddingHorizontal: 16, paddingVertical: 2, fontSize: 14 },
                 ]}
@@ -120,9 +142,10 @@ const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
                 expanded={expanded.get(item.id) || false}
                 onPress={() => handleExpand(item.id)}
                 description={item.description}
-                descriptionStyle={{ paddingHorizontal: 2, paddingVertical: 5 }}
+                descriptionStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text, { paddingHorizontal: 2, paddingVertical: 5 }]}
                 onCheck={() => handleCheck(item.id)}
                 checked={checked.get(item.id) || false}
+                iconColor={[isDarkMode ? Styles.lm_text : Styles.dm_text]}
               />
             ))}
           </List.Section>

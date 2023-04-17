@@ -62,7 +62,6 @@ const Styles = StyleSheet.create({
     fontSize: 24,
     height: 100,
     padding: 30,
-    color: "#000000",
     fontFamily: "Roboto",
     textAlign: "center"
   },

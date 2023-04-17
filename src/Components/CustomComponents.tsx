@@ -1,20 +1,25 @@
 import { View, Text, TouchableOpacity, ViewStyle  } from 'react-native';
 import Styles from "../styles/styles";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { ComponentProps, forwardRef } from 'react';
+import { StyleSheet } from 'react-native';
+import DropDown from 'react-native-paper-dropdown';
+import { Provider, DefaultTheme } from 'react-native-paper';
+import { isDarkMode, setIsDarkMode } from '../App/App';
 
 // Header component
 interface Props {
   title: string;
+  textStyle: object;
 }
 
-export const Header = ({ title }: Props) => {
+export const Header = ({ title, textStyle }: Props) => {
   return (
     <View>
-      <Text style={Styles.Header}>{title}</Text>
+      <Text style={[textStyle, Styles.Header]}>{title}</Text>
     </View>
   );
 };
-
 
 // Descripton component
 interface DescriptionItemProps {
@@ -25,7 +30,7 @@ interface DescriptionItemProps {
 export const DescriptionItem: React.FC<DescriptionItemProps> = ({ description, style }) => {
   return (
     <View style={style}>
-      <Text style={[Styles.lm_text, {fontSize:14}]}>{description}</Text>
+      <Text style={[{fontSize:14}]}>{description}</Text>
     </View>
   );
 };
@@ -35,7 +40,7 @@ interface CustomCheckboxProps {
   checked: boolean;
   onPress: () => void;
   size?: number;
-  color?: string;
+  iconStyle: object;
 }
 
 export const Customcheckbox: React.FC<CustomCheckboxProps> = (
@@ -43,14 +48,14 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     checked,
     onPress,
     size = 25,
-    color = '#000',
+    iconStyle,
   }) => {
     return (
       <TouchableOpacity onPress={onPress}>
         {checked ? (
-          <MaterialCommunityIcons name="checkbox-blank-outline" color={color} size={size} />
+          <MaterialCommunityIcons name="checkbox-blank-outline" style={iconStyle} size={size} />
         ) : (
-          <MaterialCommunityIcons name="checkbox-blank-outline" color={color} size={size} />
+          <MaterialCommunityIcons name="checkbox-blank-outline" style={iconStyle} size={size} />
         )}
       </TouchableOpacity>
     );
@@ -66,8 +71,12 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     style: object;
     description: string;
     descriptionStyle: object;
+    room: string;
     onCheck: () => void;
     checked: boolean;
+    roomstyle: object;
+    subtitleStyle: object;
+    iconColor: object;
   }
 
   export const CustomAccordion: React.FC<CustomAccordionProps> = ({
@@ -75,14 +84,23 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     onPress,
     title,
     style,
+    room,
     description,
+    titleStyle,
     descriptionStyle,
     onCheck,
     checked,
+    roomstyle,
+    subtitleStyle,
+    iconColor,
   }) => {
+    
+
+
+
     const firstSentence = description.split('. ')[0];
     const subtitle = firstSentence + (firstSentence !== description ? '.' : '');
-  
+
     return (
       <View style={style}>
         <TouchableOpacity
@@ -93,11 +111,14 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
             justifyContent: 'space-between',
           }}>
           <View style={{ flex: 1 }}>
-            <Text style={Styles.lm_text}>{title}</Text>
-            <Text style={[Styles.lm_text, {fontSize:14}]} numberOfLines={1}>
+            <Text style={titleStyle} >{title}</Text>
+            <Text style={[subtitleStyle,{fontSize:14}]} numberOfLines={1}>
               {subtitle}
             </Text>
           </View>
+          <View>
+            <Text style={roomstyle}>Room:{room}</Text>
+            </View>         
           <TouchableOpacity
             onPress={onCheck}
             style={{
@@ -106,17 +127,35 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
               margin: 10,
             }}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-           <Customcheckbox checked={checked} onPress={onCheck} color="#000" />
+           <Customcheckbox checked={checked} onPress={onCheck} iconStyle={iconColor}  />
           </TouchableOpacity>
         </TouchableOpacity>
         {expanded && (
-          <View style={descriptionStyle}>
-            <Text>{description}</Text>
+          <View >
+            <Text style={descriptionStyle}>{description}</Text>
           </View>
         )}
       </View>
     );
   };
 
-  export default {Header, CustomAccordion, Customcheckbox}
+  //custom dropdown component
+type DropDownProps = ComponentProps<typeof DropDown>;
+const customTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'transparent',
+  },
+};
+
+const CustomDropDown: React.FC<DropDownProps> = (props) => {
+  return (
+    <Provider theme={customTheme}>
+      <DropDown {...props} />
+    </Provider>
+  );
+};
+
+  export default {Header, CustomAccordion, Customcheckbox, CustomDropDown}
 
