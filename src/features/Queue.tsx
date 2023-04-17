@@ -4,12 +4,14 @@ import { Button, Text } from 'react-native-paper';
 
 import { Dimensions } from 'react-native';
 import Styles from '../styles/styles';
+import { RootStackParamList } from '../types';
+import { StackScreenProps } from '@react-navigation/stack';
 import { DarkModeContext } from '../Components/GlobalHook';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
-const Queue = ({ route, navigation }: any) => {
+const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Queue'>) => {
   const isDarkMode = useColorScheme() === 'dark';
   const { background, text, buttons, boxes  } = useContext(DarkModeContext)
 

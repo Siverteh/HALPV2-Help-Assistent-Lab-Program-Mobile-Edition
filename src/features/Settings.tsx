@@ -5,6 +5,8 @@ import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View } from 're
 import * as React from 'react';
 import { CustomAccordion } from "../Components/CustomComponents";
 import { useContext, useState } from "react";
+import { RootStackParamList } from "../types";
+import { StackScreenProps } from "@react-navigation/stack";
 import { DarkModeContext } from '../Components/GlobalHook';
 
 
@@ -80,14 +82,14 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 }
 
 
-const Settings = React.memo(( ) => {
+const Settings = ({navigation}: any ) => {
   const { background} = useContext(DarkModeContext);
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
 
   const [isPasswordModalVisible, setIsPasswordModalVisible] = React.useState(false);
-  const openPasswordModal = () => setIsPasswordModalVisible(true);
+  const openPasswordModal = () => navigation.navigate('ChangePassword');
   const closePasswordModal = () => setIsPasswordModalVisible(false);
 
   const [isExserviceModalVisible, setIsExserviceModalVisible] = React.useState(false);
@@ -132,7 +134,7 @@ const Settings = React.memo(( ) => {
       </Portal>
     </View>
   );
-});
+};
 
 const TimeEdit = React.memo(( ) => {
   const { background, text, listItem_dark, listItem_light, text2 } = useContext(DarkModeContext);
@@ -278,7 +280,7 @@ const renderTabBar = (props: any) => {
   );
 };
 
-export default function Tabs() {
+export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 'SettingScreen'>) {
   const isDarkMode = useColorScheme() === 'dark';
   const { background, text } = useContext(DarkModeContext);
 
@@ -294,7 +296,7 @@ export default function Tabs() {
 
     switch (route.key) {
       case '1':
-        return <Settings />;
+        return <Settings navigation={navigation} />;
       case '2':
         return <TimeEdit/>;
       case '3':

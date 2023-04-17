@@ -5,13 +5,15 @@ import { Button, Text } from 'react-native-paper';
 import { Dimensions } from 'react-native';
 import Styles from '../styles/styles';
 import { useState, useContext } from "react";
+import { RootStackParamList } from '../types';
+import { StackScreenProps } from '@react-navigation/stack';
 import { DarkModeContext } from "../Components/GlobalHook";
 
 const screenHeight = Dimensions.get('window').height;
 
 
 
-const LabQueues = ({route, navigation}: any) => {
+const LabQueues = ({route, navigation}: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
   const { background, text, boxes  } = useContext(DarkModeContext)
   const {name, room} = route.params;
 
@@ -40,7 +42,7 @@ const LabQueues = ({route, navigation}: any) => {
     }, []);
 
     const handlePress = (item: string) => {
-      navigation.navigate('HelpList', item)
+      navigation.navigate('HelpListScreen', {id: item})
     }
 
     const renderItem = ({ item }: { item: string }) => {

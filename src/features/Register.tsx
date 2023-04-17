@@ -7,17 +7,11 @@ import {
 } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../types';
+  
 
-
-type RegisterScreenNavigationProp = StackNavigationProp<any, 'Register'>;
-
-interface RegisterProps {
-  navigation: RegisterScreenNavigationProp;
-}
-
-
-function Register({ navigation }: RegisterProps): JSX.Element {
+function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
   const { background, text, buttons, boxes, outline, iconColor, checkUncheck } = useContext(DarkModeContext)
 
 

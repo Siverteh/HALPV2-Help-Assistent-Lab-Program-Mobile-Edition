@@ -21,18 +21,14 @@ import { DarkModeContext } from '../Components/GlobalHook';
 import Styles from '../styles/styles';
 
 
-import { StackNavigationProp } from '@react-navigation/stack';
 
-type RegisterScreenNavigationProp = StackNavigationProp<any, 'Register'>;
-
-interface RegisterProps {
-    navigation: RegisterScreenNavigationProp;
-  }
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../types';
   
 
-function Login({ navigation }: RegisterProps): JSX.Element {
+function Login({ navigation }: StackScreenProps<RootStackParamList, 'Login'>): JSX.Element {
   //const isDarkMode = useColorScheme() === 'dark';
-  const isDarkMode = false;
+  const isDarkMode = true;
 
   const [checked, setChecked] = React.useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);

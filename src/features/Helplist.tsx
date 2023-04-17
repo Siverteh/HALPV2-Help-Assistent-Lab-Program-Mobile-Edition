@@ -33,9 +33,6 @@ const updateCourse = async (updatedData: Course) => {
   }
 };
 
-
-
-// Helplist
 const Helplist = () => {
   const windowHeight = Dimensions.get('window').height;
 
