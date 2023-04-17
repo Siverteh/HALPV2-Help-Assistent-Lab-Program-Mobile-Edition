@@ -1,4 +1,4 @@
-import { Ticket } from "../types/ticket";
+import { Ticket as TicketProp} from "../types/ticket";
 import { TextInput, Button, Text, List } from "react-native-paper";
 import { useState } from "react";
 import isEmpty from "lodash/isEmpty";
@@ -15,13 +15,13 @@ const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
 type Props = {
-  ticket?: Ticket
-  onSubmit: (ticket: Ticket) => void
+  ticket?: TicketProp
+  onSubmit: (ticket: TicketProp) => void
 }
 
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
-    const [value, setValue] = React.useState<Ticket>({ description: "", name: "", room: "", ...ticket });
+    const [value, setValue] = React.useState<TicketProp>({ description: "", name: "", room: "", ...ticket });
 
     const isValidValue = value && v(value).every(isEmpty);
     const isDarkMode = false;
