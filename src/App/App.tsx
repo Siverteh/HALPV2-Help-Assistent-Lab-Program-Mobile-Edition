@@ -33,8 +33,6 @@ import Archive from "../features/Archive";
 import Register from "../features/Register";
 import Ticket from "../features/Ticket";
 
-export const [isDarkMode, setIsDarkMode] = useState(true);
-
 function App(): JSX.Element {
 
   const screenHeight = Dimensions.get("window").height;
