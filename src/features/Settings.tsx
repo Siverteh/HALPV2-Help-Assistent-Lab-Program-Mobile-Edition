@@ -93,7 +93,7 @@ const Settings = React.memo(() => {
       {Button_({isDarkMode}, "DELETE ACCOUNT", openDeleteModal)}
 
       <Portal>
-        <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop:'-35%'}]}>
+        <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop:'-0%'}]}>
           {Text_Input({isDarkMode}, "Name", "Doe")}
           {Text_Input({isDarkMode}, "Discord", "Doe#1234")}
           {Text_Input({isDarkMode}, "Email", "Doe@uia.no")}
@@ -232,7 +232,7 @@ const TimeEdit = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
 
 
       <Portal>
-        <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop:'-35%', height: screenHeight*0.30}]}>
+        <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop:'0%', height: screenHeight*0.30}]}>
           {Text_Input_CB({isDarkMode}, "TimeEdit Link", newLink, false, setNewLink)}
           {Button_({isDarkMode}, "Add", handleAddNewLink, '25%')
           }
