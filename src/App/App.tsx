@@ -4,7 +4,7 @@ import {
   Dimensions,
   ScrollView,
   useColorScheme,
-  View,
+  View
 } from "react-native";
 import {
   Provider as PaperProvider,
@@ -20,7 +20,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions
 } from "react-native/Libraries/NewAppScreen";
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import Styles from "../styles/styles";
 
@@ -30,7 +30,7 @@ import Tabs from "../features/Settings";
 import Login from "../features/Login";
 import Helplist from "../features/Helplist";
 import Archive from "../features/Archive";
-import Register from "../features/Register"
+import Register from "../features/Register";
 import { Ticket } from "../types/ticket";
 
 export const [isDarkMode, setIsDarkMode] = useState(true);
@@ -39,16 +39,19 @@ function App(): JSX.Element {
 
   const screenHeight = Dimensions.get("window").height;
   return (
-    <ScrollView>
-    <View style={[{height: 3* screenHeight}]}>
-    <CreateTicket room={[]} onSubmit={function (ticket: Ticket): {} {
-        throw new Error("Function not implemented.");
-      } }></CreateTicket>
-    <Helplist isDarkMode={isDarkMode}></Helplist>
-    <Archive  isDarkMode={isDarkMode}></Archive>
-    </View>
-    </ScrollView>
-    );
+    <PaperProvider>
+      <ScrollView>
+        <View style={[{ height: screenHeight }]}>
+          <CreateTicket onSubmit={ticket => {
+            return ticket;
+          }} rooms={[]}></CreateTicket>
+        </View>
+        <View style={[{ height: screenHeight }]}>
+          <Helplist isDarkMode={true}></Helplist>
+        </View>
+      </ScrollView>
+    </PaperProvider>
+  );
 }
 
 
