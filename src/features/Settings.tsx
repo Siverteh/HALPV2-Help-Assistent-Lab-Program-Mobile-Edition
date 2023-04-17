@@ -63,14 +63,14 @@ const Button_ = ({isDarkMode}: {isDarkMode: boolean}, Value:string, onPress:any,
 }
 
 
-const Settings = React.memo(() => {
+const Settings = ({navigation}: any) => {
   const isDarkMode = false
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
 
   const [isPasswordModalVisible, setIsPasswordModalVisible] = React.useState(false);
-  const openPasswordModal = () => setIsPasswordModalVisible(true);
+  const openPasswordModal = () => navigation.navigate('ChangePassword');
   const closePasswordModal = () => setIsPasswordModalVisible(false);
 
   const [isExserviceModalVisible, setIsExserviceModalVisible] = React.useState(false);
@@ -114,7 +114,7 @@ const Settings = React.memo(() => {
       </Portal>
     </View>
   );
-});
+};
 
 const TimeEdit = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
   const [timeeditData, setTimeeditData] = useState<Array<{id: string, courseLink: string }>>([]);
@@ -265,7 +265,7 @@ const renderTabBar = (props:any) => {
   );
 };
 
-export default function Tabs() {
+export default function Tabs({navigation}: any) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const [index, setIndex] = React.useState(0);
@@ -278,7 +278,7 @@ export default function Tabs() {
   const renderScene = ({ route }: { route: { key: string } }) => {
     switch (route.key) {
       case '1':
-        return <Settings />;
+        return <Settings navigation={navigation} />;
       case '2':
         return <TimeEdit isDarkMode={isDarkMode} />;
       case '3':
