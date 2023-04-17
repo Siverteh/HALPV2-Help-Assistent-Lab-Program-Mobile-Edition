@@ -34,7 +34,10 @@ const updateCourse = async (updatedData: Course) => {
 
 
 // Archive
-const Archive = ({ isDarkMode }: { isDarkMode: boolean }) => {
+const Archive = () => {
+
+  const isDarkMode = true; 
+  
   const windowHeight = Dimensions.get('window').height;
 
   const [checked, setChecked] = useState(new Map());

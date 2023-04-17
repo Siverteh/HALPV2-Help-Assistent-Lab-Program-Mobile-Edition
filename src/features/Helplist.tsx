@@ -6,9 +6,6 @@ import Styles from "../styles/styles";
 import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react';
 import { Dimensions } from 'react-native';
-import { update } from 'lodash';
-import { alignProperty } from '@mui/material/styles/cssUtils';
-
 
 type Course = {
   id: string;
@@ -37,8 +34,10 @@ const updateCourse = async (updatedData: Course) => {
 
 
 // Helplist
-const Helplist = ({ isDarkMode }: { isDarkMode: boolean }) => {
+const Helplist = () => {
   const windowHeight = Dimensions.get('window').height;
+
+  const isDarkMode = true;
 
   const [checked, setChecked] = useState(new Map());
   const [expanded, setExpanded] = useState(new Map());
