@@ -2,8 +2,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Archive from '../../features/Archive';
 import Helplist from '../../features/Helplist';
 import LabQueues from '../../features/LabQueues';
+import { RootStackParamList } from '../../types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function HelpListTab() {
   return (
