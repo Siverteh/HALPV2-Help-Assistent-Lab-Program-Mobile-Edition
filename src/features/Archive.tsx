@@ -7,6 +7,7 @@ import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react';
 import { Dimensions } from 'react-native';
 
+
 type Course = {
   id: string;
   nickname: string;
@@ -16,7 +17,7 @@ type Course = {
 
 const updateCourse = async (updatedData: Course) => {
   try {
-    var link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.id
+    var link = "https://chanv2.duckdns.org:7006/api/Archive?id=" + updatedData.id
     const response = await fetch(link, {
       method: 'PUT',
       headers: {
@@ -25,19 +26,19 @@ const updateCourse = async (updatedData: Course) => {
       body: JSON.stringify([updatedData])
     });
     const json = await response.text();
-    
+  
   } catch (error) {
     console.error(error);
   }
 };
 
 
+// Archive
+const Archive = () => {
 
-// Helplist
-const Helplist = () => {
+  const isDarkMode = true; 
+  
   const windowHeight = Dimensions.get('window').height;
-
-  const isDarkMode = true;
 
   const [checked, setChecked] = useState(new Map());
   const [expanded, setExpanded] = useState(new Map());
@@ -48,7 +49,7 @@ const Helplist = () => {
   const handleCheck = async (id: string) => {
     const currentChecked = checked.get(id) || false;
     setChecked(new Map(checked.set(id, !currentChecked)));
-  
+
     const updatedData = data.map(item => {
       if (item.id === id) {
         return {
@@ -58,16 +59,11 @@ const Helplist = () => {
       }
       return item;
     });
-  
     setData(updatedData);
-  
     const updatedItem = updatedData.find(item => item.id === id);
-  
     if (updatedItem) {
-   
       const filteredData = updatedData.filter(item => item.id !== id);
       setData(filteredData);
-  
       await updateCourse(updatedItem);
     }
   };
@@ -79,7 +75,7 @@ const Helplist = () => {
 
   const getCourse = async () => {
     try {
-      const response = await fetch('https://chanv2.duckdns.org:7006/api/Helplist?course=ikt201-g');
+      const response = await fetch('https://chanv2.duckdns.org:7006/api/Archive?course=ikt201-g');
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -89,21 +85,20 @@ const Helplist = () => {
     }
   };
   useEffect(() => {
-    
     const interval = setInterval(() => {
       getCourse();
-    }, 500);
+    }, 500); 
+  
     return () => {
       clearInterval(interval);
     };
-  }, []);
-
+  }, []); 
 
   return (
     <View style={[isDarkMode ? Styles.lm_background : Styles.dm_background, { height: windowHeight }]}>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}></View>
       <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
-      <Header title='Helplist' />
+      <Header title='Archive' />
       <ScrollView style={{ flex: 1 }}>
         {data && data.length > 0 ? (
           <List.Section style={isDarkMode ? Styles.lm_background : Styles.dm_background}>
@@ -126,11 +121,11 @@ const Helplist = () => {
             ))}
           </List.Section>
         ) : (
-          <Text style={{textAlign:'center'}} >No requests yet</Text>
+          <Text style={{ textAlign: 'center' }} >No requests yet</Text>
         )}
       </ScrollView>
     </View>
   );
 };
 
-export default Helplist;
+export default Archive;

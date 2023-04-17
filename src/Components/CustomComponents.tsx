@@ -48,7 +48,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     return (
       <TouchableOpacity onPress={onPress}>
         {checked ? (
-          <MaterialCommunityIcons name="checkbox-marked" color={color} size={size} />
+          <MaterialCommunityIcons name="checkbox-blank-outline" color={color} size={size} />
         ) : (
           <MaterialCommunityIcons name="checkbox-blank-outline" color={color} size={size} />
         )}
@@ -70,7 +70,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     checked: boolean;
   }
 
- export const CustomAccordion: React.FC<CustomAccordionProps> = ({
+  export const CustomAccordion: React.FC<CustomAccordionProps> = ({
     expanded,
     onPress,
     title,
@@ -82,8 +82,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
   }) => {
     const firstSentence = description.split('. ')[0];
     const subtitle = firstSentence + (firstSentence !== description ? '.' : '');
-    //const rest = description.substring(subtitle.length).trim().split('\n').join('\n');
-    
+  
     return (
       <View style={style}>
         <TouchableOpacity
@@ -107,7 +106,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
               margin: 10,
             }}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-            <Customcheckbox checked={checked} onPress={onCheck} />
+           <Customcheckbox checked={checked} onPress={onCheck} color="#000" />
           </TouchableOpacity>
         </TouchableOpacity>
         {expanded && (
