@@ -1,13 +1,13 @@
 import Ticket from "./Ticket"
 
-const CreateTicket = () => {
+const EditTicket = () => {
     return (
         <Ticket
-        
+            ticket={{} as any}
             onSubmit={() => {}}
             
         />
     )
 }
 
-export default CreateTicket
+export default EditTicket
