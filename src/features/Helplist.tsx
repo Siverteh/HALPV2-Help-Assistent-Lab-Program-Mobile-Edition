@@ -6,8 +6,6 @@ import Styles from "../styles/styles";
 import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react';
 import { Dimensions } from 'react-native';
-import { update } from 'lodash';
-import { alignProperty } from '@mui/material/styles/cssUtils';
 import { DarkModeContext } from '../Components/GlobalHook';
 
 type Course = {
@@ -112,7 +110,7 @@ const Helplist = () => {
                 key={item.id}
                 title={item.nickname}
                 room={item.room}
-                style={index % 2 === 0 ? listItem_dark  : listItem_light}
+                style={index % 2 === 0 ? listItem_light : listItem_dark }
                 titleStyle= {{
                   color: text, 
                   paddingHorizontal: 16,

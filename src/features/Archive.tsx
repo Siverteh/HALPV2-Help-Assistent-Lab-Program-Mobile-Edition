@@ -114,7 +114,7 @@ const updateCourse = async (updatedData: Course) => {
                   fontSize: 14,
                   }}
                 room={item.room}
-                style={index % 2 === 0 ? listItem_dark  : listItem_light}
+                style={index % 2 === 0 ? listItem_light : listItem_dark }
                 expanded={expanded.get(item.id) || false}
                 onPress={() => handleExpand(item.id)}
                 description={item.description}

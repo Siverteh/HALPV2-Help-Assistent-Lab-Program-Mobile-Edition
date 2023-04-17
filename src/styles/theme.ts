@@ -41,7 +41,7 @@ export const theme: CustomTheme = {
             backgroundColor: "#94CCFF"
         },
         listItem_dark: {
-            backgroundColor: "#0070C0",
+            backgroundColor: "#004082",
         },
     }
 }

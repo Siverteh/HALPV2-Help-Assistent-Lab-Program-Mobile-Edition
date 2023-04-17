@@ -33,7 +33,6 @@ import Archive from "../features/Archive";
 import Register from "../features/Register"
 import { Ticket } from "../types/ticket";
 import { theme } from "../styles/theme";
-import { Theme } from "../types/theme";
 import { DarkModeContext } from "../Components/GlobalHook";
 
 function App(): JSX.Element {
