@@ -5,6 +5,8 @@ import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View} from 'rea
 import * as React from 'react';
 import { CustomAccordion } from "../Components/CustomComponents";
 import { useState } from "react";
+import { RootStackParamList } from "../types";
+import { StackScreenProps } from "@react-navigation/stack";
 
 const Text_Input = ({isDarkMode}: {isDarkMode: boolean}, lable:string, defaultValue:string = '', password:boolean = false) => {
   return(
@@ -63,14 +65,14 @@ const Button_ = ({isDarkMode}: {isDarkMode: boolean}, Value:string, onPress:any,
 }
 
 
-const Settings = React.memo(() => {
+const Settings = ({navigation}: any) => {
   const isDarkMode = false
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
 
   const [isPasswordModalVisible, setIsPasswordModalVisible] = React.useState(false);
-  const openPasswordModal = () => setIsPasswordModalVisible(true);
+  const openPasswordModal = () => navigation.navigate('ChangePassword');
   const closePasswordModal = () => setIsPasswordModalVisible(false);
 
   const [isExserviceModalVisible, setIsExserviceModalVisible] = React.useState(false);
@@ -93,7 +95,7 @@ const Settings = React.memo(() => {
       {Button_({isDarkMode}, "DELETE ACCOUNT", openDeleteModal)}
 
       <Portal>
-        <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop:'-35%'}]}>
+        <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop:'-0%'}]}>
           {Text_Input({isDarkMode}, "Name", "Doe")}
           {Text_Input({isDarkMode}, "Discord", "Doe#1234")}
           {Text_Input({isDarkMode}, "Email", "Doe@uia.no")}
@@ -114,7 +116,7 @@ const Settings = React.memo(() => {
       </Portal>
     </View>
   );
-});
+};
 
 const TimeEdit = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
   const [timeeditData, setTimeeditData] = useState<Array<{id: string, courseLink: string }>>([]);
@@ -232,7 +234,7 @@ const TimeEdit = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
 
 
       <Portal>
-        <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop:'-35%', height: screenHeight*0.30}]}>
+        <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, {alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop:'0%', height: screenHeight*0.30}]}>
           {Text_Input_CB({isDarkMode}, "TimeEdit Link", newLink, false, setNewLink)}
           {Button_({isDarkMode}, "Add", handleAddNewLink, '25%')
           }
@@ -265,7 +267,7 @@ const renderTabBar = (props:any) => {
   );
 };
 
-export default function Tabs() {
+export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 'SettingScreen'>) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const [index, setIndex] = React.useState(0);
@@ -278,7 +280,7 @@ export default function Tabs() {
   const renderScene = ({ route }: { route: { key: string } }) => {
     switch (route.key) {
       case '1':
-        return <Settings />;
+        return <Settings navigation={navigation} />;
       case '2':
         return <TimeEdit isDarkMode={isDarkMode} />;
       case '3':

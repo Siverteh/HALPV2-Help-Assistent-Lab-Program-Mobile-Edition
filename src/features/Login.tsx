@@ -27,7 +27,7 @@ import { RootStackParamList } from '../types';
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, 'Login'>): JSX.Element {
   //const isDarkMode = useColorScheme() === 'dark';
-  const isDarkMode = false;
+  const isDarkMode = true;
 
   const [checked, setChecked] = React.useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);

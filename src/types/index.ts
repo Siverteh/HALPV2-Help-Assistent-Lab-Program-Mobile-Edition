@@ -11,9 +11,10 @@ export type RootStackParamList = {
     Edit: {name: string, description: string, room: string}
     Login: undefined
     LabQueues: {name: string, description: string, room: string}
-    Archive: undefined
-    HelpList: { id: string }
+    ArchiveScreen: undefined
+    HelpListScreen: { id: string }
     Queue: {name: string, description: string, room: string}
-    Settings: undefined
+    SettingScreen: undefined
     Register: undefined
+    ChangePassword: undefined
   };

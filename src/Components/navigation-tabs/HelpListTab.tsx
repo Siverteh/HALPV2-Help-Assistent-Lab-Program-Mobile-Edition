@@ -10,8 +10,8 @@ function HelpListTab() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="LabQueues" component={LabQueues} options={{ headerShown: false }}/>
-      <Stack.Screen name="Archive" component={Archive} options={{ headerShown: false }}/>
-      <Stack.Screen name="HelpList" component={Helplist} options={{ headerShown: false }}/>
+      <Stack.Screen name="ArchiveScreen" component={Archive} options={{ headerShown: false }}/>
+      <Stack.Screen name="HelpListScreen" component={Helplist} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }
