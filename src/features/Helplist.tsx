@@ -25,7 +25,7 @@ const updateCourse = async (updatedData: Course) => {
       body: JSON.stringify([updatedData])
     });
     const json = await response.text();
-    
+
   } catch (error) {
     console.error(error);
   }
@@ -48,7 +48,7 @@ const Helplist = () => {
   const handleCheck = async (id: string) => {
     const currentChecked = checked.get(id) || false;
     setChecked(new Map(checked.set(id, !currentChecked)));
-  
+
     const updatedData = data.map(item => {
       if (item.id === id) {
         return {
@@ -58,16 +58,16 @@ const Helplist = () => {
       }
       return item;
     });
-  
+
     setData(updatedData);
-  
+
     const updatedItem = updatedData.find(item => item.id === id);
-  
+
     if (updatedItem) {
-   
+
       const filteredData = updatedData.filter(item => item.id !== id);
       setData(filteredData);
-  
+
       await updateCourse(updatedItem);
     }
   };
@@ -79,7 +79,7 @@ const Helplist = () => {
 
   const getCourse = async () => {
     try {
-      const response = await fetch('https://chanv2.duckdns.org:7006/api/Helplist?course=ikt201-g');
+      const response = await fetch('https://chanv2.duckdns.org:7006/api/Helplist?course=ikt205-g');
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -89,7 +89,7 @@ const Helplist = () => {
     }
   };
   useEffect(() => {
-    
+
     const interval = setInterval(() => {
       getCourse();
     }, 500);
