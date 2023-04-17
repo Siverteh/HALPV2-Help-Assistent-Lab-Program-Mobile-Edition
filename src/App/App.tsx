@@ -8,7 +8,10 @@ function App(): JSX.Element {
   return (
       <PaperProvider>
         <NavigationContainer>
-          <NavigationBar isStudass={false}/>
+          <NavigationBar
+            isStudass={false}
+            isLoggedIn={true}
+            />
         </NavigationContainer>
       </PaperProvider>
     );

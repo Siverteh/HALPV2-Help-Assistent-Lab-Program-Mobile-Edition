@@ -1,43 +1,49 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React, { useEffect, useState } from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-
-//import CheckBox from '@react-native-community/checkbox';
-
 import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
 
 import Styles from '../styles/styles';
 
-import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../types';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList, Login as LoginType } from '../types';
+import { isEmpty } from 'lodash';
 
   
 
-function Login({ navigation }: StackScreenProps<RootStackParamList, 'Login'>): JSX.Element {
-  //const isDarkMode = useColorScheme() === 'dark';
-  const isDarkMode = true;
+function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
 
-  const [checked, setChecked] = React.useState(true);
+  const isDarkMode = false;
+
+  const [value, setValue] = useState<LoginType>()
+  const [checked, setChecked] = useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  const handleChecked = () => {
-    setChecked(!checked);
-  }
+  const handleChecked = () => setChecked(x => !x)
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    if (isEmpty(value)) {
+      console.log('feiiillll')
+    }
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(value),
+    };
+  
+    fetch('https://chanv2.duckdns.org:7006/Auth/login', requestOptions)
+      .then(response => {
 
+      if (response.ok) {
+        navigation.navigate("SettingScreen");
+      }})
+      .catch(() => {
+        console.log('error')
+      })
   }
 
   const handleForgottenPassword = () => {
@@ -48,9 +54,11 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'Login'>): J
 
   }
 
-  const handleRegister = () => {
-    navigation.navigate("Register");
+  const handleChange = (name: string) => (text: string) => {
+    setValue((prev) => {return {...prev, [name]: text} as any})
   }
+
+  const handleRegister = () => navigation.navigate("Register")
 
   return (
     <View style={
@@ -59,7 +67,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'Login'>): J
       <Image
       style={styles.image}
       source={require('.././img/halpy3.png')} />
-      <TextInput style={styles.textInput}
+      <TextInput
+        style={styles.textInput}
         textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
         activeOutlineColor = {isDarkMode ? '#FFFFFF' : '#201C24'}
         outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
@@ -67,6 +76,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'Login'>): J
                             onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24' } }}
         label="Email Address"
         mode="outlined"
+        value={value?.email ?? ''}
+        onChangeText={handleChange('email')}
       />
       <View style={{height:"2%"}}></View>
       <TextInput style={styles.textInput}
@@ -88,6 +99,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'Login'>): J
           }}
         />
       }
+      value={value?.password ?? ''}
+      onChangeText={handleChange('password')}
     />
       <View style={{height:"2%"}}></View>
       <View style={{flexDirection: "row", justifyContent:"flex-start", width:"85%"}}>
