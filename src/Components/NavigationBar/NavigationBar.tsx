@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Text, View } from 'react-native';
 import { studassRoutes, userRoutes } from '../../App/routes';
 
 type Props = {
@@ -29,7 +28,7 @@ const NavigationBar = ({ isStudass }: Props) => {
                 options={{
                   headerShown: false,
                   tabBarLabel: name,
-                  tabBarIcon: ({ color, size }) => (
+                  tabBarIcon: ({ color, size }: any) => (
                     <Ionicons name={icon} color={color} size={size} />
                   ),
                 }}
@@ -42,7 +41,7 @@ const NavigationBar = ({ isStudass }: Props) => {
                 options={{
                   headerShown: false,
                   tabBarLabel: name,
-                  tabBarIcon: ({ color, size }) => (
+                  tabBarIcon: ({ color, size }: any) => (
                     <Ionicons name={icon} color={color} size={size} />
                   ),
                 }}

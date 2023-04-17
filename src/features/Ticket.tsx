@@ -3,7 +3,6 @@ import { TextInput, Button, Text, List } from "react-native-paper";
 import { useState } from "react";
 import isEmpty from "lodash/isEmpty";
 import v from "lodash/values";
-import every from "lodash/every";
 import Styles from "../styles/styles";
 import * as React from "react";
 import { Dimensions, Image, useColorScheme, View } from "react-native";
@@ -53,6 +52,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
 
     const handleCreateTicket = async () => {
       console.log(JSON.stringify(value));
+      onSubmit({ name: "", description: "", room: "" }) //bare for test
       try {
         const response = await fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
           method: "POST",
@@ -82,7 +82,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       <View style={[Styles[`${stylePrefix}_background`], { flex: 1, alignItems: "center" }]}>
         <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
         <Text style={[Styles[`${stylePrefix}_text`], { fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
-          NEW TICKET
+          {ticket ? 'EDIT TICKET':  'NEW TICKET'}
         </Text>
         <TextInput
           style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
@@ -105,7 +105,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             showDropDown={() => setShowDropDown(true)}
             onDismiss={() => setShowDropDown(false)}
             value={value.room}
-            setValue={(selectedRoom) => setValue((prevValue) => ({ ...prevValue, room: selectedRoom }))}
+            setValue={(selectedRoom: any) => setValue((prevValue) => ({ ...prevValue, room: selectedRoom }))}
             list={dropdownItems}
             activeColor={"grey"}
             dropDownContainerHeight={300}
@@ -134,7 +134,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           labelStyle={Styles[`${stylePrefix}_textButton`]}
           onPress={handleCreateTicket}
         >
-          CREATE TICKET
+         {ticket ? 'SAVE TICKET':  'CREATE TICKET'}
         </Button>
       </View>
     );
