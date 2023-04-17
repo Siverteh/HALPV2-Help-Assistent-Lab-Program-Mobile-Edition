@@ -1,11 +1,11 @@
-import { Ticket as TicketProp} from "../types/ticket";
+import { Ticket as TicketProp } from "../types/ticket";
 import { TextInput, Button, Text, List } from "react-native-paper";
 import { useState } from "react";
 import isEmpty from "lodash/isEmpty";
 import v from "lodash/values";
 import Styles from "../styles/styles";
 import * as React from "react";
-import { Dimensions, Image, useColorScheme, View } from "react-native";
+import { Dimensions, Image, NativeSyntheticEvent, TextInputFocusEventData, useColorScheme, View } from "react-native";
 import CustomDropDown from "../Components/CustomComponents";
 import DropDown from "react-native-paper-dropdown";
 
@@ -21,8 +21,7 @@ type Props = {
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
     const [value, setValue] = React.useState<TicketProp>({ description: "", name: "", room: "", ...ticket });
-
-    const isValidValue = value && v(value).every(isEmpty);
+    const [validation, setValidation] = React.useState({ description: false, name: false, room: false})
     const isDarkMode = false;
     const stylePrefix = isDarkMode ? "dm" : "lm";
 
@@ -50,9 +49,25 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       return { value: room, label: room };
     });
 
+    const handleBlur = (name: string, text: string) => {
+      if (isEmpty(text)) {
+        setValidation((prevState) => {return {...prevState, [name]: true} as any})
+      }
+    };
+
+    const handleChange = (name: string) => (text: string) =>  {
+        setValue((prevValue) => ({ ...prevValue, [name]: text }))
+      if (!isEmpty(text)) {
+        setValidation(prevState => {
+          return { ...prevState, [name]: false }
+        })
+      }
+
+    }
+
     const handleCreateTicket = async () => {
       console.log(JSON.stringify(value));
-      onSubmit({ name: "", description: "", room: "" }) //bare for test
+      onSubmit({ name: "", description: "", room: "" }); //bare for test
       try {
         const response = await fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
           method: "POST",
@@ -82,7 +97,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       <View style={[Styles[`${stylePrefix}_background`], { flex: 1, alignItems: "center" }]}>
         <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
         <Text style={[Styles[`${stylePrefix}_text`], { fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
-          {ticket ? 'EDIT TICKET':  'NEW TICKET'}
+          {ticket ? "EDIT TICKET" : "NEW TICKET"}
         </Text>
         <TextInput
           style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
@@ -109,12 +124,19 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             list={dropdownItems}
             activeColor={"grey"}
             dropDownContainerHeight={300}
-            theme={{colors: { background: isDarkMode ? "#0070C0" : "#FFFFFF", text: isDarkMode ? 'white' : 'black', outline: 'transparent', onPrimary: 'red'}}}
-            dropDownItemStyle={{backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF"}}
-            dropDownItemTextStyle={{color: isDarkMode ? 'white' : 'black'}}
-            dropDownStyle={{backgroundColor: 'transparent'}}
-            dropDownItemSelectedStyle={{backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF"}}
-            dropDownItemSelectedTextStyle={{color: isDarkMode ? 'white' : 'black'}}
+            theme={{
+              colors: {
+                background: isDarkMode ? "#0070C0" : "#FFFFFF",
+                text: isDarkMode ? "white" : "black",
+                outline: "transparent",
+                onPrimary: "red"
+              }
+            }}
+            dropDownItemStyle={{ backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF" }}
+            dropDownItemTextStyle={{ color: isDarkMode ? "white" : "black" }}
+            dropDownStyle={{ backgroundColor: "transparent" }}
+            dropDownItemSelectedStyle={{ backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF" }}
+            dropDownItemSelectedTextStyle={{ color: isDarkMode ? "white" : "black" }}
           />
 
         </View>
@@ -126,7 +148,9 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           activeOutlineColor={"grey"}
           value={value.description}
           multiline={true}
-          onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, description: text }))}
+          onChangeText={handleChange('description')}
+          onBlur={() => handleBlur('description', value?.description)}
+          error={validation?.description}
         />
 
         <Button
@@ -134,7 +158,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           labelStyle={Styles[`${stylePrefix}_textButton`]}
           onPress={handleCreateTicket}
         >
-         {ticket ? 'SAVE TICKET':  'CREATE TICKET'}
+          {ticket ? "SAVE TICKET" : "CREATE TICKET"}
         </Button>
       </View>
     );
