@@ -4,6 +4,14 @@ import HelpListTab from "../Components/navigation-tabs/HelpListTab"
 import SettingsTab from "../Components/navigation-tabs/SettingsTab"
 import { RouteType } from "../types"
 
+const settingRoute = [
+    {
+        name: 'Settings',
+        component: SettingsTab,
+        icon: 'settings'
+    }
+]
+
 
 export const studassRoutes: Array<RouteType> = [{
     name: 'HelpList',
@@ -13,18 +21,10 @@ export const studassRoutes: Array<RouteType> = [{
     name: 'Archive',
     component: ArchiveTab,
     icon: 'checkmark-done'
-}, {
-    name: 'Settings',
-    component: SettingsTab,
-    icon: 'settings'
-}]
+}, ...settingRoute]
 
 export const userRoutes: Array<RouteType> = [{
     name: 'Create',
     component: CreateTab,
     icon: 'create'
-}, {
-    name: 'Settings',
-    component: SettingsTab,
-    icon: 'settings'
-}]
+}, ...settingRoute]

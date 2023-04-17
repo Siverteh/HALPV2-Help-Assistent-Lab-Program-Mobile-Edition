@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Text, View } from 'react-native';
 import { studassRoutes, userRoutes } from '../../App/routes';
 
 type Props = {

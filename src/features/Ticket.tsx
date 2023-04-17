@@ -23,6 +23,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
 
   const handleCreateTicket = async () => {
     console.log(JSON.stringify(value));
+    onSubmit({ name: "", description: "", room: "" }) // denne skal ikke ligge her charlie
     try {
       const response = await fetch("http://chanv2.duckdns.org:5084/api/Ticket", {
         method: "POST",
@@ -90,7 +91,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         labelStyle={Styles[`${stylePrefix}_textButton`]}
         onPress={handleCreateTicket}
       >
-        CREATE TICKET
+        {ticket ? 'SAVE TICKET' : 'CREATE TICKET'}
       </Button>
     </View>
   );

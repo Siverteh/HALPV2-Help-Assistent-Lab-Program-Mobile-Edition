@@ -10,7 +10,10 @@ const screenHeight = Dimensions.get('window').height;
 
 
 
-const LabQueues = () => {
+const LabQueues = ({route, navigation}: any) => {
+  const {name, room} = route.params;
+
+  console.log("queue: ", name)
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
     const backgroundStyle = isDarkMode ? Styles.dm_background : Styles.lm_background;
@@ -19,7 +22,7 @@ const LabQueues = () => {
     const [newCours, setNewCours] = useState([]);
 
     const fetchData = () => {
-        fetch('https://chanv2.duckdns.org:7006/api/Courses?email=a')
+        fetch('https://chanv2.duckdns.org:7006/api/Courses/all')
           .then(response => response.json())
           .then(data => {
             setNewCours(data);
@@ -33,9 +36,13 @@ const LabQueues = () => {
         fetchData();
         const interval = setInterval(() => {
             fetchData();
-        }, 6000); // 1 minute interval
+        }, 60000); // 1 minute interval
         return () => clearInterval(interval);
     }, []);
+
+    const handlePress = (item: string) => {
+      navigation.navigate('HelpList', item)
+    }
 
     const renderItem = ({ item }: { item: string }) => {
         return (
@@ -44,7 +51,7 @@ const LabQueues = () => {
             mode="contained"
             contentStyle={{ flexDirection: 'row-reverse', height: screenHeight*0.08,  width: "100%" }}
             labelStyle={[textStyle, { fontSize: 20, textAlign: 'center' }]}
-            onPress={()=> {}}
+            onPress={() => handlePress(item)}
             key={item}
           >
             {item}

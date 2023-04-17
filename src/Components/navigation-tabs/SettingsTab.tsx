@@ -6,7 +6,7 @@ const Stack = createNativeStackNavigator();
 function SettingsTab() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

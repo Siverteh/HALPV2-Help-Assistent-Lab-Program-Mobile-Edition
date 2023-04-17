@@ -7,8 +7,12 @@ const Stack = createNativeStackNavigator();
 const ArchiveTab = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Archive" component={Archive} />
-      <Stack.Screen name="HelpList" component={Helplist} />
+      <Stack.Screen
+        name="Archive"
+        component={Archive}
+        options={{ headerShown: false }}
+        />
+      <Stack.Screen name="HelpList" component={Helplist} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
