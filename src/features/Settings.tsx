@@ -63,7 +63,8 @@ const Button_ = ({isDarkMode}: {isDarkMode: boolean}, Value:string, onPress:any,
 }
 
 
-const Settings = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
+const Settings = React.memo(() => {
+  const isDarkMode = false
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
@@ -277,7 +278,7 @@ export default function Tabs() {
   const renderScene = ({ route }: { route: { key: string } }) => {
     switch (route.key) {
       case '1':
-        return <Settings isDarkMode={isDarkMode} />;
+        return <Settings />;
       case '2':
         return <TimeEdit isDarkMode={isDarkMode} />;
       case '3':

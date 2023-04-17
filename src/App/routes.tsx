@@ -1,30 +1,29 @@
-import Archive from "../features/Archive"
-import CreateTicket from "../features/CreateTicket"
-import Helplist from "../features/Helplist"
-import Settings from "../features/Settings"
+import ArchiveTab from "../Components/navigation-tabs/ArchiveTab";
+import CreateTab from "../Components/navigation-tabs/CreateTab";
+import HelpListTab from "../Components/navigation-tabs/HelpListTab"
+import SettingsTab from "../Components/navigation-tabs/SettingsTab"
 import { RouteType } from "../types"
 
+const settingRoute = [
+    {
+        name: 'Settings',
+        component: SettingsTab,
+        icon: 'settings'
+    }
+]
 
 export const studassRoutes: Array<RouteType> = [{
     name: 'HelpList',
-    component: Helplist,
+    component: HelpListTab,
     icon: 'list'
 }, {
     name: 'Archive',
-    component: Archive,
+    component: ArchiveTab,
     icon: 'checkmark-done'
-}, {
-    name: 'Settings',
-    component: Settings,
-    icon: 'settings'
-}]
+}, ...settingRoute]
 
 export const userRoutes: Array<RouteType> = [{
     name: 'Create',
-    component: CreateTicket,
+    component: CreateTab,
     icon: 'create'
-}, {
-    name: 'Settings',
-    component: Settings,
-    icon: 'settings'
-}]
+}, ...settingRoute]
