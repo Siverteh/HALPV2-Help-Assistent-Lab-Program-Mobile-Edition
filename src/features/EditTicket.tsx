@@ -1,7 +1,9 @@
 import Ticket from "./Ticket"
 import { Ticket as TicketProp } from "../types/ticket"
+import { RootStackParamList } from "../types"
+import { StackScreenProps } from "@react-navigation/stack"
 
-const EditTicket = ({ route, navigation }: any) => {
+const EditTicket = ({ route, navigation }: StackScreenProps<RootStackParamList, 'Edit'>) => {
 
     const ticket = route.params;
 

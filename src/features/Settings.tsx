@@ -5,6 +5,8 @@ import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View} from 'rea
 import * as React from 'react';
 import { CustomAccordion } from "../Components/CustomComponents";
 import { useState } from "react";
+import { RootStackParamList } from "../types";
+import { StackScreenProps } from "@react-navigation/stack";
 
 const Text_Input = ({isDarkMode}: {isDarkMode: boolean}, lable:string, defaultValue:string = '', password:boolean = false) => {
   return(
@@ -265,7 +267,7 @@ const renderTabBar = (props:any) => {
   );
 };
 
-export default function Tabs({navigation}: any) {
+export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 'SettingScreen'>) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const [index, setIndex] = React.useState(0);

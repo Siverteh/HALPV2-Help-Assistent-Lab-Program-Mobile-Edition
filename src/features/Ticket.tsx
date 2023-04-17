@@ -27,7 +27,6 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     const stylePrefix = isDarkMode ? "dm" : "lm";
 
     const [showDropDown, setShowDropDown] = useState(false);
-    const [showMultiSelectDropDown, setShowMultiSelectDropDown] = useState(false);
     const [roomList, setRoomList] = useState([]);
 
     const fetchRooms = async () => {
