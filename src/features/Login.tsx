@@ -31,7 +31,7 @@ interface RegisterProps {
 
 function Login({ navigation }: RegisterProps): JSX.Element {
   //const isDarkMode = useColorScheme() === 'dark';
-  const isDarkMode = false;
+  const isDarkMode = true;
 
   const [checked, setChecked] = React.useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
