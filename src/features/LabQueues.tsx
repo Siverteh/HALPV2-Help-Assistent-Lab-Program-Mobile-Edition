@@ -19,7 +19,7 @@ const LabQueues = () => {
     const [newCours, setNewCours] = useState([]);
 
     const fetchData = () => {
-        fetch('https://chanv2.duckdns.org:7006/api/Courses?email=a')
+        fetch('https://chanv2.duckdns.org:7006/api/Courses/all')
           .then(response => response.json())
           .then(data => {
             setNewCours(data);

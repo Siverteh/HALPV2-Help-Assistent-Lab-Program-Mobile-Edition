@@ -32,21 +32,17 @@ import Helplist from "../features/Helplist";
 import Archive from "../features/Archive";
 import Register from "../features/Register";
 import Ticket from "../features/Ticket";
+import LabQueues from "../features/LabQueues";
 
 function App(): JSX.Element {
 
   const screenHeight = Dimensions.get("window").height;
   return (
     <PaperProvider>
-      <ScrollView>
         <View style={[{ height: screenHeight }]}>
-          <Ticket onSubmit={() => {}}></Ticket>
+          <Tabs/>
 
         </View>
-        <View style={[{ height: screenHeight }]}>
-          <Helplist></Helplist>
-        </View>
-      </ScrollView>
     </PaperProvider>
   );
 }
