@@ -51,30 +51,9 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     });
 
     const handleCreateTicket = async () => {
-      console.log(JSON.stringify(value));
-      onSubmit({ name: "", description: "", room: "" }) //bare for test
-      try {
-        const response = await fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Cache-Control": "no-cache"
-          },
-          body: JSON.stringify(value)
-        });
-        if (response.ok) {
-          setValue({ description: "", name: "", room: "" });
-          if (response.headers.get("Content-Length") !== "0") {
-            const responseData = await response.json();
-            onSubmit(responseData || { name: "", description: "", room: "" });
-          }
-        } else {
-          console.error(`Error: ${response.status} - ${response.statusText}`);
-        }
-      } catch (error) {
-        console.error(error);
-      }
+      onSubmit(value)
+      setValue({ description: "", name: "", room: "" });
+      
     };
 
 
