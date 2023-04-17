@@ -12,7 +12,6 @@ const settingRoute = [
     }
 ]
 
-
 export const studassRoutes: Array<RouteType> = [{
     name: 'HelpList',
     component: HelpListTab,

@@ -4,7 +4,6 @@ import Ticket from "./Ticket"
 const CreateTicket = ({ navigation }: any) => {
 
     const handleSubmit = (ticket: TicketProp) => {
-        console.log('ticket: ', ticket)
         navigation.navigate('Queue', ticket)
     }
 

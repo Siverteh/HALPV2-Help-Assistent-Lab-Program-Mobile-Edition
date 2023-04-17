@@ -20,7 +20,16 @@ import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
 
 import Styles from '../styles/styles';
 
-function Login(): JSX.Element {
+import { StackNavigationProp } from '@react-navigation/stack';
+
+type RegisterScreenNavigationProp = StackNavigationProp<any, 'Register'>;
+
+interface RegisterProps {
+    navigation: RegisterScreenNavigationProp;
+  }
+  
+
+function Login({ navigation }: RegisterProps): JSX.Element {
   //const isDarkMode = useColorScheme() === 'dark';
   const isDarkMode = false;
 
@@ -44,7 +53,7 @@ function Login(): JSX.Element {
   }
 
   const handleRegister = () => {
-    
+    navigation.navigate("Register");
   }
 
   return (

@@ -28,7 +28,7 @@ const NavigationBar = ({ isStudass }: Props) => {
                 options={{
                   headerShown: false,
                   tabBarLabel: name,
-                  tabBarIcon: ({ color, size }) => (
+                  tabBarIcon: ({ color, size }: any) => (
                     <Ionicons name={icon} color={color} size={size} />
                   ),
                 }}
@@ -41,7 +41,7 @@ const NavigationBar = ({ isStudass }: Props) => {
                 options={{
                   headerShown: false,
                   tabBarLabel: name,
-                  tabBarIcon: ({ color, size }) => (
+                  tabBarIcon: ({ color, size }: any) => (
                     <Ionicons name={icon} color={color} size={size} />
                   ),
                 }}

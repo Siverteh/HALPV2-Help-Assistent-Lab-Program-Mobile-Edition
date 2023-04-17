@@ -1,12 +1,10 @@
-import React, { useMemo, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-
-import {
-  Provider as PaperProvider,
-} from 'react-native-paper';
+import React from "react";
+import { Provider as PaperProvider } from "react-native-paper";
 import NavigationBar from "../Components/NavigationBar/NavigationBar";
+import { NavigationContainer } from '@react-navigation/native';
 
 function App(): JSX.Element {
+
   return (
       <PaperProvider>
         <NavigationContainer>
@@ -15,5 +13,6 @@ function App(): JSX.Element {
       </PaperProvider>
     );
 }
+
 
 export default App;
