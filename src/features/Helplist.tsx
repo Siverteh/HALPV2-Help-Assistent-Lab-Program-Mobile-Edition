@@ -12,6 +12,7 @@ type Course = {
   nickname: string;
   description: string;
   isChecked: boolean;
+  room: string;
 }
 
 const updateCourse = async (updatedData: Course) => {
@@ -92,18 +93,37 @@ const Helplist = () => {
 
     const interval = setInterval(() => {
       getCourse();
-    }, 500);
+    }, 5000);
     return () => {
       clearInterval(interval);
     };
   }, []);
+
+  const updateCourse = async (updatedData: Course) => {
+    try {
+      var link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.id
+      const response = await fetch(link, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify([updatedData])
+      });
+      const json = await response.text().then(data => {
+        getCourse();
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
   return (
     <View style={[isDarkMode ? Styles.lm_background : Styles.dm_background, { height: windowHeight }]}>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}></View>
       <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
-      <Header title='Helplist' />
+
+      <Header textStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text]} title='Helplist' />
       <ScrollView style={{ flex: 1 }}>
         {data && data.length > 0 ? (
           <List.Section style={isDarkMode ? Styles.lm_background : Styles.dm_background}>
@@ -111,6 +131,9 @@ const Helplist = () => {
               <CustomAccordion
                 key={item.id}
                 title={item.nickname}
+                room={item.room}
+                roomstyle={[isDarkMode ? Styles.lm_text : Styles.dm_text]}
+                subtitleStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text]}
                 titleStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text,
                 { paddingHorizontal: 16, paddingVertical: 2, fontSize: 14 },
                 ]}
@@ -119,9 +142,10 @@ const Helplist = () => {
                 expanded={expanded.get(item.id) || false}
                 onPress={() => handleExpand(item.id)}
                 description={item.description}
-                descriptionStyle={{ paddingHorizontal: 2, paddingVertical: 5 }}
+                descriptionStyle={[isDarkMode ? Styles.lm_text : Styles.dm_text, { paddingHorizontal: 2, paddingVertical: 5 }]}
                 onCheck={() => handleCheck(item.id)}
                 checked={checked.get(item.id) || false}
+                iconColor={[isDarkMode ? Styles.lm_text : Styles.dm_text]}
               />
             ))}
           </List.Section>
