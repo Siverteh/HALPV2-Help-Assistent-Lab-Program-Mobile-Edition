@@ -8,12 +8,11 @@ import NavigationBar from "../Components/NavigationBar/NavigationBar";
 
 function App(): JSX.Element {
   return (
-      // <PaperProvider> // theme={paperTheme}>
       <PaperProvider>
         <NavigationContainer>
-          <NavigationBar isStudass={true}/>
+          <NavigationBar isStudass={false}/>
         </NavigationContainer>
-        </PaperProvider>
+      </PaperProvider>
     );
 }
 

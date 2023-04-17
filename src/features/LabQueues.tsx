@@ -44,7 +44,7 @@ const LabQueues = () => {
             mode="contained"
             contentStyle={{ flexDirection: 'row-reverse', height: screenHeight*0.08,  width: "100%" }}
             labelStyle={[textStyle, { fontSize: 20, textAlign: 'center' }]}
-            onPress={()=>console.log(item)}
+            onPress={()=> {}}
             key={item}
           >
             {item}

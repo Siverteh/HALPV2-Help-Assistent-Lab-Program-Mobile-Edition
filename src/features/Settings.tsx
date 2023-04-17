@@ -278,7 +278,7 @@ export default function Tabs() {
   const renderScene = ({ route }: { route: { key: string } }) => {
     switch (route.key) {
       case '1':
-        return <Settings isDarkMode={isDarkMode} />;
+        return <Settings />;
       case '2':
         return <TimeEdit isDarkMode={isDarkMode} />;
       case '3':

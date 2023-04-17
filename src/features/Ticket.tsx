@@ -2,7 +2,6 @@ import { Ticket as TicketProp } from "../types/ticket";
 import { TextInput, Button, Text } from "react-native-paper";
 import isEmpty from "lodash/isEmpty";
 import v from "lodash/values";
-import every from "lodash/every";
 import Styles from "../styles/styles";
 import * as React from "react";
 import { Dimensions, Image, useColorScheme, View } from "react-native";
@@ -12,7 +11,7 @@ const screenWidth = Dimensions.get("window").width;
 
 type Props = {
   ticket?: TicketProp
-  onSubmit: (ticket: TicketProp) => {}
+  onSubmit: (ticket: TicketProp) => void
 }
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
