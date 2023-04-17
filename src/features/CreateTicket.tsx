@@ -1,12 +1,16 @@
 import { Ticket } from "../types/ticket";
 import { TextInput, Button, Text } from "react-native-paper";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import isEmpty from "lodash/isEmpty";
 import v from "lodash/values";
-import every from "lodash/every";
 import Styles from "../styles/styles";
 import * as React from "react";
 import { Dimensions, Image, useColorScheme, View } from "react-native";
+import { DarkModeContext } from "../Components/GlobalHook";
+
+
+
+
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -21,8 +25,7 @@ const createTicket = ({ onSubmit, ticket, room }: Props) => {
   const [value, setValue] = React.useState<Ticket>({ description: "", name: "", room: "", ...ticket });
 
   const isValidValue = value && v(value).every(isEmpty);
-  const isDarkMode = false;
-  const stylePrefix = isDarkMode ? "dm" : "lm";
+
 
   const handleCreateTicket = async () => {
     console.log(JSON.stringify(value));
@@ -51,14 +54,16 @@ const createTicket = ({ onSubmit, ticket, room }: Props) => {
     }
   };
 
+  const { background, text, buttons  } = useContext(DarkModeContext)
   return (
-    <View style={[Styles[`${stylePrefix}_background`], { flex: 1, alignItems: "center" }]}>
+    
+    <View style={{backgroundColor: background, flex: 1, alignItems: "center"}}>
       <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
-      <Text style={[Styles[`${stylePrefix}_text`], { fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
+      <Text style={{color: text, fontSize: 24, paddingBottom: 0, marginBottom: "7%" }}>
         NEW TICKET
       </Text>
       <TextInput
-        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
+        style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
         mode={"outlined"}
         label="Name"
         outlineColor={"transparent"}
@@ -67,7 +72,7 @@ const createTicket = ({ onSubmit, ticket, room }: Props) => {
         onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, name: text }))}
       />
       <TextInput
-        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
+        style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
         mode={"outlined"}
         label="Room"
         outlineColor={"transparent"}
@@ -76,7 +81,7 @@ const createTicket = ({ onSubmit, ticket, room }: Props) => {
         onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, room: text }))}
       />
       <TextInput
-        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
+        style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
         mode={"outlined"}
         label={"Description"}
         outlineColor={"transparent"}
@@ -87,8 +92,9 @@ const createTicket = ({ onSubmit, ticket, room }: Props) => {
       />
 
       <Button
-        style={{ ...Styles[`${stylePrefix}_button`], width: 230, height: 50, margin: "2%" }}
-        labelStyle={Styles[`${stylePrefix}_textButton`]}
+        style={[Styles.buttonStyle,{backgroundColor: buttons.backgroundColor, width: 230, height: 50, margin: "2%" }]}
+        mode="contained"
+        labelStyle={Styles.buttonStyle}
         onPress={handleCreateTicket}
       >
         CREATE TICKET

@@ -3,6 +3,7 @@ type boxes = {
 }
 type  buttons = {
     backgroundColor: string,
+    queueButton: string
 }
 type textButton = {
     color: string,
@@ -13,17 +14,23 @@ type listItem_dark = {
 type listItem_light = {
     backgroundColor: string,
 }
+type outline = {
+    outlineColor: string,
+    activeOutlineColor: string,
+}
 
 
 export type Theme = {
     text: string
     background: string
-    outline: string
+    outline: outline
     boxes: boxes
     buttons:  buttons
     textButton: textButton
     listItem_dark: listItem_dark
     listItem_light: listItem_light
+    iconColor: string
+    checkUncheck: string
   };
 
 export type CustomTheme = {

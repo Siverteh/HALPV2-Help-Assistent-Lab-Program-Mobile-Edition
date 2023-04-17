@@ -1,4 +1,4 @@
-import React, {createContext} from "react";
+import React, { createContext } from "react";
 import { PropsWithChildren, useState } from "react";
 import {
   Dimensions,
@@ -40,18 +40,22 @@ function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = useState(theme.dark);
 
   const toggleDarkMode = () => {
+    console.log("pressed")
     setCurrentTheme(currentTheme === theme.light ? theme.dark : theme.light);
+    
   };
-
+ 
   return (
     <ScrollView>
-<DarkModeContext.Provider value={currentTheme}>
-    <Helplist></Helplist>
-    <Archive></Archive>
-</DarkModeContext.Provider>
-<Button onPress={toggleDarkMode}>Toggle dark mode</Button>
+      <View style={[{ height: screenHeight }]}>
+      <DarkModeContext.Provider value={currentTheme}>
+      <Register></Register>
+      
+      </DarkModeContext.Provider>
+      <Button onPress={toggleDarkMode}>Toggle dark mode</Button>
+      </View>
     </ScrollView>
-    );
+  );
 }
 
 

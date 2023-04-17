@@ -5,8 +5,10 @@
  * @format
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import type {PropsWithChildren} from 'react';
+import { DarkModeContext } from '../Components/GlobalHook';
+
 import {
   Image,
   StyleSheet,
@@ -22,7 +24,7 @@ import Styles from '../styles/styles';
 
 function Register(): JSX.Element {
   //const isDarkMode = useColorScheme() === 'dark';
-  const isDarkMode = false;
+  const { background, text, buttons, boxes, outline, iconColor, checkUncheck  } = useContext(DarkModeContext)
 
   const [checked, setChecked] = React.useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -48,18 +50,16 @@ function Register(): JSX.Element {
   }
 
   return (
-    <View style={
-        [isDarkMode ? Styles.dm_background : Styles.lm_background,
-        styles.view]}>
+    <View style={[styles.view, {backgroundColor: background}]}>
       <Image
       style={styles.image}
       source={require('.././img/halpy3.png')} />
       <TextInput style={styles.textInput}
-        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-        activeOutlineColor = {isDarkMode ? '#FFFFFF' : '#201C24'}
-        outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
-        theme={{ colors: { background: isDarkMode ? '#0070C0' : '#FFFFFF',
-                            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24' } }}
+        textColor={text}
+        activeOutlineColor = {outline.activeOutlineColor}
+        outlineColor = {outline.outlineColor}
+        theme={{ colors: { background: background,
+                            onSurfaceVariant: outline.outlineColor}}}
         label="Email Address"
         mode="outlined"
       />
@@ -67,16 +67,16 @@ function Register(): JSX.Element {
       <TextInput style={styles.textInput}
       label="Password"
       mode="outlined"
-      textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-      activeOutlineColor = {isDarkMode ? '#E0E0E0' : '#201C24'}
-      outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
+      textColor={text}
+      activeOutlineColor = {outline.activeOutlineColor}
+      outlineColor = {outline.outlineColor}
       secureTextEntry={secureTextEntry}
-      theme={{ colors: { background: isDarkMode ? '#0070C0' : '#FFFFFF',
-                        onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24' } }}
+      theme={{ colors: { background: background,
+                        onSurfaceVariant: outline.outlineColor} }}
       right={
         <TextInput.Icon
           icon="eye"
-          iconColor = {isDarkMode ? '#E0E0E0' : '#201C24'}
+          iconColor = {iconColor}
           onPress={() => {
             setSecureTextEntry(!secureTextEntry);
             return false;
@@ -87,19 +87,19 @@ function Register(): JSX.Element {
       <View style={{height:"2%"}}></View>
       <View style={{flexDirection: "row", justifyContent:"flex-start", width:"85%"}}>
         <Checkbox 
-        color={isDarkMode ? '#FFFFFF' : '#0070C0'}
-        uncheckedColor={isDarkMode ? '#FFFFFF' : '#201C24'}
+        color={checkUncheck}
+        uncheckedColor={outline.outlineColor}
         status={checked ? 'checked' : 'unchecked'}
         onPress={handleChecked}
         />
-        <Text style={[isDarkMode ? Styles.dm_text : Styles.lm_text, styles.text_sm]}>
+       <Text style={[styles.text_sm ,{color: text}]}>
             Remember me
         </Text>
       </View>
       <View style={{height:"2%"}}></View>
-      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "6%", width:"85%"}]}
+      <Button style={[Styles.buttonStyle,{backgroundColor: background, height: "6%", width:"85%"}]}
         mode="contained"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        textColor={text}
         contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
         onPress={handleLogin}>
         SIGN IN
@@ -107,25 +107,25 @@ function Register(): JSX.Element {
       <View style={{height:"1%"}}></View>
       <Button
         mode="text"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        textColor={text}
         onPress={handleForgottenPassword}>
           FORGOT YOUR PASSWORD?
       </Button>
       <Button
         mode="text"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        textColor={text}
         onPress={handleRegister}>
           REGISTER AS A USER
       </Button>
       <View style={{height:"4%"}}></View>
       <Text
-        style={[isDarkMode ? Styles.dm_text : Styles.lm_text, styles.text_lg]}>
+        style={[styles.text_lg, {color:text}]}>
           USE ANOTHER SERVICE TO LOG IN
       </Text>
       <View style={{height:"1%"}}></View>
-      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "6%", width:"85%"}]}
+      <Button style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor ,height: "6%", width:"85%"}]}
         mode="contained"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        textColor={text}
         onPress={handleDiscord}
         contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
         icon="discord">
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   view: {
     alignItems: "center",
     width: "100%",
-    height: "100%"
+    height: "95%"
     },
   textInput: {
     width: "85%"

@@ -7,7 +7,7 @@ const Styles = StyleSheet.create({
     height: "25%",
     resizeMode: "contain"
   },
-  boxeStyle: {
+  boxStyle: {
     padding: 0,
     borderRadius: 0,
   },
