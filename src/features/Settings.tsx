@@ -3,7 +3,7 @@ import { Button, Text, Modal, Portal, TextInput, List } from "react-native-paper
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View} from 'react-native';
 import * as React from 'react';
-import { CustomAccordion } from "../Components/CustomComponents";
+import DropDown from "react-native-paper-dropdown";
 import { useState } from "react";
 
 const Text_Input = ({isDarkMode}: {isDarkMode: boolean}, lable:string, defaultValue:string = '', password:boolean = false) => {
@@ -245,9 +245,55 @@ const TimeEdit = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
 
 const Roles = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
   const screenHeight = Dimensions.get("window").height;
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [showMultiSelectDropDown, setShowMultiSelectDropDown] = useState(false);
+  const [courseList, setCourseList] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+
+  const fetchCourse = async () => {
+    try {
+      const response = await fetch("https://chanv2.duckdns.org:7006/api/Courses/all");
+      const rooms = await response.json();
+      setCourseList(rooms);
+      console.log(rooms);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchCourse();
+  }, []);
+
+  const dropdownItems = courseList.map((courses) => {
+    return { value: courses, label: courses };
+  });
+
+
+
   return(
     <View style={[isDarkMode ? Styles.dm_background: Styles.lm_background, {justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
-  
+      <View style={{height:'5%', width:'90%', marginTop:'-120%'}}>
+        <DropDown
+          label={"Search by Course + Admin"}
+          mode={"outlined"}
+          visible={showDropDown}
+          showDropDown={() => setShowDropDown(true)}
+          onDismiss={() => setShowDropDown(false)}
+          value={selectedCourse}
+          setValue={setSelectedCourse}
+          list={dropdownItems}
+          dropDownContainerHeight={300}
+          theme={{colors: { background: isDarkMode ? "#0070C0" : "#94CCFF", text: isDarkMode ? 'white' : 'black', outline: 'transparent', onPrimary: 'red'}}}
+          dropDownItemStyle={{backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF"}}
+          dropDownItemTextStyle={{color: isDarkMode ? 'white' : 'black'}}
+          dropDownStyle={{backgroundColor: 'transparent'}}
+          dropDownItemSelectedStyle={{backgroundColor: isDarkMode ? "#004082" : "#FFFFFF"}}
+          dropDownItemSelectedTextStyle={{color: isDarkMode ? 'white' : 'black'}}
+
+          
+      />
+      </View>
     </View>
   );
 });
@@ -278,7 +324,7 @@ export default function Tabs() {
   const renderScene = ({ route }: { route: { key: string } }) => {
     switch (route.key) {
       case '1':
-        return <Settings isDarkMode={isDarkMode} />;
+        return <Settings/>;
       case '2':
         return <TimeEdit isDarkMode={isDarkMode} />;
       case '3':
