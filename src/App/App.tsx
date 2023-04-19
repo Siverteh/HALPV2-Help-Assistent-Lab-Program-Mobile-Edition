@@ -19,7 +19,10 @@ function App(): JSX.Element {
       <PaperProvider>
         <DarkModeContext.Provider value={currentTheme}>
         <NavigationContainer>
-          <NavigationBar isStudass={false}/>
+          <NavigationBar
+            isStudass={false}
+            isLoggedIn={true}
+            />
         </NavigationContainer>
         </DarkModeContext.Provider>
         <Button onPress={toggleDarkMode}>Toggle dark mode</Button>

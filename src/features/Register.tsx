@@ -38,8 +38,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
       console.log(response.status);
 
       if (response.ok) {
-        console.log('Registration successful:', data);
-        navigation.navigate("Login");
+        navigation.navigate("LoginScreen");
       } else {
         console.log('Registration failed:', data);
       }

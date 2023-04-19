@@ -11,13 +11,8 @@ import { DarkModeContext } from "../Components/GlobalHook";
 
 const screenHeight = Dimensions.get('window').height;
 
-
-
-const LabQueues = ({route, navigation}: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
-  const { background, text, boxes  } = useContext(DarkModeContext)
-  const {name, room} = route.params;
-
-  console.log("queue: ", name)
+const LabQueues = ({navigation}: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
+    const { background, text, boxes  } = useContext(DarkModeContext)
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
     const [newCours, setNewCours] = useState([]);
