@@ -15,7 +15,7 @@ import { isEmpty } from 'lodash';
   
 function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
 
-  const isDarkMode = false;
+  const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(DarkModeContext)
 
   const [value, setValue] = useState<LoginType>()
   const [validation, setValidation] = useState({password: false, email: false})
@@ -65,7 +65,6 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
       setValidation(prev => {return {...prev, [name]: true}})
     }
   }
-  const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(DarkModeContext)
 
   const handleChange = (name: string) => (text: string) => {
     setValue((prev) => {return {...prev, [name]: text} as any})
