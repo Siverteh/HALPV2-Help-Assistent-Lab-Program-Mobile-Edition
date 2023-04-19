@@ -10,18 +10,16 @@ function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = useState(theme.dark);
 
   const toggleDarkMode = () => {
-    console.log("pressed")
-    setCurrentTheme(currentTheme === theme.light ? theme.dark : theme.light);
-    
-  };
+    setCurrentTheme(currentTheme === theme.light ? theme.dark : theme.light)
+  }
  
   return (
       <PaperProvider>
         <DarkModeContext.Provider value={currentTheme}>
         <NavigationContainer>
           <NavigationBar
-            isStudass={false}
-            isLoggedIn={true}
+            isStudass={true}
+            isLoggedIn={false}
             />
         </NavigationContainer>
         </DarkModeContext.Provider>
