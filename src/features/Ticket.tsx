@@ -1,6 +1,6 @@
 import { Ticket as TicketProp} from "../types/ticket";
 import { TextInput, Button, Text, List } from "react-native-paper";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import isEmpty from "lodash/isEmpty";
 import v from "lodash/values";
 import Styles from "../styles/styles";
@@ -8,6 +8,8 @@ import * as React from "react";
 import { Dimensions, Image, useColorScheme, View } from "react-native";
 import CustomDropDown from "../Components/CustomComponents";
 import DropDown from "react-native-paper-dropdown";
+import { DarkModeContext } from '../Components/GlobalHook';
+
 
 
 const screenHeight = Dimensions.get("window").height;
@@ -20,6 +22,7 @@ type Props = {
 
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
+    const { background, text, buttons, boxes, text2 } = useContext(DarkModeContext)
     const [value, setValue] = React.useState<TicketProp>({ description: "", name: "", room: "", ...ticket });
 
     const isValidValue = value && v(value).every(isEmpty);
@@ -57,13 +60,13 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
 
 
     return (
-      <View style={[Styles[`${stylePrefix}_background`], { flex: 1, alignItems: "center" }]}>
+      <View style={[{backgroundColor: background, flex: 1, alignItems: "center" }]}>
         <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
-        <Text style={[Styles[`${stylePrefix}_text`], { fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
+        <Text style={[{color: text,  fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
           {ticket ? 'EDIT TICKET':  'NEW TICKET'}
         </Text>
         <TextInput
-          style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
+          style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
           mode={"outlined"}
           label="Name"
           outlineColor={"transparent"}
@@ -87,17 +90,17 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             list={dropdownItems}
             activeColor={"grey"}
             dropDownContainerHeight={300}
-            theme={{colors: { background: isDarkMode ? "#0070C0" : "#FFFFFF", text: isDarkMode ? 'white' : 'black', outline: 'transparent', onPrimary: 'red'}}}
-            dropDownItemStyle={{backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF"}}
-            dropDownItemTextStyle={{color: isDarkMode ? 'white' : 'black'}}
+            theme={{colors: { background: text, text: text, outline: 'transparent', onPrimary: 'red'}}}
+            dropDownItemStyle={{backgroundColor: buttons.backgroundColor}}
+            dropDownItemTextStyle={{color: text}}
             dropDownStyle={{backgroundColor: 'transparent'}}
-            dropDownItemSelectedStyle={{backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF"}}
-            dropDownItemSelectedTextStyle={{color: isDarkMode ? 'white' : 'black'}}
+            dropDownItemSelectedStyle={{backgroundColor: buttons.backgroundColor}}
+            dropDownItemSelectedTextStyle={{color: text}}
           />
 
         </View>
         <TextInput
-          style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
+          style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
           mode={"outlined"}
           label={"Description"}
           outlineColor={"transparent"}
@@ -108,8 +111,8 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         />
 
         <Button
-          style={{ ...Styles[`${stylePrefix}_button`], width: 230, height: 50, margin: "2%" }}
-          labelStyle={Styles[`${stylePrefix}_textButton`]}
+        style={[Styles.buttonStyle,{backgroundColor: buttons.backgroundColor, width: 230, height: 50, margin: "2%" }]}
+        labelStyle={[Styles.buttonStyle, {color: text}]}
           onPress={handleCreateTicket}
         >
          {ticket ? 'SAVE TICKET':  'CREATE TICKET'}

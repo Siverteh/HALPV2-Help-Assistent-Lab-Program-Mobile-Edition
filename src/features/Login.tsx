@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext  } from 'react';
 import {
   Image,
   StyleSheet,
@@ -6,13 +6,12 @@ import {
   View,
 } from 'react-native';
 import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
-
+import { DarkModeContext } from '../Components/GlobalHook';
 import Styles from '../styles/styles';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList, Login as LoginType } from '../types';
 import { isEmpty } from 'lodash';
-
   
 function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
 
@@ -66,6 +65,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
       setValidation(prev => {return {...prev, [name]: true}})
     }
   }
+  const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(DarkModeContext)
 
   const handleChange = (name: string) => (text: string) => {
     setValue((prev) => {return {...prev, [name]: text} as any})
@@ -81,18 +81,17 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
 
   return (
     <View style={
-        [isDarkMode ? Styles.dm_background : Styles.lm_background,
-        styles.view]}>
+        [Styles.view, {backgroundColor: background}]}>
       <Image
-      style={styles.image}
+      style={Styles.image}
       source={require('.././img/halpy3.png')} />
-      <TextInput
-        style={styles.textInput}
-        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-        activeOutlineColor = {isDarkMode ? '#FFFFFF' : '#201C24'}
-        outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
-        theme={{ colors: { background: isDarkMode ? '#0070C0' : '#FFFFFF',
-                            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24' } }}
+
+      <TextInput style={Styles.textInput}
+        textColor={text}
+        activeOutlineColor = {outline.activeOutlineColor}
+        outlineColor = {outline.outlineColor}
+        theme={{ colors: { background: background,
+                            onSurfaceVariant: outline.outlineColor}}}
         label="Email Address"
         mode="outlined"
         value={value?.email ?? ''}
@@ -101,19 +100,19 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
         error={validation.email}
       />
       <View style={{height:"2%"}}></View>
-      <TextInput style={styles.textInput}
+      <TextInput style={Styles.textInput}
       label="Password"
       mode="outlined"
-      textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-      activeOutlineColor = {isDarkMode ? '#E0E0E0' : '#201C24'}
-      outlineColor = {isDarkMode ? '#0070C0' : '#201C24'}
+      textColor={text}
+      activeOutlineColor = {outline.activeOutlineColor}
+      outlineColor = {outline.outlineColor}
       secureTextEntry={secureTextEntry}
-      theme={{ colors: { background: isDarkMode ? '#0070C0' : '#FFFFFF',
-                        onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24' } }}
+      theme={{ colors: { background: background,
+                        onSurfaceVariant: outline.outlineColor} }}
       right={
         <TextInput.Icon
           icon="eye"
-          iconColor = {isDarkMode ? '#E0E0E0' : '#201C24'}
+          iconColor = {iconColor}
           onPress={() => {
             setSecureTextEntry(!secureTextEntry);
             return false;
@@ -128,19 +127,19 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
       <View style={{height:"2%"}}></View>
       <View style={{flexDirection: "row", justifyContent:"flex-start", width:"85%"}}>
         <Checkbox 
-        color={isDarkMode ? '#FFFFFF' : '#0070C0'}
-        uncheckedColor={isDarkMode ? '#FFFFFF' : '#201C24'}
+        color={checkUncheck}
+        uncheckedColor={outline.outlineColor}
         status={checked ? 'checked' : 'unchecked'}
         onPress={handleChecked}
         />
-        <Text style={[isDarkMode ? Styles.dm_text : Styles.lm_text, styles.text_sm]}>
+        <Text style={[Styles.text_sm ,{color: text}]}>
             Remember me
         </Text>
       </View>
       <View style={{height:"2%"}}></View>
-      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "6%", width:"85%"}]}
+      <Button style={[Styles.buttonStyle,{backgroundColor: background, height: "6%", width:"85%"}]}
         mode="contained"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        textColor={text}
         contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
         onPress={handleLogin}
         disabled={Object.values(validation).some(v => v === false)}
@@ -150,25 +149,25 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
       <View style={{height:"1%"}}></View>
       <Button
         mode="text"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        textColor={text}
         onPress={handleForgottenPassword}>
           FORGOT YOUR PASSWORD?
       </Button>
       <Button
         mode="text"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        textColor={text}
         onPress={handleRegister}>
           REGISTER AS A USER
       </Button>
       <View style={{height:"4%"}}></View>
       <Text
-        style={[isDarkMode ? Styles.dm_text : Styles.lm_text, styles.text_lg]}>
+        style={[Styles.text_lg, {color:text}]}>
           USE ANOTHER SERVICE TO LOG IN
       </Text>
       <View style={{height:"1%"}}></View>
-      <Button style={[isDarkMode ? Styles.dm_button : Styles.lm_button, {height: "6%", width:"85%"}]}
+      <Button style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor ,height: "6%", width:"85%"}]}
         mode="contained"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        textColor={text}
         onPress={handleDiscord}
         contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
         icon="discord">
@@ -177,32 +176,5 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  view: {
-    alignItems: "center",
-    width: "100%",
-    height: "100%"
-    },
-  textInput: {
-    width: "85%"
-  },
-  text_lg: {
-    fontWeight: "bold",
-    alignItems: "center",
-    textAlign: "center"
-    },
-  text_sm: {
-    alignSelf: "center",
-    textAlignVertical: "center",
-  },
-  image: {
-    alignSelf: "center",
-    width: "100%",
-    height: "25%",
-    aspectRatio:1
-  }
-});
-
 
 export default Login;
