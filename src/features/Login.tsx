@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
-import { DarkModeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/GlobalHook';
 import Styles from '../styles/styles';
 
 import { StackScreenProps } from '@react-navigation/stack';
@@ -15,7 +15,7 @@ import { isEmpty } from 'lodash';
   
 function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
 
-  const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(DarkModeContext)
+  const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(ThemeContext)
 
   const [value, setValue] = useState<LoginType>()
   const [validation, setValidation] = useState({password: false, email: false})

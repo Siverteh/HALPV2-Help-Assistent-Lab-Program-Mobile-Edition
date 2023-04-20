@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { DarkModeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/GlobalHook';
 
 import {
   Image,
@@ -12,7 +12,7 @@ import { RootStackParamList } from '../types';
   
 
 function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
-  const { background, text, buttons, boxes, outline, iconColor, checkUncheck } = useContext(DarkModeContext)
+  const { background, text, buttons, boxes, outline, iconColor, checkUncheck } = useContext(ThemeContext)
 
 
   // States for form fields

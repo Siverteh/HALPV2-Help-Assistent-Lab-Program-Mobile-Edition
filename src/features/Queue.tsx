@@ -6,14 +6,14 @@ import { Dimensions } from 'react-native';
 import Styles from '../styles/styles';
 import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
-import { DarkModeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/GlobalHook';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
 const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Queue'>) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const { background, text, buttons, boxes  } = useContext(DarkModeContext)
+  const { background, text, buttons, boxes  } = useContext(ThemeContext)
 
   const ticket = route.params;
 

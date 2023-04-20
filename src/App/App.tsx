@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Provider as PaperProvider, Button } from "react-native-paper";
 import NavigationBar from "../Components/NavigationBar/NavigationBar";
 import { NavigationContainer } from '@react-navigation/native';
-import { DarkModeContext } from "../Components/GlobalHook";
+import { ThemeContext } from "../Components/GlobalHook";
 import { theme } from "../styles/theme";
 
 
@@ -15,14 +15,14 @@ function App(): JSX.Element {
  
   return (
       <PaperProvider>
-        <DarkModeContext.Provider value={currentTheme}>
+        <ThemeContext.Provider value={currentTheme}>
         <NavigationContainer>
           <NavigationBar
             isStudass={true}
             isLoggedIn={false}
             />
         </NavigationContainer>
-        </DarkModeContext.Provider>
+        </ThemeContext.Provider>
         <Button onPress={toggleDarkMode}>Toggle dark mode</Button>
       </PaperProvider>
     );

@@ -7,14 +7,14 @@ import Styles from '../styles/styles';
 import { useState, useContext } from "react";
 import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
-import { DarkModeContext } from "../Components/GlobalHook";
+import { ThemeContext } from "../Components/GlobalHook";
 
 const screenHeight = Dimensions.get('window').height;
 
 
 const LabQueues = ({ navigation}: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
-  const { background, text, boxes  } = useContext(DarkModeContext)
-  
+  const { background, text, boxes  } = useContext(ThemeContext)
+
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
     const [newCours, setNewCours] = useState([]);

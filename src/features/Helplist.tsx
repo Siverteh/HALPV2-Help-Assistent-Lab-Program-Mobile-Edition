@@ -6,7 +6,7 @@ import Styles from "../styles/styles";
 import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react';
 import { Dimensions } from 'react-native';
-import { DarkModeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/GlobalHook';
 
 type Course = {
   id: string;
@@ -36,13 +36,11 @@ const updateCourse = async (updatedData: Course) => {
 const Helplist = () => {
   const windowHeight = Dimensions.get('window').height;
 
-  const isDarkMode = true;
-
   const [checked, setChecked] = useState(new Map());
   const [expanded, setExpanded] = useState(new Map());
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<Course[]>([]);
-  const { background, text, listItem_dark, listItem_light  } = useContext(DarkModeContext)
+  const { background, text, listItem_dark, listItem_light  } = useContext(ThemeContext)
 
 
   const handleCheck = async (id: string) => {
