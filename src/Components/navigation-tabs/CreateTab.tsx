@@ -2,8 +2,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CreateTicket from '../../features/CreateTicket';
 import EditTicket from '../../features/EditTicket';
 import Queue from '../../features/Queue';
+import { RootStackParamList } from '../../types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const CreateTab = () => {
   return (
