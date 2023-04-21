@@ -3,28 +3,28 @@ import { Provider as PaperProvider, Button } from "react-native-paper";
 import NavigationBar from "../Components/NavigationBar/NavigationBar";
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeContext } from "../Components/GlobalHook";
-import { theme } from "../styles/theme";
+import { themeHook } from "../hook/themeHook";
+import { Provider } from 'react-redux'
+// import { store } from "./store";
 
 
 function App(): JSX.Element {
-  const [currentTheme, setCurrentTheme] = useState(theme.dark);
-
-  const toggleDarkMode = () => {
-    setCurrentTheme(currentTheme === theme.light ? theme.dark : theme.light)
-  }
- 
+  const {onChangeTheme, theme}  = themeHook()
+  console.log('test: ', theme)
   return (
+    // <Provider store={store}>
       <PaperProvider>
-        <ThemeContext.Provider value={currentTheme}>
+        <ThemeContext.Provider value={theme}>
         <NavigationContainer>
           <NavigationBar
-            isStudass={false}
+            isStudass={true}
             isLoggedIn={false}
             />
         </NavigationContainer>
         </ThemeContext.Provider>
-        <Button onPress={toggleDarkMode}>Toggle dark mode</Button>
+        
       </PaperProvider>
+      // </Provider>
     );
 }
 

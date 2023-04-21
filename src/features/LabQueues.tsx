@@ -8,12 +8,14 @@ import { useState, useContext } from "react";
 import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from "../Components/GlobalHook";
+import { themeHook } from '../hook/themeHook';
 
 const screenHeight = Dimensions.get('window').height;
 
 
 const LabQueues = ({ navigation}: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
   const { background, text, boxes  } = useContext(ThemeContext)
+  const { onChangeTheme} = themeHook()
 
     const colorScheme = useColorScheme();
     const isDarkMode = colorScheme === 'dark';
@@ -60,6 +62,8 @@ const LabQueues = ({ navigation}: StackScreenProps<RootStackParamList, 'LabQueue
   
       return (
         <View style={[{backgroundColor: background, flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 0, paddingBottom: '7%' }]}>
+            
+            <Button onPress={onChangeTheme}>Toggle dark mode</Button>
             <Image source={require('.././img/halpy3.png')} style={Styles.logo} />
             <View style={[Styles.boxStyle, {backgroundColor: boxes.backgroundColor, alignItems: 'center', width: '90%', height: '70%', borderRadius: 20}]}>
                 <View style={{height:"5%"}}/>
