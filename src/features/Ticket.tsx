@@ -1,8 +1,6 @@
 import { Ticket as TicketProp} from "../types/ticket";
-import { TextInput, Button, Text, List } from "react-native-paper";
+import { TextInput, Button, Text } from "react-native-paper";
 import { useState, useContext } from "react";
-import isEmpty from "lodash/isEmpty";
-import v from "lodash/values";
 import Styles from "../styles/styles";
 import * as React from "react";
 import { Image, View } from "react-native";
@@ -19,10 +17,6 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     const { background, text, buttons } = useContext(ThemeContext)
     const [value, setValue] = React.useState<TicketProp>({ description: "", name: "", room: "", ...ticket });
 
-    const isValidValue = value && v(value).every(isEmpty);
-    const isDarkMode = false;
-    const stylePrefix = isDarkMode ? "dm" : "lm";
-
     const [showDropDown, setShowDropDown] = useState(false);
     const [roomList, setRoomList] = useState([]);
 
@@ -31,7 +25,6 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         .then(response => response.json())
         .then(rooms => {
           setRoomList(rooms);
-          console.log(rooms);
         })
         .catch(error => {
           console.error(error);

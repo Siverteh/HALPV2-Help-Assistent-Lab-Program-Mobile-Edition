@@ -7,18 +7,18 @@ const EditTicket = ({ route, navigation }: StackScreenProps<RootStackParamList, 
 
     const ticket = route.params;
 
-    const handleSubmit = async (ticket: TicketProp) => {
+    const handleSubmit = async (ticketProp: TicketProp) => {
 
           fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
-              method: "POST",
+              method: "PUT",
               headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Cache-Control": "no-cache"
               },
-              body: JSON.stringify(ticket)
+              body: JSON.stringify(ticketProp)
             })
-            .then(() => navigation.navigate('Queue', ticket))
+            .then(() => navigation.navigate('Queue', {...ticketProp, id: ticket.id}))
             .catch((error) => {
             console.error(error);
           })
