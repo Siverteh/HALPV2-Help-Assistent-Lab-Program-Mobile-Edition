@@ -1,50 +1,33 @@
-import React from "react";
-import { PropsWithChildren, useState } from "react";
-import {
-  Dimensions,
-  ScrollView,
-  useColorScheme,
-  View
-} from "react-native";
-import {
-  Provider as PaperProvider,
-  Button,
-  Provider
-} from "react-native-paper";
+import React, { useState } from "react";
+import { Provider as PaperProvider, Button } from "react-native-paper";
+import NavigationBar from "../Components/NavigationBar/NavigationBar";
+import { NavigationContainer } from '@react-navigation/native';
+import { DarkModeContext } from "../Components/GlobalHook";
+import { theme } from "../styles/theme";
 
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions
-} from "react-native/Libraries/NewAppScreen";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-
-import Styles from "../styles/styles";
-
-import CreateTicket from "../features/CreateTicket";
-import Queue from "../features/Queue";
-import Tabs from "../features/Settings";
-import Login from "../features/Login";
-import Helplist from "../features/Helplist";
-import Archive from "../features/Archive";
-import Register from "../features/Register";
-import Ticket from "../features/Ticket";
-import LabQueues from "../features/LabQueues";
 
 function App(): JSX.Element {
+  const [currentTheme, setCurrentTheme] = useState(theme.dark);
 
-  const screenHeight = Dimensions.get("window").height;
+  const toggleDarkMode = () => {
+    console.log("pressed")
+    setCurrentTheme(currentTheme === theme.light ? theme.dark : theme.light);
+    
+  };
+ 
   return (
-    <PaperProvider>
-        <View style={[{ height: screenHeight }]}>
-          <Tabs/>
-
-        </View>
-    </PaperProvider>
-  );
+      <PaperProvider>
+        <DarkModeContext.Provider value={currentTheme}>
+        <NavigationContainer>
+          <NavigationBar
+            isStudass={false}
+            isLoggedIn={false}
+            />
+        </NavigationContainer>
+        </DarkModeContext.Provider>
+        <Button onPress={toggleDarkMode}>Toggle dark mode</Button>
+      </PaperProvider>
+    );
 }
 
 

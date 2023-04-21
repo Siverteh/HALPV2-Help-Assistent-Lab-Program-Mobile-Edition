@@ -1,23 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { DarkModeContext } from '../Components/GlobalHook';
+
 import {
   Image,
   View,
 } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
-import { StackNavigationProp } from '@react-navigation/stack';
-
-
-type RegisterScreenNavigationProp = StackNavigationProp<any, 'Register'>;
-
-interface RegisterProps {
-    navigation: RegisterScreenNavigationProp;
-  }
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../types';
   
 
-function Register({ navigation }: RegisterProps): JSX.Element {
-  const isDarkMode = false;
-  const stylePrefix = isDarkMode ? "dm" : "lm";
+function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
+  const { background, text, buttons, boxes, outline, iconColor, checkUncheck } = useContext(DarkModeContext)
+
 
   // States for form fields
   const [email, setEmail] = useState('');
@@ -42,8 +38,7 @@ function Register({ navigation }: RegisterProps): JSX.Element {
       console.log(response.status);
 
       if (response.ok) {
-        console.log('Registration successful:', data);
-        navigation.navigate("Login");
+        navigation.navigate("LoginScreen");
       } else {
         console.log('Registration failed:', data);
       }
@@ -51,77 +46,79 @@ function Register({ navigation }: RegisterProps): JSX.Element {
       console.error('Error:', error);
     }
   };
-  
+
   return (
-    <View style={[Styles[`${stylePrefix}_background`], { flex: 1, alignItems: "center" }]}>
-      <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
-      <TextInput
-        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", height: 50, margin: "1%", marginBottom: -10 }}
-        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-        activeOutlineColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-        outlineColor={isDarkMode ? '#0070C0' : '#201C24'}
-        onChangeText={text => setEmail(text)}
+    <View style={[Styles.view, { backgroundColor: background }]}>
+      <Image
+        style={Styles.image}
+        source={require('.././img/halpy3.png')} />
+      <TextInput style={Styles.textInput}
+        textColor={text}
+        activeOutlineColor={outline.activeOutlineColor}
+        outlineColor={outline.outlineColor}
         theme={{
           colors: {
-            background: isDarkMode ? '#0070C0' : '#FFFFFF',
-            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24',
-          },
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
         }}
         label="Email Address"
         mode="outlined"
       />
-      <View style={{height: "2%"}}></View>
+      <View style={{ height: "2%" }}></View>
       <TextInput
-        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", height: 50, margin: "2%", marginBottom: -10 }}
+        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
         label="Nickname"
         mode="outlined"
-        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-        activeOutlineColor={isDarkMode ? '#E0E0E0' : '#201C24'}
-        outlineColor={isDarkMode ? '#0070C0' : '#201C24'}
+        textColor={text}
+        activeOutlineColor={outline.activeOutlineColor}
+        outlineColor={outline.outlineColor}
+
         onChangeText={text => setUsername(text)}
         theme={{
           colors: {
-            background: isDarkMode ? '#0070C0' : '#FFFFFF',
-            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24',
-          },
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
         }}
       />
-      <View style={{height: "2%"}}></View>
+      <View style={{ height: "2%" }}></View>
       <TextInput
-        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", height: 50, margin: "2%", marginBottom: -10 }}
+       style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
         label="Discord Tag"
         mode="outlined"
-        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-        activeOutlineColor={isDarkMode ? '#E0E0E0' : '#201C24'}
-        outlineColor={isDarkMode ? '#0070C0' : '#201C24'}
+        textColor={text}
+        activeOutlineColor={outline.activeOutlineColor}
+        outlineColor={outline.outlineColor}
         onChangeText={text => setDiscordtag(text)}
         theme={{
           colors: {
-            background: isDarkMode ? '#0070C0' : '#FFFFFF',
-            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24',
-          },
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
         }}
       />
-      <View style={{height: "2%"}}></View>
+      <View style={{ height: "2%" }}></View>
       <TextInput
-        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", height: 50, margin: "2%", marginBottom: -10 }}
+       style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
         label="Password"
         mode="outlined"
-        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-        activeOutlineColor={isDarkMode ? '#E0E0E0' : '#201C24'}
-        outlineColor={isDarkMode ? '#0070C0' : '#201C24'}
+        textColor={text}
+        activeOutlineColor={outline.activeOutlineColor}
+        outlineColor={outline.outlineColor}
+
         onChangeText={text => setPassword(text)}
         secureTextEntry={secureTextEntry}
         theme={{
           colors: {
-            background: isDarkMode ? '#0070C0' : '#FFFFFF',
-            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24',
-          },
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
         }}
         right={
           <TextInput.Icon
             icon="eye"
-            iconColor={isDarkMode ? '#E0E0E0' : '#201C24'}
+            iconColor={iconColor}
             onPress={() => {
               setSecureTextEntry(!secureTextEntry);
               return false;
@@ -129,28 +126,30 @@ function Register({ navigation }: RegisterProps): JSX.Element {
           />
         }
       />
-      <View style={{height: "2%"}}></View>
+      <View style={{ height: "2%" }}></View>
       <TextInput
-        style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", height: 50, margin: "2%", marginBottom: 10 }}
+        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
         label="Confirm Password"
         mode="outlined"
-        textColor={isDarkMode ? '#FFFFFF' : '#201C24'}
-        activeOutlineColor={isDarkMode ? '#E0E0E0' : '#201C24'}
-        outlineColor={isDarkMode ? '#0070C0' : '#201C24'}
+        textColor={text}
+        activeOutlineColor={outline.activeOutlineColor}
+        outlineColor={outline.outlineColor}
+
         secureTextEntry={secureConfirmTextEntry}
         theme={{
           colors: {
-            background: isDarkMode ? '#0070C0' : '#FFFFFF',
-            onSurfaceVariant: isDarkMode ? '#FFFFFF' : '#201C24',
-          },
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
         }}
+
         right={
           <TextInput.Icon
             icon="eye"
-            iconColor={isDarkMode ? '#E0E0E0' : '#201C24'}
+            iconColor={iconColor}
             onPress={() => {
-                setSecureConfirmTextEntry(!secureConfirmTextEntry);
-                return false;
+              setSecureConfirmTextEntry(!secureConfirmTextEntry);
+              return false;
             }}
           />
         }
@@ -158,11 +157,11 @@ function Register({ navigation }: RegisterProps): JSX.Element {
       <View style={{ height: "8%" }}></View>
       <Button
         style={[
-          isDarkMode ? Styles.dm_button : Styles.lm_button,
-          { height: "8%", width: "40%", alignSelf: "center" },
+          Styles.buttonStyle,
+          {backgroundColor: buttons.backgroundColor, height: "8%", width: "40%", alignSelf: "center" },
         ]}
         mode="contained"
-        textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
+        textColor={text}
         contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
         onPress={handleRegister}
       >
