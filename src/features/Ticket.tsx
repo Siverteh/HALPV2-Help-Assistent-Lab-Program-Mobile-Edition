@@ -20,13 +20,19 @@ type Props = {
 
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
+    const [open, setOpen] = useState(false);
+    //const [value, setValue] = useState(null);
+    const [items, setItems] = useState([
+      { label: "Apple", value: "apple" },
+      { label: "Banana", value: "banana" }
+    ]);
+
     const [value, setValue] = React.useState<TicketProp>({ description: "", name: "", room: "", ...ticket });
-    const [validation, setValidation] = React.useState({ description: false, name: false, room: false})
+    const [validation, setValidation] = React.useState({ description: false, name: false, room: false });
     const isDarkMode = false;
     const stylePrefix = isDarkMode ? "dm" : "lm";
 
     const [showDropDown, setShowDropDown] = useState(false);
-    const [showMultiSelectDropDown, setShowMultiSelectDropDown] = useState(false);
     const [roomList, setRoomList] = useState([]);
 
     const fetchRooms = async () => {
@@ -51,19 +57,21 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
 
     const handleBlur = (name: string, text: string) => {
       if (isEmpty(text)) {
-        setValidation((prevState) => {return {...prevState, [name]: true} as any})
+        setValidation((prevState) => {
+          return { ...prevState, [name]: true } as any;
+        });
       }
     };
 
-    const handleChange = (name: string) => (text: string) =>  {
-        setValue((prevValue) => ({ ...prevValue, [name]: text }))
+    const handleChange = (name: string) => (text: string) => {
+      setValue((prevValue) => ({ ...prevValue, [name]: text }));
       if (!isEmpty(text)) {
         setValidation(prevState => {
-          return { ...prevState, [name]: false }
-        })
+          return { ...prevState, [name]: false };
+        });
       }
 
-    }
+    };
 
     const handleCreateTicket = async () => {
       console.log(JSON.stringify(value));
@@ -106,7 +114,9 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           outlineColor={"transparent"}
           activeOutlineColor={"grey"}
           value={value.name}
-          onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, name: text }))}
+          onChangeText={handleChange("name")}
+          onBlur={() => handleBlur("name", value?.name)}
+          error={validation?.name}
         />
         <View
           style={{
@@ -124,6 +134,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             list={dropdownItems}
             activeColor={"grey"}
             dropDownContainerHeight={300}
+
             theme={{
               colors: {
                 background: isDarkMode ? "#0070C0" : "#FFFFFF",
@@ -148,8 +159,8 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           activeOutlineColor={"grey"}
           value={value.description}
           multiline={true}
-          onChangeText={handleChange('description')}
-          onBlur={() => handleBlur('description', value?.description)}
+          onChangeText={handleChange("description")}
+          onBlur={() => handleBlur("description", value?.description)}
           error={validation?.description}
         />
 
