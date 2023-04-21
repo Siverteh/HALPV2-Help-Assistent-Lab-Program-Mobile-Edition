@@ -278,7 +278,6 @@ const Roles = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
       const response = await fetch("https://chanv2.duckdns.org:7006/api/User/all");
       const users = await response.json();
       setUserData(users);
-      console.log(users);
     } catch (error) {
       console.error(error);
     }
@@ -294,13 +293,16 @@ const Roles = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
     ...courseList.map((course) => ({ value: course, label: course })),
   ];
 
-  const handleCheckboxChange = (itemId: string) => {
+  const handleCheckboxChange = (itemId: string, selectedCourse: string) => {
     const item = userData.find((user) => user.id === itemId);
     if (!item) {
       return;
     }
-  
-    const endpoint = item.isAdmin ? "admin" : "studass";
+    let tmp = false;
+    if (selectedCourse === "admin") {
+      tmp = true;
+    }
+    const endpoint = tmp ? "admin" : "studass";
     const url = `https://chanv2.duckdns.org:7006/api/Roles/${endpoint}`;
     const isChecked = (selectedCourse && item.courses.includes(selectedCourse)) || item.isAdmin;
     const data = {
@@ -308,7 +310,6 @@ const Roles = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
       course: selectedCourse,
       set: isChecked ? false : !checkedItems[itemId],
     };
-    console.log(data)
   
     fetch(url, {
       method: "PUT",
@@ -359,7 +360,7 @@ const Roles = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
           </Text>
           <Checkbox
             status={isChecked ? "checked" : "unchecked"}
-            onPress={() => handleCheckboxChange(item.id)}
+            onPress={() => handleCheckboxChange(item.id, selectedCourse)}
           />
         </View>
       </View>
