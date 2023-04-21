@@ -103,6 +103,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       } catch (error) {
         console.error(error);
       }
+      setValue({ description: "", name: "", room: '' });
     };
 
 
