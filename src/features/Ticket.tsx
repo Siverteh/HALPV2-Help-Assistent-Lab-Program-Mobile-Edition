@@ -21,7 +21,7 @@ type Props = {
 
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
-    const { background, text, buttons, boxes } = useContext(DarkModeContext);
+    const { background, text, buttons, boxes, outline } = useContext(DarkModeContext);
     const [open, setOpen] = useState(false);
     //const [value, setValue] = useState(null);
     const [items, setItems] = useState([
@@ -76,6 +76,9 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     };
 
     const handleCreateTicket = async () => {
+      if (validation.name || validation.description || validation.room){
+        return;
+      }
       console.log(JSON.stringify(value));
       onSubmit({ name: "", description: "", room: "" }); //bare for test
       try {
@@ -104,17 +107,21 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
 
 
     return (
-      <View style={{backgroundColor: background, flex: 1, alignItems: "center" }}>
+      <View style={{ backgroundColor: background, flex: 1, alignItems: "center" }}>
         <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
-        <Text style={{color: text, fontSize: 24, paddingBottom: 0, marginBottom: "7%" }}>
+        <Text style={{ color: text, fontSize: 24, paddingBottom: 0, marginBottom: "7%" }}>
           {ticket ? "EDIT TICKET" : "NEW TICKET"}
         </Text>
         <TextInput
-          style={[Styles.boxStyle, {outline: "red",color: text, width: "85%", margin: "2%"}]}
+          style={[{ backgroundColor: boxes.backgroundColor, width: "85%", margin: "2%" }]}
+          textColor={text}
+          theme={{
+            colors: { background: background, onSurfaceVariant: outline.outlineColor }
+          }}
           mode={"outlined"}
           label="Name"
-          outlineColor={"transparent"}
-          activeOutlineColor={"grey"}
+          outlineColor={outline.outlineColor}
+          activeOutlineColor={outline.outlineColor}
           value={value.name}
           onChangeText={handleChange("name")}
           onBlur={() => handleBlur("name", value?.name)}
@@ -139,36 +146,34 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
 
             theme={{
               colors: {
-                background: isDarkMode ? "#0070C0" : "#FFFFFF",
-                text: isDarkMode ? "white" : "black",
-                outline: "transparent",
-                onPrimary: "red"
+                onSurface: text,
+                background: boxes.backgroundColor,
+                outline: outline.outlineColor,
+                onSurfaceVariant: text
               }
             }}
-            dropDownItemStyle={{ backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF" }}
-            dropDownItemTextStyle={{ color: isDarkMode ? "white" : "black" }}
-            dropDownStyle={{ backgroundColor: "transparent" }}
-            dropDownItemSelectedStyle={{ backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF" }}
-            dropDownItemSelectedTextStyle={{ color: isDarkMode ? "white" : "black" }}
           />
 
         </View>
         <TextInput
-          style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%"}]}
+          style={[{ backgroundColor: boxes.backgroundColor, width: "85%", margin: "2%" }]}
+          textColor={text}
+          theme={{
+            colors: { background: background, onSurfaceVariant: outline.outlineColor }
+          }}
           mode={"outlined"}
-          label={"Description"}
-          outlineColor={"transparent"}
-          activeOutlineColor={"grey"}
+          label="Description"
+          outlineColor={outline.outlineColor}
+          activeOutlineColor={outline.outlineColor}
           value={value.description}
-          multiline={true}
           onChangeText={handleChange("description")}
           onBlur={() => handleBlur("description", value?.description)}
           error={validation?.description}
         />
 
         <Button
-          style={[Styles.buttonStyle , {backgroundColor: boxes.backgroundColor, width: 230, height: 50, margin: "2%" }]}
-          labelStyle={[Styles.textStyle, {color: text}]}
+          style={[Styles.buttonStyle, { backgroundColor: boxes.backgroundColor, width: 230, height: 50, margin: "2%" }]}
+          labelStyle={[Styles.textStyle, { color: text }]}
           onPress={handleCreateTicket}
         >
           {ticket ? "SAVE TICKET" : "CREATE TICKET"}
