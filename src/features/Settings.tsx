@@ -293,7 +293,7 @@ const Roles = React.memo(({isDarkMode}: {isDarkMode: boolean}) => {
     ...courseList.map((course) => ({ value: course, label: course })),
   ];
 
-  const handleCheckboxChange = (itemId: string, selectedCourse: string) => {
+  const handleCheckboxChange = (itemId: string, selectedCourse: any) => {
     const item = userData.find((user) => user.id === itemId);
     if (!item) {
       return;
