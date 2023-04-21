@@ -22,7 +22,8 @@ import { DarkModeContext } from '../Components/GlobalHook';
 
 
 const Text_Input = (lable: string, defaultValue: string = '', password: boolean = false) => {
-  const { background, text, buttons, boxes, outline } = useContext(DarkModeContext)
+  const { background, text, outline } = useContext(DarkModeContext)
+  
 
   return (
     <>
@@ -94,9 +95,14 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 
 const Settings = ({navigation}: any ) => {
   const { background} = useContext(DarkModeContext);
+
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
+  const [name, setName] = useState('Here1');
+  const [email, setEmail] = useState('Here2');
+  const [discord, setDiscord] = useState('Here3');
+  const [error, setError] = useState('');
 
   const [isPasswordModalVisible, setIsPasswordModalVisible] = React.useState(false);
   const openPasswordModal = () => navigation.navigate('ChangePassword');
@@ -113,6 +119,45 @@ const Settings = ({navigation}: any ) => {
   const screenHeight = Dimensions.get("window").height;
   const containerStyle = {backgroundColor: background, height: screenHeight * 0.45, width: "70%", borderRadius: 20 };
 
+  const handleChangeProfile = () => {
+
+    //const isEmail = (email: string) =>  (/^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/.test(email))
+    if (!(email.includes('@') && email.includes('.'))) {
+      setError("Invalid Email");
+      return;
+    }
+    setError("");
+    const data = {
+      id: '1d315a71-71e6-4977-8590-a5e939e7a4b1',
+      nickname: name,
+      email: email,
+      discordTag: discord
+    };
+    console.log(data);
+    fetch('http://chanv2.duckdns.org:5084/api/User', {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (response.ok) {
+          closeProfileModal();
+          console.log('ok');
+        }
+      })
+      .catch((error) => {
+        console.log('1');
+        console.error(error);
+      });
+  }
+
+  const closeProfileModalError = () => {
+    setError('');
+    closeProfileModal();
+  }
+
 
   return (
 
@@ -123,17 +168,12 @@ const Settings = ({navigation}: any ) => {
       {Button_("DELETE ACCOUNT", openDeleteModal)}
 
       <Portal>
-        <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%' }]}>
-          {Text_Input("Name", "Doe")}
-          {Text_Input("Discord", "Doe#1234")}
-          {Text_Input("Email", "Doe@uia.no")}
-          {Button_("SAVE", closeProfileModal, '15%')}
-        </Modal>
-        <Modal visible={isPasswordModalVisible} onDismiss={closePasswordModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%' }]} >
-          {Text_Input("Old Password", '', true)}
-          {Text_Input("New Password", '', true)}
-          {Text_Input("Confirm Password", '', true)}
-          {Button_("SAVE", closePasswordModal, '15%')}
+        <Modal visible={isProfileModalVisible} onDismiss={closeProfileModalError} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8 }]}>
+          {Text_Input_CB( "Name", 'LogedInName', false, setName)}
+          {Text_Input_CB("Discord", 'LogedInDiscord', false, setDiscord)}
+          <Text style={{ color: 'red',marginTop:'5%', marginBottom:'-10%' }}>{error}</Text>
+          {Text_Input_CB("Email", 'LogedInEmail', false, setEmail)}
+          {Button_("SAVE", handleChangeProfile, '15%')}
         </Modal>
         <Modal visible={isExserviceModalVisible} onDismiss={closeExserviceModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
           {Button_("CONECT DISCORD", closeExserviceModal, '30%')}
