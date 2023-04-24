@@ -22,7 +22,7 @@ const useMobileTheme = () => {
     };
   }, []);
 }
-useMobileTheme(); 
+useMobileTheme();
 useEffect(() => {
   if (mobileColorScheme === 'light') {
     setTheme(theme.light);
@@ -38,8 +38,8 @@ useEffect(() => {
         <ThemeContext.Provider value={Thistheme}>
         <NavigationContainer>
           <NavigationBar
-            isStudass={true}
-            isLoggedIn={true}
+            isStudass={false}
+            isLoggedIn={false}
             />
         </NavigationContainer>
         </ThemeContext.Provider>

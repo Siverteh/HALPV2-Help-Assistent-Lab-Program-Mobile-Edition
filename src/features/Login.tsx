@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   Dimensions,
   Image,
   StyleSheet,
   Text,
   View,
+  Linking,
 } from 'react-native';
 import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
 import { ThemeContext } from '../Components/GlobalHook';
@@ -13,7 +14,9 @@ import Styles from '../styles/styles';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList, Login as LoginType } from '../types';
 import { isEmpty } from 'lodash';
-  
+import { authorize } from "react-native-app-auth";
+
+
 function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
   const windowHeight = Dimensions.get('window').height;
   const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(ThemeContext)
@@ -35,7 +38,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(value),
     };
-  
+
     fetch('https://chanv2.duckdns.org:7006/Auth/login', requestOptions)
       .then(response => {
         console.log(response)
@@ -51,9 +54,80 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
 
   }
 
-  const handleDiscord = () => {
-
+  const discordConfig = {
+    clientId: '1037686187588067419',
+    clientSecret: 'SIenibsqkRxwigs_ChMg41OmmqOxjS2v',
+    redirectUrl: 'com.halp://oauthredirect',
+    scopes: ['email', 'identify'],
+    serviceConfiguration: {
+      authorizationEndpoint: 'https://discordapp.com/api/oauth2/authorize',
+      tokenEndpoint: 'https://discordapp.com/api/oauth2/token',
+      revocationEndpoint: 'https://discordapp.com/api/oauth2/token/revoke'
+    }
   }
+
+  async function handleOAuthRedirect(event: { url: string; }) {
+    if (event.url.startsWith(discordConfig.redirectUrl)) {
+      // Parse the OAuth2 response
+      const url = new URL(event.url);
+      const code = url.searchParams.get('code');
+      const error = url.searchParams.get('error');
+
+      if (code) {
+        // Handle the OAuth2 response, e.g., exchange the code for an access token
+        // and fetch user information from the Discord API
+      } else if (error) {
+        // Handle the error response
+        console.error('OAuth2 error:', error);
+      }
+    }
+  }
+
+  useEffect(() => {
+    // Add the listener
+    Linking.addEventListener('url', handleOAuthRedirect);
+
+    // Clean up the listener when the component is unmounted
+    return () => {
+      Linking.removeAllListeners('url');
+    };
+  }, []);
+
+
+  const handleDiscord = async () => {
+    try {
+      const authResult = await authorize(discordConfig);
+      if (authResult.accessToken) {
+        fetchDiscordUser(authResult.accessToken);
+      } else {
+        console.log("No access token received.");
+      }
+    } catch (error) {
+      console.log("Error in authorization:", error);
+    }
+  };
+
+  const fetchDiscordUser = async (accessToken: string) => {
+    try {
+      const response = await fetch("https://discord.com/api/users/@me", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (response.ok) {
+        const user = await response.json();
+        console.log("Discord user:", user);
+        // Proceed with your app's logic (e.g., store the user data or navigate to another screen)
+      } else {
+        console.log("Error fetching Discord user:", response.statusText);
+      }
+    } catch (error) {
+      console.log("Error fetching Discord user:", error);
+    }
+  };
+
+
 
   const handleValidation = (name: string) => {
     if(isEmpty(value && (value as any)[name])) {
@@ -126,7 +200,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
     />
       <View style={{height:"2%"}}></View>
       <View style={{flexDirection: "row", justifyContent:"flex-start", width:"85%"}}>
-        <Checkbox 
+        <Checkbox
         color={checkUncheck}
         uncheckedColor={outline.outlineColor}
         status={checked ? 'checked' : 'unchecked'}
