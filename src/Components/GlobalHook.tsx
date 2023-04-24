@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext } from 'react';
 import { theme } from '../styles/theme';
 import { Theme } from '../types/theme';
 import { AppState } from '../types';
@@ -14,7 +14,7 @@ export const themeHook = () => {
 
     const toggleDarkMode = (themeValue?: Theme) => {
             dispatch(actions.setTheme(themeValue ?? state.theme === theme.light ? theme.dark : theme.light))
-      };
+      }
 
       return {
         onChangeTheme: toggleDarkMode,

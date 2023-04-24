@@ -2,8 +2,9 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 
 type StateValue =  {
     email: string
+    role: string
+    tolken: string
     isLoggedIn: boolean
-    isStudAss: boolean
 }
 
 export type UserState = {
@@ -11,7 +12,12 @@ export type UserState = {
 }
 
 const initialState = {
-    user: {}
+    user: {
+        email: '',
+        role: '',
+        tolken: '',
+        isLoggedIn: false
+    }
 }
 
 const userReducer = createSlice({
