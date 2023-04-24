@@ -1,22 +1,13 @@
-import React, { useState, useContext, useEffect } from "react";
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  Linking
-} from "react-native";
-import { Button, TextInput, Checkbox, DefaultTheme } from "react-native-paper";
+import React, { useContext, useState } from "react";
+import { Dimensions, Image, Text, View } from "react-native";
+import { Button, Checkbox, TextInput } from "react-native-paper";
 import { ThemeContext } from "../Components/GlobalHook";
 import Styles from "../styles/styles";
 
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList, Login as LoginType } from "../types";
+import { Login as LoginType, RootStackParamList } from "../types";
 import { isEmpty } from "lodash";
 import { authorize } from "react-native-app-auth";
-import * as WebBrowser from "expo-web-browser";
-import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
 
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
@@ -72,6 +63,22 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const handleDiscord = async () => {
     const authState = await authorize(discordConfig);
     console.log(authState);
+    const user = await getUserInfo(authState.accessToken);
+    console.log(user);
+  };
+
+  const getUserInfo = async (accessToken: string) => {
+    const response = await fetch("https://discordapp.com/api/users/@me", {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user info");
+    }
+
+    return await response.json();
   };
 
 
