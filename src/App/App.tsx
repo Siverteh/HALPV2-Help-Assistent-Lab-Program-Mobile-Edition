@@ -12,16 +12,16 @@ function App(): JSX.Element {
   const toggleDarkMode = () => {
     console.log("pressed")
     setCurrentTheme(currentTheme === theme.light ? theme.dark : theme.light);
-    
+
   };
- 
+
   return (
       <PaperProvider>
         <DarkModeContext.Provider value={currentTheme}>
         <NavigationContainer>
           <NavigationBar
             isStudass={false}
-            isLoggedIn={false}
+            isLoggedIn={true}
             />
         </NavigationContainer>
         </DarkModeContext.Provider>

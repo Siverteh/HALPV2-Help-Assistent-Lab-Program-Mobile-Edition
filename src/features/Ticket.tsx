@@ -5,11 +5,20 @@ import isEmpty from "lodash/isEmpty";
 import v from "lodash/values";
 import Styles from "../styles/styles";
 import * as React from "react";
-import { Dimensions, Image, NativeSyntheticEvent, TextInputFocusEventData, useColorScheme, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  NativeSyntheticEvent,
+  ScrollView,
+  TextInputFocusEventData,
+  useColorScheme,
+  View
+} from "react-native";
 import CustomDropDown from "../Components/CustomComponents";
 import DropDown from "react-native-paper-dropdown";
 import { DarkModeContext } from "../Components/GlobalHook";
 import DropDownPicker from "react-native-dropdown-picker";
+import { transparent } from "react-native-paper/lib/typescript/src/styles/themes/v2/colors";
 
 
 const screenHeight = Dimensions.get("window").height;
@@ -24,16 +33,13 @@ type Props = {
 const Ticket = ({ onSubmit, ticket }: Props) => {
     const { background, text, buttons, boxes, outline } = useContext(DarkModeContext);
     const [open, setOpen] = useState(false);
-    const [xvalue, xsetValue] = useState(null);
-    const [items, setItems] = useState([
-      { label: "Apple", value: "apple" },
-      { label: "Banana", value: "banana" }
-    ]);
+
 
     const [value, setValue] = React.useState<TicketProp>({ description: "", name: "", room: "", ...ticket });
     const [validation, setValidation] = React.useState({ description: false, name: false, room: false });
     const isDarkMode = false;
-    const stylePrefix = isDarkMode ? "dm" : "lm";
+    const [room, setRoom] = useState(null);
+
 
     const [showDropDown, setShowDropDown] = useState(false);
     const [roomList, setRoomList] = useState([]);
@@ -80,7 +86,11 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       if (validation.name || validation.description || validation.room) {
         return;
       }
-      console.log(JSON.stringify(value));
+
+      // Add the selected room to the ticket data
+      const ticketData = { ...value, room };
+
+      console.log(JSON.stringify(ticketData));
       onSubmit({ name: "", description: "", room: "" }); //bare for test
       try {
         const response = await fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
@@ -90,7 +100,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             "Accept": "application/json",
             "Cache-Control": "no-cache"
           },
-          body: JSON.stringify(value)
+          body: JSON.stringify(ticketData)
         });
         if (response.ok) {
           setValue({ description: "", name: "", room: "" });
@@ -114,30 +124,8 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         <Text style={{ color: text, fontSize: 24, paddingBottom: 0, marginBottom: "7%" }}>
           {ticket ? "EDIT TICKET" : "NEW TICKET"}
         </Text>
-        <View
-          style={{
-            width: "85%"
-          }}>
-          <DropDownPicker
-            stickyHeader={true}
-            placeholder={"Room"}
-            setValue={xsetValue}
-            value={xvalue}
-            items={items}
-            open={open}
-            setOpen={setOpen}
-            style={{
-              backgroundColor: boxes.backgroundColor,
-              borderColor: outline.outlineColor,
-              zIndex: 999999999
-            }}
-            textStyle={{
-              color: text
-            }}
-          />
-        </View>
         <TextInput
-          style={[{ backgroundColor: boxes.backgroundColor, width: "85%", margin: "2%" }]}
+          style={[{ backgroundColor: boxes.backgroundColor, width: "85%", margin: "2%", zIndex: 1 }]}
           textColor={text}
           theme={{
             colors: { background: background, onSurfaceVariant: outline.outlineColor }
@@ -153,31 +141,34 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         />
         <View
           style={{
+            zIndex: 2,
             width: "85%"
-          }}
-        >
-          <DropDown
-            label={"Room"}
-            mode={"outlined"}
-            visible={showDropDown}
-            showDropDown={() => setShowDropDown(true)}
-            onDismiss={() => setShowDropDown(false)}
-            value={value.room}
-            setValue={(selectedRoom: any) => setValue((prevValue) => ({ ...prevValue, room: selectedRoom }))}
-            list={dropdownItems}
-            activeColor={"grey"}
-            dropDownContainerHeight={300}
-
-            theme={{
-              colors: {
-                onSurface: text,
-                background: boxes.backgroundColor,
-                outline: outline.outlineColor,
-                onSurfaceVariant: text
-              }
+          }}>
+          <DropDownPicker
+            listMode="SCROLLVIEW"
+            placeholder={"Room"}
+            value={room}
+            setValue={setRoom}
+            items={dropdownItems}
+            open={open}
+            setOpen={setOpen}
+            style={{
+              backgroundColor: boxes.backgroundColor,
+              borderColor: outline.outlineColor
+            }}
+            textStyle={{
+              color: text
+            }}
+            scrollViewProps={{
+              nestedScrollEnabled: true
+            }}
+            dropDownContainerStyle={{
+              position: "relative",
+              top: 0,
+              backgroundColor: boxes.backgroundColor,
+              borderColor: outline.outlineColor
             }}
           />
-
         </View>
         <TextInput
           style={[{ backgroundColor: boxes.backgroundColor, width: "85%", margin: "2%" }]}
