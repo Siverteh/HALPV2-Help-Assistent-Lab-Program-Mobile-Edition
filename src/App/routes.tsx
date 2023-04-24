@@ -1,30 +1,47 @@
-import Archive from "../features/Archive"
-import CreateTicket from "../features/CreateTicket"
-import Helplist from "../features/Helplist"
-import Settings from "../features/Settings"
+import ArchiveTab from "../Components/navigation-tabs/ArchiveTab";
+import CreateTab from "../Components/navigation-tabs/CreateTab";
+import HelpListTab from "../Components/navigation-tabs/HelpListTab"
+import SettingsTab from "../Components/navigation-tabs/SettingsTab"
+import LoginTab from "../Components/navigation-tabs/LoginTab"
 import { RouteType } from "../types"
 
+const settingRoute = [
+    {
+        name: 'Settings',
+        component: SettingsTab,
+        icon: 'settings'
+    }
+]
 
-export const studassRoutes: Array<RouteType> = [{
+const loginRoute = [
+    {
+        name: 'Login',
+        component: LoginTab,
+        icon: 'log-in'
+    }
+]
+
+const tabSwitcher = (isLoggedin: boolean) => {
+    if(isLoggedin) {
+        return settingRoute
+    } else {
+        return loginRoute
+    }
+}
+
+
+export const studassRoutes: (isLoggedin: boolean) => Array<RouteType> = (isLoggedin: boolean) => [{
     name: 'HelpList',
-    component: Helplist,
+    component: HelpListTab,
     icon: 'list'
 }, {
     name: 'Archive',
-    component: Archive,
+    component: ArchiveTab,
     icon: 'checkmark-done'
-}, {
-    name: 'Settings',
-    component: Settings,
-    icon: 'settings'
-}]
+}, ...tabSwitcher(isLoggedin)]
 
-export const userRoutes: Array<RouteType> = [{
+export const userRoutes: (isLoggedin: boolean) => Array<RouteType> = (isLoggedin: boolean) => [{
     name: 'Create',
-    component: CreateTicket,
+    component: CreateTab,
     icon: 'create'
-}, {
-    name: 'Settings',
-    component: Settings,
-    icon: 'settings'
-}]
+}, ...tabSwitcher(isLoggedin)]

@@ -1,11 +1,33 @@
+import { StackScreenProps } from "@react-navigation/stack"
+import { RootStackParamList } from "../types"
+import { Ticket as TicketProp } from "../types/ticket"
 import Ticket from "./Ticket"
 
-const CreateTicket = () => {
+const CreateTicket = ({ navigation }: StackScreenProps<RootStackParamList, 'CreateScreen'>) => {
+
+    const handleSubmit = async (ticket: TicketProp) => {
+      fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Cache-Control": "no-cache"
+              },
+              body: JSON.stringify(ticket)
+            })
+            .then((res) => {
+              const response = res.json()
+              console.log(res, response)
+              navigation.navigate('Queue', {...ticket, id: ''})
+            })
+            .catch((error) => {
+            console.error(error);
+          })
+    }
+
     return (
         <Ticket
-        
-            onSubmit={() => {}}
-            
+            onSubmit={handleSubmit}        
         />
     )
 }

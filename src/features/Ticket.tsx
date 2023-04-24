@@ -1,34 +1,23 @@
 import { Ticket as TicketProp} from "../types/ticket";
-import { TextInput, Button, Text, List } from "react-native-paper";
-import { useState } from "react";
-import isEmpty from "lodash/isEmpty";
-import v from "lodash/values";
-import every from "lodash/every";
+import { TextInput, Button, Text } from "react-native-paper";
+import { useState, useContext } from "react";
 import Styles from "../styles/styles";
 import * as React from "react";
-import { Dimensions, Image, useColorScheme, View } from "react-native";
-import CustomDropDown from "../Components/CustomComponents";
+import { Dimensions, Image, TextInputBase, useColorScheme, View } from "react-native";
 import DropDown from "react-native-paper-dropdown";
-
-
-const screenHeight = Dimensions.get("window").height;
-const screenWidth = Dimensions.get("window").width;
+import { ThemeContext } from '../Components/GlobalHook';
 
 type Props = {
   ticket?: TicketProp
-  onSubmit: (ticket: TicketProp) => void
+  onSubmit: (ticket: TicketProp) => Promise<void>
 }
 
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
+    const { background, text, buttons, boxes, text2, outline } = useContext(ThemeContext)
     const [value, setValue] = React.useState<TicketProp>({ description: "", name: "", room: "", ...ticket });
 
-    const isValidValue = value && v(value).every(isEmpty);
-    const isDarkMode = false;
-    const stylePrefix = isDarkMode ? "dm" : "lm";
-
     const [showDropDown, setShowDropDown] = useState(false);
-    const [showMultiSelectDropDown, setShowMultiSelectDropDown] = useState(false);
     const [roomList, setRoomList] = useState([]);
 
     const fetchRooms = async () => {
@@ -36,7 +25,6 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         .then(response => response.json())
         .then(rooms => {
           setRoomList(rooms);
-          console.log(rooms);
         })
         .catch(error => {
           console.error(error);
@@ -52,44 +40,25 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     });
 
     const handleCreateTicket = async () => {
-      console.log(JSON.stringify(value));
-      try {
-        const response = await fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Cache-Control": "no-cache"
-          },
-          body: JSON.stringify(value)
-        });
-        if (response.ok) {
-          setValue({ description: "", name: "", room: "" });
-          if (response.headers.get("Content-Length") !== "0") {
-            const responseData = await response.json();
-            onSubmit(responseData || { name: "", description: "", room: "" });
-          }
-        } else {
-          console.error(`Error: ${response.status} - ${response.statusText}`);
-        }
-      } catch (error) {
-        console.error(error);
-      }
+      onSubmit(value)
+      setValue({ description: "", name: "", room: "" });
+      
     };
 
 
     return (
-      <View style={[Styles[`${stylePrefix}_background`], { flex: 1, alignItems: "center" }]}>
+      <View style={[{backgroundColor: background, flex: 1, alignItems: "center" }]}>
         <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
-        <Text style={[Styles[`${stylePrefix}_text`], { fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
-          NEW TICKET
+        <Text style={[{color: 'white',  fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
+          {ticket ? 'EDIT TICKET':  'NEW TICKET'}
         </Text>
         <TextInput
-          style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
+          style={[Styles.boxStyle, {backgroundColor: boxes,  color: text, width: "85%", margin: "2%" }]}
           mode={"outlined"}
           label="Name"
-          outlineColor={"transparent"}
-          activeOutlineColor={"grey"}
+          outlineColor={outline.outlineColor}
+          textColor={text}
+          activeOutlineColor={outline.activeOutlineColor}
           value={value.name}
           onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, name: text }))}
         />
@@ -105,23 +74,27 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             showDropDown={() => setShowDropDown(true)}
             onDismiss={() => setShowDropDown(false)}
             value={value.room}
-            setValue={(selectedRoom) => setValue((prevValue) => ({ ...prevValue, room: selectedRoom }))}
+            setValue={(selectedRoom: any) => setValue((prevValue) => ({ ...prevValue, room: selectedRoom }))}
             list={dropdownItems}
             activeColor={"grey"}
             dropDownContainerHeight={300}
-            theme={{colors: { background: isDarkMode ? "#0070C0" : "#FFFFFF", text: isDarkMode ? 'white' : 'black', outline: 'transparent', onPrimary: 'red'}}}
-            dropDownItemStyle={{backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF"}}
-            dropDownItemTextStyle={{color: isDarkMode ? 'white' : 'black'}}
+            theme={{
+              colors: { background: boxes, outline: 'transparent', primary: 'red', onSurface: text, onSurfaceVariant: text,
+            }}}
+            dropDownItemStyle={{backgroundColor: boxes}}
+            dropDownItemTextStyle={{color: text}}
             dropDownStyle={{backgroundColor: 'transparent'}}
-            dropDownItemSelectedStyle={{backgroundColor: isDarkMode ? "#0070C0" : "#94CCFF"}}
-            dropDownItemSelectedTextStyle={{color: isDarkMode ? 'white' : 'black'}}
+            dropDownItemSelectedStyle={{backgroundColor: background}}
+            dropDownItemSelectedTextStyle={{color: text}}
           />
 
         </View>
         <TextInput
-          style={{ ...Styles[`${stylePrefix}_text`], ...Styles[`${stylePrefix}_boxes`], width: "85%", margin: "2%" }}
+          style={[Styles.boxStyle, {backgroundColor: boxes, color: text, width: "85%", margin: "2%" }]}
           mode={"outlined"}
           label={"Description"}
+          placeholderTextColor={text2}
+          textColor={text}
           outlineColor={"transparent"}
           activeOutlineColor={"grey"}
           value={value.description}
@@ -130,11 +103,11 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         />
 
         <Button
-          style={{ ...Styles[`${stylePrefix}_button`], width: 230, height: 50, margin: "2%" }}
-          labelStyle={Styles[`${stylePrefix}_textButton`]}
+        style={[Styles.buttonStyle,{backgroundColor: buttons.backgroundColor, width: 230, height: 50, margin: "2%" }]}
+        labelStyle={[Styles.buttonStyle, {color: text}]}
           onPress={handleCreateTicket}
         >
-          CREATE TICKET
+         {ticket ? 'SAVE TICKET':  'CREATE TICKET'}
         </Button>
       </View>
     );

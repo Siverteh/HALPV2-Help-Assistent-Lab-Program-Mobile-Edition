@@ -1,55 +1,51 @@
-import React from "react";
-import { PropsWithChildren, useState } from "react";
-import {
-  Dimensions,
-  ScrollView,
-  useColorScheme,
-  View
-} from "react-native";
-import {
-  Provider as PaperProvider,
-  Button,
-  Provider
-} from "react-native-paper";
-
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions
-} from "react-native/Libraries/NewAppScreen";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-
-import Styles from "../styles/styles";
-
-import CreateTicket from "../features/CreateTicket";
-import Queue from "../features/Queue";
-import Tabs from "../features/Settings";
-import Login from "../features/Login";
-import Helplist from "../features/Helplist";
-import Archive from "../features/Archive";
-import Register from "../features/Register";
-import Ticket from "../features/Ticket";
+import React, { useState, useEffect } from "react";
+import { Provider as PaperProvider, Button } from "react-native-paper";
+import NavigationBar from "../Components/NavigationBar/NavigationBar";
+import { NavigationContainer } from '@react-navigation/native';
+import { ThemeContext, themeHook  } from "../Components/GlobalHook";
+import { theme } from "../styles/theme";
+import { Appearance } from "react-native";
 
 function App(): JSX.Element {
 
-  const screenHeight = Dimensions.get("window").height;
-  return (
-    <PaperProvider>
-      <ScrollView>
-        <View style={[{ height: screenHeight }]}>
-          <Ticket onSubmit={() => {}}></Ticket>
+const {Thistheme, setTheme, onChangeTheme} = themeHook();
 
-        </View>
-        <View style={[{ height: screenHeight }]}>
-          <Helplist></Helplist>
-        </View>
-      </ScrollView>
-    </PaperProvider>
-  );
+
+const [mobileColorScheme, setMobileColorScheme] = useState(Appearance.getColorScheme());
+const useMobileTheme = () => {
+  useEffect(() => {
+    const subscription = Appearance.addChangeListener(({ colorScheme: newColorScheme }) => {
+      setMobileColorScheme(newColorScheme);
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 }
+useMobileTheme(); 
+useEffect(() => {
+  if (mobileColorScheme === 'light') {
+    setTheme(theme.light);
+  } else {
+    setTheme(theme.dark);
+  }
+}, [mobileColorScheme]);
 
 
+  return (
+    // <Provider store={store}>
+      <PaperProvider>
+        <ThemeContext.Provider value={Thistheme}>
+        <NavigationContainer>
+          <NavigationBar
+            isStudass={true}
+            isLoggedIn={true}
+            />
+        </NavigationContainer>
+        </ThemeContext.Provider>
+        <Button onPress={onChangeTheme}>Toggle dark mode</Button>
+      </PaperProvider>
+      // </Provider>
+    );
+}
 export default App;
