@@ -17,13 +17,10 @@ interface UserProps {
 }
 import { RootStackParamList } from "../types";
 import { StackScreenProps } from "@react-navigation/stack";
-import { DarkModeContext } from '../Components/GlobalHook';
-
-
+import { ThemeContext, themeHook } from '../Components/GlobalHook';
 
 const Text_Input = (lable: string, defaultValue: string = '', password: boolean = false) => {
-  const { background, text, outline } = useContext(DarkModeContext)
-  
+  const { background, text, buttons, boxes, outline } = useContext(ThemeContext)
 
   return (
     <>
@@ -48,7 +45,7 @@ const Text_Input = (lable: string, defaultValue: string = '', password: boolean 
   )
 }
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
-  const { background, text, outline } = useContext(DarkModeContext)
+  const { background, text, outline } = useContext(ThemeContext)
 
   return (
     <>
@@ -76,7 +73,7 @@ const Text_Input_CB = (lable: string, defaultValue: string = '', password: boole
 
 
 const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
-  const { buttons, outline } = useContext(DarkModeContext)
+  const { buttons, outline } = useContext(ThemeContext)
 
   return (
     <>
@@ -92,9 +89,9 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
   )
 }
 
-
 const Settings = ({navigation}: any ) => {
-  const { background} = useContext(DarkModeContext);
+  const { background} = useContext(ThemeContext);
+  const { onChangeTheme} = themeHook();
 
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
@@ -115,6 +112,8 @@ const Settings = ({navigation}: any ) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = React.useState(false);
   const openDeleteModal = () => setIsDeleteModalVisible(true);
   const closeDeleteModal = () => setIsDeleteModalVisible(false);
+
+
 
   const screenHeight = Dimensions.get("window").height;
   const containerStyle = {backgroundColor: background, height: screenHeight * 0.45, width: "70%", borderRadius: 20 };
@@ -166,6 +165,7 @@ const Settings = ({navigation}: any ) => {
       {Button_( "PASSWORD", openPasswordModal)}
       {Button_("EXTERNAL-SERVICE", openExserviceModal)}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
+      {Button_("Toogle mode", () => onChangeTheme() )}
 
       <Portal>
         <Modal visible={isProfileModalVisible} onDismiss={closeProfileModalError} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8 }]}>
@@ -187,7 +187,7 @@ const Settings = ({navigation}: any ) => {
 };
 
 const TimeEdit = React.memo(( ) => {
-  const { background, text, listItem_dark, listItem_light, text2, boxes } = useContext(DarkModeContext);
+  const { background, text, listItem_dark, listItem_light, text2, boxes } = useContext(ThemeContext);
   const [timeeditData, setTimeeditData] = useState<Array<{ id: string, courseLink: string }>>([]);
   const screenHeight = Dimensions.get("window").height;
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
@@ -309,7 +309,7 @@ const TimeEdit = React.memo(( ) => {
 
 
 const Roles = React.memo(() => {
-  const { background, text, listItem_dark, listItem_light, text2, buttons, boxes } = useContext(DarkModeContext);
+  const { background, text, listItem_dark, listItem_light, text2, buttons, boxes } = useContext(ThemeContext);
   const screenHeight = Dimensions.get("window").height;
   const [showDropDown, setShowDropDown] = useState(false);
   const [courseList, setCourseList] = useState([]);
@@ -419,8 +419,6 @@ const Roles = React.memo(() => {
 
   const handleChange = (text:string) => setSearchText(text)
 
- 
-
   return(
     <View style={[{backgroundColor:background, justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
       <View style={{height:'5%', width:'90%', marginTop:'10%'}}>
@@ -475,7 +473,7 @@ const Roles = React.memo(() => {
   );
 });
 const renderTabBar = (props: any) => {
-  const { background, text} = useContext(DarkModeContext);
+  const { background, text} = useContext(ThemeContext);
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <TabBar
@@ -490,7 +488,7 @@ const renderTabBar = (props: any) => {
 
 export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 'SettingScreen'>) {
   const isDarkMode = useColorScheme() === 'dark';
-  const { background, text } = useContext(DarkModeContext);
+  const { background, text } = useContext(ThemeContext);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([

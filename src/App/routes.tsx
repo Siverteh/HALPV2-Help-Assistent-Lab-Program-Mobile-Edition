@@ -23,9 +23,9 @@ const loginRoute = [
 
 const tabSwitcher = (isLoggedin: boolean) => {
     if(isLoggedin) {
-        return loginRoute
-    } else {
         return settingRoute
+    } else {
+        return loginRoute
     }
 }
 

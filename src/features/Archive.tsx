@@ -5,7 +5,7 @@ import Styles from "../styles/styles";
 import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react';
 import { Dimensions } from 'react-native';
-import { DarkModeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/GlobalHook';
 
 type Course = {
   id: string;
@@ -19,7 +19,7 @@ type Course = {
 const Archive = () => {
   const windowHeight = Dimensions.get('window').height;
   
-  const { background, text, listItem_dark, listItem_light  } = useContext(DarkModeContext)
+  const { background, text, listItem_dark, listItem_light  } = useContext(ThemeContext)
 
 
 
@@ -58,7 +58,7 @@ const Archive = () => {
 
   const getCourse = async () => {
     try {
-      const response = await fetch('https://chanv2.duckdns.org:7006/api/Archive?course=ikt201-g');
+      const response = await fetch('https://chanv2.duckdns.org:7006/api/Archive?course=ikt205-g');
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -125,7 +125,7 @@ const updateCourse = async (updatedData: Course) => {
             ))}
           </List.Section>
         ) : (
-          <Text style={{ textAlign: 'center' }} >No requests yet</Text>
+          <Text style={{ color: text, textAlign: 'center' }} >No requests yet</Text>
         )}
       </ScrollView>
     </View>

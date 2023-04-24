@@ -1,33 +1,21 @@
 import { Ticket as TicketProp} from "../types/ticket";
-import { TextInput, Button, Text, List } from "react-native-paper";
+import { TextInput, Button, Text } from "react-native-paper";
 import { useState, useContext } from "react";
-import isEmpty from "lodash/isEmpty";
-import v from "lodash/values";
 import Styles from "../styles/styles";
 import * as React from "react";
-import { Dimensions, Image, useColorScheme, View } from "react-native";
-import CustomDropDown from "../Components/CustomComponents";
+import { Dimensions, Image, TextInputBase, useColorScheme, View } from "react-native";
 import DropDown from "react-native-paper-dropdown";
-import { DarkModeContext } from '../Components/GlobalHook';
-
-
-
-const screenHeight = Dimensions.get("window").height;
-const screenWidth = Dimensions.get("window").width;
+import { ThemeContext } from '../Components/GlobalHook';
 
 type Props = {
   ticket?: TicketProp
-  onSubmit: (ticket: TicketProp) => void
+  onSubmit: (ticket: TicketProp) => Promise<void>
 }
 
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
-    const { background, text, buttons, boxes, text2 } = useContext(DarkModeContext)
+    const { background, text, buttons, boxes, text2, outline } = useContext(ThemeContext)
     const [value, setValue] = React.useState<TicketProp>({ description: "", name: "", room: "", ...ticket });
-
-    const isValidValue = value && v(value).every(isEmpty);
-    const isDarkMode = false;
-    const stylePrefix = isDarkMode ? "dm" : "lm";
 
     const [showDropDown, setShowDropDown] = useState(false);
     const [roomList, setRoomList] = useState([]);
@@ -37,7 +25,6 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         .then(response => response.json())
         .then(rooms => {
           setRoomList(rooms);
-          console.log(rooms);
         })
         .catch(error => {
           console.error(error);
@@ -62,15 +49,16 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     return (
       <View style={[{backgroundColor: background, flex: 1, alignItems: "center" }]}>
         <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
-        <Text style={[{color: text,  fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
+        <Text style={[{color: 'white',  fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
           {ticket ? 'EDIT TICKET':  'NEW TICKET'}
         </Text>
         <TextInput
-          style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
+          style={[Styles.boxStyle, {backgroundColor: boxes,  color: text, width: "85%", margin: "2%" }]}
           mode={"outlined"}
           label="Name"
-          outlineColor={"transparent"}
-          activeOutlineColor={"grey"}
+          outlineColor={outline.outlineColor}
+          textColor={text}
+          activeOutlineColor={outline.activeOutlineColor}
           value={value.name}
           onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, name: text }))}
         />
@@ -90,19 +78,23 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             list={dropdownItems}
             activeColor={"grey"}
             dropDownContainerHeight={300}
-            theme={{colors: { background: text, text: text, outline: 'transparent', onPrimary: 'red'}}}
-            dropDownItemStyle={{backgroundColor: buttons.backgroundColor}}
+            theme={{
+              colors: { background: boxes, outline: 'transparent', primary: 'red', onSurface: text, onSurfaceVariant: text,
+            }}}
+            dropDownItemStyle={{backgroundColor: boxes}}
             dropDownItemTextStyle={{color: text}}
             dropDownStyle={{backgroundColor: 'transparent'}}
-            dropDownItemSelectedStyle={{backgroundColor: buttons.backgroundColor}}
+            dropDownItemSelectedStyle={{backgroundColor: background}}
             dropDownItemSelectedTextStyle={{color: text}}
           />
 
         </View>
         <TextInput
-          style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
+          style={[Styles.boxStyle, {backgroundColor: boxes, color: text, width: "85%", margin: "2%" }]}
           mode={"outlined"}
           label={"Description"}
+          placeholderTextColor={text2}
+          textColor={text}
           outlineColor={"transparent"}
           activeOutlineColor={"grey"}
           value={value.description}

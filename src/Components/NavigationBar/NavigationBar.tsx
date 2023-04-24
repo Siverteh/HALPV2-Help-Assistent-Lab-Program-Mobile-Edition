@@ -1,7 +1,8 @@
-import * as React from 'react';
+import { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { studassRoutes, userRoutes } from '../../App/routes';
+import { ThemeContext } from '../GlobalHook';
 
 type Props = {
   isStudass: boolean
@@ -11,13 +12,15 @@ type Props = {
 const Tab = createBottomTabNavigator();
 
 const NavigationBar = ({ isStudass, isLoggedIn }: Props) => {
+  const { background, text, outline: {activeOutlineColor}  } = useContext(ThemeContext)
+  
   return (
       <Tab.Navigator
         initialRouteName={"Helplist"}
         screenOptions={{
-          tabBarStyle: { backgroundColor: '#E0EEF7' },
-          tabBarActiveTintColor: '#0070C0',
-          tabBarInactiveTintColor: '#000000'
+          tabBarStyle: { backgroundColor: background },
+          tabBarActiveTintColor: activeOutlineColor,
+          tabBarInactiveTintColor: text
         }}
         >
           {isStudass ? 

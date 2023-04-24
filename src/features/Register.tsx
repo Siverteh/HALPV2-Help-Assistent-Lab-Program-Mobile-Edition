@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { DarkModeContext } from '../Components/GlobalHook';
-
+import { ThemeContext } from '../Components/GlobalHook';
 import {
   Image,
   View,
+  Text, // Add this import
+  Alert,
 } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
@@ -12,18 +13,45 @@ import { RootStackParamList } from '../types';
   
 
 function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
-  const { background, text, buttons, boxes, outline, iconColor, checkUncheck } = useContext(DarkModeContext)
+  const { background, text, buttons, boxes, outline, iconColor, checkUncheck } = useContext(ThemeContext)
 
+
+  // State for error message
+  const [errorMessage, setErrorMessage] = useState('');
 
   // States for form fields
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [discordtag, setDiscordtag] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true);
 
+  const isValidEmail = (email: string) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const handleRegister = async () => {
+    // Check if all fields are filled
+    if (!email || !username || !password || !confirmPassword || !discordtag) {
+      Alert.alert('Error', 'All boxes needs to be filled.')
+      return;
+    }
+
+    // Check if the email is valid
+    if (!isValidEmail(email)) {
+      Alert.alert('Error', 'Please enter a valid email.')
+      return;
+    }
+    
+    // Check if the passwords match  
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match.');
+      return;
+    }
+
     // Implement your registration logic here
     const requestOptions = {
       method: 'POST',
@@ -31,39 +59,82 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
       body: JSON.stringify({ email, username, discordtag, password }),
     };
 
-    try {
-      const response = await fetch('https://chanv2.duckdns.org:7006/Auth/register', requestOptions);
-      const data = await response.json();
-
-      console.log(response.status);
-
-      if (response.ok) {
-        navigation.navigate("LoginScreen");
-      } else {
-        console.log('Registration failed:', data);
+    // Password requirements
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSymbol = /\W|_/.test(password);
+  
+    if (
+      password.length >= minLength &&
+      hasUpperCase &&
+      hasLowerCase &&
+      hasNumber &&
+      hasSymbol
+    ) 
+    {
+      try {
+        const response = await fetch(
+          'https://chanv2.duckdns.org:7006/Auth/register',
+          requestOptions,
+        );
+        const data = await response.json();
+  
+        console.log(response.status);
+  
+        if (response.ok) {
+          Alert.alert('Success', 'Account successfully registered!')
+          navigation.navigate('LoginScreen');
+        } else {
+          console.log('Registration failed:', data);
+        }
+      } catch (error) {
+        console.error('Error:', error);
       }
-    } catch (error) {
-      console.error('Error:', error);
+    } 
+    else {
+      let errMsg = 'Password must:';
+      if (password.length < minLength) {
+        errMsg += ' be at least 8 characters long,';
+      }
+      if (!hasUpperCase) {
+        errMsg += ' have at least one uppercase letter,';
+      }
+      if (!hasLowerCase) {
+        errMsg += ' have at least one lowercase letter,';
+      }
+      if (!hasNumber) {
+        errMsg += ' have at least one number,';
+      }
+      if (!hasSymbol) {
+        errMsg += ' have at least one symbol,';
+      }
+      errMsg = errMsg.slice(0, -1); // Remove the trailing comma
+      Alert.alert('Error', errMsg);
     }
   };
 
   return (
-    <View style={[Styles.view, { backgroundColor: background }]}>
+      <View style={[Styles.view, { backgroundColor: background, flex: 1, height: '100%' }]}>
       <Image
         style={Styles.image}
         source={require('.././img/halpy3.png')} />
-      <TextInput style={Styles.textInput}
+      <TextInput
+        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+        label="Email"
+        mode="outlined"
         textColor={text}
         activeOutlineColor={outline.activeOutlineColor}
         outlineColor={outline.outlineColor}
+
+        onChangeText={text => setEmail(text)}
         theme={{
           colors: {
             background: background,
             onSurfaceVariant: outline.outlineColor
           }
         }}
-        label="Email Address"
-        mode="outlined"
       />
       <View style={{ height: "2%" }}></View>
       <TextInput
@@ -128,33 +199,33 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
       />
       <View style={{ height: "2%" }}></View>
       <TextInput
-        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
-        label="Confirm Password"
+       style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+        label="Confirm password"
         mode="outlined"
         textColor={text}
         activeOutlineColor={outline.activeOutlineColor}
         outlineColor={outline.outlineColor}
 
-        secureTextEntry={secureConfirmTextEntry}
+        onChangeText={text => setConfirmPassword(text)}
+        secureTextEntry={secureTextEntry}
         theme={{
           colors: {
             background: background,
             onSurfaceVariant: outline.outlineColor
           }
         }}
-
         right={
           <TextInput.Icon
             icon="eye"
             iconColor={iconColor}
             onPress={() => {
-              setSecureConfirmTextEntry(!secureConfirmTextEntry);
+              setSecureTextEntry(!secureTextEntry);
               return false;
             }}
           />
         }
       />
-      <View style={{ height: "8%" }}></View>
+      <View style={{ height: "6%" }}></View>
       <Button
         style={[
           Styles.buttonStyle,
@@ -167,8 +238,8 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
       >
         REGISTER
       </Button>
-    </View>
-
+      <View style={{ height: "4%" }}></View>
+  </View>
   );
 }
 
