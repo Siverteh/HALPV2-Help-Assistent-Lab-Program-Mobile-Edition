@@ -2,8 +2,6 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import { Theme } from '../types/theme'
 import { theme } from '../styles/theme'
 
-
-
 export type ThemeState = {
     theme: Theme
 }

@@ -1,4 +1,3 @@
-import { createStore } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { AppState } from '../types'
 import { reducer as themeReducer} from '../reducers/themeReducer'

@@ -4,32 +4,21 @@ import NavigationBar from "../Components/NavigationBar/NavigationBar";
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeContext, themeHook  } from "../Components/GlobalHook";
 import { theme } from "../styles/theme";
-import { Appearance } from "react-native";
+import { useColorScheme } from "react-native";
 
 function App(): JSX.Element {
 
 const {Thistheme, onChangeTheme} = themeHook();
 
+const colorScheme = useColorScheme();
 
-const [mobileColorScheme, setMobileColorScheme] = useState(Appearance.getColorScheme());
-const useMobileTheme = () => {
-  useEffect(() => {
-    const subscription = Appearance.addChangeListener(({ colorScheme: newColorScheme }) => {
-      setMobileColorScheme(newColorScheme);
-    });
-    return () => {
-      subscription.remove();
-    };
-  }, []);
-}
-useMobileTheme(); 
 useEffect(() => {
-  if (mobileColorScheme === 'light') {
+  if (colorScheme === 'light') {
     onChangeTheme(theme.light);
   } else {
     onChangeTheme(theme.dark);
   }
-}, [mobileColorScheme]);
+}, []);
 
 
   return (

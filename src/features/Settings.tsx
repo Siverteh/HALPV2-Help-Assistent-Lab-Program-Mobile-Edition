@@ -115,7 +115,6 @@ const Settings = ({navigation}: any ) => {
   const containerStyle = {backgroundColor: background, height: screenHeight * 0.45, width: "70%", borderRadius: 20 };
 
 
-
   return (
 
     <View style={[{backgroundColor: background, justifyContent: 'center', alignItems: 'center', height: screenHeight * 0.70 }]}>

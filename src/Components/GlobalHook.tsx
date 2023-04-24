@@ -9,18 +9,11 @@ export const ThemeContext = createContext<Theme>(theme.dark);
 
 export const themeHook = () => {
     const state = useSelector((state: AppState) => state.theme)
-    
-    const [currentTheme, setCurrentTheme] = useState(state.theme)
+
     const dispatch = useDispatch()
 
     const toggleDarkMode = (themeValue?: Theme) => {
-            if (themeValue) {
-              setCurrentTheme(themeValue)
-              dispatch(actions.setTheme(themeValue))
-            } else{
-            setCurrentTheme(currentTheme === theme.light ? theme.dark : theme.light)
-            dispatch(actions.setTheme(currentTheme === theme.light ? theme.dark : theme.light))
-            }
+            dispatch(actions.setTheme(themeValue ?? state.theme === theme.light ? theme.dark : theme.light))
       };
 
       return {
