@@ -3,11 +3,12 @@ import { Button, Text, Modal, Portal, TextInput, List } from "react-native-paper
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View } from 'react-native';
 import * as React from 'react';
-import { CustomAccordion } from "../Components/CustomComponents";
 import { useContext, useState } from "react";
 import { RootStackParamList } from "../types";
 import { StackScreenProps } from "@react-navigation/stack";
-import { DarkModeContext } from '../Components/GlobalHook';
+import { DarkModeContext, themeHook } from '../Components/GlobalHook';
+import { theme } from "../styles/theme";
+
 
 
 
@@ -81,9 +82,10 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
   )
 }
 
-
 const Settings = ({navigation}: any ) => {
   const { background} = useContext(DarkModeContext);
+  const { onChangeTheme} = themeHook();
+
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
@@ -100,8 +102,11 @@ const Settings = ({navigation}: any ) => {
   const openDeleteModal = () => setIsDeleteModalVisible(true);
   const closeDeleteModal = () => setIsDeleteModalVisible(false);
 
+
+
   const screenHeight = Dimensions.get("window").height;
   const containerStyle = {backgroundColor: background, height: screenHeight * 0.45, width: "70%", borderRadius: 20 };
+
 
 
   return (
@@ -111,6 +116,7 @@ const Settings = ({navigation}: any ) => {
       {Button_( "PASSWORD", openPasswordModal)}
       {Button_("EXTERNAL-SERVICE", openExserviceModal)}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
+      {Button_("Toogle mode", onChangeTheme )}
 
       <Portal>
         <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%' }]}>

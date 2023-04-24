@@ -145,7 +145,7 @@ const Helplist = () => {
             ))}
           </List.Section>
         ) : (
-          <Text style={{ textAlign: 'center' }} >No requests yet</Text>
+          <Text style={{color: text, textAlign: 'center' }} >No requests yet</Text>
         )}
       </ScrollView>
     </View>

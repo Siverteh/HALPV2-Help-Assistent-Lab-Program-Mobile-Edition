@@ -6,6 +6,7 @@ import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react';
 import { Dimensions } from 'react-native';
 import { DarkModeContext } from '../Components/GlobalHook';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 type Course = {
   id: string;
@@ -58,7 +59,7 @@ const Archive = () => {
 
   const getCourse = async () => {
     try {
-      const response = await fetch('https://chanv2.duckdns.org:7006/api/Archive?course=ikt201-g');
+      const response = await fetch('https://chanv2.duckdns.org:7006/api/Archive?course=ikt205-g');
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -125,7 +126,7 @@ const updateCourse = async (updatedData: Course) => {
             ))}
           </List.Section>
         ) : (
-          <Text style={{ textAlign: 'center' }} >No requests yet</Text>
+          <Text style={{ color: text, textAlign: 'center' }} >No requests yet</Text>
         )}
       </ScrollView>
     </View>
