@@ -28,7 +28,7 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
   return (
     <View style={{backgroundColor: background, flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 0, paddingBottom: 100 }}>
       <Image source={require('.././img/halpy3.png')} style={Styles.logo} />
-      <View style={[Styles.boxStyle,{ justifyContent: 'space-between', alignItems: 'center', backgroundColor: boxes.backgroundColor , width: '90%', height: screenHeight * 0.75, maxWidth: screenWidth * 0.9, maxHeight: screenHeight * 0.75, marginTop: -25, borderRadius: 20}]}>
+      <View style={[Styles.boxStyle,{ justifyContent: 'space-between', alignItems: 'center', backgroundColor: boxes , width: '90%', height: screenHeight * 0.75, maxWidth: screenWidth * 0.9, maxHeight: screenHeight * 0.75, marginTop: -25, borderRadius: 20}]}>
         <View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }}>
           <Text style={[{color: text, fontSize: 24 }]}>Hi Charlie</Text>
           <Text style={[{color: text, fontSize: 20 }]}>You are number</Text>
@@ -46,8 +46,8 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
             <View style={{height:20}}></View>
             <Button 
             onPress={handleCancel} 
-            textColor={isDarkMode ? "#FFFFFF" : "#201C24"}
-            style={[Styles.boxStyle, {backgroundColor: boxes.backgroundColor, height: "18%", width:"45%"}]}
+            textColor={text}
+            style={[Styles.boxStyle, {backgroundColor: buttons.queueButton, height: "18%", width:"45%"}]}
             contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}>
             CANCEL          
             </Button>

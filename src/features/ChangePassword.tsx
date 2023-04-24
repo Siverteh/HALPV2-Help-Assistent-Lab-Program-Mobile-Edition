@@ -12,6 +12,8 @@ import Styles from '../styles/styles';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DarkModeContext } from '../Components/GlobalHook';
 
+import { DarkModeContext } from '../Components/GlobalHook';
+
 type ChangePasswordScreenNavigationProp = StackNavigationProp<any, 'ChangePassword'>;
 
 interface ChangePasswordProps {
@@ -23,8 +25,7 @@ function ChangePassword({ navigation }: ChangePasswordProps): JSX.Element {
   const stylePrefix = isDarkMode ? 'dm' : 'lm';
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [secureTextEntryRepeat, setSecureTextEntryRepeat] = useState(true);
-  const { background, text, buttons, boxes  } = useContext(DarkModeContext)
-
+  const { background, text, boxes, buttons  } = useContext(DarkModeContext)
 
   const handleChangePassword = () => {
     // Add logic to change the password
@@ -56,7 +57,7 @@ function ChangePassword({ navigation }: ChangePasswordProps): JSX.Element {
       />
       <View style={{ height: '2%' }}></View>
       <TextInput
-        style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
+        style={[Styles.boxStyle, {color: text, backgroundColor: boxes, width: '85%'} ]}
         label="Repeat New Password"
         mode="outlined"
         secureTextEntry={secureTextEntryRepeat}
@@ -76,7 +77,7 @@ function ChangePassword({ navigation }: ChangePasswordProps): JSX.Element {
       </Text>
       <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 20, width: '100%', alignItems: 'center' }}>
         <Button
-          style={[Styles.buttonStyle,{backgroundColor: buttons.backgroundColor, width: 230, height: 50, margin: "2%" }]}
+          style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, height: '20%', width: '40%' }]}
           mode="contained"
           labelStyle={{ color: '#000000' }} // This line changes the text color to black
           onPress={handleChangePassword}

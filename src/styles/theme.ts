@@ -9,23 +9,22 @@ export const theme: CustomTheme = {
            activeOutlineColor: "#201C24"
         },
         background: "#E0EEF7",
-        boxes: {
-            backgroundColor: "#FFFFFF",
-        },
+        boxes: "#FFFFFF",
         buttons: {
             backgroundColor: "#94CCFF",
             queueButton: "#90CAF9"
         },
-        listItem_light: {
-            backgroundColor: "#FFFFFF",
+        listItem_light:
+        {
+            backgroundColor: "#FFFFFF", 
         },
-        listItem_dark: {
+        listItem_dark:{
             backgroundColor: "#94CCFF",
-        },
+        },   
         iconColor: '#201C24',
         checkUncheck: '#0079C0'
+        
     },
-
     dark: {
         text: "#FFFFFF",
         text2: "#686464",
@@ -34,21 +33,19 @@ export const theme: CustomTheme = {
             activeOutlineColor: '#0070C0'
         } ,
         background: "#004082",
-        boxes: {
-            backgroundColor: "#0070C0",
-          },
+        boxes: "#0070C0",
         buttons: {
             backgroundColor: "#0070C0",
             queueButton: "#004082"
         },
-        listItem_light: {
-            backgroundColor: "#94CCFF"
+        listItem_light:{ 
+            backgroundColor: "#94CCFF",
         },
         listItem_dark: {
             backgroundColor: "#004082",
-        },
-        iconColor: '#E0E0E0',
-        checkUncheck: '#FFFFFF'
+        } ,
+        iconColor:'#E0E0E0',
+        checkUncheck:'#FFFFFF'
         
     }
 }

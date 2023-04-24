@@ -17,7 +17,9 @@ interface UserProps {
 }
 import { RootStackParamList } from "../types";
 import { StackScreenProps } from "@react-navigation/stack";
-import { DarkModeContext } from '../Components/GlobalHook';
+import { DarkModeContext, themeHook } from '../Components/GlobalHook';
+import { theme } from "../styles/theme";
+
 
 
 
@@ -91,9 +93,10 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
   )
 }
 
-
 const Settings = ({navigation}: any ) => {
   const { background} = useContext(DarkModeContext);
+  const { onChangeTheme} = themeHook();
+
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
@@ -110,8 +113,11 @@ const Settings = ({navigation}: any ) => {
   const openDeleteModal = () => setIsDeleteModalVisible(true);
   const closeDeleteModal = () => setIsDeleteModalVisible(false);
 
+
+
   const screenHeight = Dimensions.get("window").height;
   const containerStyle = {backgroundColor: background, height: screenHeight * 0.45, width: "70%", borderRadius: 20 };
+
 
 
   return (
@@ -121,6 +127,7 @@ const Settings = ({navigation}: any ) => {
       {Button_( "PASSWORD", openPasswordModal)}
       {Button_("EXTERNAL-SERVICE", openExserviceModal)}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
+      {Button_("Toogle mode", onChangeTheme )}
 
       <Portal>
         <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%' }]}>
@@ -226,7 +233,7 @@ const TimeEdit = React.memo(( ) => {
 
   const renderItem = ({ item, index }: { item: { id: string, courseLink: string }, index: number }) => (
 
-    <View style={[{backgroundColor: index % 2 == 0 ? boxes.backgroundColor : background, padding: 10}]}>
+    <View style={[{backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}]}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
         style={{color: text, width:'80%'}}>
@@ -234,7 +241,7 @@ const TimeEdit = React.memo(( ) => {
         </Text>
         <TouchableOpacity 
           onPress={() => deleteItem(index)}
-          style={[{backgroundColor: index % 2 == 0 ? boxes.backgroundColor : background, padding: 10}]}>
+          style={[{backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}]}>
           <Text style={{color: text}}>
             Delete
           </Text>
@@ -357,7 +364,7 @@ const Roles = React.memo(() => {
     return (
       <View
         style={[
-          {backgroundColor: index % 2 == 0 ? boxes.backgroundColor : background, padding: 10}
+          {backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}
         ]}
       >
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -378,8 +385,6 @@ const Roles = React.memo(() => {
   );
 
   const handleChange = (text:string) => setSearchText(text)
-
- 
 
   return(
     <View style={[{backgroundColor:background, justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
