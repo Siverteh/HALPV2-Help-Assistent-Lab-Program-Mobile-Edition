@@ -1,3 +1,7 @@
+import { HelplistState } from "../reducers/helplistReducer";
+import { ThemeState } from "../reducers/themeReducer";
+import { UserState } from "../reducers/userReducer";
+
 export type RouteType = {
     name: string
     component: any // ScreenComponentType<RootStackParamList, string>
@@ -21,3 +25,11 @@ export type RootStackParamList = {
     email: string
     password: string
   }
+
+  
+
+  export interface AppState {
+    user: UserState
+    helplist: HelplistState
+    theme: ThemeState
+}

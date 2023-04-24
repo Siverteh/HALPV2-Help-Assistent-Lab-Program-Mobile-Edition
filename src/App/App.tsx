@@ -8,7 +8,7 @@ import { Appearance } from "react-native";
 
 function App(): JSX.Element {
 
-const {Thistheme, setTheme, onChangeTheme} = themeHook();
+const {Thistheme, onChangeTheme} = themeHook();
 
 
 const [mobileColorScheme, setMobileColorScheme] = useState(Appearance.getColorScheme());
@@ -25,15 +25,14 @@ const useMobileTheme = () => {
 useMobileTheme(); 
 useEffect(() => {
   if (mobileColorScheme === 'light') {
-    setTheme(theme.light);
+    onChangeTheme(theme.light);
   } else {
-    setTheme(theme.dark);
+    onChangeTheme(theme.dark);
   }
 }, [mobileColorScheme]);
 
 
   return (
-    // <Provider store={store}>
       <PaperProvider>
         <ThemeContext.Provider value={Thistheme}>
         <NavigationContainer>
@@ -43,9 +42,7 @@ useEffect(() => {
             />
         </NavigationContainer>
         </ThemeContext.Provider>
-        <Button onPress={onChangeTheme}>Toggle dark mode</Button>
       </PaperProvider>
-      // </Provider>
     );
 }
 export default App;

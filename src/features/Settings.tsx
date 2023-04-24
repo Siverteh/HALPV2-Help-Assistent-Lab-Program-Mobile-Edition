@@ -18,10 +18,6 @@ interface UserProps {
 import { RootStackParamList } from "../types";
 import { StackScreenProps } from "@react-navigation/stack";
 import { ThemeContext, themeHook } from '../Components/GlobalHook';
-import { theme } from "../styles/theme";
-
-
-
 
 const Text_Input = (lable: string, defaultValue: string = '', password: boolean = false) => {
   const { background, text, buttons, boxes, outline } = useContext(ThemeContext)
@@ -127,7 +123,7 @@ const Settings = ({navigation}: any ) => {
       {Button_( "PASSWORD", openPasswordModal)}
       {Button_("EXTERNAL-SERVICE", openExserviceModal)}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
-      {Button_("Toogle mode", onChangeTheme )}
+      {Button_("Toogle mode", () => onChangeTheme() )}
 
       <Portal>
         <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%' }]}>
