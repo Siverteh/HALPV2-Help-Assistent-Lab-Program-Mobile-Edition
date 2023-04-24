@@ -1,12 +1,12 @@
 import Styles from "../styles/styles";
-import { Button, Text, Modal, Portal, TextInput, List, Checkbox } from "react-native-paper";
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { Button, Text, Modal, Portal, TextInput, Checkbox } from "react-native-paper";
+import { TabView, TabBar } from 'react-native-tab-view';
 import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View } from 'react-native';
 import * as React from 'react';
 import DropDown from "react-native-paper-dropdown";
 import { useContext, useState } from "react";
 import { SearchBar } from 'react-native-elements';
-import { isNull } from "lodash";
+import {useSelector} from 'react-redux';
 
 
 interface UserProps {
@@ -15,35 +15,10 @@ interface UserProps {
   id: string;
   nickname: string;
 }
-import { RootStackParamList } from "../types";
+import { AppState, RootStackParamList } from "../types";
 import { StackScreenProps } from "@react-navigation/stack";
 import { ThemeContext, themeHook } from '../Components/GlobalHook';
 
-const Text_Input = (lable: string, defaultValue: string = '', password: boolean = false) => {
-  const { background, text, buttons, boxes, outline } = useContext(ThemeContext)
-
-  return (
-    <>
-      <View style={{ height: '7%' }}></View>
-      <TextInput
-        style={{ width: "80%" }}
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
-        label={lable}
-        mode="outlined"
-        defaultValue={defaultValue}
-        secureTextEntry={password}>
-      </TextInput>
-    </>
-  )
-}
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
   const { background, text, outline } = useContext(ThemeContext)
 
@@ -92,18 +67,14 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 const Settings = ({navigation}: any ) => {
   const { background} = useContext(ThemeContext);
   const { onChangeTheme} = themeHook();
-
+  const { user: { role, isLoggedIn, email,  }} = useSelector((state: AppState) => state.user)
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
-  const [name, setName] = useState('Here1');
-  const [email, setEmail] = useState('Here2');
+  const [name, setName] = useState('nickname');
+  const [newEmail, setNewEmail] = useState(email);
   const [discord, setDiscord] = useState('Here3');
   const [error, setError] = useState('');
-
-  const [isPasswordModalVisible, setIsPasswordModalVisible] = React.useState(false);
-  const openPasswordModal = () => navigation.navigate('ChangePassword');
-  const closePasswordModal = () => setIsPasswordModalVisible(false);
 
   const [isExserviceModalVisible, setIsExserviceModalVisible] = React.useState(false);
   const openExserviceModal = () => setIsExserviceModalVisible(true);
@@ -120,8 +91,7 @@ const Settings = ({navigation}: any ) => {
 
   const handleChangeProfile = () => {
 
-    //const isEmail = (email: string) =>  (/^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/.test(email))
-    if (!(email.includes('@') && email.includes('.'))) {
+    if (!(newEmail.includes('@') && newEmail.includes('.'))) {
       setError("Invalid Email");
       return;
     }
@@ -129,7 +99,7 @@ const Settings = ({navigation}: any ) => {
     const data = {
       id: '1d315a71-71e6-4977-8590-a5e939e7a4b1',
       nickname: name,
-      email: email,
+      email: newEmail,
       discordTag: discord
     };
     console.log(data);
@@ -162,7 +132,7 @@ const Settings = ({navigation}: any ) => {
 
     <View style={[{backgroundColor: background, justifyContent: 'center', alignItems: 'center', height: screenHeight * 0.70 }]}>
       {Button_( "PROFILE", openProfileModal)}
-      {Button_( "PASSWORD", openPasswordModal)}
+      {Button_( "PASSWORD", ()=>navigation.navigate('ChangePassword'))}
       {Button_("EXTERNAL-SERVICE", openExserviceModal)}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
       {Button_("Toogle mode", () => onChangeTheme() )}
@@ -172,7 +142,7 @@ const Settings = ({navigation}: any ) => {
           {Text_Input_CB( "Name", 'LogedInName', false, setName)}
           {Text_Input_CB("Discord", 'LogedInDiscord', false, setDiscord)}
           <Text style={{ color: 'red',marginTop:'5%', marginBottom:'-10%' }}>{error}</Text>
-          {Text_Input_CB("Email", 'LogedInEmail', false, setEmail)}
+          {Text_Input_CB("Email", newEmail, false, setNewEmail)}
           {Button_("SAVE", handleChangeProfile, '15%')}
         </Modal>
         <Modal visible={isExserviceModalVisible} onDismiss={closeExserviceModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
@@ -187,7 +157,7 @@ const Settings = ({navigation}: any ) => {
 };
 
 const TimeEdit = React.memo(( ) => {
-  const { background, text, listItem_dark, listItem_light, text2, boxes } = useContext(ThemeContext);
+  const { background, text, boxes } = useContext(ThemeContext);
   const [timeeditData, setTimeeditData] = useState<Array<{ id: string, courseLink: string }>>([]);
   const screenHeight = Dimensions.get("window").height;
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
@@ -218,11 +188,6 @@ const TimeEdit = React.memo(( ) => {
   //Fetch data when the page is entered then every minute
   React.useEffect(() => {
     fetchData(); // call fetchData() initially when the component is mounted
-    const interval = setInterval(() => {
-      fetchData(); // call fetchData() every 60 seconds
-    }, 60000);
-
-    return () => clearInterval(interval);
   }, []);
 
 
@@ -515,7 +480,7 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
     <>
     
       <Text style={
-        {color: text, backgroundColor: background, fontSize: 24, textAlign: 'center', paddingTop: 80}}
+        {color: text, backgroundColor: background, fontSize: 24, textAlign: 'center', paddingTop: '27%'}}
         >
           {routes[index].title}
       </Text>
