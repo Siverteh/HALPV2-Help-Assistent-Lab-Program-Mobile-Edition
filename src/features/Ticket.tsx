@@ -9,6 +9,7 @@ import { Dimensions, Image, NativeSyntheticEvent, TextInputFocusEventData, useCo
 import CustomDropDown from "../Components/CustomComponents";
 import DropDown from "react-native-paper-dropdown";
 import { DarkModeContext } from "../Components/GlobalHook";
+import DropDownPicker from "react-native-dropdown-picker";
 
 
 const screenHeight = Dimensions.get("window").height;
@@ -23,7 +24,7 @@ type Props = {
 const Ticket = ({ onSubmit, ticket }: Props) => {
     const { background, text, buttons, boxes, outline } = useContext(DarkModeContext);
     const [open, setOpen] = useState(false);
-    //const [value, setValue] = useState(null);
+    const [xvalue, xsetValue] = useState(null);
     const [items, setItems] = useState([
       { label: "Apple", value: "apple" },
       { label: "Banana", value: "banana" }
@@ -76,7 +77,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     };
 
     const handleCreateTicket = async () => {
-      if (validation.name || validation.description || validation.room){
+      if (validation.name || validation.description || validation.room) {
         return;
       }
       console.log(JSON.stringify(value));
@@ -103,7 +104,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       } catch (error) {
         console.error(error);
       }
-      setValue({ description: "", name: "", room: '' });
+      setValue({ description: "", name: "", room: "" });
     };
 
 
@@ -113,6 +114,28 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         <Text style={{ color: text, fontSize: 24, paddingBottom: 0, marginBottom: "7%" }}>
           {ticket ? "EDIT TICKET" : "NEW TICKET"}
         </Text>
+        <View
+          style={{
+            width: "85%"
+          }}>
+          <DropDownPicker
+            stickyHeader={true}
+            placeholder={"Room"}
+            setValue={xsetValue}
+            value={xvalue}
+            items={items}
+            open={open}
+            setOpen={setOpen}
+            style={{
+              backgroundColor: boxes.backgroundColor,
+              borderColor: outline.outlineColor,
+              zIndex: 999999999
+            }}
+            textStyle={{
+              color: text
+            }}
+          />
+        </View>
         <TextInput
           style={[{ backgroundColor: boxes.backgroundColor, width: "85%", margin: "2%" }]}
           textColor={text}
