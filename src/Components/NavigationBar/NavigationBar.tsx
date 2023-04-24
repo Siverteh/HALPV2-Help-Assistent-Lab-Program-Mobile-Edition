@@ -5,11 +5,12 @@ import { studassRoutes, userRoutes } from '../../App/routes';
 
 type Props = {
   isStudass: boolean
+  isLoggedIn: boolean
 }
 
 const Tab = createBottomTabNavigator();
 
-const NavigationBar = ({ isStudass }: Props) => {
+const NavigationBar = ({ isStudass, isLoggedIn }: Props) => {
   return (
       <Tab.Navigator
         initialRouteName={"Helplist"}
@@ -20,7 +21,7 @@ const NavigationBar = ({ isStudass }: Props) => {
         }}
         >
           {isStudass ? 
-            studassRoutes.map(({ name, component, icon}, i) => (
+            studassRoutes(isLoggedIn).map(({ name, component, icon}, i) => (
                 <Tab.Screen
                 key={i}
                 name={name}
@@ -33,7 +34,7 @@ const NavigationBar = ({ isStudass }: Props) => {
                   ),
                 }}
                 />
-            )) : userRoutes.map(({ name, component, icon}, i) => (
+            )) : userRoutes(isLoggedIn).map(({ name, component, icon}, i) => (
               <Tab.Screen
                 key={i}
                 name={name}

@@ -39,7 +39,10 @@ useEffect(() => {
       <PaperProvider>
         <DarkModeContext.Provider value={Thistheme}>
         <NavigationContainer>
-          <NavigationBar isStudass={false}/>
+          <NavigationBar
+            isStudass={false}
+            isLoggedIn={false}
+            />
         </NavigationContainer>
         </DarkModeContext.Provider>
         <Button onPress={onChangeTheme}>Toggle dark mode</Button>

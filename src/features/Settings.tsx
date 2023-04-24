@@ -1,9 +1,20 @@
 import Styles from "../styles/styles";
-import { Button, Text, Modal, Portal, TextInput, List } from "react-native-paper";
+import { Button, Text, Modal, Portal, TextInput, List, Checkbox } from "react-native-paper";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View } from 'react-native';
 import * as React from 'react';
+import DropDown from "react-native-paper-dropdown";
 import { useContext, useState } from "react";
+import { SearchBar } from 'react-native-elements';
+import { isNull } from "lodash";
+
+
+interface UserProps {
+  isAdmin: any;
+  courses: string;
+  id: string;
+  nickname: string;
+}
 import { RootStackParamList } from "../types";
 import { StackScreenProps } from "@react-navigation/stack";
 import { DarkModeContext, themeHook } from '../Components/GlobalHook';
@@ -143,7 +154,7 @@ const Settings = ({navigation}: any ) => {
 };
 
 const TimeEdit = React.memo(( ) => {
-  const { background, text, listItem_dark, listItem_light, text2 } = useContext(DarkModeContext);
+  const { background, text, listItem_dark, listItem_light, text2, boxes } = useContext(DarkModeContext);
   const [timeeditData, setTimeeditData] = useState<Array<{ id: string, courseLink: string }>>([]);
   const screenHeight = Dimensions.get("window").height;
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
@@ -200,7 +211,7 @@ const TimeEdit = React.memo(( ) => {
         console.error(error);
       });
   }
-
+  
   const deleteItem = (index: number) => {
     const item = timeeditData[index];
     const newData = [...timeeditData];
@@ -218,19 +229,19 @@ const TimeEdit = React.memo(( ) => {
         console.error('Error deleting item', error);
       });
   };
-
+  
 
   const renderItem = ({ item, index }: { item: { id: string, courseLink: string }, index: number }) => (
 
-    <View style={[index % 2 == 0 ? listItem_dark : listItem_light,{padding: 10}]}>
+    <View style={[{backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}]}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
         style={{color: text, width:'80%'}}>
             {item.courseLink}
         </Text>
-        <TouchableOpacity
+        <TouchableOpacity 
           onPress={() => deleteItem(index)}
-          style={[index % 2 === 0 ? listItem_light : listItem_dark, {padding: 10}]}>
+          style={[{backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}]}>
           <Text style={{color: text}}>
             Delete
           </Text>
@@ -251,7 +262,7 @@ const TimeEdit = React.memo(( ) => {
       {Button_("ADD NEW", openAddModal, '10%')}
       <View style={{ height: '5%' }} />
 
-
+      
       <Portal>
         <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: screenHeight * 0.30 }]}>
           {Text_Input_CB( "TimeEdit Link", newLink, false, setNewLink)}
@@ -265,10 +276,166 @@ const TimeEdit = React.memo(( ) => {
 
 
 const Roles = React.memo(() => {
-  const { background, text, listItem_dark, listItem_light, text2 } = useContext(DarkModeContext);
+  const { background, text, listItem_dark, listItem_light, text2, buttons, boxes } = useContext(DarkModeContext);
   const screenHeight = Dimensions.get("window").height;
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [courseList, setCourseList] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState<string | null>("admin");
+  const [userData, setUserData] = useState<Array<UserProps>>([]);
+  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+  const [searchText, setSearchText] = useState("");
+
+
+  const fetchCourse = async () => {
+    try {
+      const response = await fetch("https://chanv2.duckdns.org:7006/api/Courses/all");
+      const rooms = await response.json();
+      setCourseList(rooms);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch("https://chanv2.duckdns.org:7006/api/User/all");
+      const users = await response.json();
+      setUserData(users);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchUsers();
+    fetchCourse();
+  }, []);
+
+  const dropdownItems = [
+    { value: "admin", label: "Admin" },
+    ...courseList.map((course) => ({ value: course, label: course })),
+  ];
+
+  const handleCheckboxChange = (itemId: string, selectedCourse: any) => {
+    const item = userData.find((user) => user.id === itemId);
+    if (!item) {
+      return;
+    }
+    let tmp = false;
+    if (selectedCourse === "admin") {
+      tmp = true;
+    }
+    const endpoint = tmp ? "admin" : "studass";
+    const url = `https://chanv2.duckdns.org:7006/api/Roles/${endpoint}`;
+    const isChecked = (selectedCourse && item.courses.includes(selectedCourse)) || item.isAdmin;
+    const data = {
+      userID: itemId,
+      course: selectedCourse,
+      set: isChecked ? false : !checkedItems[itemId],
+    };
+  
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log('ok');
+          fetchUsers();
+          setCheckedItems((prevState) => ({
+            ...prevState,
+            [itemId]: !prevState[itemId],
+          }));
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const renderItem = ({ item, index }: { item: UserProps; index: number }) => {
+    const isAdmin = item.isAdmin;
+  const isChecked =
+    (selectedCourse && item.courses.includes(selectedCourse)) || isAdmin;
+
+    return (
+      <View
+        style={[
+          {backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}
+        ]}
+      >
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={[{color:text, width: "80%", fontSize: 22 }]}>
+            {item.nickname}
+          </Text>
+          <Checkbox
+            status={isChecked ? "checked" : "unchecked"}
+            onPress={() => handleCheckboxChange(item.id, selectedCourse)}
+          />
+        </View>
+      </View>
+    );
+  };
+
+  const filteredData = userData.filter((item) =>
+    item.nickname.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  const handleChange = (text:string) => setSearchText(text)
+
   return(
-    <View style={[{backgroundColor: background, justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
+    <View style={[{backgroundColor:background, justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
+      <View style={{height:'5%', width:'90%', marginTop:'10%'}}>
+        <DropDown
+          label={"Search by Course + Admin"}
+          mode={"outlined"}
+          visible={showDropDown}
+          showDropDown={() => setShowDropDown(true)}
+          onDismiss={() => setShowDropDown(false)}
+          value={selectedCourse}
+          setValue={setSelectedCourse}
+          list={dropdownItems}
+          dropDownContainerHeight={300}
+          theme={{colors: {onSurface:text, background:buttons.backgroundColor, outline: 'transparent', onSurfaceVariant:text}}}
+          dropDownItemStyle={{backgroundColor: buttons.backgroundColor}}
+          dropDownItemTextStyle={{color: text}}
+          dropDownStyle={{backgroundColor: 'transparent'}}
+          dropDownItemSelectedStyle={{backgroundColor: background}}
+          dropDownItemSelectedTextStyle={{color: text}}          
+        />
+      </View>
+      <View style={{ height: "5%", width: "93%", marginTop: "10%" }}>
+      <SearchBar
+        placeholder="Search..."
+        onChangeText={handleChange}
+        value={searchText}
+        placeholderTextColor={text}
+        containerStyle={{ 
+          backgroundColor: "transparent", 
+          borderTopWidth: 0,
+          borderBottomWidth: 0, }}
+        inputContainerStyle={{
+          backgroundColor: buttons.backgroundColor,
+          width: '101%'
+        }}
+        inputStyle={{
+          color: text,
+          fontSize: 18,
+        }}
+      />
+      </View>
+      <View style={{height:'5%', width:'90%', marginTop:'10%'}}/>
+      <FlatList 
+        data={filteredData}
+        renderItem={renderItem}
+        style={{width: '90%'}}
+        keyExtractor={item => item.id}
+      />
+        
+      
     </View>
   );
 });
