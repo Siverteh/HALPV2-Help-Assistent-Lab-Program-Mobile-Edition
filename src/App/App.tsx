@@ -20,8 +20,8 @@ function App(): JSX.Element {
         <DarkModeContext.Provider value={currentTheme}>
         <NavigationContainer>
           <NavigationBar
-            isStudass={false}
-            isLoggedIn={true}
+            isStudass={true}
+            isLoggedIn={false}
             />
         </NavigationContainer>
         </DarkModeContext.Provider>
