@@ -134,7 +134,7 @@ const Settings = ({navigation}: any ) => {
       discordTag: discord
     };
     console.log(data);
-    fetch('http://chanv2.duckdns.org:5084/api/User', {
+    fetch('https://chanv2.duckdns.org:7006/api/User', {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -202,7 +202,7 @@ const TimeEdit = React.memo(( ) => {
   const [newLink, setNewLink] = useState('');
 
   const fetchData = () => {
-    fetch('http://chanv2.duckdns.org:5084/api/Timeedit')
+    fetch('https://chanv2.duckdns.org:7006/api/Timeedit')
       .then(response => response.json())
       .then(data => {
         setTimeeditData(data);
@@ -227,7 +227,7 @@ const TimeEdit = React.memo(( ) => {
 
 
   const handleAddNewLink = () => {
-    fetch(`http://chanv2.duckdns.org:5084/api/Timeedit?link=${newLink}`, {
+    fetch(`https://chanv2.duckdns.org:7006/api/Timeedit?link=${newLink}`, {
       method: 'POST',
     })
       .then(response => response.json())
@@ -250,7 +250,7 @@ const TimeEdit = React.memo(( ) => {
     const newData = [...timeeditData];
     newData.splice(index, 1);
     setTimeeditData(newData);
-    fetch(`http://chanv2.duckdns.org:5084/api/Timeedit?id=${item.id}`, {
+    fetch(`https://chanv2.duckdns.org:7006/api/Timeedit?id=${item.id}`, {
       method: 'DELETE'
     })
       .then(response => response.text())
