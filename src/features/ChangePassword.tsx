@@ -10,9 +10,7 @@ import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
 
 import { StackNavigationProp } from '@react-navigation/stack';
-import { DarkModeContext } from '../Components/GlobalHook';
-
-import { DarkModeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/GlobalHook';
 
 type ChangePasswordScreenNavigationProp = StackNavigationProp<any, 'ChangePassword'>;
 
@@ -25,7 +23,7 @@ function ChangePassword({ navigation }: ChangePasswordProps): JSX.Element {
   const stylePrefix = isDarkMode ? 'dm' : 'lm';
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [secureTextEntryRepeat, setSecureTextEntryRepeat] = useState(true);
-  const { background, text, boxes, buttons  } = useContext(DarkModeContext)
+  const { background, text, boxes, buttons  } = useContext(ThemeContext)
 
   const handleChangePassword = () => {
     // Add logic to change the password

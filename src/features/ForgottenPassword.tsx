@@ -10,7 +10,7 @@ import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
 
 import { StackNavigationProp } from '@react-navigation/stack';
-import { DarkModeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/GlobalHook';
 
 type ForgottenPasswordScreenNavigationProp = StackNavigationProp<any, 'ForgottenPassword'>;
 
@@ -19,7 +19,7 @@ interface ForgottenPasswordProps {
 }
 
 function ForgottenPassword({ navigation }: ForgottenPasswordProps): JSX.Element {
-    const { background, text, buttons, boxes  } = useContext(DarkModeContext)
+    const { background, text, buttons, boxes  } = useContext(ThemeContext)
 
 
     const handleSendResetLink = () => {

@@ -5,8 +5,7 @@ import Styles from "../styles/styles";
 import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react';
 import { Dimensions } from 'react-native';
-import { DarkModeContext } from '../Components/GlobalHook';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { ThemeContext } from '../Components/GlobalHook';
 
 type Course = {
   id: string;
@@ -20,7 +19,7 @@ type Course = {
 const Archive = () => {
   const windowHeight = Dimensions.get('window').height;
   
-  const { background, text, listItem_dark, listItem_light  } = useContext(DarkModeContext)
+  const { background, text, listItem_dark, listItem_light  } = useContext(ThemeContext)
 
 
 

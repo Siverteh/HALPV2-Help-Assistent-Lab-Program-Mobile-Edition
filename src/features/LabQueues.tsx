@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, TouchableOpacity, useColorScheme, ScrollView, FlatList } from 'react-native';
+import { Image, View, FlatList } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import { Dimensions } from 'react-native';
@@ -7,14 +7,13 @@ import Styles from '../styles/styles';
 import { useState, useContext } from "react";
 import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
-import { DarkModeContext } from "../Components/GlobalHook";
+import { ThemeContext } from "../Components/GlobalHook";
 
 const screenHeight = Dimensions.get('window').height;
 
-const LabQueues = ({navigation}: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
-    const { background, text, boxes  } = useContext(DarkModeContext)
-    const colorScheme = useColorScheme();
-    const isDarkMode = colorScheme === 'dark';
+
+const LabQueues = ({ navigation}: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
+  const { background, text, boxes  } = useContext(ThemeContext)
     const [newCours, setNewCours] = useState([]);
 
     const fetchData = () => {

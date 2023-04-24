@@ -2,11 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Provider as PaperProvider, Button } from "react-native-paper";
 import NavigationBar from "../Components/NavigationBar/NavigationBar";
 import { NavigationContainer } from '@react-navigation/native';
-import { DarkModeContext, themeHook  } from "../Components/GlobalHook";
+import { ThemeContext, themeHook  } from "../Components/GlobalHook";
 import { theme } from "../styles/theme";
-import { Theme } from "../types/theme";
-import Helplist from "../features/Helplist";
-import Archive from "../features/Archive";
 import { Appearance } from "react-native";
 
 function App(): JSX.Element {
@@ -36,17 +33,19 @@ useEffect(() => {
 
 
   return (
+    // <Provider store={store}>
       <PaperProvider>
-        <DarkModeContext.Provider value={Thistheme}>
+        <ThemeContext.Provider value={Thistheme}>
         <NavigationContainer>
           <NavigationBar
             isStudass={true}
-            isLoggedIn={false}
+            isLoggedIn={true}
             />
         </NavigationContainer>
-        </DarkModeContext.Provider>
+        </ThemeContext.Provider>
         <Button onPress={onChangeTheme}>Toggle dark mode</Button>
       </PaperProvider>
+      // </Provider>
     );
 }
 export default App;
