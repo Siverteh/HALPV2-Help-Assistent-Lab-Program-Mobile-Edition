@@ -15,6 +15,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList, Login as LoginType } from '../types';
 import { isEmpty } from 'lodash';
 import { authorize } from "react-native-app-auth";
+import * as AuthSession from 'expo-auth-session';
+
 
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
