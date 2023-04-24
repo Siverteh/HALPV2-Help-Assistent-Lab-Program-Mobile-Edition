@@ -5,8 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { ThemeContext, themeHook  } from "../Components/GlobalHook";
 import { theme } from "../styles/theme";
 import { useColorScheme } from "react-native";
+import { AppState } from "../types";
+import { useSelector } from "react-redux"
 
 function App(): JSX.Element {
+
+  const { user: { role, isLoggedIn }} = useSelector((state: AppState) => state.user)
+
 
 const {Thistheme, onChangeTheme} = themeHook();
 
@@ -26,8 +31,8 @@ useEffect(() => {
         <ThemeContext.Provider value={Thistheme}>
         <NavigationContainer>
           <NavigationBar
-            isStudass={false}
-            isLoggedIn={false}
+            isStudass={role === 'Studass' ?? false}
+            isLoggedIn={isLoggedIn}
             />
         </NavigationContainer>
         </ThemeContext.Provider>
