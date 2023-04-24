@@ -177,9 +177,4 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
   );
 }
 
-const styles = StyleSheet.create({
-
-});
-
-
 export default Login;

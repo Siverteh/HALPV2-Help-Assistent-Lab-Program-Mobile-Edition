@@ -17,7 +17,7 @@ function App(): JSX.Element {
         <ThemeContext.Provider value={theme}>
         <NavigationContainer>
           <NavigationBar
-            isStudass={true}
+            isStudass={false}
             isLoggedIn={false}
             />
         </NavigationContainer>
