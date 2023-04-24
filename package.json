@@ -47,6 +47,7 @@
     "@types/lodash": "^4.14.191",
     "@types/react": "^18.0.24",
     "@types/react-native-event-source": "^1.1.0",
+    "@types/react-native-elements": "^0.18.0",
     "@types/react-native-vector-icons": "^6.4.13",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",

@@ -3,7 +3,7 @@ import { TextInput, Button, Text } from "react-native-paper";
 import { useState, useContext } from "react";
 import Styles from "../styles/styles";
 import * as React from "react";
-import { Image, View } from "react-native";
+import { Dimensions, Image, TextInputBase, useColorScheme, View } from "react-native";
 import DropDown from "react-native-paper-dropdown";
 import { ThemeContext } from '../Components/GlobalHook';
 
@@ -14,7 +14,7 @@ type Props = {
 
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
-    const { background, text, buttons } = useContext(ThemeContext)
+    const { background, text, buttons, boxes, text2, outline } = useContext(ThemeContext)
     const [value, setValue] = React.useState<TicketProp>({ description: "", name: "", room: "", ...ticket });
 
     const [showDropDown, setShowDropDown] = useState(false);
@@ -49,15 +49,16 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     return (
       <View style={[{backgroundColor: background, flex: 1, alignItems: "center" }]}>
         <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
-        <Text style={[{color: text,  fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
+        <Text style={[{color: 'white',  fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
           {ticket ? 'EDIT TICKET':  'NEW TICKET'}
         </Text>
         <TextInput
-          style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
+          style={[Styles.boxStyle, {backgroundColor: boxes,  color: text, width: "85%", margin: "2%" }]}
           mode={"outlined"}
           label="Name"
-          outlineColor={"transparent"}
-          activeOutlineColor={"grey"}
+          outlineColor={outline.outlineColor}
+          textColor={text}
+          activeOutlineColor={outline.activeOutlineColor}
           value={value.name}
           onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, name: text }))}
         />
@@ -77,19 +78,23 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             list={dropdownItems}
             activeColor={"grey"}
             dropDownContainerHeight={300}
-            theme={{colors: { background: text, text: text, outline: 'transparent', onPrimary: 'red'}}}
-            dropDownItemStyle={{backgroundColor: buttons.backgroundColor}}
+            theme={{
+              colors: { background: boxes, outline: 'transparent', primary: 'red', onSurface: text, onSurfaceVariant: text,
+            }}}
+            dropDownItemStyle={{backgroundColor: boxes}}
             dropDownItemTextStyle={{color: text}}
             dropDownStyle={{backgroundColor: 'transparent'}}
-            dropDownItemSelectedStyle={{backgroundColor: buttons.backgroundColor}}
+            dropDownItemSelectedStyle={{backgroundColor: background}}
             dropDownItemSelectedTextStyle={{color: text}}
           />
 
         </View>
         <TextInput
-          style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
+          style={[Styles.boxStyle, {backgroundColor: boxes, color: text, width: "85%", margin: "2%" }]}
           mode={"outlined"}
           label={"Description"}
+          placeholderTextColor={text2}
+          textColor={text}
           outlineColor={"transparent"}
           activeOutlineColor={"grey"}
           value={value.description}
