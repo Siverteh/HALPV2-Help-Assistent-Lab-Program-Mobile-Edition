@@ -4,48 +4,39 @@ import NavigationBar from "../Components/NavigationBar/NavigationBar";
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeContext, themeHook  } from "../Components/GlobalHook";
 import { theme } from "../styles/theme";
-import { Appearance } from "react-native";
+import { useColorScheme } from "react-native";
+import { AppState } from "../types";
+import { useSelector } from "react-redux"
 
 function App(): JSX.Element {
 
-const {Thistheme, setTheme, onChangeTheme} = themeHook();
+  const { user: { role, isLoggedIn }} = useSelector((state: AppState) => state.user)
 
 
-const [mobileColorScheme, setMobileColorScheme] = useState(Appearance.getColorScheme());
-const useMobileTheme = () => {
-  useEffect(() => {
-    const subscription = Appearance.addChangeListener(({ colorScheme: newColorScheme }) => {
-      setMobileColorScheme(newColorScheme);
-    });
-    return () => {
-      subscription.remove();
-    };
-  }, []);
-}
-useMobileTheme();
+const {Thistheme, onChangeTheme} = themeHook();
+
+const colorScheme = useColorScheme();
+
 useEffect(() => {
-  if (mobileColorScheme === 'light') {
-    setTheme(theme.light);
+  if (colorScheme === 'light') {
+    onChangeTheme(theme.light);
   } else {
-    setTheme(theme.dark);
+    onChangeTheme(theme.dark);
   }
-}, [mobileColorScheme]);
+}, []);
 
 
   return (
-    // <Provider store={store}>
       <PaperProvider>
         <ThemeContext.Provider value={Thistheme}>
         <NavigationContainer>
           <NavigationBar
-            isStudass={false}
-            isLoggedIn={false}
+            isStudass={role === 'Studass' ?? false}
+            isLoggedIn={isLoggedIn}
             />
         </NavigationContainer>
         </ThemeContext.Provider>
-        <Button onPress={onChangeTheme}>Toggle dark mode</Button>
       </PaperProvider>
-      // </Provider>
     );
 }
 export default App;
