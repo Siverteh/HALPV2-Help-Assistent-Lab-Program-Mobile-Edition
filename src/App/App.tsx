@@ -10,7 +10,7 @@ import { Provider } from 'react-redux'
 
 function App(): JSX.Element {
   const {onChangeTheme, theme}  = themeHook()
-  console.log('test: ', theme)
+
   return (
     // <Provider store={store}>
       <PaperProvider>
@@ -22,7 +22,7 @@ function App(): JSX.Element {
             />
         </NavigationContainer>
         </ThemeContext.Provider>
-        
+        <Button onPress={onChangeTheme}>Toggle dark mode</Button>
       </PaperProvider>
       // </Provider>
     );

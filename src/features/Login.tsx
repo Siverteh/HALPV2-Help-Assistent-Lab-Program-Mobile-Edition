@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import {
+  Dimensions,
   Image,
   StyleSheet,
   Text,
@@ -14,7 +15,7 @@ import { RootStackParamList, Login as LoginType } from '../types';
 import { isEmpty } from 'lodash';
   
 function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
-
+  const windowHeight = Dimensions.get('window').height;
   const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(ThemeContext)
 
   const [value, setValue] = useState<LoginType>()
@@ -73,6 +74,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
     }
   }
 
+
   const isEmail = (value: string) =>  (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))
   const isValidPassword = (value: string) =>(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(value))
 
@@ -80,7 +82,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
 
   return (
     <View style={
-        [Styles.view, {backgroundColor: background}]}>
+        [Styles.view, {backgroundColor: background, height: windowHeight}]}>
       <Image
       style={Styles.image}
       source={require('.././img/halpy3.png')} />
@@ -135,7 +137,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
         </Text>
       </View>
       <View style={{height:"2%"}}></View>
-      <Button style={[Styles.buttonStyle,{backgroundColor: background, height: "6%", width:"85%"}]}
+      <Button style={[Styles.buttonStyle,{backgroundColor: buttons.backgroundColor , height: "6%", width:"85%"}]}
         mode="contained"
         textColor={text}
         contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
