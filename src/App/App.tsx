@@ -40,7 +40,7 @@ useEffect(() => {
         <DarkModeContext.Provider value={Thistheme}>
         <NavigationContainer>
           <NavigationBar
-            isStudass={false}
+            isStudass={true}
             isLoggedIn={false}
             />
         </NavigationContainer>

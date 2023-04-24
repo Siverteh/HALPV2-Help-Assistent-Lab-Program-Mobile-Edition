@@ -10,6 +10,7 @@ import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
 
 import { StackNavigationProp } from '@react-navigation/stack';
+import { DarkModeContext } from '../Components/GlobalHook';
 
 import { DarkModeContext } from '../Components/GlobalHook';
 
@@ -31,16 +32,16 @@ function ChangePassword({ navigation }: ChangePasswordProps): JSX.Element {
   };
 
   return (
-    <View style={[{backgroundColor: background, alignItems: 'center', width: '100%', height: '100%' }]}>
+    <View style={{backgroundColor: background, alignItems: 'center', width: '100%', height: '100%' }}>
       <Image
         style={Styles.logo}
         source={require('.././img/halpy3.png')}
       />
-      <Text style={[Styles.Header, {color: text, fontSize: 30 }]}>
+      <Text style={[{color: text,  fontSize: 30, paddingBottom: 0, marginBottom: "7%" }]}>
         Change Password
       </Text>
       <TextInput
-        style={[Styles.boxStyle, {backgroundColor: boxes, color: text, width: '85%'}]}
+        style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
         label="New Password"
         mode="outlined"
         secureTextEntry={secureTextEntry}
@@ -71,7 +72,7 @@ function ChangePassword({ navigation }: ChangePasswordProps): JSX.Element {
         }
       />
       <View style={{ height: '2%' }}></View>
-      <Text style={[ {color: text, width: '85%', textAlign: 'center' }]}>
+      <Text style={[{color: text, width: '85%', textAlign: 'center' }]}>
         Type in your preferred new password and press change to change your password.
       </Text>
       <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 20, width: '100%', alignItems: 'center' }}>
