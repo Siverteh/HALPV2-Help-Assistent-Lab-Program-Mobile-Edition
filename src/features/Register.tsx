@@ -4,6 +4,7 @@ import {
   Image,
   View,
   Text, // Add this import
+  Alert,
 } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
@@ -35,22 +36,19 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
   const handleRegister = async () => {
     // Check if all fields are filled
     if (!email || !username || !password || !confirmPassword || !discordtag) {
-    setErrorMessage('All boxes need to be filled.');
-    console.log('All boxes need to be filled.');
-    return;
-  }
+      Alert.alert('Error', 'All boxes needs to be filled.')
+      return;
+    }
 
-  // Check if the email is valid
-  if (!isValidEmail(email)) {
-    setErrorMessage('Please enter a valid email.');
-    console.log('Please enter a valid email.');
-    return;
-  }
+    // Check if the email is valid
+    if (!isValidEmail(email)) {
+      Alert.alert('Error', 'Please enter a valid email.')
+      return;
+    }
     
-    // Check if the passwords match
+    // Check if the passwords match  
     if (password !== confirmPassword) {
-      setErrorMessage('Passwords do not match.');
-      console.log('Passwords do not match.');
+      Alert.alert('Error', 'Passwords do not match.');
       return;
     }
 
@@ -60,7 +58,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, username, discordtag, password }),
     };
-  
+
     // Password requirements
     const minLength = 8;
     const hasUpperCase = /[A-Z]/.test(password);
@@ -86,6 +84,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         console.log(response.status);
   
         if (response.ok) {
+          Alert.alert('Success', 'Account successfully registered!')
           navigation.navigate('LoginScreen');
         } else {
           console.log('Registration failed:', data);
@@ -112,12 +111,12 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         errMsg += ' have at least one symbol,';
       }
       errMsg = errMsg.slice(0, -1); // Remove the trailing comma
-      setErrorMessage(errMsg);
+      Alert.alert('Error', errMsg);
     }
   };
 
   return (
-    <View style={[Styles.view, { backgroundColor: background }]}>
+      <View style={[Styles.view, { backgroundColor: background, flex: 1, height: '100%' }]}>
       <Image
         style={Styles.image}
         source={require('.././img/halpy3.png')} />
@@ -226,19 +225,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           />
         }
       />
-      <View style={{ height: "2%" }}></View>
-      {errorMessage ? (
-      <Text
-        style={{
-          color: 'red',
-          textAlign: 'center',
-          marginBottom: 10,
-          paddingHorizontal: 20,
-        }}
-      >
-        {errorMessage}
-      </Text>
-    ) : null}
+      <View style={{ height: "6%" }}></View>
       <Button
         style={[
           Styles.buttonStyle,
