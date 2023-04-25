@@ -168,7 +168,6 @@ const TimeEdit = React.memo(( ) => {
       .then(response => response.json())
       .then(data => {
         setTimeeditData(data);
-        console.log('data fetched');
       })
       .catch(error => {
         console.error(error);
@@ -180,11 +179,6 @@ const TimeEdit = React.memo(( ) => {
   //Fetch data when the page is entered then every minute
   React.useEffect(() => {
     fetchData(); // call fetchData() initially when the component is mounted
-    const interval = setInterval(() => {
-      fetchData(); // call fetchData() every 60 seconds
-    }, 60000);
-
-    return () => clearInterval(interval);
   }, []);
 
 
@@ -220,7 +214,6 @@ const TimeEdit = React.memo(( ) => {
         console.log('Item deleted successfully', data);
       })
       .catch(error => {
-        console.log(item.id)
         console.error('Error deleting item', error);
       });
   };
@@ -247,7 +240,7 @@ const TimeEdit = React.memo(( ) => {
 
 
   return (
-    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
+    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center', height: screenHeight*0.60 }]}>
       <FlatList
         data={timeeditData}
         renderItem={renderItem}
