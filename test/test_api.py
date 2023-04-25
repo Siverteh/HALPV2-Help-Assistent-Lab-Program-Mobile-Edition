@@ -136,15 +136,15 @@ def test_post_discord_register_valid():
                     "discordTag": "testDiscord#1234"
                 }
     request = requests.post("https://chanv2.duckdns.org:7006/Auth/discord/register", json=payload)
-    if(request.status_code==201):
-        users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
-        users = users.json()
-        for user in users:
-            if user['email'] == "testDiscord@test.no":
-                payload =   {
-                                "userID": user["id"],
-                            }
-                requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+    
+    users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
+    users = users.json()
+    for user in users:
+        if user['email'] == "testDiscord@test.no":
+            payload =   {
+                            "userID": user["id"],
+                        }
+            requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
     assert request.status_code==201
     
 def test_post_discord_register_invalid_email():
@@ -156,16 +156,89 @@ def test_post_discord_register_invalid_email():
                 }
     requests.post("https://chanv2.duckdns.org:7006/Auth/discord/register", json=payload)
     request = requests.post("https://chanv2.duckdns.org:7006/Auth/discord/register", json=payload)
-    if(request.status_code==201):
-        users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
-        users = users.json()
-        for user in users:
-            if user['email'] == "testDiscord@test.no":
-                payload =   {
-                                "userID": user["id"],
-                            }
-                requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+    
+    users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
+    users = users.json()
+    for user in users:
+        if user['email'] == "testDiscord@test.no":
+            payload =   {
+                            "userID": user["id"],
+                        }
+            requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
     assert request.status_code==400
+
+def test_post_discord_login_valid():
+    # Send a https request to the server at this endpoint https://chanv2.duckdns.org:7006/Auth/discord/login
+    payloadR =  {
+                    "email": "testDiscord@test.no",
+                    "username": "testDiscord",
+                    "discordTag": "testDiscord#1234"
+                }
+    requests.post("https://chanv2.duckdns.org:7006/Auth/discord/register", json=payloadR)
+    payloadL =  {
+                    "email": "testDiscord@test.no",
+                    "discordTag": "testDiscord#1234"
+                }
+    request = requests.post("https://chanv2.duckdns.org:7006/Auth/discord/login", json=payloadL)
+    
+    users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
+    users = users.json()
+    for user in users:
+        if user['email'] == "testDiscord@test.no":
+            payload =   {
+                            "userID": user["id"],
+                        }
+            requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+    assert request.status_code==200
+    
+def test_post_discord_login_invalid_email():
+    # Send a https request to the server at this endpoint https://chanv2.duckdns.org:7006/Auth/discord/login
+    payloadR =  {
+                    "email": "testDiscord@test.no",
+                    "username": "testDiscord",
+                    "discordTag": "testDiscord#1234"
+                }
+    requests.post("https://chanv2.duckdns.org:7006/Auth/discord/register", json=payloadR)
+    payloadL =  {
+                    "email": "-1",
+                    "discordTag": "testDiscord#1234"
+                }
+    request = requests.post("https://chanv2.duckdns.org:7006/Auth/discord/login", json=payloadL)
+    
+    users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
+    users = users.json()
+    for user in users:
+        if user['email'] == "testDiscord@test.no":
+            payload =   {
+                            "userID": user["id"],
+                        }
+            requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+    assert request.status_code==400
+    
+def test_post_discord_login_invalid_discordTag():
+    # Send a https request to the server at this endpoint https://chanv2.duckdns.org:7006/Auth/discord/login
+    payloadR =  {
+                    "email": "testDiscord@test.no",
+                    "username": "testDiscord",
+                    "discordTag": "testDiscord#1234"
+                }
+    requests.post("https://chanv2.duckdns.org:7006/Auth/discord/register", json=payloadR)
+    payloadL =  {
+                    "email": "testDiscord@test.no",
+                    "discordTag": "-1"
+                }
+    request = requests.post("https://chanv2.duckdns.org:7006/Auth/discord/login", json=payloadL)
+    
+    users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
+    users = users.json()
+    for user in users:
+        if user['email'] == "testDiscord@test.no":
+            payload =   {
+                            "userID": user["id"],
+                        }
+            requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+    assert request.status_code==400
+    
     
 def test_get_courses_all():
     # Send a https request to the server at this endpoint https://chanv2.duckdns.org:7006/api/Courses/all
