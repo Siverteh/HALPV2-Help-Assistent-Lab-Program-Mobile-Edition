@@ -130,13 +130,6 @@ def test_post_login_invalid_password():
     
 def test_post_discord_register_valid():
     # Send a https request to the server at this endpoint https://chanv2.duckdns.org:7006/Auth/discord/register
-    payload =   {
-                    "email": "testDiscord@test.no",
-                    "username": "testDiscord",
-                    "discordTag": "testDiscord#1234"
-                }
-    request = requests.post("https://chanv2.duckdns.org:7006/Auth/discord/register", json=payload)
-    
     users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
     users = users.json()
     for user in users:
@@ -145,6 +138,21 @@ def test_post_discord_register_valid():
                             "userID": user["id"],
                         }
             requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+            
+    payload =   {
+                    "email": "testDiscord@test.no",
+                    "username": "testDiscord",
+                    "discordTag": "testDiscord#1234"
+                }
+    request = requests.post("https://chanv2.duckdns.org:7006/Auth/discord/register", json=payload)
+    
+    for user in users:
+        if user['email'] == "testDiscord@test.no":
+            payload =   {
+                            "userID": user["id"],
+                        }
+            requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+            
     assert request.status_code==201
     
 def test_post_discord_register_invalid_email():
@@ -519,6 +527,7 @@ def test_put_edit_user_password_invalid_password():
     assert request.status_code==404
 
 def test_delete_user_valid():
+    # Send a https request to the server at this endpoint https://chanv2.duckdns.org:7006/api/User
     users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
     users = users.json()
     for user in users:
@@ -528,6 +537,114 @@ def test_delete_user_valid():
                         }
             request = requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
             assert request.status_code==200
+            
+def test_delete_user_invalid():
+    # Send a https request to the server at this endpoint https://chanv2.duckdns.org:7006/api/User
+    payload =   {
+                    "userID": "-1",
+                }
+    request = requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+    assert request.status_code==404
+
+def test_post_forgot_password_valid():
+    # Send a https request to the server at this endpoint https://chanv2.duckdns.org:7006/api/User/ForgottenPassword
+    payloadR =   {
+                    "email": "test@test.no",
+                    "username": "testUser",
+                    "password": "Password1.",
+                    "discordTag": "test#1234"
+                }
+    requests.post("https://chanv2.duckdns.org:7006/Auth/register", json=payloadR)
+    
+    payloadF =   {
+                    "email": "test@test.no"
+                }
+    request = requests.post("https://chanv2.duckdns.org:7006/api/User/ForgottenPassword", json=payloadF)
+    
+    users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
+    users = users.json()
+    for user in users:
+        if user['email'] == "testDiscord@test.no":
+            payload =   {
+                            "userID": user["id"],
+                        }
+            requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+    assert request.status_code==200
+            
+def test_post_forgot_password_invalid_email():
+    # Send a https request to the server at this endpoint https://chanv2.duckdns.org:7006/api/User/ForgottenPassword
+    payloadR =   {
+                    "email": "test@test.no",
+                    "username": "testUser",
+                    "password": "Password1.",
+                    "discordTag": "test#1234"
+                }
+    requests.post("https://chanv2.duckdns.org:7006/Auth/register", json=payloadR)
+    
+    payloadF =   {
+                    "email": "-1"
+                }
+    request = requests.post("https://chanv2.duckdns.org:7006/api/User/ForgottenPassword", json=payloadF)
+    
+    users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
+    users = users.json()
+    for user in users:
+        if user['email'] == "testDiscord@test.no":
+            payload =   {
+                            "userID": user["id"],
+                        }
+            requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+    assert request.status_code==404
+    
+def test_put_confirm_email_valid():
+    # Send a https request to the server at this endpoint https://chanv2.duckdns.org:7006/api/User/ConfirmEmail
+    payloadR =   {
+                    "email": "test@test.no",
+                    "username": "testUser",
+                    "password": "Password1.",
+                    "discordTag": "test#1234"
+                }
+    requests.post("https://chanv2.duckdns.org:7006/Auth/register", json=payloadR)
+    
+    payloadF =   {
+                    "email": "test@test.no"
+                }
+    request = requests.put("https://chanv2.duckdns.org:7006/api/User/ConfirmEmail", json=payloadF)
+    
+    users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
+    users = users.json()
+    for user in users:
+        if user['email'] == "test@test.no":
+            payload =   {
+                            "userID": user["id"],
+                        }
+            requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+    assert request.status_code==200
+            
+def test_put_confirm_email_invalid_email():
+    # Send a https request to the server at this endpoint https://chanv2.duckdns.org:7006/api/User/ConfirmEmail
+    payloadR =   {
+                    "email": "test@test.no",
+                    "username": "testUser",
+                    "password": "Password1.",
+                    "discordTag": "test#1234"
+                }
+    requests.post("https://chanv2.duckdns.org:7006/Auth/register", json=payloadR)
+    
+    payloadF =   {
+                    "email": "-1"
+                }
+    request = requests.put("https://chanv2.duckdns.org:7006/api/User/ConfirmEmail", json=payloadF)
+    
+    users = requests.get("https://chanv2.duckdns.org:7006/api/User/all")
+    users = users.json()
+    for user in users:
+        if user['email'] == "test@test.no":
+            payload =   {
+                            "userID": user["id"],
+                        }
+            requests.delete("https://chanv2.duckdns.org:7006/api/User", json=payload)
+    assert request.status_code==404
             
 def main():
     test_post_ticket_edit_valid()
