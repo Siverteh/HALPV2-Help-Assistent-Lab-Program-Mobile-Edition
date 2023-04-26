@@ -48,7 +48,7 @@ def test_get_helplist(course, expected_status_code):
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("id, expected_status_code", [
-    ("8", 200),
+    ("8", 204),
     ("-1", 404)
 ])
 def test_put_helplist_to_archived(id, expected_status_code):
@@ -64,7 +64,7 @@ def test_get_archived(course, expected_status_code):
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("id,expected_status_code", [
-    ("8", 200),
+    ("8", 204),
     ("-1", 404)
 ])
 def test_put_archived_to_helplist(id, expected_status_code):
@@ -80,6 +80,8 @@ def test_put_archived_to_helplist(id, expected_status_code):
 ])
 def test_post_register(test_user_and_cleanup, payload, expected_status_code):
     response = send_request("POST", "Auth/register", json=payload)
+    if response.status_code != expected_status_code:
+        print(response.json())
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("password", [
@@ -96,7 +98,7 @@ def test_post_register_invalid_password(password):
     assert response.status_code == 400
     
 @pytest.mark.parametrize("payload,expected_status_code", [
-    ({"id": "", "nickname": "testEdit", "email": "testEdit@test.no.", "discordTag": "testEdit#1234"}, 200),
+    ({"id": "", "nickname": "testEdit", "email": "testEdit@test.no.", "discordTag": "testEdit#1234"}, 204),
     ({"id": "-1", "nickname": "testID", "email": "testID@test.no.", "discordTag": "testID#1234"}, 404),
 ])
 def test_put_edit_user(test_user_and_cleanup, payload, expected_status_code):
@@ -106,9 +108,9 @@ def test_put_edit_user(test_user_and_cleanup, payload, expected_status_code):
     assert response.status_code == expected_status_code
     
 @pytest.mark.parametrize("payload,expected_status_code", [
-    ({"email": "test@test.no", "oldPassword": "Password1.", "newPassword": "Password.1"}, 200),
+    ({"email": "test@test.no", "oldPassword": "Password1.", "newPassword": "Password.1"}, 204),
     ({"email": "-1", "oldPassword": "Password1.", "newPassword": "Password1."}, 404),
-    ({"email": "test@test.no", "oldPassword": "Password1.", "newPassword": "Pass"}, 404),
+    ({"email": "test@test.no", "oldPassword": "Password1.", "newPassword": "Pass"}, 400),
 ])
 def test_put_edit_password(test_user_and_cleanup, payload, expected_status_code):
     response = send_request("PUT", "api/User/ChangePassword", json=payload)
@@ -126,7 +128,7 @@ def test_post_discord_register(test_user_and_cleanup, payload, expected_status_c
     
 def test_delete_user(test_user_and_cleanup):
     delete_response = send_request("DELETE", "api/User", json={"userID": testuser_id()})
-    assert delete_response.status_code == 200
+    assert delete_response.status_code == 204
     invalid_response = send_request("DELETE", "api/User", json={"userID": "-1"})
     assert invalid_response.status_code == 404
     
@@ -145,15 +147,15 @@ def test_get_studasses_courses(email, expected_status):
     assert request.status_code == expected_status
     
 @pytest.mark.parametrize("endpoint, expected_status, payload", [
-    ("api/Roles/studass", 200, {"userID": "", "course": "IKT205-G", "set": True}),
+    ("api/Roles/studass", 204, {"userID": "", "course": "IKT205-G", "set": True}),
     ("api/Roles/studass", 404, {"userID": "-1", "course": "IKT205-G", "set": True}),
     ("api/Roles/studass", 404, {"userID": "", "course": "-1", "set": True}),
-    ("api/Roles/studass", 200, {"userID": "", "course": "IKT205-G", "set": False}),
+    ("api/Roles/studass", 404, {"userID": "", "course": "IKT205-G", "set": False}),
     ("api/Roles/studass", 404, {"userID": "-1", "course": "IKT205-G", "set": False}),
     ("api/Roles/studass", 404, {"userID": "", "course": "-1", "set": False}),
-    ("api/Roles/admin", 200, {"userID": "", "set": True}),
+    ("api/Roles/admin", 204, {"userID": "", "set": True}),
     ("api/Roles/admin", 404, {"userID": "-1", "set": True}),
-    ("api/Roles/admin", 304, {"userID": "", "set": False}),
+    ("api/Roles/admin", 400, {"userID": "", "set": False}),
     ("api/Roles/admin", 404, {"userID": "-1", "set": False}),
 ])
 def test_put_user_roles(test_user_and_cleanup, endpoint, expected_status, payload):
@@ -162,12 +164,13 @@ def test_put_user_roles(test_user_and_cleanup, endpoint, expected_status, payloa
     response = send_request("PUT", endpoint, json=payload)
     assert response.status_code == expected_status
     
+    
 def test_get_rooms():
     request = send_request("GET", "api/Rooms")
     assert request.status_code==200
     
 @pytest.mark.parametrize("create_payload, create_status, edit_payload, edit_status", [
-    ({"name": "TestCreate", "room": "", "description": "TestCreate"}, 200, {"name": "TestEdit", "room": "", "description": "TestEdit"}, 200),
+    ({"name": "TestCreate", "room": "", "description": "TestCreate"}, 201, {"name": "TestEdit", "room": "", "description": "TestEdit"}, 204),
     ({"name": "Test", "room": "-1", "description": "Test"}, 404, {"name": "TestInvalidRoom", "room": "-1", "description": "TestInvalidRoom"}, 404),
 ])
 def test_create_and_edit_ticket(create_payload, create_status, edit_payload, edit_status):
@@ -176,7 +179,7 @@ def test_create_and_edit_ticket(create_payload, create_status, edit_payload, edi
     create_response = send_request("POST", "api/Ticket", json=create_payload)
     assert create_response.status_code == create_status
 
-    if create_response.status_code == 200:
+    if create_response.status_code == 201:
         ticket_id = create_response.json()["id"]
         edit_response = send_request("PUT", f"api/Ticket?ticketID={ticket_id}", json=edit_payload)
         assert edit_response.status_code == edit_status
@@ -194,7 +197,7 @@ def test_timeedit_operations(link, expected_status):
     create_response = send_request("POST", f"api/Timeedit?link={link}")
     assert create_response.status_code == expected_status
 
-    if create_response.status_code == 200:
+    if create_response.status_code == 204:
         timeedit_id = create_response.json()["id"]
 
         get_response = send_request("GET", "api/Timeedit")
@@ -207,7 +210,7 @@ def test_timeedit_operations(link, expected_status):
         assert invalid_delete_response.status_code == 404
         
 @pytest.mark.parametrize("payload, expected_status", [
-    ({"email": "test@test.no"}, 200),
+    ({"email": "test@test.no"}, 204),
     ({"email": "-1"}, 404),
 ])
 def test_forgotten_password(test_user_and_cleanup ,payload, expected_status):
