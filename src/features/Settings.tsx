@@ -18,6 +18,8 @@ interface UserProps {
 import { RootStackParamList } from "../types";
 import { StackScreenProps } from "@react-navigation/stack";
 import { ThemeContext, themeHook } from '../Components/GlobalHook';
+import { useDispatch } from "react-redux";
+import { actions } from "../reducers/userReducer";
 
 const Text_Input = (lable: string, defaultValue: string = '', password: boolean = false) => {
   const { background, text, buttons, boxes, outline } = useContext(ThemeContext)
@@ -92,6 +94,7 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 const Settings = ({navigation}: any ) => {
   const { background} = useContext(ThemeContext);
   const { onChangeTheme} = themeHook();
+  const dispatch = useDispatch()
 
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
@@ -114,6 +117,11 @@ const Settings = ({navigation}: any ) => {
   const screenHeight = Dimensions.get("window").height;
   const containerStyle = {backgroundColor: background, height: screenHeight * 0.45, width: "70%", borderRadius: 20 };
 
+  const handleLogout = () => {
+    dispatch(actions.setUser({
+      isLoggedIn: false
+  }))
+  }
 
   return (
 
@@ -122,7 +130,8 @@ const Settings = ({navigation}: any ) => {
       {Button_( "PASSWORD", openPasswordModal)}
       {Button_("EXTERNAL-SERVICE", openExserviceModal)}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
-      {Button_("Toogle mode", () => onChangeTheme() )}
+      {Button_("THEME", () => onChangeTheme() )}
+      {Button_("LOG OUT", handleLogout)}
 
       <Portal>
         <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%' }]}>
