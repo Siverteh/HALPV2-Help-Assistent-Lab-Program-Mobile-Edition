@@ -113,7 +113,7 @@ def test_put_helplist_to_archived(test_ticket_and_cleanup, id, expected_status_c
     ("-1", 404)
 ])
 def test_get_archived(test_ticket_and_cleanup, course, expected_status_code):
-    respons1 = send_request("PUT", "api/Archive", params={"id": test_ticket_and_cleanup.json()["id"]}, headers=Authorization())
+    respons1 = send_request("PUT", "api/Helplist", params={"id": test_ticket_and_cleanup.json()["id"]}, headers=Authorization())
     assert respons1.status_code == 204
     response = send_request("GET", "api/Archive", params={"course": course}, headers=Authorization())
     assert response.status_code == expected_status_code
