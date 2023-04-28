@@ -6,7 +6,7 @@ type StateValue =  {
     discordTag?: string
     email?: string
     role?: string
-    tolken?: string
+    token?: string
     isLoggedIn: boolean
 }
 

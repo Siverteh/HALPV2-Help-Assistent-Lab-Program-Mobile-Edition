@@ -20,6 +20,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { ThemeContext, themeHook } from '../Components/GlobalHook';
 import { useDispatch } from "react-redux";
 import { actions } from "../reducers/userReducer";
+import { head } from "lodash";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
   const { background, text, outline } = useContext(ThemeContext)
@@ -69,7 +70,7 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 const Settings = ({navigation}: any ) => {
   const { background} = useContext(ThemeContext);
   const { onChangeTheme} = themeHook();
-  const { user: { role, isLoggedIn, email, username, discordTag, id }} = useSelector((state: AppState) => state.user)  
+  const { user: {email, username, discordTag, id, token }} = useSelector((state: AppState) => state.user)  
   const dispatch = useDispatch()
 
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
@@ -109,13 +110,14 @@ const Settings = ({navigation}: any ) => {
       id: id,
       nickname: username,
       email: newEmail,
-      discordTag: discordTag
+      discordTag: discord
     };
     console.log(data);
     fetch('https://chanv2.duckdns.org:7006/api/User', {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     })
@@ -149,8 +151,8 @@ const Settings = ({navigation}: any ) => {
 
       <Portal>
         <Modal visible={isProfileModalVisible} onDismiss={closeProfileModalError} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8 }]}>
-          {Text_Input_CB( "Name", 'LogedInName', false, setName)}
-          {Text_Input_CB("Discord", 'LogedInDiscord', false, setDiscord)}
+          {Text_Input_CB( "Name", name, false, setName)}
+          {Text_Input_CB("Discord", discord, false, setDiscord)}
           <Text style={{ color: 'red',marginTop:'5%', marginBottom:'-10%' }}>{error}</Text>
           {Text_Input_CB("Email", newEmail, false, setNewEmail)}
           {Button_("SAVE", handleChangeProfile, '15%')}
@@ -169,6 +171,7 @@ const Settings = ({navigation}: any ) => {
 const TimeEdit = React.memo(( ) => {
   const { background, text, boxes } = useContext(ThemeContext);
   const [timeeditData, setTimeeditData] = useState<Array<{ id: string, courseLink: string }>>([]);
+  const { user: { token }} = useSelector((state: AppState) => state.user) 
   const screenHeight = Dimensions.get("window").height;
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
   const openAddModal = () => setIsAddModalVisible(true);
@@ -182,7 +185,7 @@ const TimeEdit = React.memo(( ) => {
   const [newLink, setNewLink] = useState('');
 
   const fetchData = () => {
-    fetch('https://chanv2.duckdns.org:7006/api/Timeedit')
+    fetch('https://chanv2.duckdns.org:7006/api/Timeedit', {headers: {Authorization: `Bearer ${token}`}})
       .then(response => response.json())
       .then(data => {
         setTimeeditData(data);
@@ -203,6 +206,10 @@ const TimeEdit = React.memo(( ) => {
   const handleAddNewLink = () => {
     fetch(`https://chanv2.duckdns.org:7006/api/Timeedit?link=${newLink}`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
     })
       .then(response => response.json())
       .then(data => {
@@ -225,7 +232,11 @@ const TimeEdit = React.memo(( ) => {
     newData.splice(index, 1);
     setTimeeditData(newData);
     fetch(`https://chanv2.duckdns.org:7006/api/Timeedit?id=${item.id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
     })
       .then(response => response.text())
       .then(data => {
@@ -284,6 +295,7 @@ const TimeEdit = React.memo(( ) => {
 const Roles = React.memo(() => {
   const { background, text, listItem_dark, listItem_light, text2, buttons, boxes } = useContext(ThemeContext);
   const screenHeight = Dimensions.get("window").height;
+  const { user: { token }} = useSelector((state: AppState) => state.user) 
   const [showDropDown, setShowDropDown] = useState(false);
   const [courseList, setCourseList] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState<string | null>("admin");
@@ -294,7 +306,7 @@ const Roles = React.memo(() => {
 
   const fetchCourse = async () => {
     try {
-      const response = await fetch("https://chanv2.duckdns.org:7006/api/Courses/all");
+      const response = await fetch("https://chanv2.duckdns.org:7006/api/Courses/all", {headers: {Authorization: `Bearer ${token}`}});
       const rooms = await response.json();
       setCourseList(rooms);
     } catch (error) {
@@ -304,7 +316,7 @@ const Roles = React.memo(() => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("https://chanv2.duckdns.org:7006/api/User/all");
+      const response = await fetch("https://chanv2.duckdns.org:7006/api/User/all", {headers: {Authorization: `Bearer ${token}`}});
       const users = await response.json();
       setUserData(users);
     } catch (error) {
@@ -344,6 +356,7 @@ const Roles = React.memo(() => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     })
