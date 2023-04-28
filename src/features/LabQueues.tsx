@@ -12,7 +12,7 @@ import { ThemeContext } from "../Components/GlobalHook";
 const screenHeight = Dimensions.get('window').height;
 
 
-const LabQueues = ({ navigation}: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
+const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
   const { background, text, boxes  } = useContext(ThemeContext)
     const [newCours, setNewCours] = useState([]);
 
@@ -29,10 +29,6 @@ const LabQueues = ({ navigation}: StackScreenProps<RootStackParamList, 'LabQueue
 
     React.useEffect(() => {
         fetchData();
-        const interval = setInterval(() => {
-            fetchData();
-        }, 60000); // 1 minute interval
-        return () => clearInterval(interval);
     }, []);
 
     const handlePress = (item: string) => {

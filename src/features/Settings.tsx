@@ -18,6 +18,8 @@ interface UserProps {
 import { AppState, RootStackParamList } from "../types";
 import { StackScreenProps } from "@react-navigation/stack";
 import { ThemeContext, themeHook } from '../Components/GlobalHook';
+import { useDispatch } from "react-redux";
+import { actions } from "../reducers/userReducer";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
   const { background, text, outline } = useContext(ThemeContext)
@@ -67,13 +69,15 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 const Settings = ({navigation}: any ) => {
   const { background} = useContext(ThemeContext);
   const { onChangeTheme} = themeHook();
-  const { user: { role, isLoggedIn, email,  }} = useSelector((state: AppState) => state.user)
+  const { user: { role, isLoggedIn, email, username, discordTag, id }} = useSelector((state: AppState) => state.user)  
+  const dispatch = useDispatch()
+
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
-  const [name, setName] = useState('nickname');
-  const [newEmail, setNewEmail] = useState(email);
-  const [discord, setDiscord] = useState('Here3');
+  const [name, setName] = useState(username);
+  const [newEmail, setNewEmail] = useState<string>(email ?? '');
+  const [discord, setDiscord] = useState(discordTag);
   const [error, setError] = useState('');
 
   const [isExserviceModalVisible, setIsExserviceModalVisible] = React.useState(false);
@@ -89,6 +93,11 @@ const Settings = ({navigation}: any ) => {
   const screenHeight = Dimensions.get("window").height;
   const containerStyle = {backgroundColor: background, height: screenHeight * 0.45, width: "70%", borderRadius: 20 };
 
+  const handleLogout = () => {
+    dispatch(actions.setUser({
+      isLoggedIn: false
+  }))
+  }
   const handleChangeProfile = () => {
 
     if (!(newEmail.includes('@') && newEmail.includes('.'))) {
@@ -97,10 +106,10 @@ const Settings = ({navigation}: any ) => {
     }
     setError("");
     const data = {
-      id: '1d315a71-71e6-4977-8590-a5e939e7a4b1',
-      nickname: name,
+      id: id,
+      nickname: username,
       email: newEmail,
-      discordTag: discord
+      discordTag: discordTag
     };
     console.log(data);
     fetch('https://chanv2.duckdns.org:7006/api/User', {
@@ -135,7 +144,8 @@ const Settings = ({navigation}: any ) => {
       {Button_( "PASSWORD", ()=>navigation.navigate('ChangePassword'))}
       {Button_("EXTERNAL-SERVICE", openExserviceModal)}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
-      {Button_("Toogle mode", () => onChangeTheme() )}
+      {Button_("THEME", () => onChangeTheme() )}
+      {Button_("LOG OUT", handleLogout)}
 
       <Portal>
         <Modal visible={isProfileModalVisible} onDismiss={closeProfileModalError} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8 }]}>
@@ -176,7 +186,6 @@ const TimeEdit = React.memo(( ) => {
       .then(response => response.json())
       .then(data => {
         setTimeeditData(data);
-        console.log('data fetched');
       })
       .catch(error => {
         console.error(error);
@@ -185,7 +194,7 @@ const TimeEdit = React.memo(( ) => {
 
 
 
-  //Fetch data when the page is entered then every minute
+  //Fetch data when the page is entered
   React.useEffect(() => {
     fetchData(); // call fetchData() initially when the component is mounted
   }, []);
@@ -223,7 +232,6 @@ const TimeEdit = React.memo(( ) => {
         console.log('Item deleted successfully', data);
       })
       .catch(error => {
-        console.log(item.id)
         console.error('Error deleting item', error);
       });
   };
@@ -231,7 +239,7 @@ const TimeEdit = React.memo(( ) => {
 
   const renderItem = ({ item, index }: { item: { id: string, courseLink: string }, index: number }) => (
 
-    <View style={[{backgroundColor: index % 2 == 0 ? boxes.backgroundColor : background, padding: 10}]}>
+    <View style={[{backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}]}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
         style={{color: text, width:'80%'}}>
@@ -239,7 +247,7 @@ const TimeEdit = React.memo(( ) => {
         </Text>
         <TouchableOpacity 
           onPress={() => deleteItem(index)}
-          style={[{backgroundColor: index % 2 == 0 ? boxes.backgroundColor : background, padding: 10}]}>
+          style={[{backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}]}>
           <Text style={{color: text}}>
             Delete
           </Text>
@@ -250,7 +258,7 @@ const TimeEdit = React.memo(( ) => {
 
 
   return (
-    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
+    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center', height: screenHeight*0.60 }]}>
       <FlatList
         data={timeeditData}
         renderItem={renderItem}
@@ -362,7 +370,7 @@ const Roles = React.memo(() => {
     return (
       <View
         style={[
-          {backgroundColor: index % 2 == 0 ? boxes.backgroundColor : background, padding: 10}
+          {backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}
         ]}
       >
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>

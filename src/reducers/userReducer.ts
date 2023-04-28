@@ -1,9 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 
 type StateValue =  {
-    email: string
-    role: string
-    tolken: string
+    id?: string
+    username?: string
+    discordTag?: string
+    email?: string
+    role?: string
+    tolken?: string
     isLoggedIn: boolean
 }
 
@@ -13,9 +16,6 @@ export type UserState = {
 
 const initialState = {
     user: {
-        email: '',
-        role: '',
-        tolken: '',
         isLoggedIn: false
     }
 }
