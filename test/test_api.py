@@ -3,6 +3,18 @@ import requests
 
 BASE_URL = "https://chanv2.duckdns.org:7006"
 
+
+def Authorization():
+    payload =   {
+                    "email": "admin@uia.no",
+                    "password": "Password1.",
+                }
+    login = send_request("POST", "Auth/login", json=payload)
+    bearer_token =  {
+                        "Authorization": f"Bearer {login.json()['token']}"
+                    }
+    return bearer_token
+
 @pytest.fixture
 def test_ticket_and_cleanup():
     # This code will be executed before the tests are run.
@@ -25,7 +37,7 @@ def test_ticket_and_cleanup():
     payload =   {
                     "id": respons.json()["id"]
                 }
-    send_request("DELETE", "api/Ticket", json=payload)
+    send_request("DELETE", "api/Ticket", json=payload, headers=Authorization())
     
 
 @pytest.fixture
@@ -46,16 +58,18 @@ def test_user_and_cleanup():
     # This code will be executed after the tests are run.
     # It deletes any test users that were created during the tests.
     # This ensures that the test environment is clean after running the tests.
-    response = send_request("GET", "api/User/all")
+    login = send_request("POST", "Auth/login", json=payload)
+    response = send_request("GET", "api/User/all", headers=Authorization())
     for user in response.json():
         if user["email"].startswith("test"):
             payload =   {
                             "userID": user["id"],
                         }
-            send_request("DELETE", "api/User", json=payload)
-    
+            send_request("DELETE", "api/User", json=payload, headers=Authorization())
+
+
 def testuser_id():
-    response = send_request("GET", "api/User/all")
+    response = send_request("GET", "api/User/all", headers=Authorization())
     for user in response.json():
         if user["email"] == "test@test.no":
             return user["id"]
@@ -64,12 +78,24 @@ def send_request(method, endpoint, **kwargs):
     url = f"{BASE_URL}/{endpoint}"
     return requests.request(method, url, **kwargs)
 
+@pytest.mark.parametrize("payload,expected_status_code", [
+    ({"email": "test@test.no", "password": "Password1."}, 200),
+    ({"email": "test@test.no", "password": ""}, 400),
+    ({"email": "-1", "password": "Password1."}, 400),
+    ({"email": "-1", "password": ""}, 400),
+    ({"email": "", "password": "Password1."}, 400),
+    ({"email": "", "password": ""}, 400),
+])
+def test_auth_login(test_user_and_cleanup ,payload, expected_status_code):
+    response = send_request("POST", "Auth/login", json=payload)
+    assert response.status_code == expected_status_code
+
 @pytest.mark.parametrize("course,expected_status_code", [
     ("IKT205-G", 200),
     ("-1", 404)
 ])
 def test_get_helplist(course, expected_status_code):
-    response = send_request("GET", "api/Helplist", params={"course": course})
+    response = send_request("GET", "api/Helplist", params={"course": course}, headers=Authorization())
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("id, expected_status_code", [
@@ -79,7 +105,7 @@ def test_get_helplist(course, expected_status_code):
 def test_put_helplist_to_archived(test_ticket_and_cleanup, id, expected_status_code):
     if id == "":
         id = test_ticket_and_cleanup.json()["id"]
-    response = send_request("PUT", "api/Helplist", params={"id": id})
+    response = send_request("PUT", "api/Helplist", params={"id": id}, headers=Authorization())
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("course,expected_status_code", [
@@ -87,9 +113,9 @@ def test_put_helplist_to_archived(test_ticket_and_cleanup, id, expected_status_c
     ("-1", 404)
 ])
 def test_get_archived(test_ticket_and_cleanup, course, expected_status_code):
-    respons1 = send_request("PUT", "api/Archive", params={"id": test_ticket_and_cleanup.json()["id"]})
+    respons1 = send_request("PUT", "api/Archive", params={"id": test_ticket_and_cleanup.json()["id"]}, headers=Authorization())
     assert respons1.status_code == 204
-    response = send_request("GET", "api/Archive", params={"course": course})
+    response = send_request("GET", "api/Archive", params={"course": course}, headers=Authorization())
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("id,expected_status_code", [
@@ -99,8 +125,8 @@ def test_get_archived(test_ticket_and_cleanup, course, expected_status_code):
 def test_put_archived_to_helplist(test_ticket_and_cleanup, id, expected_status_code):
     if id == "":
         id = test_ticket_and_cleanup.json()["id"]
-        send_request("PUT", "api/Archive", params={"id": id})
-    response = send_request("PUT", "api/Archive", params={"id": id})
+        send_request("PUT", "api/Archive", params={"id": id}, headers=Authorization())
+    response = send_request("PUT", "api/Archive", params={"id": id}, headers=Authorization())
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("payload,expected_status_code", [
@@ -136,7 +162,7 @@ def test_post_register_invalid_password(password):
 def test_put_edit_user(test_user_and_cleanup, payload, expected_status_code):
     if payload["id"] == "":
         payload["id"] = testuser_id()
-    response = send_request("PUT", "api/User", json=payload)
+    response = send_request("PUT", "api/User", json=payload, headers=Authorization())
     assert response.status_code == expected_status_code
     
 @pytest.mark.parametrize("payload,expected_status_code", [
@@ -145,7 +171,7 @@ def test_put_edit_user(test_user_and_cleanup, payload, expected_status_code):
     ({"email": "test@test.no", "oldPassword": "Password1.", "newPassword": "Pass"}, 400),
 ])
 def test_put_edit_password(test_user_and_cleanup, payload, expected_status_code):
-    response = send_request("PUT", "api/User/ChangePassword", json=payload)
+    response = send_request("PUT", "api/User/ChangePassword", json=payload, headers=Authorization())
     assert response.status_code == expected_status_code
     
 @pytest.mark.parametrize("payload,expected_status_code", [
@@ -159,13 +185,13 @@ def test_post_discord_register(test_user_and_cleanup, payload, expected_status_c
     assert response.status_code == expected_status_code
     
 def test_delete_user(test_user_and_cleanup):
-    delete_response = send_request("DELETE", "api/User", json={"userID": testuser_id()})
+    delete_response = send_request("DELETE", "api/User", json={"userID": testuser_id()}, headers=Authorization())
     assert delete_response.status_code == 204
-    invalid_response = send_request("DELETE", "api/User", json={"userID": "-1"})
+    invalid_response = send_request("DELETE", "api/User", json={"userID": "-1"}, headers=Authorization())
     assert invalid_response.status_code == 404
     
 def test_get_all_courses():
-    response = send_request("GET", "api/Courses/all")
+    response = send_request("GET", "api/Courses/all", headers=Authorization())
     assert response.status_code == 200
 
 
@@ -175,7 +201,7 @@ def test_get_all_courses():
     ("test@test.no", 404)
     ])
 def test_get_studasses_courses(email, expected_status):
-    request = requests.get(f"https://chanv2.duckdns.org:7006/api/Courses?email={email}")
+    request = send_request("GET", "api/Courses", params={"email": email}, headers=Authorization())
     assert request.status_code == expected_status
     
 @pytest.mark.parametrize("endpoint, expected_status, payload", [
@@ -193,7 +219,7 @@ def test_get_studasses_courses(email, expected_status):
 def test_put_user_roles(test_user_and_cleanup, endpoint, expected_status, payload):
     if payload["userID"] == "":
         payload["userID"] = testuser_id()
-    response = send_request("PUT", endpoint, json=payload)
+    response = send_request("PUT", endpoint, json=payload, headers=Authorization())
     assert response.status_code == expected_status
     
     
@@ -213,40 +239,40 @@ def test_create_and_edit_ticket(create_payload, create_status, edit_payload, edi
 
     if create_response.status_code == 201:
         ticket_id = create_response.json()["id"]
-        edit_response = send_request("PUT", f"api/Ticket?ticketID={ticket_id}", json=edit_payload)
+        edit_response = send_request("PUT", "api/Ticket", params={"ticketID": ticket_id}, json=edit_payload)
         assert edit_response.status_code == edit_status
-        invalid_id_edit_response = send_request("PUT", "api/Ticket?ticketID=-1", json=edit_payload)
+        invalid_id_edit_response = send_request("PUT", "api/Ticket", params={"ticketID": "-1"}, json=edit_payload)
         assert invalid_id_edit_response.status_code == 404
-        delete_response = send_request("DELETE", f"api/Ticket", json={"id": ticket_id})
+        delete_response = send_request("DELETE", "api/Ticket", json={"id": ticket_id}, headers=Authorization())
         assert delete_response.status_code == 204
     else:
-        edit_response = send_request("PUT", "api/Ticket?ticketID=1", json=edit_payload)
+        edit_response = send_request("PUT", "api/Ticket", params={"ticketID": "1"}, json=edit_payload)
         assert edit_response.status_code == edit_status
         
 def test_delete_ticket(test_ticket_and_cleanup):
     payload =   {
                     "id": test_ticket_and_cleanup.json()["id"]
                 }
-    send_request("DELETE", "api/Ticket", json=payload)
+    send_request("DELETE", "api/Ticket", json=payload, headers=Authorization())
         
 @pytest.mark.parametrize("link, expected_status", [
     ("https://www.timeedit.html", 201),
     ("https://www.timeedit.no", 400),
 ])
 def test_timeedit_operations(link, expected_status):
-    create_response = send_request("POST", f"api/Timeedit?link={link}")
+    create_response = send_request("POST", "api/Timeedit", params={"link": link}, headers=Authorization())
     assert create_response.status_code == expected_status
 
     if create_response.status_code == 201:
         timeedit_id = create_response.json()["id"]
 
-        get_response = send_request("GET", "api/Timeedit")
+        get_response = send_request("GET", "api/Timeedit", headers=Authorization())
         assert get_response.status_code == 200
 
-        delete_response = send_request("DELETE", f"api/Timeedit?id={timeedit_id}")
+        delete_response = send_request("DELETE", "api/Timeedit", params={"id": timeedit_id}, headers=Authorization())
         assert delete_response.status_code == 204
 
-        invalid_delete_response = send_request("DELETE", "api/Timeedit?id=-1")
+        invalid_delete_response = send_request("DELETE", "api/Timeedit", params={"id": "-1"}, headers=Authorization())
         assert invalid_delete_response.status_code == 404
         
 @pytest.mark.parametrize("payload, expected_status", [
