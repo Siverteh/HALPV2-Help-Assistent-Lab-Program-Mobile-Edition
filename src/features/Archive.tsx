@@ -1,134 +1,63 @@
-import { useContext, useEffect, useState } from 'react';
-import { View, Image, ScrollView, Text } from 'react-native';
-import { List } from "react-native-paper";
-import Styles from "../styles/styles";
-import { Header, CustomAccordion } from "../Components/CustomComponents"
+import { useState, useEffect } from 'react'
 import React from 'react';
-import { Dimensions } from 'react-native';
-import { ThemeContext } from '../Components/GlobalHook';
+import ListComponent, { Course } from './List'
+import { useSelector } from 'react-redux';
+import { AppState } from '../types';
 
-type Course = {
-  id: string;
-  nickname: string;
-  description: string;
-  isChecked: boolean;
-  room: string;
-}
 
-// Archive
 const Archive = () => {
-  const windowHeight = Dimensions.get('window').height;
-  
-  const { background, text, listItem_dark, listItem_light  } = useContext(ThemeContext)
 
+  const [tiggerFetch, setTiggerFetch] = useState<boolean>(false)
+  const { user: { token }} = useSelector((state: AppState) => state.user)
+  const course = ''
 
+  const [data, setData] = useState<Array<Course>>([])
 
-  const [checked, setChecked] = useState(new Map());
-  const [expanded, setExpanded] = useState(new Map());
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState<Course[]>([]);
-
-
-  const handleCheck = async (id: string) => {
-    const currentChecked = checked.get(id) || false;
-    setChecked(new Map(checked.set(id, !currentChecked)));
-
-    const updatedData = data.map(item => {
-      if (item.id === id) {
-        return {
-          ...item,
-          isChecked: !currentChecked
-        };
-      }
-      return item;
-    });
-    setData(updatedData);
-    const updatedItem = updatedData.find(item => item.id === id);
-    if (updatedItem) {
-      const filteredData = updatedData.filter(item => item.id !== id);
-      setData(filteredData);
-      await updateCourse(updatedItem);
-    }
-  };
-
-  const handleExpand = (id: string) => {
-    const currentExpanded = expanded.get(id) || false;
-    setExpanded(new Map(expanded.set(id, !currentExpanded)));
-  };
-
-  const getCourse = async () => {
-    try {
-      const response = await fetch('https://chanv2.duckdns.org:7006/api/Archive?course=ikt205-g');
-      const json = await response.json();
-      setData(json);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
   useEffect(() => {
-    const interval = setInterval(() => {
-      getCourse();
-    }, 10000); 
-  
-    return () => {
-      clearInterval(interval);
-    };
-  }, []); 
-  
-const updateCourse = async (updatedData: Course) => {
-  try {
-    var link = "https://chanv2.duckdns.org:7006/api/Archive?id=" + updatedData.id
-    const response = await fetch(link, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify([updatedData])
-    });
-    const json = await response.text().then(data => {
-      getCourse();
-    });
-  } catch (error) {
-    console.error(error);
-  }
-};
+    fetch(`https://chanv2.duckdns.org:7006/api/Archive?course=${course}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+    })
+        .then(response => response.json())
+        .then((data) => {
+            const newDataMapper = data.map((d: any) => {
+                return {
+                Id: d.id,
+                Nickname: d.nickname,
+                Description: d.description,
+                Room: d.room
+            }})
+            setData(newDataMapper)
+        })
+        .catch((error) => console.log(error))
+        //.finally(() => setLoading(false))
+  })
 
+
+  const updateCourse = async (updatedData: Course) => {
+
+      const link = "https://chanv2.duckdns.org:7006/api/Archive?id=" + updatedData.Id
+      
+      fetch(link, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify([updatedData])
+      })
+      .then(() => setTiggerFetch(true))
+      .catch((error) => console.error(error))
+  };
+  
   return (
-    <View style={{backgroundColor: background,  height: windowHeight }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}></View>
-      <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
-      <Header titleStyle= {[Styles.Header, {color: text} ]}  title='Archive' />
-      <ScrollView style={{ flex: 1 }}>
-        {data && data.length > 0 ? (
-          <List.Section >
-            {data.map((item, index) => (
-              <CustomAccordion
-                key={item.id}
-                title={item.nickname}
-                titleStyle= {{
-                  color: text, 
-                  paddingHorizontal: 16,
-                  paddingVertical: 2,
-                  fontSize: 14,
-                  }}
-                room={item.room}
-                style={index % 2 === 0 ? listItem_light : listItem_dark }
-                expanded={expanded.get(item.id) || false}
-                onPress={() => handleExpand(item.id)}
-                description={item.description}
-                onCheck={() => handleCheck(item.id)}
-                checked={checked.get(item.id) || false}
-                textStyle={{color:text}}
-              />
-            ))}
-          </List.Section>
-        ) : (
-          <Text style={{ color: text, textAlign: 'center' }} >No requests yet</Text>
-        )}
-      </ScrollView>
-    </View>
+    <ListComponent
+      title='Archive'
+      urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Archive?course=${course}`}
+      onUpdate={updateCourse}
+      data={data}
+    />
   );
 };
 
