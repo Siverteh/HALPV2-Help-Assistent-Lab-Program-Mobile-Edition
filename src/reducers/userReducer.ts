@@ -4,7 +4,7 @@ type StateValue =  {
     id?: string
     email?: string
     role?: string
-    tolken?: string
+    token?: string
     isLoggedIn: boolean
 }
 

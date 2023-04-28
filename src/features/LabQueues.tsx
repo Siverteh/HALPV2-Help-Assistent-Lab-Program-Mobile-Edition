@@ -5,19 +5,25 @@ import { Button, Text } from 'react-native-paper';
 import { Dimensions } from 'react-native';
 import Styles from '../styles/styles';
 import { useState, useContext } from "react";
-import { RootStackParamList } from '../types';
+import { AppState, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from "../Components/GlobalHook";
+import { useSelector } from 'react-redux';
 
 const screenHeight = Dimensions.get('window').height;
 
 
 const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
   const { background, text, boxes  } = useContext(ThemeContext)
-    const [newCours, setNewCours] = useState([]);
+    const [newCours, setNewCours] = useState([])
+    const { user: { token }} = useSelector((state: AppState) => state.user)
 
     const fetchData = () => {
-        fetch('https://chanv2.duckdns.org:7006/api/Courses/all')
+        fetch('https://chanv2.duckdns.org:7006/api/Courses/all', {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+      })
           .then(response => response.json())
           .then(data => {
             setNewCours(data);
@@ -32,7 +38,7 @@ const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueu
     }, []);
 
     const handlePress = (item: string) => {
-      navigation.navigate('HelpListScreen', {id: item})
+      navigation.navigate('HelpListScreen', {course: item})
     }
 
     const renderItem = ({ item }: { item: string }) => {

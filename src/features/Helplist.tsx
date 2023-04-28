@@ -1,11 +1,50 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import React from 'react';
-import ListComponent, { Course } from './List';
+import ListComponent, { Course } from './List'
+import { StackScreenProps } from '@react-navigation/stack'
+import { AppState, RootStackParamList } from '../types'
+import RNEventSource from "react-native-event-source"
+import { useSelector } from 'react-redux';
 
-
-const Helplist = () => {
+const Helplist = ({ route }:  StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
 
   const [tiggerFetch, setTiggerFetch] = useState<boolean>(false)
+  const { course } = route.params
+  const [data, setData] = useState<Array<Course>>([])
+  const { user: { token }} = useSelector((state: AppState) => state.user)
+
+  const es = new RNEventSource(`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`);
+
+  es.addEventListener("message", (event) => {
+    const jsonobject: any = event.data;
+    console.log("res: ", jsonobject)
+    if (jsonobject) {
+      setData(jsonobject)
+    }
+  })
+
+  useEffect(() => {
+    console.log('test kjør')
+    fetch(`https://chanv2.duckdns.org:7006/api/Helplist?course=${course}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+  })
+        .then(response => response.json())
+        .then((data) => {
+            console.log('kjørrr')
+            const newDataMapper = data.map((d: any) => {
+                return {
+                Id: d.id,
+                Nickname: d.nickname,
+                Description: d.description,
+                Room: d.room
+            }})
+            setData(newDataMapper)
+        })
+        .catch((error) => console.log(error))
+        //.finally(() => setLoading(false))
+  }, [course])
 
   const updateCourse = async (updatedData: Course) => {
 
@@ -24,9 +63,10 @@ const Helplist = () => {
   
   return (
     <ListComponent
-      url='https://chanv2.duckdns.org:7006/api/Helplist?course=ikt205-g'
-      urlLive='https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=IKT205-G'
+      title='Helplist'
+      urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`}
       onUpdate={updateCourse}
+      data={data}
     />
   );
 };
