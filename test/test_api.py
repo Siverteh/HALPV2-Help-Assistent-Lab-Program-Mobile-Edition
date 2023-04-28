@@ -4,6 +4,31 @@ import requests
 BASE_URL = "https://chanv2.duckdns.org:7006"
 
 @pytest.fixture
+def test_ticket_and_cleanup():
+    # This code will be executed before the tests are run.
+    # It deletes any test users that were created during previous test runs.
+    # This ensures that the test environment is clean before running the tests.
+
+    # Register a test user
+    payload =   {
+                    "name": "Test", 
+                    "room": "", 
+                    "description": "Test"
+                }
+    
+    payload["room"] = send_request("GET", "api/Rooms").json()[0]
+    respons = send_request("POST", "api/Ticket", json=payload)
+    yield respons
+    # This code will be executed after the tests are run.
+    # It deletes any test users that were created during the tests.
+    # This ensures that the test environment is clean after running the tests.
+    payload =   {
+                    "id": respons.json()["id"]
+                }
+    send_request("DELETE", "api/Ticket", json=payload)
+    
+
+@pytest.fixture
 def test_user_and_cleanup():
     # This code will be executed before the tests are run.
     # It deletes any test users that were created during previous test runs.
@@ -48,26 +73,33 @@ def test_get_helplist(course, expected_status_code):
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("id, expected_status_code", [
-    ("8", 204),
+    ("", 204),
     ("-1", 404)
 ])
-def test_put_helplist_to_archived(id, expected_status_code):
+def test_put_helplist_to_archived(test_ticket_and_cleanup, id, expected_status_code):
+    if id == "":
+        id = test_ticket_and_cleanup.json()["id"]
     response = send_request("PUT", "api/Helplist", params={"id": id})
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("course,expected_status_code", [
-    ("IKT205-G", 200),
+    ("IKT206-G", 200),
     ("-1", 404)
 ])
-def test_get_archived(course, expected_status_code):
+def test_get_archived(test_ticket_and_cleanup, course, expected_status_code):
+    respons1 = send_request("PUT", "api/Archive", params={"id": test_ticket_and_cleanup.json()["id"]})
+    assert respons1.status_code == 204
     response = send_request("GET", "api/Archive", params={"course": course})
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("id,expected_status_code", [
-    ("8", 204),
+    ("", 204),
     ("-1", 404)
 ])
-def test_put_archived_to_helplist(id, expected_status_code):
+def test_put_archived_to_helplist(test_ticket_and_cleanup, id, expected_status_code):
+    if id == "":
+        id = test_ticket_and_cleanup.json()["id"]
+        send_request("PUT", "api/Archive", params={"id": id})
     response = send_request("PUT", "api/Archive", params={"id": id})
     assert response.status_code == expected_status_code
 
@@ -150,7 +182,7 @@ def test_get_studasses_courses(email, expected_status):
     ("api/Roles/studass", 204, {"userID": "", "course": "IKT205-G", "set": True}),
     ("api/Roles/studass", 404, {"userID": "-1", "course": "IKT205-G", "set": True}),
     ("api/Roles/studass", 404, {"userID": "", "course": "-1", "set": True}),
-    ("api/Roles/studass", 404, {"userID": "", "course": "IKT205-G", "set": False}),
+    ("api/Roles/studass", 204, {"userID": "", "course": "IKT205-G", "set": False}),
     ("api/Roles/studass", 404, {"userID": "-1", "course": "IKT205-G", "set": False}),
     ("api/Roles/studass", 404, {"userID": "", "course": "-1", "set": False}),
     ("api/Roles/admin", 204, {"userID": "", "set": True}),
@@ -170,7 +202,7 @@ def test_get_rooms():
     assert request.status_code==200
     
 @pytest.mark.parametrize("create_payload, create_status, edit_payload, edit_status", [
-    ({"name": "TestCreate", "room": "", "description": "TestCreate"}, 201, {"name": "TestEdit", "room": "", "description": "TestEdit"}, 204),
+    ({"name": "TestCreate", "room": "", "description": "TestCreate"}, 201, {"name": "TestEdit", "room": "", "description": "TestEdit"}, 200),
     ({"name": "Test", "room": "-1", "description": "Test"}, 404, {"name": "TestInvalidRoom", "room": "-1", "description": "TestInvalidRoom"}, 404),
 ])
 def test_create_and_edit_ticket(create_payload, create_status, edit_payload, edit_status):
@@ -185,26 +217,34 @@ def test_create_and_edit_ticket(create_payload, create_status, edit_payload, edi
         assert edit_response.status_code == edit_status
         invalid_id_edit_response = send_request("PUT", "api/Ticket?ticketID=-1", json=edit_payload)
         assert invalid_id_edit_response.status_code == 404
+        delete_response = send_request("DELETE", f"api/Ticket", json={"id": ticket_id})
+        assert delete_response.status_code == 204
     else:
         edit_response = send_request("PUT", "api/Ticket?ticketID=1", json=edit_payload)
         assert edit_response.status_code == edit_status
         
+def test_delete_ticket(test_ticket_and_cleanup):
+    payload =   {
+                    "id": test_ticket_and_cleanup.json()["id"]
+                }
+    send_request("DELETE", "api/Ticket", json=payload)
+        
 @pytest.mark.parametrize("link, expected_status", [
-    ("https://www.timeedit.html", 200),
+    ("https://www.timeedit.html", 201),
     ("https://www.timeedit.no", 400),
 ])
 def test_timeedit_operations(link, expected_status):
     create_response = send_request("POST", f"api/Timeedit?link={link}")
     assert create_response.status_code == expected_status
 
-    if create_response.status_code == 204:
+    if create_response.status_code == 201:
         timeedit_id = create_response.json()["id"]
 
         get_response = send_request("GET", "api/Timeedit")
-        assert get_response.status_code == expected_status
+        assert get_response.status_code == 200
 
         delete_response = send_request("DELETE", f"api/Timeedit?id={timeedit_id}")
-        assert delete_response.status_code == expected_status
+        assert delete_response.status_code == 204
 
         invalid_delete_response = send_request("DELETE", "api/Timeedit?id=-1")
         assert invalid_delete_response.status_code == 404
