@@ -19,6 +19,10 @@ export type RootStackParamList = {
     SettingScreen: undefined
     Register: undefined
     ChangePassword: undefined
+    RegisterDiscord: {
+      email: string;
+      discordTag: string;
+    }
   };
 
   export type Login = {
@@ -26,7 +30,12 @@ export type RootStackParamList = {
     password: string
   }
 
-  
+  export type DiscordLogin = {
+    email: string
+    discordTag: string
+}
+
+
 
   export interface AppState {
     user: UserState

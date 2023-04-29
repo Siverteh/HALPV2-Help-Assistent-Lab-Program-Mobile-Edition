@@ -6,6 +6,7 @@ import Styles from "../styles/styles";
 
 import { StackScreenProps } from "@react-navigation/stack";
 import { Login as LoginType, RootStackParamList } from "../types";
+import { DiscordLogin } from "../types";
 import { isEmpty } from "lodash";
 import { authorize } from "react-native-app-auth";
 
@@ -15,6 +16,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const { background, text, outline, iconColor, buttons, boxes, checkUncheck } = useContext(ThemeContext);
 
   const [value, setValue] = useState<LoginType>();
+  const [discordValue, setDiscordValue] = useState<DiscordLogin>();
   const [validation, setValidation] = useState({ password: false, email: false });
   const [checked, setChecked] = useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -65,6 +67,54 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
     console.log(authState);
     const user = await getUserInfo(authState.accessToken);
     console.log(user);
+    const discordTag = `${user.username}#${user.discriminator}`;
+    const email = `${user.email}`;
+    const accessToken = `${authState.accessToken}`;
+    console.log(discordTag, email);
+
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` }
+    };
+    fetch("https://chanv2.duckdns.org:7006/api/User?email=" + email, requestOptions)
+      .then(response => {
+        console.log(response);
+        if (response.ok) {
+          if (isValidDiscordTag(discordTag) && isEmail(email)) {
+            setDiscordValue({
+              email: email,
+              discordTag: discordTag
+            });
+            const requestOptions = {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(discordValue)
+            };
+            fetch("https://chanv2.duckdns.org:7006/Auth/discord/login", requestOptions)
+              .then(response => {
+                console.log(response);
+                if (response.ok) {
+                  navigation.navigate("SettingScreen");
+                }
+              })
+              .catch((error) => {
+                console.log("Failed to log in: " + error);
+              });
+          } else {
+            console.error("Invalid discord tag or email:", discordTag, email);
+
+          }
+          console.log("found user");
+        } else if (response.status === 404) {
+          console.log("User not found: " + response.status);
+          navigation.navigate("RegisterDiscord", { email: email, discordTag: discordTag });
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+
+
   };
 
   const getUserInfo = async (accessToken: string) => {
@@ -114,6 +164,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
 
   const isEmail = (value: string) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value));
   const isValidPassword = (value: string) => (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(value));
+  const isValidDiscordTag = (value: string) => (/^[a-zA-Z0-9_]{2,32}#\d{4}$/.test(value));
+
 
   const handleRegister = () => navigation.navigate("Register");
 
