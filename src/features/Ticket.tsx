@@ -35,7 +35,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     const [open, setOpen] = useState(false);
 
 
-    const [value, setValue] = React.useState<TicketProp>({ description: "", name: "", room: "", ...ticket });
+    const [value, setValue] = React.useState<Omit<TicketProp,'room'>>({ description: "", name: "", ...ticket });
     const [validation, setValidation] = React.useState({ description: false, name: false, room: false });
     const isDarkMode = false;
     const [room, setRoom] = useState(null);
@@ -91,7 +91,6 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       const ticketData = { ...value, room };
 
       console.log(JSON.stringify(ticketData));
-      onSubmit({ name: "", description: "", room: "" }); //bare for test
       try {
         const response = await fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
           method: "POST",
@@ -103,10 +102,10 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           body: JSON.stringify(ticketData)
         });
         if (response.ok) {
-          setValue({ description: "", name: "", room: "" });
+          setValue({ description: "", name: "" });
           if (response.headers.get("Content-Length") !== "0") {
             const responseData = await response.json();
-            onSubmit(responseData || { name: "", description: "", room: "" });
+            onSubmit(responseData || { name: "", description: "" });
           }
         } else {
           console.error(`Error: ${response.status} - ${response.statusText}`);
@@ -114,7 +113,8 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       } catch (error) {
         console.error(error);
       }
-      setValue({ description: "", name: "", room: "" });
+      setValue({ description: "", name: "" });
+      setRoom(null);
     };
 
 
@@ -125,7 +125,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           {ticket ? "EDIT TICKET" : "NEW TICKET"}
         </Text>
         <TextInput
-          style={[{ backgroundColor: boxes.backgroundColor, width: "85%", margin: "2%", zIndex: 1 }]}
+          style={[{ backgroundColor: boxes.backgroundColor, width: "85%", margin: "3%", zIndex: 1 }]}
           textColor={text}
           theme={{
             colors: { background: background, onSurfaceVariant: outline.outlineColor }
@@ -154,7 +154,8 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             setOpen={setOpen}
             style={{
               backgroundColor: boxes.backgroundColor,
-              borderColor: outline.outlineColor
+              borderColor: outline.outlineColor,
+              borderRadius: 4
             }}
             textStyle={{
               color: text
