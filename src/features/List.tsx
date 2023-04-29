@@ -81,9 +81,9 @@ const ListComponent = ({
     setLoading(true)
 
     fetch(url)
-        .then(async (response) => {
-            const data: Array<CourseRes> = await response.json()
-            const newDataMapper = data.map((d) => {
+        .then(response => response.json())
+        .then((data) => {
+            const newDataMapper = data.map((d: CourseRes) => {
                 return {
                 Id: d.id,
                 Nickname: d.nickname,
@@ -96,14 +96,9 @@ const ListComponent = ({
         .finally(() => setLoading(false))
   }
 
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//     //   getCourse();
-//     }, 5000);
-//     return () => {
-//       clearInterval(interval);
-//     };
-//   }, []);
+    useEffect(() => {
+      getCourse();
+    }, []);
 
   console.log('init: ', data)
 
