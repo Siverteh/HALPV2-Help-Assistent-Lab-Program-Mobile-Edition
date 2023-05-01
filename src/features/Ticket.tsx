@@ -35,7 +35,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     const [open, setOpen] = useState(false);
 
 
-    const [value, setValue] = React.useState<Omit<TicketProp,'room'>>({ description: "", name: "", ...ticket });
+    const [value, setValue] = React.useState<Omit<TicketProp, "room">>({ description: "", name: "", ...ticket });
     const [validation, setValidation] = React.useState({ description: false, name: false, room: false });
     const isDarkMode = false;
     const [room, setRoom] = useState(null);
@@ -57,6 +57,11 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     };
 
     React.useEffect(() => {
+      setValidation({ description: false, name: false, room: false });
+    }, []);
+
+
+    React.useEffect(() => {
       fetchRooms();
     }, []);
 
@@ -71,6 +76,24 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         });
       }
     };
+
+    const handleDropdownClose = () => {
+      if (!room) {
+        setValidation((prevState) => {
+          return { ...prevState, room: true } as any;
+        });
+      } else {
+        setValidation((prevState) => {
+          return { ...prevState, room: false } as any;
+        });
+      }
+    };
+
+    const handleDropdownOpen = async () => {
+      await setValidation((prevState) => {
+        return { ...prevState, room: false } as any;
+      });
+    }
 
     const handleChange = (name: string) => (text: string) => {
       setValue((prevValue) => ({ ...prevValue, [name]: text }));
@@ -152,13 +175,14 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             items={dropdownItems}
             open={open}
             setOpen={setOpen}
+            modalAnimationType={"slide"}
             style={{
               backgroundColor: boxes.backgroundColor,
-              borderColor: outline.outlineColor,
+              borderColor: validation.room ? 'red' : outline.outlineColor,
               borderRadius: 4
             }}
             textStyle={{
-              color: text
+              color: validation.room ? 'red' : text
             }}
             scrollViewProps={{
               nestedScrollEnabled: true
@@ -169,6 +193,8 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
               backgroundColor: boxes.backgroundColor,
               borderColor: outline.outlineColor
             }}
+            onPress={handleDropdownOpen}
+            onClose={handleDropdownClose}
           />
         </View>
         <TextInput
