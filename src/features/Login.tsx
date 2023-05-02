@@ -42,8 +42,11 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
     fetch('https://chanv2.duckdns.org:7006/Auth/login', requestOptions)
       .then(response => response.json())
       .then(data => {
+        if(data.status != 401) {
         dispatch(actions.setUser({...data, isLoggedIn: true}))
+        console.log(data)
         navigation.navigate("SettingScreen")
+        }
       })
       .catch(() => {
         console.log('error')

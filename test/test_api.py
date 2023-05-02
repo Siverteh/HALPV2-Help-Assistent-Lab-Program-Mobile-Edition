@@ -49,7 +49,7 @@ def test_user_and_cleanup():
     # Register a test user
     payload = {
         "email": "test@test.no",
-        "username": "test",
+        "nickname": "test",
         "password": "Password1.",
         "discordTag": "test"
     }
@@ -80,11 +80,11 @@ def send_request(method, endpoint, **kwargs):
 
 @pytest.mark.parametrize("payload,expected_status_code", [
     ({"email": "test@test.no", "password": "Password1."}, 200),
-    ({"email": "test@test.no", "password": ""}, 400),
-    ({"email": "-1", "password": "Password1."}, 400),
-    ({"email": "-1", "password": ""}, 400),
-    ({"email": "", "password": "Password1."}, 400),
-    ({"email": "", "password": ""}, 400),
+    ({"email": "test@test.no", "password": ""}, 401),
+    ({"email": "-1", "password": "Password1."}, 401),
+    ({"email": "-1", "password": ""}, 401),
+    ({"email": "", "password": "Password1."}, 401),
+    ({"email": "", "password": ""}, 401),
 ])
 def test_auth_login(test_user_and_cleanup ,payload, expected_status_code):
     response = send_request("POST", "Auth/login", json=payload)
@@ -109,7 +109,7 @@ def test_put_helplist_to_archived(test_ticket_and_cleanup, id, expected_status_c
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("course,expected_status_code", [
-    ("IKT206-G", 200),
+    ("IKT205-G", 200),
     ("-1", 404)
 ])
 def test_get_archived(test_ticket_and_cleanup, course, expected_status_code):
@@ -130,11 +130,11 @@ def test_put_archived_to_helplist(test_ticket_and_cleanup, id, expected_status_c
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("payload,expected_status_code", [
-    ({"email": "testCreate@test.no", "username": "testUser", "password": "Password1.", "discordTag": "test#1234"}, 201),
-    ({"email": "testCreateBlankDiscord@test.no", "username": "testCreateBlankDiscord", "password": "Password1.", "discordTag":""}, 201),
-    ({"email": "test@test.no", "username": "testEmail", "password": "Password1.", "discordTag": "testEmail#1234"}, 400),
-    ({"email": "testUsername@test.no", "username": "test", "password": "Password1.", "discordTag": "testUsername#1234"}, 400),
-    ({"email": "testDiscord@test.no", "username": "testDiscord", "password": "Password1.", "discordTag": "test"}, 400),
+    ({"email": "testCreate@test.no", "nickname": "testUser", "password": "Password1.", "discordTag": "test#1234"}, 201),
+    ({"email": "testCreateBlankDiscord@test.no", "nickname": "testCreateBlankDiscord", "password": "Password1.", "discordTag":""}, 201),
+    ({"email": "test@test.no", "nickname": "testEmail", "password": "Password1.", "discordTag": "testEmail#1234"}, 400),
+    ({"email": "testNickname@test.no", "nickname": "test", "password": "Password1.", "discordTag": "testNickname#1234"}, 400),
+    ({"email": "testDiscord@test.no", "nickname": "testDiscord", "password": "Password1.", "discordTag": "test"}, 400),
 ])
 def test_post_register(test_user_and_cleanup, payload, expected_status_code):
     response = send_request("POST", "Auth/register", json=payload)
@@ -148,9 +148,9 @@ def test_post_register(test_user_and_cleanup, payload, expected_status_code):
 def test_post_register_invalid_password(password):
     payload = {
         "email": "testPassword@test.no",
-        "username": "testUserPassword",
+        "nickname": "testUserPassword",
         "password": password,
-        "discordTag": "testUsername#1234"
+        "discordTag": "testNickname#1234"
     }
     response = send_request("POST", "Auth/register", json=payload)
     assert response.status_code == 400
@@ -167,18 +167,19 @@ def test_put_edit_user(test_user_and_cleanup, payload, expected_status_code):
     
 @pytest.mark.parametrize("payload,expected_status_code", [
     ({"email": "test@test.no", "oldPassword": "Password1.", "newPassword": "Password.1"}, 204),
-    ({"email": "-1", "oldPassword": "Password1.", "newPassword": "Password1."}, 404),
-    ({"email": "test@test.no", "oldPassword": "Password1.", "newPassword": "Pass"}, 400),
+    ({"email": "test@test.no", "oldPassword": "Password", "newPassword": "Password.1"}, 401),
+    ({"email": "test@test.no", "oldPassword": "Password1.", "newPassword": "Pass"}, 401),
+    ({"email": "-1", "oldPassword": "Password1.", "newPassword": "Password1."}, 401),
 ])
 def test_put_edit_password(test_user_and_cleanup, payload, expected_status_code):
     response = send_request("PUT", "api/User/ChangePassword", json=payload, headers=Authorization())
     assert response.status_code == expected_status_code
     
 @pytest.mark.parametrize("payload,expected_status_code", [
-    ({"email": "testCreate@test.no", "username": "testCreate", "discordTag":"testCreate#1234"}, 201),
-    ({"email": "test@test.no", "username": "testEmail", "discordTag":"testEmail#1234"}, 400),
-    ({"email": "testUsername@test.no", "username": "test", "discordTag":"testUsername#1234"}, 400),
-    ({"email": "testDiscord@test.no", "username": "testDiscord", "discordTag":"test"}, 400),
+    ({"email": "testCreate@test.no", "nickname": "testCreate", "discordTag":"testCreate#1234"}, 201),
+    ({"email": "test@test.no", "nickname": "testEmail", "discordTag":"testEmail#1234"}, 400),
+    ({"email": "testNickname@test.no", "nickname": "test", "discordTag":"testNickname#1234"}, 400),
+    ({"email": "testDiscord@test.no", "nickname": "testDiscord", "discordTag":"test"}, 400),
 ])      
 def test_post_discord_register(test_user_and_cleanup, payload, expected_status_code):
     response = send_request("POST", "Auth/discord/register", json=payload)

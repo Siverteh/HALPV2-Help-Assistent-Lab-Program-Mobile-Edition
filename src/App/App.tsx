@@ -25,13 +25,12 @@ useEffect(() => {
   }
 }, []);
 
-
   return (
       <PaperProvider>
         <ThemeContext.Provider value={Thistheme}>
         <NavigationContainer>
           <NavigationBar
-            isStudass={role === 'Studass' ?? false}
+            isStudass={(role === 'Studass' || role === 'Admin')  ?? false}
             isLoggedIn={isLoggedIn}
             />
         </NavigationContainer>
