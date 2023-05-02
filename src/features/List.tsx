@@ -6,7 +6,6 @@ import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react'
 import { Dimensions } from 'react-native'
 import { ThemeContext } from '../Components/GlobalHook'
-import RNEventSource from "react-native-event-source"
 
 export type Course = {
     Id: string;
@@ -23,36 +22,28 @@ type CourseRes = {
 }
 
 type Props = {
-    url: string
+    title: string,
     urlLive: string
     onUpdate: (data: Course) => Promise<void>
+    data: Array<Course>
 }
 
 
 const ListComponent = ({
-    url,
-    urlLive,
-    onUpdate
+    title,
+    onUpdate,
+    data: dataprop
 }: Props) => {
   const windowHeight = Dimensions.get('window').height;
   const { background, text, listItem_dark, listItem_light  } = useContext(ThemeContext)
 
   const [checked, setChecked] = useState(new Map());
-  const [expanded, setExpanded] = useState(new Map());
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState<Array<Course>>([])
+  const [expanded, setExpanded] = useState(new Map())
+  const [data, setData] = useState<Array<Course>>(dataprop)
 
-  const es = new RNEventSource(urlLive);
-
-  const test = es.addEventListener("message", (event) => {
-    const jsonobject: any = event.data;
-    console.log(jsonobject)
-    if (jsonobject) {
-    // setData(jsonobject)
-    }
-  })
- 
-  console.log(test.listener)
+  useEffect(() => {
+    setData(dataprop)
+  }, [dataprop])
 
   const handleCheck = (id: string) => {
     const currentChecked = checked.get(id) || false
@@ -77,47 +68,17 @@ const ListComponent = ({
     setExpanded(new Map(expanded.set(id, !currentExpanded)));
   }
 
-  const getCourse = () => {
-    setLoading(true)
-
-    fetch(url)
-        .then(async (response) => {
-            const data: Array<CourseRes> = await response.json()
-            const newDataMapper = data.map((d) => {
-                return {
-                Id: d.id,
-                Nickname: d.nickname,
-                Description: d.description,
-                Room: d.room
-            }})
-            setData(newDataMapper)
-        })
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false))
-  }
-
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//     //   getCourse();
-//     }, 5000);
-//     return () => {
-//       clearInterval(interval);
-//     };
-//   }, []);
-
-  console.log('init: ', data)
+  console.log(data, dataprop)
 
   return (
     <View style={{backgroundColor: background,  height: windowHeight }}>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}></View>
       <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
-      <Header titleStyle= {[Styles.Header, {color: text} ]}  title='Helplist' />
+      <Header titleStyle= {[Styles.Header, {color: text} ]}  title={title} />
       <ScrollView style={{ flex: 1 }}>
         {data && data.length > 0 ? (
           <List.Section>
-            {data.map((item, index) => {
-                console.log('item: ', item)
-                return (
+            {data.map((item, index) =>  (
               <CustomAccordion
                 key={item.Id}
                 title={item.Nickname}
@@ -135,9 +96,7 @@ const ListComponent = ({
                 onCheck={() => handleCheck(item.Id)}
                 checked={checked.get(item.Id) || false}
                 textStyle={{color: text}}/>
-            )
-}
-            )}
+            ))}
           </List.Section>
         ) : (
           <Text style={{ textAlign: 'center' }} >No requests yet</Text>

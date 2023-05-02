@@ -1,3 +1,7 @@
+import { HelplistState } from "../reducers/helplistReducer";
+import { ThemeState } from "../reducers/themeReducer";
+import { UserState } from "../reducers/userReducer";
+
 export type RouteType = {
     name: string
     component: any // ScreenComponentType<RootStackParamList, string>
@@ -10,7 +14,7 @@ export type RootStackParamList = {
     LoginScreen: undefined
     LabQueues: undefined
     ArchiveScreen: undefined
-    HelpListScreen: { id: string }
+    HelpListScreen: { course: string }
     Queue: {name: string, description: string, room: string, id: string}
     SettingScreen: undefined
     Register: undefined
@@ -21,3 +25,11 @@ export type RootStackParamList = {
     email: string
     password: string
   }
+
+  
+
+  export interface AppState {
+    user: UserState
+    helplist: HelplistState
+    theme: ThemeState
+}
