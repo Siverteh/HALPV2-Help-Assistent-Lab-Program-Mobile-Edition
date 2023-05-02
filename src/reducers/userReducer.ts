@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 
 type StateValue =  {
     id?: string
-    username?: string
+    nickname?: string
     discordTag?: string
     email?: string
     role?: string

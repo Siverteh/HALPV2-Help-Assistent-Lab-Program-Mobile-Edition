@@ -30,7 +30,7 @@ const Archive = () => {
             }})
             setData(newDataMapper)
         })
-        .catch((error) => console.log(error))
+        .catch((error) => console.log('error: ', error))
         //.finally(() => setLoading(false))
   })
 

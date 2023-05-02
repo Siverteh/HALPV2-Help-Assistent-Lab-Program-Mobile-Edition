@@ -13,18 +13,17 @@ const Helplist = ({ route }:  StackScreenProps<RootStackParamList, 'HelpListScre
   const [data, setData] = useState<Array<Course>>([])
   const { user: { token }} = useSelector((state: AppState) => state.user)
 
-  const es = new RNEventSource(`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`);
+  // const es = new RNEventSource(`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`);
 
-  es.addEventListener("message", (event) => {
-    const jsonobject: any = event.data;
-    console.log("res: ", jsonobject)
-    if (jsonobject) {
-      setData(jsonobject)
-    }
-  })
+  // es.addEventListener("message", (event) => {
+  //   const jsonobject: any = event.data;
+  //   console.log("res: ", jsonobject)
+  //   if (jsonobject) {
+  //     setData(jsonobject)
+  //   }
+  // })
 
   useEffect(() => {
-    console.log('test kjør')
     fetch(`https://chanv2.duckdns.org:7006/api/Helplist?course=${course}`, {
       headers: {
         "Authorization": `Bearer ${token}`
@@ -32,7 +31,7 @@ const Helplist = ({ route }:  StackScreenProps<RootStackParamList, 'HelpListScre
   })
         .then(response => response.json())
         .then((data) => {
-            console.log('kjørrr')
+            console.log('data: ', data)
             const newDataMapper = data.map((d: any) => {
                 return {
                 Id: d.id,
@@ -42,7 +41,7 @@ const Helplist = ({ route }:  StackScreenProps<RootStackParamList, 'HelpListScre
             }})
             setData(newDataMapper)
         })
-        .catch((error) => console.log(error))
+        .catch((error) => console.log('error: ', error))
         //.finally(() => setLoading(false))
   }, [course])
 
@@ -60,7 +59,6 @@ const Helplist = ({ route }:  StackScreenProps<RootStackParamList, 'HelpListScre
       .then(() => setTiggerFetch(true))
       .catch((error) => console.error(error))
   };
-  
   return (
     <ListComponent
       title='Helplist'

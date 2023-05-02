@@ -70,13 +70,13 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 const Settings = ({navigation}: any ) => {
   const { background} = useContext(ThemeContext);
   const { onChangeTheme} = themeHook();
-  const { user: {email, username, discordTag, id, token }} = useSelector((state: AppState) => state.user)  
+  const { user: {email, nickname, discordTag, id, token }} = useSelector((state: AppState) => state.user)  
   const dispatch = useDispatch()
 
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
-  const [name, setName] = useState(username);
+  const [name, setName] = useState(nickname);
   const [newEmail, setNewEmail] = useState<string>(email ?? '');
   const [discord, setDiscord] = useState(discordTag);
   const [error, setError] = useState('');
@@ -108,7 +108,7 @@ const Settings = ({navigation}: any ) => {
     setError("");
     const data = {
       id: id,
-      nickname: username,
+      nickname: nickname,
       email: newEmail,
       discordTag: discord
     };
@@ -138,6 +138,28 @@ const Settings = ({navigation}: any ) => {
     closeProfileModal();
   }
 
+  const handleDeleteAccount = () => {
+    const data =  {
+                    userID: id,
+                  };
+    fetch('https://chanv2.duckdns.org:7006/api/User', {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (response.ok) {
+          handleLogout();
+        }
+      })
+      .catch((error) => {
+        console.log('1');
+        console.error(error);
+      });
+  }
 
   return (
 
@@ -161,7 +183,7 @@ const Settings = ({navigation}: any ) => {
           {Button_("CONECT DISCORD", closeExserviceModal, '30%')}
         </Modal>
         <Modal visible={isDeleteModalVisible} onDismiss={closeDeleteModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
-          {Button_("DELETE ACCOUNT", closeDeleteModal, '30%')}
+          {Button_("DELETE ACCOUNT", handleDeleteAccount, '30%')}
         </Modal>
       </Portal>
     </View>
@@ -269,7 +291,7 @@ const TimeEdit = React.memo(( ) => {
 
 
   return (
-    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center', height: screenHeight*0.60 }]}>
+    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center', height: screenHeight*0.66 }]}>
       <FlatList
         data={timeeditData}
         renderItem={renderItem}
