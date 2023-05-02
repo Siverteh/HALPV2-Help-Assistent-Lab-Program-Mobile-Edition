@@ -14,7 +14,7 @@ export type RootStackParamList = {
     LoginScreen: undefined
     LabQueues: undefined
     ArchiveScreen: undefined
-    HelpListScreen: { id: string }
+    HelpListScreen: { course: string }
     Queue: {name: string, description: string, room: string, id: string}
     SettingScreen: undefined
     Register: undefined
