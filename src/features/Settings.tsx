@@ -70,7 +70,7 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 const Settings = ({navigation}: any ) => {
   const { background} = useContext(ThemeContext);
   const { onChangeTheme} = themeHook();
-  const { user: {email, nickname, discordTag, id, token }} = useSelector((state: AppState) => state.user)  
+  const { user: {email, nickname, discordTag, id, token }} = useSelector((state: AppState) => state.user)
   const dispatch = useDispatch()
 
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
@@ -497,6 +497,7 @@ const renderTabBar = (props: any) => {
 export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 'SettingScreen'>) {
   const isDarkMode = useColorScheme() === 'dark';
   const { background, text } = useContext(ThemeContext);
+  const { user: { role }} = useSelector((state: AppState) => state.user)
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -506,7 +507,6 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
   ]);
   
   const renderScene = ({ route }: { route: { key: string } }) => {
-  
 
     switch (route.key) {
       case '1':
@@ -519,20 +519,34 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
         return null;
     }
   };
-  return (
-    <>
-    
-      <Text style={
-        {color: text, backgroundColor: background, fontSize: 24, textAlign: 'center', paddingTop: '27%'}}
-        >
-          {routes[index].title}
-      </Text>
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        renderTabBar={renderTabBar}
-      />
-    </>
-  );
+  if(role === 'Admin')
+  {
+    return (
+        <>
+          <Text style={
+            {color: text, backgroundColor: background, fontSize: 24, textAlign: 'center', paddingTop: '27%'}}
+            >
+              {routes[index].title}
+          </Text>
+          <TabView
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            renderTabBar={renderTabBar}
+            />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Text style={
+          {color: text, backgroundColor: background, fontSize: 40, textAlign: 'center', paddingTop: '27%'}}
+          >
+            {routes[0].title}
+        </Text>
+        <View style={{height: '5%', width: '100%', backgroundColor: background}}/>
+        <Settings navigation={navigation} />
+      </>
+    );    
+  }
 }
