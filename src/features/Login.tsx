@@ -64,34 +64,29 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
 
   const handleDiscord = async () => {
     const authState = await authorize(discordConfig);
-    console.log(authState);
     const user = await getUserInfo(authState.accessToken);
-    console.log(user);
     const discordTag = `${user.username}#${user.discriminator}`;
     const email = `${user.email}`;
     const accessToken = `${authState.accessToken}`;
-    console.log(discordTag, email);
 
     const requestOptions = {
-      method: "GET",
-      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` }
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email })
     };
-    fetch("https://chanv2.duckdns.org:7006/api/User?email=" + email, requestOptions)
+    fetch("https://chanv2.duckdns.org:7006/api/User/checkEmailExists", requestOptions)
       .then(response => {
         console.log(response);
         if (response.ok) {
           if (isValidDiscordTag(discordTag) && isEmail(email)) {
-            setDiscordValue({
-              email: email,
-              discordTag: discordTag
-            });
             const requestOptions = {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(discordValue)
+              body: JSON.stringify({ email: email, discordTag: discordTag })
             };
             fetch("https://chanv2.duckdns.org:7006/Auth/discord/login", requestOptions)
               .then(response => {
+                console.log(requestOptions);
                 console.log(response);
                 if (response.ok) {
                   navigation.navigate("SettingScreen");
@@ -100,22 +95,69 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
               .catch((error) => {
                 console.log("Failed to log in: " + error);
               });
-          } else {
-            console.error("Invalid discord tag or email:", discordTag, email);
-
           }
-          console.log("found user");
         } else if (response.status === 404) {
           console.log("User not found: " + response.status);
           navigation.navigate("RegisterDiscord", { email: email, discordTag: discordTag });
         }
-      })
-      .catch((error) => {
-        console.log("Error", error);
       });
-
-
   };
+
+  /*  const handleDiscord = async () => {
+      const authState = await authorize(discordConfig);
+      console.log(authState);
+      const user = await getUserInfo(authState.accessToken);
+      console.log(user);
+      const discordTag = `${user.username}#${user.discriminator}`;
+      const email = `${user.email}`;
+      const accessToken = `${authState.accessToken}`;
+      console.log(discordTag, email);
+
+      const requestOptions = {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(email)
+      };
+      fetch("https://chanv2.duckdns.org:7006/api/User/checkEmailExists", requestOptions)
+        .then(response => {
+          console.log(response);
+          if (response.ok) {
+            if (isValidDiscordTag(discordTag) && isEmail(email)) {
+              setDiscordValue({
+                email: email,
+                discordTag: discordTag
+              });
+              const requestOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(discordValue)
+              };
+              fetch("https://chanv2.duckdns.org:7006/Auth/discord/login", requestOptions)
+                .then(response => {
+                  console.log(response);
+                  if (response.ok) {
+                    navigation.navigate("SettingScreen");
+                  }
+                })
+                .catch((error) => {
+                  console.log("Failed to log in: " + error);
+                });
+            } else {
+              console.error("Invalid discord tag or email:", discordTag, email);
+
+            }
+            console.log("found user");
+          } else if (response.status === 404) {
+            console.log("User not found: " + response.status);
+            navigation.navigate("RegisterDiscord", { email: email, discordTag: discordTag });
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
+
+
+    };*/
 
   const getUserInfo = async (accessToken: string) => {
     const response = await fetch("https://discordapp.com/api/users/@me", {
