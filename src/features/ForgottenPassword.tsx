@@ -9,16 +9,12 @@ import { Button, TextInput } from 'react-native-paper';
 
 import Styles from '../styles/styles';
 
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from '../Components/GlobalHook';
+import { RootStackParamList } from '../types';
 
-type ForgottenPasswordScreenNavigationProp = StackNavigationProp<any, 'ForgottenPassword'>;
 
-interface ForgottenPasswordProps {
-  navigation: ForgottenPasswordScreenNavigationProp;
-}
-
-function ForgottenPassword({ navigation }: ForgottenPasswordProps): JSX.Element {
+function ForgottenPassword({ navigation }: StackScreenProps<RootStackParamList, 'ForgottenPassword'>): JSX.Element {
     const { background, text, buttons, boxes  } = useContext(ThemeContext)
 
 
