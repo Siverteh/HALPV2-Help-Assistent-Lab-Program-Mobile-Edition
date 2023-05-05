@@ -30,7 +30,7 @@ function ChangePassword({ navigation }: ChangePasswordProps): JSX.Element {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [secureTextEntryRepeat, setSecureTextEntryRepeat] = useState(true);
   const [secureTextEntryCurrent, setSecureTextEntryCurrent] = useState(true);
-  const { background, text, boxes, buttons  } = useContext(ThemeContext)
+  const { background, text, boxes, buttons, outline  } = useContext(ThemeContext)
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -120,6 +120,15 @@ return (
       style={[Styles.boxStyle, { color: text, backgroundColor: boxes, width: "85%", margin: "2%" }]}
       label="Current Password"
       mode="outlined"
+      textColor={text}
+          outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
       secureTextEntry={secureTextEntryCurrent}
       value={currentPassword}
       onChangeText={text => setCurrentPassword(text)}
@@ -137,6 +146,15 @@ return (
       style={[Styles.boxStyle, { color: text, backgroundColor: boxes, width: "85%", margin: "2%" }]}
       label="New Password"
       mode="outlined"
+      textColor={text}
+          outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
       secureTextEntry={secureTextEntry}
       value={newPassword}
       onChangeText={text => setNewPassword(text)}
@@ -153,6 +171,15 @@ return (
     <View style={{ height: '2%' }}></View>
     <TextInput
       style={[Styles.boxStyle, { color: text, backgroundColor: boxes, width: '85%' }]}
+      textColor={text}
+          outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
       label="Repeat New Password"
       mode="outlined"
       secureTextEntry={secureTextEntryRepeat}
@@ -176,7 +203,7 @@ return (
       <Button
         style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, height: '20%', width: '40%' }]}
         mode="contained"
-        labelStyle={{ color: '#000000' }} // This line changes the text color to black
+        labelStyle={{ color: text }} // This line changes the text color to black
         onPress={handleChangePassword}
       >
         CHANGE
