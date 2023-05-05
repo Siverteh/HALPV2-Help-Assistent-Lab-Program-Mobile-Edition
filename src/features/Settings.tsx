@@ -94,6 +94,12 @@ const Settings = ({navigation}: any ) => {
 
   const handleLogout = () => {
     dispatch(actions.setUser({
+      id: undefined,
+      nickname: undefined,
+      discordTag: undefined,
+      email: undefined,
+      role: undefined,
+      token: undefined,
       isLoggedIn: false
   }))
   }
