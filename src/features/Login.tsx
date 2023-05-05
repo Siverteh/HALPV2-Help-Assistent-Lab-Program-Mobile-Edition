@@ -63,9 +63,9 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
     if(isEmpty(value && (value as any)[name])) {
       setValidation(prev => {return {...prev, [name]: true}})
     }
-    // if (name === 'email' && value && !isEmail(value.email)) {
-    //   setValidation(prev => {return {...prev, [name]: true}})
-    // }
+    if (name === 'email' && value && !isEmail(value.email)) {
+      setValidation(prev => {return {...prev, [name]: true}})
+    }
     if (name === 'password' && value && !isValidPassword(value.password)) {
       setValidation(prev => {return {...prev, [name]: true}})
     }
@@ -80,7 +80,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
 
 
   const isEmail = (value: string) =>  (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))
-  const isValidPassword = (value: string) =>(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(value))
+  const isValidPassword = (value: string) =>(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?.&]{8,}$/.test(value))
 
   const handleRegister = () => navigation.navigate("Register")
 
