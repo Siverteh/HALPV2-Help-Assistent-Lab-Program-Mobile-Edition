@@ -91,10 +91,14 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
       <TextInput
         style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
         textColor={text}
-        activeOutlineColor = {outline.activeOutlineColor}
-        outlineColor = {outline.outlineColor}
-        theme={{ colors: { background: background,
-                            onSurfaceVariant: outline.outlineColor}}}
+        outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
         label="Email Address"
         mode="outlined"
         value={value?.email ?? ''}
@@ -107,11 +111,15 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
       label="Password"
       mode="outlined"
       textColor={text}
-      activeOutlineColor = {outline.activeOutlineColor}
-      outlineColor = {outline.outlineColor}
       secureTextEntry={secureTextEntry}
-      theme={{ colors: { background: background,
-                        onSurfaceVariant: outline.outlineColor} }}
+      outlineColor={outline.activeOutlineColor}
+      activeOutlineColor={outline.outlineColor}
+      theme={{
+        colors: {
+          background: background,
+          onSurfaceVariant: outline.outlineColor
+        }
+      }}
       right={
         <TextInput.Icon
           icon="eye"
