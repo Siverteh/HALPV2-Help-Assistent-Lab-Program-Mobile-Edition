@@ -1,21 +1,25 @@
-import React, { useState, useContext  } from 'react';
+import React, { useState, useContext } from 'react';
 import {
+  Dimensions,
   Image,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import { Button, TextInput, Checkbox, DefaultTheme } from 'react-native-paper';
-import { DarkModeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/GlobalHook';
 import Styles from '../styles/styles';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList, Login as LoginType } from '../types';
+import { useDispatch } from 'react-redux'
 import { isEmpty } from 'lodash';
+import { actions } from '../reducers/userReducer';
   
 function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
-
-  const isDarkMode = false;
+  const windowHeight = Dimensions.get('window').height;
+  const dispatch = useDispatch()
+  const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(ThemeContext)
 
   const [value, setValue] = useState<LoginType>()
   const [validation, setValidation] = useState({password: false, email: false})
@@ -25,7 +29,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
   const handleChecked = () => setChecked(x => !x)
 
   const handleLogin = async () => {
-    console.log(value)
+
     if (isEmpty(value)) {
       console.log('feiiillll')
     }
@@ -36,11 +40,14 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
     };
   
     fetch('https://chanv2.duckdns.org:7006/Auth/login', requestOptions)
-      .then(response => {
-        console.log(response)
-      if (response.ok) {
-        navigation.navigate("SettingScreen");
-      }})
+      .then(response => response.json())
+      .then(data => {
+        if(data.status != 401) {
+        dispatch(actions.setUser({...data, isLoggedIn: true}))
+        console.log(data)
+        navigation.navigate("SettingScreen")
+        }
+      })
       .catch(() => {
         console.log('error')
       })
@@ -58,14 +65,13 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
     if(isEmpty(value && (value as any)[name])) {
       setValidation(prev => {return {...prev, [name]: true}})
     }
-    if (name === 'email' && value && !isEmail(value.email)) {
-      setValidation(prev => {return {...prev, [name]: true}})
-    }
+    // if (name === 'email' && value && !isEmail(value.email)) {
+    //   setValidation(prev => {return {...prev, [name]: true}})
+    // }
     if (name === 'password' && value && !isValidPassword(value.password)) {
       setValidation(prev => {return {...prev, [name]: true}})
     }
   }
-  const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(DarkModeContext)
 
   const handleChange = (name: string) => (text: string) => {
     setValue((prev) => {return {...prev, [name]: text} as any})
@@ -74,6 +80,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
     }
   }
 
+
   const isEmail = (value: string) =>  (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))
   const isValidPassword = (value: string) =>(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(value))
 
@@ -81,11 +88,10 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
 
   return (
     <View style={
-        [Styles.view, {backgroundColor: background}]}>
+        [Styles.view, {backgroundColor: background, height: windowHeight}]}>
       <Image
       style={Styles.image}
       source={require('.././img/halpy3.png')} />
-
       <TextInput style={Styles.textInput}
         textColor={text}
         activeOutlineColor = {outline.activeOutlineColor}
@@ -137,12 +143,12 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
         </Text>
       </View>
       <View style={{height:"2%"}}></View>
-      <Button style={[Styles.buttonStyle,{backgroundColor: background, height: "6%", width:"85%"}]}
+      <Button style={[Styles.buttonStyle,{backgroundColor: buttons.backgroundColor , height: "6%", width:"85%"}]}
         mode="contained"
         textColor={text}
         contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
         onPress={handleLogin}
-        disabled={Object.values(validation).some(v => v === false)}
+        // disabled={Object.values(validation).some(v => v === false)}
       >
         SIGN IN
       </Button>

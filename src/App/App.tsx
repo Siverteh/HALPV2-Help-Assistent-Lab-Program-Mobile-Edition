@@ -1,34 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Provider as PaperProvider, Button } from "react-native-paper";
 import NavigationBar from "../Components/NavigationBar/NavigationBar";
 import { NavigationContainer } from '@react-navigation/native';
-import { DarkModeContext } from "../Components/GlobalHook";
+import { ThemeContext, themeHook  } from "../Components/GlobalHook";
 import { theme } from "../styles/theme";
-
+import { useColorScheme } from "react-native";
+import { AppState } from "../types";
+import { useSelector } from "react-redux"
 
 function App(): JSX.Element {
-  const [currentTheme, setCurrentTheme] = useState(theme.dark);
 
-  const toggleDarkMode = () => {
-    console.log("pressed")
-    setCurrentTheme(currentTheme === theme.light ? theme.dark : theme.light);
+  const { user: { role, isLoggedIn }} = useSelector((state: AppState) => state.user)
 
-  };
+
+const {Thistheme, onChangeTheme} = themeHook();
+
+const colorScheme = useColorScheme();
+
+useEffect(() => {
+  if (colorScheme === 'light') {
+    onChangeTheme(theme.light);
+  } else {
+    onChangeTheme(theme.dark);
+  }
+}, []);
 
   return (
       <PaperProvider>
-        <DarkModeContext.Provider value={currentTheme}>
+        <ThemeContext.Provider value={Thistheme}>
         <NavigationContainer>
           <NavigationBar
-            isStudass={false}
-            isLoggedIn={true}
+            isStudass={(role === 'Studass' || role === 'Admin')  ?? false}
+            isLoggedIn={isLoggedIn}
             />
         </NavigationContainer>
-        </DarkModeContext.Provider>
-        <Button onPress={toggleDarkMode}>Toggle dark mode</Button>
+        </ThemeContext.Provider>
       </PaperProvider>
     );
 }
-
-
 export default App;

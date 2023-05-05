@@ -1,154 +1,71 @@
-
-import { useContext, useEffect, useState } from 'react';
-import { View, Image, ScrollView, Text } from 'react-native';
-import { List } from "react-native-paper";
-import Styles from "../styles/styles";
-import { Header, CustomAccordion } from "../Components/CustomComponents"
+import { useState, useEffect } from 'react'
 import React from 'react';
-import { Dimensions } from 'react-native';
-import { DarkModeContext } from '../Components/GlobalHook';
+import ListComponent, { Course } from './List'
+import { StackScreenProps } from '@react-navigation/stack'
+import { AppState, RootStackParamList } from '../types'
+import RNEventSource from "react-native-event-source"
+import { useSelector } from 'react-redux';
 
-type Course = {
-  id: string;
-  nickname: string;
-  description: string;
-  isChecked: boolean;
-  room: string;
-}
+const Helplist = ({ route }:  StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
 
-const updateCourse = async (updatedData: Course) => {
-  try {
-    var link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.id
-    const response = await fetch(link, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify([updatedData])
-    });
-    const json = await response.text();
+  const [tiggerFetch, setTiggerFetch] = useState<boolean>(false)
+  const { course } = route.params
+  const [data, setData] = useState<Array<Course>>([])
+  const { user: { token }} = useSelector((state: AppState) => state.user)
 
-  } catch (error) {
-    console.error(error);
-  }
-};
+  // const es = new RNEventSource(`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`);
 
-const Helplist = () => {
-  const windowHeight = Dimensions.get('window').height;
+  // es.addEventListener("message", (event) => {
+  //   const jsonobject: any = event.data;
+  //   console.log("res: ", jsonobject)
+  //   if (jsonobject) {
+  //     setData(jsonobject)
+  //   }
+  // })
 
-  const isDarkMode = true;
-
-  const [checked, setChecked] = useState(new Map());
-  const [expanded, setExpanded] = useState(new Map());
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState<Course[]>([]);
-  const { background, text, listItem_dark, listItem_light  } = useContext(DarkModeContext)
-
-
-  const handleCheck = async (id: string) => {
-    const currentChecked = checked.get(id) || false;
-    setChecked(new Map(checked.set(id, !currentChecked)));
-
-    const updatedData = data.map(item => {
-      if (item.id === id) {
-        return {
-          ...item,
-          isChecked: !currentChecked
-        };
-      }
-      return item;
-    });
-
-    setData(updatedData);
-
-    const updatedItem = updatedData.find(item => item.id === id);
-
-    if (updatedItem) {
-
-      const filteredData = updatedData.filter(item => item.id !== id);
-      setData(filteredData);
-
-      await updateCourse(updatedItem);
-    }
-  };
-
-  const handleExpand = (id: string) => {
-    const currentExpanded = expanded.get(id) || false;
-    setExpanded(new Map(expanded.set(id, !currentExpanded)));
-  };
-
-  const getCourse = async () => {
-    try {
-      const response = await fetch('https://chanv2.duckdns.org:7006/api/Helplist?course=ikt205-g');
-      const json = await response.json();
-      setData(json);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
   useEffect(() => {
-
-    const interval = setInterval(() => {
-      getCourse();
-    }, 5000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+    fetch(`https://chanv2.duckdns.org:7006/api/Helplist?course=${course}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+  })
+        .then(response => response.json())
+        .then((data) => {
+            console.log('data: ', data)
+            const newDataMapper = data.map((d: any) => {
+                return {
+                Id: d.id,
+                Nickname: d.nickname,
+                Description: d.description,
+                Room: d.room
+            }})
+            setData(newDataMapper)
+        })
+        .catch((error) => console.log('error: ', error))
+        //.finally(() => setLoading(false))
+  }, [course])
 
   const updateCourse = async (updatedData: Course) => {
-    try {
-      var link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.id
-      const response = await fetch(link, {
+
+      const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.Id
+      
+      fetch(link, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify([updatedData])
-      });
-      const json = await response.text().then(data => {
-        getCourse();
-      });
-    } catch (error) {
-      console.error(error);
-    }
+      })
+      .then(() => setTiggerFetch(true))
+      .catch((error) => console.error(error))
   };
-  
   return (
-    <View style={{backgroundColor: background,  height: windowHeight }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}></View>
-      <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
-      <Header titleStyle= {[Styles.Header, {color: text} ]}  title='Helplist' />
-      <ScrollView style={{ flex: 1 }}>
-        {data && data.length > 0 ? (
-          <List.Section>
-            {data.map((item, index) => (
-              <CustomAccordion
-                key={item.id}
-                title={item.nickname}
-                room={item.room}
-                style={index % 2 === 0 ? listItem_light : listItem_dark }
-                titleStyle= {{
-                  color: text, 
-                  paddingHorizontal: 16,
-                  paddingVertical: 2,
-                  fontSize: 14,
-                  }}
-                expanded={expanded.get(item.id) || false}
-                onPress={() => handleExpand(item.id)}
-                description={item.description}
-                onCheck={() => handleCheck(item.id)}
-                checked={checked.get(item.id) || false}
-                textStyle={{color: text}}/>
-            ))}
-          </List.Section>
-        ) : (
-          <Text style={{ textAlign: 'center' }} >No requests yet</Text>
-        )}
-      </ScrollView>
-    </View>
+    <ListComponent
+      title='Helplist'
+      urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`}
+      onUpdate={updateCourse}
+      data={data}
+    />
   );
 };
 
