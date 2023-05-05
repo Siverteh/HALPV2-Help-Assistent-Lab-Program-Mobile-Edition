@@ -519,11 +519,7 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
     return (
       <View style={[{backgroundColor: background, height: '100%' }]}>
         <Header title= {routes[index].title}/>
-          {/* <Text style={
-            {color: text, backgroundColor: background, fontSize: 24, textAlign: 'center', paddingTop: '27%'}}
-            >
-              {routes[index].title}
-          </Text> */}
+
           <TabView
             navigationState={{ index, routes }}
             renderScene={renderScene}
@@ -534,16 +530,11 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
     );
   } else {
     return (
-      <>
+      <View style={[{backgroundColor: background, height: '100%' }]}>
         <Header title= {routes[0].title}/>
-        {/* <Text style={
-          {color: text, backgroundColor: background, fontSize: 40, textAlign: 'center', paddingTop: '27%'}}
-          >
-            {routes[0].title}
-        </Text> */}
         <View style={{height: '5%', width: '100%', backgroundColor: background}}/>
         <Settings navigation={navigation} />
-      </>
+      </View>
     );    
   }
 }
