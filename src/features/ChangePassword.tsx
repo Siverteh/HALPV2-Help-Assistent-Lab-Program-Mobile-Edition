@@ -114,7 +114,7 @@ return (
     <Header title='Change Password' />
     <View style={{ alignItems: 'center' }}>
       <TextInput
-        style={[Styles.boxStyle, { color: text, backgroundColor: boxes }]}
+        style={[Styles.textInput, { color: text, backgroundColor: boxes }]}
         label="Current Password"
         mode="outlined"
         textColor={text}
@@ -140,7 +140,7 @@ return (
         }
       />
       <TextInput
-        style={[Styles.boxStyle, { color: text, backgroundColor: boxes, width: "85%", margin: "2%" }]}
+        style={[Styles.textInput, { color: text, backgroundColor: boxes}]}
         label="New Password"
         mode="outlined"
         textColor={text}
@@ -166,7 +166,7 @@ return (
         }
       />
       <TextInput
-        style={[Styles.boxStyle, { color: text, backgroundColor: boxes }]}
+        style={[Styles.textInput, { color: text, backgroundColor: boxes }]}
         textColor={text}
             outlineColor={outline.activeOutlineColor}
             activeOutlineColor={outline.outlineColor}
