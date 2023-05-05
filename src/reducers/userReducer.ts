@@ -2,9 +2,11 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 
 type StateValue =  {
     id?: string
+    nickname?: string
+    discordTag?: string
     email?: string
     role?: string
-    tolken?: string
+    token?: string
     isLoggedIn: boolean
 }
 

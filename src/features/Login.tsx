@@ -9,12 +9,14 @@ import { Login as LoginType, RootStackParamList } from "../types";
 import { DiscordLogin } from "../types";
 import { isEmpty } from "lodash";
 import { authorize } from "react-native-app-auth";
+import { actions } from "../reducers/userReducer";
+import { useDispatch } from "react-redux";
 
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
   const windowHeight = Dimensions.get("window").height;
   const { background, text, outline, iconColor, buttons, boxes, checkUncheck } = useContext(ThemeContext);
-
+  const dispatch = useDispatch();
   const [value, setValue] = useState<LoginType>();
   const [discordValue, setDiscordValue] = useState<DiscordLogin>();
   const [validation, setValidation] = useState({ password: false, email: false });
@@ -34,16 +36,18 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
       body: JSON.stringify(value)
     };
 
-    fetch("https://chanv2.duckdns.org:7006/Auth/login", requestOptions)
-      .then(response => {
-        console.log(response);
-        if (response.ok) {
-          navigation.navigate("SettingScreen");
+    fetch('https://chanv2.duckdns.org:7006/Auth/login', requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        if(data.status != 401) {
+          dispatch(actions.setUser({...data, isLoggedIn: true}))
+
+          navigation.navigate("SettingScreen")
         }
       })
       .catch(() => {
-        console.log("error");
-      });
+        console.log('error')
+      })
   };
 
   const handleForgottenPassword = () => {
@@ -89,6 +93,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
                 console.log(requestOptions);
                 console.log(response);
                 if (response.ok) {
+                  dispatch(actions.setUser({...response, isLoggedIn: true}))
                   navigation.navigate("SettingScreen");
                 }
               })

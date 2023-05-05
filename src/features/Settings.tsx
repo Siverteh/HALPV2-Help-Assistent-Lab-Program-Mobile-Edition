@@ -1,12 +1,12 @@
 import Styles from "../styles/styles";
-import { Button, Text, Modal, Portal, TextInput, List, Checkbox } from "react-native-paper";
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { Button, Text, Modal, Portal, TextInput, Checkbox } from "react-native-paper";
+import { TabView, TabBar } from 'react-native-tab-view';
 import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View } from 'react-native';
 import * as React from 'react';
 import DropDown from "react-native-paper-dropdown";
 import { useContext, useState } from "react";
 import { SearchBar } from 'react-native-elements';
-import { isNull } from "lodash";
+import {useSelector} from 'react-redux';
 
 
 interface UserProps {
@@ -15,37 +15,13 @@ interface UserProps {
   id: string;
   nickname: string;
 }
-import { RootStackParamList } from "../types";
+import { AppState, RootStackParamList } from "../types";
 import { StackScreenProps } from "@react-navigation/stack";
 import { ThemeContext, themeHook } from '../Components/GlobalHook';
 import { useDispatch } from "react-redux";
 import { actions } from "../reducers/userReducer";
+import { head } from "lodash";
 
-const Text_Input = (lable: string, defaultValue: string = '', password: boolean = false) => {
-  const { background, text, buttons, boxes, outline } = useContext(ThemeContext)
-
-  return (
-    <>
-      <View style={{ height: '7%' }}></View>
-      <TextInput
-        style={{ width: "80%" }}
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
-        label={lable}
-        mode="outlined"
-        defaultValue={defaultValue}
-        secureTextEntry={password}>
-      </TextInput>
-    </>
-  )
-}
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
   const { background, text, outline } = useContext(ThemeContext)
 
@@ -94,15 +70,16 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 const Settings = ({navigation}: any ) => {
   const { background} = useContext(ThemeContext);
   const { onChangeTheme} = themeHook();
+  const { user: {email, nickname, discordTag, id, token }} = useSelector((state: AppState) => state.user)
   const dispatch = useDispatch()
 
   const [isProfileModalVisible, setIsProfileModalVisible] = React.useState(false);
   const openProfileModal = () => setIsProfileModalVisible(true);
   const closeProfileModal = () => setIsProfileModalVisible(false);
-
-  const [isPasswordModalVisible, setIsPasswordModalVisible] = React.useState(false);
-  const openPasswordModal = () => navigation.navigate('ChangePassword');
-  const closePasswordModal = () => setIsPasswordModalVisible(false);
+  const [name, setName] = useState(nickname);
+  const [newEmail, setNewEmail] = useState<string>(email ?? '');
+  const [discord, setDiscord] = useState(discordTag);
+  const [error, setError] = useState('');
 
   const [isExserviceModalVisible, setIsExserviceModalVisible] = React.useState(false);
   const openExserviceModal = () => setIsExserviceModalVisible(true);
@@ -122,35 +99,91 @@ const Settings = ({navigation}: any ) => {
       isLoggedIn: false
   }))
   }
+  const handleChangeProfile = () => {
+
+    if (!(newEmail.includes('@') && newEmail.includes('.'))) {
+      setError("Invalid Email");
+      return;
+    }
+    setError("");
+    const data = {
+      id: id,
+      nickname: nickname,
+      email: newEmail,
+      discordTag: discord
+    };
+    console.log(data);
+    fetch('https://chanv2.duckdns.org:7006/api/User', {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (response.ok) {
+          closeProfileModal();
+          console.log('ok');
+        }
+      })
+      .catch((error) => {
+        console.log('1');
+        console.error(error);
+      });
+  }
+
+  const closeProfileModalError = () => {
+    setError('');
+    closeProfileModal();
+  }
+
+  const handleDeleteAccount = () => {
+    const data =  {
+                    userID: id,
+                  };
+    fetch('https://chanv2.duckdns.org:7006/api/User', {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (response.ok) {
+          handleLogout();
+        }
+      })
+      .catch((error) => {
+        console.log('1');
+        console.error(error);
+      });
+  }
 
   return (
 
     <View style={[{backgroundColor: background, justifyContent: 'center', alignItems: 'center', height: screenHeight * 0.70 }]}>
       {Button_( "PROFILE", openProfileModal)}
-      {Button_( "PASSWORD", openPasswordModal)}
+      {Button_( "PASSWORD", ()=>navigation.navigate('ChangePassword'))}
       {Button_("EXTERNAL-SERVICE", openExserviceModal)}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
       {Button_("THEME", () => onChangeTheme() )}
       {Button_("LOG OUT", handleLogout)}
 
       <Portal>
-        <Modal visible={isProfileModalVisible} onDismiss={closeProfileModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%' }]}>
-          {Text_Input("Name", "Doe")}
-          {Text_Input("Discord", "Doe#1234")}
-          {Text_Input("Email", "Doe@uia.no")}
-          {Button_("SAVE", closeProfileModal, '15%')}
-        </Modal>
-        <Modal visible={isPasswordModalVisible} onDismiss={closePasswordModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%' }]} >
-          {Text_Input("Old Password", '', true)}
-          {Text_Input("New Password", '', true)}
-          {Text_Input("Confirm Password", '', true)}
-          {Button_("SAVE", closePasswordModal, '15%')}
+        <Modal visible={isProfileModalVisible} onDismiss={closeProfileModalError} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8 }]}>
+          {Text_Input_CB( "Name", name, false, setName)}
+          {Text_Input_CB("Discord", discord, false, setDiscord)}
+          <Text style={{ color: 'red',marginTop:'5%', marginBottom:'-10%' }}>{error}</Text>
+          {Text_Input_CB("Email", newEmail, false, setNewEmail)}
+          {Button_("SAVE", handleChangeProfile, '15%')}
         </Modal>
         <Modal visible={isExserviceModalVisible} onDismiss={closeExserviceModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
           {Button_("CONECT DISCORD", closeExserviceModal, '30%')}
         </Modal>
         <Modal visible={isDeleteModalVisible} onDismiss={closeDeleteModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
-          {Button_("DELETE ACCOUNT", closeDeleteModal, '30%')}
+          {Button_("DELETE ACCOUNT", handleDeleteAccount, '30%')}
         </Modal>
       </Portal>
     </View>
@@ -158,8 +191,9 @@ const Settings = ({navigation}: any ) => {
 };
 
 const TimeEdit = React.memo(( ) => {
-  const { background, text, listItem_dark, listItem_light, text2, boxes } = useContext(ThemeContext);
+  const { background, text, boxes } = useContext(ThemeContext);
   const [timeeditData, setTimeeditData] = useState<Array<{ id: string, courseLink: string }>>([]);
+  const { user: { token }} = useSelector((state: AppState) => state.user) 
   const screenHeight = Dimensions.get("window").height;
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
   const openAddModal = () => setIsAddModalVisible(true);
@@ -173,7 +207,7 @@ const TimeEdit = React.memo(( ) => {
   const [newLink, setNewLink] = useState('');
 
   const fetchData = () => {
-    fetch('http://chanv2.duckdns.org:5084/api/Timeedit')
+    fetch('https://chanv2.duckdns.org:7006/api/Timeedit', {headers: {Authorization: `Bearer ${token}`}})
       .then(response => response.json())
       .then(data => {
         setTimeeditData(data);
@@ -185,15 +219,19 @@ const TimeEdit = React.memo(( ) => {
 
 
 
-  //Fetch data when the page is entered then every minute
+  //Fetch data when the page is entered
   React.useEffect(() => {
     fetchData(); // call fetchData() initially when the component is mounted
   }, []);
 
 
   const handleAddNewLink = () => {
-    fetch(`http://chanv2.duckdns.org:5084/api/Timeedit?link=${newLink}`, {
+    fetch(`https://chanv2.duckdns.org:7006/api/Timeedit?link=${newLink}`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
     })
       .then(response => response.json())
       .then(data => {
@@ -215,8 +253,12 @@ const TimeEdit = React.memo(( ) => {
     const newData = [...timeeditData];
     newData.splice(index, 1);
     setTimeeditData(newData);
-    fetch(`http://chanv2.duckdns.org:5084/api/Timeedit?id=${item.id}`, {
-      method: 'DELETE'
+    fetch(`https://chanv2.duckdns.org:7006/api/Timeedit?id=${item.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
     })
       .then(response => response.text())
       .then(data => {
@@ -249,7 +291,7 @@ const TimeEdit = React.memo(( ) => {
 
 
   return (
-    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center', height: screenHeight*0.60 }]}>
+    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center', height: screenHeight*0.66 }]}>
       <FlatList
         data={timeeditData}
         renderItem={renderItem}
@@ -275,6 +317,7 @@ const TimeEdit = React.memo(( ) => {
 const Roles = React.memo(() => {
   const { background, text, listItem_dark, listItem_light, text2, buttons, boxes } = useContext(ThemeContext);
   const screenHeight = Dimensions.get("window").height;
+  const { user: { token }} = useSelector((state: AppState) => state.user) 
   const [showDropDown, setShowDropDown] = useState(false);
   const [courseList, setCourseList] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState<string | null>("admin");
@@ -285,7 +328,7 @@ const Roles = React.memo(() => {
 
   const fetchCourse = async () => {
     try {
-      const response = await fetch("https://chanv2.duckdns.org:7006/api/Courses/all");
+      const response = await fetch("https://chanv2.duckdns.org:7006/api/Courses/all", {headers: {Authorization: `Bearer ${token}`}});
       const rooms = await response.json();
       setCourseList(rooms);
     } catch (error) {
@@ -295,7 +338,7 @@ const Roles = React.memo(() => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("https://chanv2.duckdns.org:7006/api/User/all");
+      const response = await fetch("https://chanv2.duckdns.org:7006/api/User/all", {headers: {Authorization: `Bearer ${token}`}});
       const users = await response.json();
       setUserData(users);
     } catch (error) {
@@ -335,6 +378,7 @@ const Roles = React.memo(() => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     })
@@ -453,6 +497,7 @@ const renderTabBar = (props: any) => {
 export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 'SettingScreen'>) {
   const isDarkMode = useColorScheme() === 'dark';
   const { background, text } = useContext(ThemeContext);
+  const { user: { role }} = useSelector((state: AppState) => state.user)
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -462,7 +507,6 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
   ]);
   
   const renderScene = ({ route }: { route: { key: string } }) => {
-  
 
     switch (route.key) {
       case '1':
@@ -475,20 +519,34 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
         return null;
     }
   };
-  return (
-    <>
-    
-      <Text style={
-        {color: text, backgroundColor: background, fontSize: 24, textAlign: 'center', paddingTop: 80}}
-        >
-          {routes[index].title}
-      </Text>
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        renderTabBar={renderTabBar}
-      />
-    </>
-  );
+  if(role === 'Admin')
+  {
+    return (
+        <>
+          <Text style={
+            {color: text, backgroundColor: background, fontSize: 24, textAlign: 'center', paddingTop: '27%'}}
+            >
+              {routes[index].title}
+          </Text>
+          <TabView
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            renderTabBar={renderTabBar}
+            />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Text style={
+          {color: text, backgroundColor: background, fontSize: 40, textAlign: 'center', paddingTop: '27%'}}
+          >
+            {routes[0].title}
+        </Text>
+        <View style={{height: '5%', width: '100%', backgroundColor: background}}/>
+        <Settings navigation={navigation} />
+      </>
+    );    
+  }
 }
