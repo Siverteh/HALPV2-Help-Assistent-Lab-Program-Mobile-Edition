@@ -77,17 +77,17 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       }
     };
 
-    const handleDropdownClose = () => {
-      if (!room) {
-        setValidation((prevState) => {
-          return { ...prevState, room: true } as any;
-        });
-      } else {
-        setValidation((prevState) => {
-          return { ...prevState, room: false } as any;
-        });
-      }
-    };
+  const handleDropdownClose = () => {
+    if (!room) {
+      setValidation((prevState) => {
+        return { ...prevState, room: false } as any;
+      });
+    } else {
+      setValidation((prevState) => {
+        return { ...prevState, room: true } as any;
+      });
+    }
+  };
 
     const handleDropdownOpen = async () => {
       await setValidation((prevState) => {
