@@ -1,17 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import React from 'react';
 import ListComponent, { Course } from './List'
 import { StackScreenProps } from '@react-navigation/stack'
 import { AppState, RootStackParamList } from '../types'
-import RNEventSource from "react-native-event-source"
 import { useSelector } from 'react-redux';
+import { IconButton } from 'react-native-paper';
+import { ThemeContext } from '../Components/GlobalHook';
+import { View } from 'react-native'
 
-const Helplist = ({ route }:  StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
+const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
 
-  const [tiggerFetch, setTiggerFetch] = useState<boolean>(false)
   const { course } = route.params
   const [data, setData] = useState<Array<Course>>([])
   const { user: { token }} = useSelector((state: AppState) => state.user)
+  const { text } = useContext(ThemeContext)
 
   // const es = new RNEventSource(`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`);
 
@@ -56,16 +58,36 @@ const Helplist = ({ route }:  StackScreenProps<RootStackParamList, 'HelpListScre
         },
         body: JSON.stringify([updatedData])
       })
-      .then(() => setTiggerFetch(true))
       .catch((error) => console.error(error))
-  };
+  }
+
+  const handleClick = () => {
+    navigation.navigate('ArchiveScreen', { course })
+  }
+
+  const handleNavigate = () => {
+    navigation.navigate('LabQueues')
+  }
   return (
     <ListComponent
-      title='Helplist'
+      title={`HELPLIST ${course}`}
       urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`}
       onUpdate={updateCourse}
       data={data}
-    />
+    >
+     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      <IconButton
+        icon="arrow-left"
+        iconColor={text}
+        onPress={handleNavigate}     
+      />
+      <IconButton
+        icon="archive-outline"
+        iconColor={text}
+        onPress={handleClick}     
+      />
+      </View>
+      </ListComponent>
   );
 };
 

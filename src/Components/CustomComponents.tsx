@@ -1,12 +1,8 @@
 import { View, Text, TouchableOpacity, ViewStyle  } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { ComponentProps, forwardRef } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { ComponentProps } from 'react';
 import DropDown from 'react-native-paper-dropdown';
 import { Provider, DefaultTheme } from 'react-native-paper';
-
-
-
 
 
 // Header component

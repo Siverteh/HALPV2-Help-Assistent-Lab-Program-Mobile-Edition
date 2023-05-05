@@ -54,7 +54,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
   }
 
   const handleForgottenPassword = () => {
-
+    navigation.navigate("ForgottenPassword")
   }
 
   const handleDiscord = () => {

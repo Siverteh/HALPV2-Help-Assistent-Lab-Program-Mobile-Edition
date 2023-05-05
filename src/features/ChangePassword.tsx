@@ -13,19 +13,14 @@ import { Button, TextInput } from 'react-native-paper';
 
 import Styles from '../styles/styles';
 
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from '../Components/GlobalHook';
-import { AppState } from '../types';
+import { AppState, RootStackParamList } from '../types';
 
-type ChangePasswordScreenNavigationProp = StackNavigationProp<any, 'ChangePassword'>;
 
-interface ChangePasswordProps {
-  navigation: ChangePasswordScreenNavigationProp;
-}
+function ChangePassword({ navigation }: StackScreenProps<RootStackParamList, 'ChangePassword'>): JSX.Element {
 
-function ChangePassword({ navigation }: ChangePasswordProps): JSX.Element {
-
-  const { user: { role, isLoggedIn, email }} = useSelector((state: AppState) => state.user)
+  const { user: { email }} = useSelector((state: AppState) => state.user)
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [secureTextEntryRepeat, setSecureTextEntryRepeat] = useState(true);
