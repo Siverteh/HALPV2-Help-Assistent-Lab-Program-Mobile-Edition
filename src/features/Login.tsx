@@ -36,18 +36,18 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
       body: JSON.stringify(value)
     };
 
-    fetch('https://chanv2.duckdns.org:7006/Auth/login', requestOptions)
+    fetch("https://chanv2.duckdns.org:7006/Auth/login", requestOptions)
       .then(response => response.json())
       .then(data => {
-        if(data.status != 401) {
-          dispatch(actions.setUser({...data, isLoggedIn: true}))
+        if (data.status != 401) {
+          dispatch(actions.setUser({ ...data, isLoggedIn: true }));
 
-          navigation.navigate("SettingScreen")
+          navigation.navigate("SettingScreen");
         }
       })
       .catch(() => {
-        console.log('error')
-      })
+        console.log("error");
+      });
   };
 
   const handleForgottenPassword = () => {
@@ -89,11 +89,13 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
               body: JSON.stringify({ email: email, discordTag: discordTag })
             };
             fetch("https://chanv2.duckdns.org:7006/Auth/discord/login", requestOptions)
+              .then(response => response.json())
               .then(response => {
                 console.log(requestOptions);
                 console.log(response);
-                if (response.ok) {
-                  dispatch(actions.setUser({...response, isLoggedIn: true}))
+                if (response.status != 401) {
+
+                  dispatch(actions.setUser({ ...response, isLoggedIn: true }));
                   navigation.navigate("SettingScreen");
                 }
               })
@@ -286,7 +288,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
               textColor={text}
               contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
               onPress={handleLogin}
-              disabled={Object.values(validation).some(v => v === false)}
+        //disabled={Object.values(validation).some(v => v === false)}
       >
         SIGN IN
       </Button>
