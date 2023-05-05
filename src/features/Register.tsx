@@ -3,12 +3,11 @@ import { ThemeContext } from '../Components/GlobalHook';
 import {
   Image,
   View,
-  Text, // Add this import
   Alert,
 } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
-import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
   
 
@@ -134,7 +133,6 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           }
         }}
       />
-      <View style={{ height: "2%" }}></View>
       <TextInput
         style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
         label="Nickname"
@@ -151,7 +149,6 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           }
         }}
       />
-      <View style={{ height: "2%" }}></View>
       <TextInput
        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
         label="Discord Tag"
@@ -167,7 +164,6 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           }
         }}
       />
-      <View style={{ height: "2%" }}></View>
       <TextInput
        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
         label="Password"
@@ -195,7 +191,6 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           />
         }
       />
-      <View style={{ height: "2%" }}></View>
       <TextInput
        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
         label="Confirm password"
@@ -223,7 +218,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           />
         }
       />
-      <View style={{ height: "6%" }}></View>
+      <View style={{ height: "2%" }}></View>
       <Button
         style={[
           Styles.buttonStyle,

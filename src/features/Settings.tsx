@@ -159,7 +159,7 @@ const Settings = ({navigation}: any ) => {
 
   return (
 
-    <View style={[{backgroundColor: background, justifyContent: 'center', alignItems: 'center', height: screenHeight * 0.70 }]}>
+    <View style={[{backgroundColor: background, alignItems: 'center', height: screenHeight * 0.70 }]}>
       {Button_( "PROFILE", openProfileModal)}
       {Button_( "PASSWORD", ()=>navigation.navigate('ChangePassword'))}
       {Button_("EXTERNAL-SERVICE", openExserviceModal)}
