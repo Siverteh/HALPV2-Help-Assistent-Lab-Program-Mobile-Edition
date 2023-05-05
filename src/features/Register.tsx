@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { ThemeContext } from '../Components/GlobalHook';
 import {
-  Image,
   View,
   Alert,
 } from 'react-native';
@@ -9,10 +8,11 @@ import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
+import { Logo } from '../Components/CustomComponents';
   
 
 function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
-  const { background, text, buttons, boxes, outline, iconColor, checkUncheck } = useContext(ThemeContext)
+  const { background, text, buttons, outline, iconColor } = useContext(ThemeContext)
 
 
   // State for error message
@@ -25,7 +25,6 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
   const [confirmPassword, setConfirmPassword] = useState('');
   const [discordtag, setDiscordtag] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true);
 
   const isValidEmail = (email: string) => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -113,12 +112,10 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
   };
 
   return (
-      <View style={[Styles.view, { backgroundColor: background, flex: 1, height: '100%' }]}>
-      <Image
-        style={Styles.image}
-        source={require('.././img/halpy3.png')} />
+      <View style={[{ backgroundColor: background, height: '100%', alignItems: 'center' }]}>
+      <Logo/>
       <TextInput
-        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+        style={[Styles.textInput, { backgroundColor: background, color: text }]}
         label="Email"
         mode="outlined"
         textColor={text}
@@ -134,7 +131,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         }}
       />
       <TextInput
-        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+        style={[Styles.textInput, { backgroundColor: background, color: text }]}
         label="Nickname"
         mode="outlined"
         textColor={text}
@@ -150,7 +147,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         }}
       />
       <TextInput
-       style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+       style={[Styles.textInput, { backgroundColor: background, color: text}]}
         label="Discord Tag"
         mode="outlined"
         textColor={text}
@@ -165,7 +162,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         }}
       />
       <TextInput
-       style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+       style={[Styles.textInput, { backgroundColor: background, color: text }]}
         label="Password"
         mode="outlined"
         textColor={text}
@@ -192,7 +189,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         }
       />
       <TextInput
-       style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+       style={[Styles.textInput, { backgroundColor: background }]}
         label="Confirm password"
         mode="outlined"
         textColor={text}
@@ -218,11 +215,10 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           />
         }
       />
-      <View style={{ height: "2%" }}></View>
       <Button
         style={[
           Styles.buttonStyle,
-          {backgroundColor: buttons.backgroundColor, height: "8%", width: "40%", alignSelf: "center" },
+          {backgroundColor: buttons.backgroundColor, margin: '2%' },
         ]}
         mode="contained"
         textColor={text}

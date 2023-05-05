@@ -1,8 +1,6 @@
 import React, { useState, useContext } from 'react';
 import {
   Dimensions,
-  Image,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
@@ -15,6 +13,7 @@ import { RootStackParamList, Login as LoginType } from '../types';
 import { useDispatch } from 'react-redux'
 import { isEmpty } from 'lodash';
 import { actions } from '../reducers/userReducer';
+import { Logo } from '../Components/CustomComponents';
   
 function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
   const windowHeight = Dimensions.get('window').height;
@@ -87,11 +86,10 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
 
   return (
     <View style={
-        [Styles.view, {backgroundColor: background, height: windowHeight}]}>
-      <Image
-      style={Styles.image}
-      source={require('.././img/halpy3.png')} />
-      <TextInput style={Styles.textInput}
+        [{backgroundColor: background, height: '100%', alignItems: 'center'}]}>
+      <Logo/>
+      <TextInput
+        style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
         textColor={text}
         activeOutlineColor = {outline.activeOutlineColor}
         outlineColor = {outline.outlineColor}
@@ -104,8 +102,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
         onBlur={() => handleValidation('email')}
         error={validation.email}
       />
-      <View style={{height:"2%"}}></View>
-      <TextInput style={Styles.textInput}
+      <TextInput
+      style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
       label="Password"
       mode="outlined"
       textColor={text}
@@ -129,8 +127,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
       onBlur={() => handleValidation('password')}
       error={validation.password}
     />
-      <View style={{height:"2%"}}></View>
-      <View style={{flexDirection: "row", justifyContent:"flex-start", width:"85%"}}>
+      <View style={{flexDirection: "row", justifyContent:"flex-start", width:"85%", marginTop: '2%'}}>
         <Checkbox 
         color={checkUncheck}
         uncheckedColor={outline.outlineColor}
@@ -142,7 +139,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
         </Text>
       </View>
       <View style={{height:"2%"}}></View>
-      <Button style={[Styles.buttonStyle,{backgroundColor: buttons.backgroundColor , height: "6%", width:"85%"}]}
+      <Button
+        style={[Styles.buttonStyle,{backgroundColor: buttons.backgroundColor}]}
         mode="contained"
         textColor={text}
         contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}
@@ -164,13 +162,11 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
         onPress={handleRegister}>
           REGISTER AS A USER
       </Button>
-      <View style={{height:"4%"}}></View>
       <Text
-        style={[Styles.text_lg, {color:text}]}>
+        style={[Styles.text_lg, {color:text, marginTop: '4%'}]}>
           USE ANOTHER SERVICE TO LOG IN
       </Text>
-      <View style={{height:"1%"}}></View>
-      <Button style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor ,height: "6%", width:"85%"}]}
+      <Button style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, margin: '2%'}]}
         mode="contained"
         textColor={text}
         onPress={handleDiscord}

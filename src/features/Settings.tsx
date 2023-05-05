@@ -22,13 +22,12 @@ import { useDispatch } from "react-redux";
 import { actions } from "../reducers/userReducer";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
-  const { background, text, outline } = useContext(ThemeContext)
+  const { background, text, outline, boxes } = useContext(ThemeContext)
 
   return (
     <>
-      <View style={{ height: '7%' }}></View>
       <TextInput
-        style={{ width: "80%" }}
+        style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
         textColor={text}
         activeOutlineColor={outline.activeOutlineColor}
         outlineColor={outline.outlineColor}
@@ -54,8 +53,7 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 
   return (
     <>
-      <View style={{ height: "5%" }}></View>
-      <Button style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, height: Height, width: "60%" }]}
+      <Button style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, margin: '2%' }]}
         mode="contained"
         textColor={outline.outlineColor}
         contentStyle={{ flexDirection: 'row-reverse', height: "100%", width: "100%" }}
@@ -160,11 +158,11 @@ const Settings = ({navigation}: any ) => {
   return (
 
     <View style={[{backgroundColor: background, alignItems: 'center', height: screenHeight * 0.70 }]}>
-      {Button_( "PROFILE", openProfileModal)}
-      {Button_( "PASSWORD", ()=>navigation.navigate('ChangePassword'))}
+      {Button_( "EDIT PROFILE", openProfileModal)}
+      {Button_( "CHANGE PASSWORD", ()=>navigation.navigate('ChangePassword'))}
       {Button_("EXTERNAL-SERVICE", openExserviceModal)}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
-      {Button_("THEME", () => onChangeTheme() )}
+      {Button_("CHANGE THEME", () => onChangeTheme() )}
       {Button_("LOG OUT", handleLogout)}
 
       <Portal>
