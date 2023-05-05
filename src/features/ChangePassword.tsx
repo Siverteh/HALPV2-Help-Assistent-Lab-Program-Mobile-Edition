@@ -61,8 +61,6 @@ function ChangePassword({ navigation }: StackScreenProps<RootStackParamList, 'Ch
           oldPassword: currentPassword,
           newPassword: newPassword,
         });
-        console.log(newPassword);
-        console.log("Response data:", response.status);
 
         if (response.status === 204) {
           Alert.alert('Success', 'Password changed successfully!');

@@ -22,7 +22,11 @@ export const theme: CustomTheme = {
             backgroundColor: "#94CCFF",
         },   
         iconColor: '#201C24',
-        checkUncheck: '#0079C0'
+        checkUncheck: '#0079C0',
+        icon: {
+            active: "#0070C0",
+            inactive: "#000000"
+        }
         
     },
     dark: {
@@ -45,7 +49,11 @@ export const theme: CustomTheme = {
             backgroundColor: "#004082",
         } ,
         iconColor:'#E0E0E0',
-        checkUncheck:'#FFFFFF'
+        checkUncheck:'#FFFFFF',
+        icon: {
+            active: "#0070C0",
+            inactive: "#FFFFFF"
+        }
         
     }
 }

@@ -33,7 +33,6 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
   })
         .then(response => response.json())
         .then((data) => {
-            console.log('data: ', data)
             const newDataMapper = data.map((d: any) => {
                 return {
                 Id: d.id,
@@ -54,6 +53,7 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
       fetch(link, {
         method: 'PUT',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify([updatedData])

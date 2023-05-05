@@ -111,7 +111,7 @@ const Settings = ({navigation}: any ) => {
       email: newEmail,
       discordTag: discord
     };
-    console.log(data);
+
     fetch('https://chanv2.duckdns.org:7006/api/User', {
       method: "PUT",
       headers: {
@@ -123,11 +123,9 @@ const Settings = ({navigation}: any ) => {
       .then((response) => {
         if (response.ok) {
           closeProfileModal();
-          console.log('ok');
         }
       })
       .catch((error) => {
-        console.log('1');
         console.error(error);
       });
   }
@@ -155,7 +153,6 @@ const Settings = ({navigation}: any ) => {
         }
       })
       .catch((error) => {
-        console.log('1');
         console.error(error);
       });
   }
@@ -383,7 +380,6 @@ const Roles = React.memo(() => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log('ok');
           fetchUsers();
           setCheckedItems((prevState) => ({
             ...prevState,

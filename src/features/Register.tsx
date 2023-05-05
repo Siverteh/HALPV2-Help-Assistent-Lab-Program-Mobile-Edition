@@ -81,8 +81,6 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         );
         const data = await response.json();
   
-        console.log(response.status);
-  
         if (response.ok) {
           Alert.alert('Success', 'Account successfully registered!')
           navigation.navigate('LoginScreen');
