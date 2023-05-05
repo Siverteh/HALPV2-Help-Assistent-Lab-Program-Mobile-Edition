@@ -20,7 +20,6 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { ThemeContext, themeHook } from '../Components/GlobalHook';
 import { useDispatch } from "react-redux";
 import { actions } from "../reducers/userReducer";
-import { head } from "lodash";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
   const { background, text, outline } = useContext(ThemeContext)
@@ -424,9 +423,7 @@ const Roles = React.memo(() => {
   const filteredData = userData.filter((item) =>
     item.nickname.toLowerCase().includes(searchText.toLowerCase())
   );
-
-  const handleChange = (text:string) => setSearchText(text)
-
+  
   return(
     <View style={[{backgroundColor:background, justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
       <View style={{height:'5%', width:'90%', marginTop:'10%'}}>
@@ -450,8 +447,8 @@ const Roles = React.memo(() => {
       </View>
       <View style={{ height: "5%", width: "93%", marginTop: "10%" }}>
       <SearchBar
-        placeholder="Search..."
-        onChangeText={handleChange}
+        placeholder="Search"
+        onChangeText={setSearchText}
         value={searchText}
         placeholderTextColor={text}
         containerStyle={{ 

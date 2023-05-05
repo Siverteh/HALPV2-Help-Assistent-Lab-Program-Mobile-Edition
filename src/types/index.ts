@@ -19,6 +19,7 @@ export type RootStackParamList = {
     SettingScreen: undefined
     Register: undefined
     ChangePassword: undefined
+    ForgottenPassword: undefined
   };
 
   export type Login = {
