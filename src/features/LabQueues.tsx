@@ -25,9 +25,7 @@ const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueu
           }
       })
           .then(response => response.json())
-          .then(data => {
-            setNewCours(data);
-          })
+          .then(setNewCours)
           .catch(error => {
             console.error(error);
           });
@@ -60,7 +58,7 @@ const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueu
       return (
         <View style={[{backgroundColor: background, flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 0, paddingBottom: '7%' }]}>
             <Image source={require('.././img/halpy3.png')} style={Styles.logo} />
-            <View style={[Styles.boxStyle, {backgroundColor: boxes.backgroundColor, alignItems: 'center', width: '90%', height: '70%', borderRadius: 20}]}>
+            <View style={[Styles.boxStyle, {backgroundColor: boxes, alignItems: 'center', width: '90%', height: '70%', borderRadius: 20}]}>
                 <View style={{height:"5%"}}/>
                 <Text style={[{color: text , fontSize: 24, height: '10%'}]}>Lab Queues</Text>
                 <FlatList

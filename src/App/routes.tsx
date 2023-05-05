@@ -1,4 +1,3 @@
-import ArchiveTab from "../Components/navigation-tabs/ArchiveTab";
 import CreateTab from "../Components/navigation-tabs/CreateTab";
 import HelpListTab from "../Components/navigation-tabs/HelpListTab"
 import SettingsTab from "../Components/navigation-tabs/SettingsTab"
@@ -30,14 +29,16 @@ const tabSwitcher = (isLoggedin: boolean) => {
 }
 
 
-export const studassRoutes: (isLoggedin: boolean) => Array<RouteType> = (isLoggedin: boolean) => [{
+export const studassRoutes: (isLoggedin: boolean) => Array<RouteType> = (isLoggedin: boolean) => [
+    {
+        name: 'Create',
+        component: CreateTab,
+        icon: 'create'
+    },
+{
     name: 'HelpList',
     component: HelpListTab,
     icon: 'list'
-}, {
-    name: 'Archive',
-    component: ArchiveTab,
-    icon: 'checkmark-done'
 }, ...tabSwitcher(isLoggedin)]
 
 export const userRoutes: (isLoggedin: boolean) => Array<RouteType> = (isLoggedin: boolean) => [{
