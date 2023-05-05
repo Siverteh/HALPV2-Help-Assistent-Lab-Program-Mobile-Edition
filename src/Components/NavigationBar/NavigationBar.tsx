@@ -12,15 +12,15 @@ type Props = {
 const Tab = createBottomTabNavigator();
 
 const NavigationBar = ({ isStudass, isLoggedIn }: Props) => {
-  const { background, text, outline: {activeOutlineColor}  } = useContext(ThemeContext)
+  const { background, icon: {inactive, active}  } = useContext(ThemeContext)
   
   return (
       <Tab.Navigator
         initialRouteName={"Helplist"}
         screenOptions={{
           tabBarStyle: { backgroundColor: background },
-          tabBarActiveTintColor: activeOutlineColor,
-          tabBarInactiveTintColor: text
+          tabBarActiveTintColor: active,
+          tabBarInactiveTintColor: inactive
         }}
         >
           {isStudass ? 

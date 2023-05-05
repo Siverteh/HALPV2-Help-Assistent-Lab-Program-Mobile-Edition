@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+   <testsuite name="pytest" errors="0" failures="0" skipped="0" tests="60" time="54.527" timestamp="2023-05-02T16:57:12.930379" hostname="DESKTOP-1C1SGF8">
+      <testcase classname="test.test_api" name="testuser_id" time="0.463" />
+      <testcase classname="test.test_api" name="test_auth_login[payload0-200]" time="1.099" />
+      <testcase classname="test.test_api" name="test_auth_login[payload1-401]" time="1.078" />
+      <testcase classname="test.test_api" name="test_auth_login[payload2-401]" time="0.962" />
+      <testcase classname="test.test_api" name="test_auth_login[payload3-401]" time="0.962" />
+      <testcase classname="test.test_api" name="test_auth_login[payload4-401]" time="0.984" />
+      <testcase classname="test.test_api" name="test_auth_login[payload5-401]" time="1.029" />
+      <testcase classname="test.test_api" name="test_get_helplist[IKT205-G-200]" time="0.271" />
+      <testcase classname="test.test_api" name="test_get_helplist[-1-404]" time="0.274" />
+      <testcase classname="test.test_api" name="test_put_helplist_to_archived[-204]" time="1.226" />
+      <testcase classname="test.test_api" name="test_put_helplist_to_archived[-1-404]" time="0.850" />
+      <testcase classname="test.test_api" name="test_get_archived[IKT205-G-200]" time="1.077" />
+      <testcase classname="test.test_api" name="test_get_archived[-1-404]" time="1.047" />
+      <testcase classname="test.test_api" name="test_put_archived_to_helplist[-204]" time="1.080" />
+      <testcase classname="test.test_api" name="test_put_archived_to_helplist[-1-404]" time="0.803" />
+      <testcase classname="test.test_api" name="test_post_register[payload0-201]" time="1.318" />
+      <testcase classname="test.test_api" name="test_post_register[payload1-201]" time="1.374" />
+      <testcase classname="test.test_api" name="test_post_register[payload2-400]" time="1.003" />
+      <testcase classname="test.test_api" name="test_post_register[payload3-400]" time="1.183" />
+      <testcase classname="test.test_api" name="test_post_register[payload4-400]" time="1.002" />
+      <testcase classname="test.test_api" name="test_post_register_invalid_password[Password.]" time="0.147" />
+      <testcase classname="test.test_api" name="test_post_register_invalid_password[Password1]" time="0.136" />
+      <testcase classname="test.test_api" name="test_post_register_invalid_password[password1.]" time="0.134" />
+      <testcase classname="test.test_api" name="test_post_register_invalid_password[PASSWORD1.]" time="0.120" />
+      <testcase classname="test.test_api" name="test_post_register_invalid_password[passwor]" time="0.123" />
+      <testcase classname="test.test_api" name="test_put_edit_user[payload0-204]" time="1.424" />
+      <testcase classname="test.test_api" name="test_put_edit_user[payload1-404]" time="1.136" />
+      <testcase classname="test.test_api" name="test_put_edit_password[payload0-204]" time="1.162" />
+      <testcase classname="test.test_api" name="test_put_edit_password[payload1-401]" time="1.132" />
+      <testcase classname="test.test_api" name="test_put_edit_password[payload2-401]" time="1.171" />
+      <testcase classname="test.test_api" name="test_put_edit_password[payload3-401]" time="1.092" />
+      <testcase classname="test.test_api" name="test_post_discord_register[payload0-201]" time="1.254" />
+      <testcase classname="test.test_api" name="test_post_discord_register[payload1-400]" time="1.076" />
+      <testcase classname="test.test_api" name="test_post_discord_register[payload2-400]" time="0.970" />
+      <testcase classname="test.test_api" name="test_post_discord_register[payload3-400]" time="0.965" />
+      <testcase classname="test.test_api" name="test_delete_user" time="1.379" />
+      <testcase classname="test.test_api" name="test_get_all_courses" time="0.254" />
+      <testcase classname="test.test_api" name="test_get_studasses_courses[studass@uia.no-200]" time="0.263" />
+      <testcase classname="test.test_api" name="test_get_studasses_courses[admin@uia.no-200]" time="0.273" />
+      <testcase classname="test.test_api" name="test_get_studasses_courses[test@test.no-404]" time="0.265" />
+      <testcase classname="test.test_api" name="test_put_user_roles[api/Roles/studass-204-payload0]" time="1.462" />
+      <testcase classname="test.test_api" name="test_put_user_roles[api/Roles/studass-404-payload1]" time="1.109" />
+      <testcase classname="test.test_api" name="test_put_user_roles[api/Roles/studass-404-payload2]" time="1.416" />
+      <testcase classname="test.test_api" name="test_put_user_roles[api/Roles/studass-204-payload3]" time="1.371" />
+      <testcase classname="test.test_api" name="test_put_user_roles[api/Roles/studass-404-payload4]" time="1.529" />
+      <testcase classname="test.test_api" name="test_put_user_roles[api/Roles/studass-404-payload5]" time="1.498" />
+      <testcase classname="test.test_api" name="test_put_user_roles[api/Roles/admin-204-payload6]" time="1.424" />
+      <testcase classname="test.test_api" name="test_put_user_roles[api/Roles/admin-404-payload7]" time="1.124" />
+      <testcase classname="test.test_api" name="test_put_user_roles[api/Roles/admin-400-payload8]" time="1.439" />
+      <testcase classname="test.test_api" name="test_put_user_roles[api/Roles/admin-404-payload9]" time="1.108" />
+      <testcase classname="test.test_api" name="test_get_rooms" time="0.120" />
+      <testcase classname="test.test_api" name="test_create_and_edit_ticket[create_payload0-201-edit_payload0-200]" time="0.799" />
+      <testcase classname="test.test_api" name="test_create_and_edit_ticket[create_payload1-404-edit_payload1-404]" time="0.233" />
+      <testcase classname="test.test_api" name="test_delete_ticket" time="0.786" />
+      <testcase classname="test.test_api" name="test_timeedit_operations[https://www.timeedit.html-201]" time="1.127" />
+      <testcase classname="test.test_api" name="test_timeedit_operations[https://www.timeedit.no-400]" time="0.256" />
+      <testcase classname="test.test_api" name="test_forgotten_password[payload0-204]" time="1.035" />
+      <testcase classname="test.test_api" name="test_forgotten_password[payload1-404]" time="0.997" />
+      <testcase classname="test.test_api" name="test_confirm_email[email0-200]" time="0.953" />
+      <testcase classname="test.test_api" name="test_confirm_email[email1-404]" time="0.950" />
+   </testsuite>
+</testsuites>

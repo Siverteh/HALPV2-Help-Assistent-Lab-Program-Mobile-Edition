@@ -3,11 +3,12 @@ import { TextInput, Button, Text } from "react-native-paper";
 import { useState, useContext } from "react";
 import Styles from "../styles/styles";
 import * as React from "react";
-import { Dimensions, Image, TextInputBase, useColorScheme, View } from "react-native";
+import { View } from "react-native";
 import DropDown from "react-native-paper-dropdown";
 import { ThemeContext } from '../Components/GlobalHook';
 import { useSelector } from "react-redux";
 import { AppState } from "../types";
+import { Header } from "../Components/CustomComponents"
 
 type Props = {
   ticket?: TicketProp
@@ -51,12 +52,10 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     
     return (
       <View style={[{backgroundColor: background, flex: 1, alignItems: "center" }]}>
-        <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
-        <Text style={[{color: 'white',  fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
-          {ticket ? 'EDIT TICKET':  'NEW TICKET'}
-        </Text>
+        <Header title={ticket ? 'EDIT TICKET':  'NEW TICKET'}/>
+
         <TextInput
-          style={[Styles.boxStyle, {backgroundColor: boxes,  color: text, width: "85%", margin: "2%" }]}
+          style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
           textColor={text}
           outlineColor={outline.activeOutlineColor}
           activeOutlineColor={outline.outlineColor}
@@ -99,7 +98,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
 
         </View>
         <TextInput
-          style={[Styles.boxStyle, {backgroundColor: boxes,  color: text, width: "85%", margin: "2%" }]}
+          style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
           textColor={text}
           outlineColor={outline.activeOutlineColor}
           activeOutlineColor={outline.outlineColor}
@@ -118,8 +117,8 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         />
 
         <Button
-        style={[Styles.buttonStyle,{backgroundColor: buttons.backgroundColor, width: 230, height: 50, margin: "2%" }]}
-        labelStyle={[Styles.buttonStyle, {color: text}]}
+        style={[Styles.buttonStyle,{ backgroundColor: buttons.backgroundColor, margin: "2%" }]}
+        labelStyle={[{color: text}]}
           onPress={handleCreateTicket}
         >
          {ticket ? 'SAVE TICKET':  'CREATE TICKET'}

@@ -1,6 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import {
-  Image,
   Text,
   View,
 } from 'react-native';
@@ -9,13 +8,14 @@ import { Button, TextInput } from 'react-native-paper';
 
 import Styles from '../styles/styles';
 
-import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from '../Components/GlobalHook';
 import { RootStackParamList } from '../types';
+import { Header } from '../Components/CustomComponents';
 
 
 function ForgottenPassword({ navigation }: StackScreenProps<RootStackParamList, 'ForgottenPassword'>): JSX.Element {
-    const { background, text, buttons, boxes  } = useContext(ThemeContext)
+    const { background, text, buttons, boxes } = useContext(ThemeContext)
 
 
     const handleSendResetLink = () => {
@@ -24,15 +24,9 @@ function ForgottenPassword({ navigation }: StackScreenProps<RootStackParamList, 
 
   return (
     <View style={[{backgroundColor: background, alignItems: 'center', width: '100%', height: '100%' }]}>
-      <Image
-        style={Styles.logo}
-        source={require('.././img/halpy3.png')}
-      />
-      <Text style={[{color: text,  fontSize: 30, paddingBottom: 0, marginBottom: "7%" }]}>
-        Forgotten Password
-      </Text>
+      <Header title='Forgotten Password'/>
       <TextInput
-        style={[Styles.boxStyle, {color: text, width: "85%", margin: "2%" }]}
+        style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
         label="Email Address"
         mode="outlined"
         keyboardType="email-address"

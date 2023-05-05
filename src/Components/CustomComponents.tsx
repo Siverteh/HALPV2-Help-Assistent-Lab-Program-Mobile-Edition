@@ -1,22 +1,32 @@
 import { View, Text, TouchableOpacity, ViewStyle  } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, useContext } from 'react';
 import DropDown from 'react-native-paper-dropdown';
 import { Provider, DefaultTheme } from 'react-native-paper';
+import Styles from "../styles/styles";
+import { ThemeContext } from './GlobalHook';
+import { Image } from 'react-native';
 
+
+export const Logo = () => {
+  return (
+    <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
+  )
+}
 
 // Header component
 interface Props {
   title: string;
-  titleStyle: object;
 }
-export const Header = ({ title, titleStyle }: Props) => {
+export const Header = ({ title }: Props) => {
+  const { text } = useContext(ThemeContext)
   return (
-    <View>
-      <Text style={titleStyle}>{title}</Text>
-    </View>
+      <>
+        <Logo/>
+        <Text style={[Styles.Header, {color: text} ]}>{title}</Text>
+      </>
   );
-};
+}
 
 
 // Descripton component
@@ -145,6 +155,4 @@ const CustomDropDown: React.FC<DropDownProps> = (props) => {
     </Provider>
   );
 };
-
-  export default {Header, CustomAccordion, Customcheckbox, CustomDropDown}
 
