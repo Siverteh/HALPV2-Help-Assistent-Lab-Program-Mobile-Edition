@@ -43,9 +43,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
       .then(response => response.json())
       .then(data => {
         if(data.status != 401) {
-        dispatch(actions.setUser({...data, isLoggedIn: true}))
-        console.log(data)
-        navigation.navigate("SettingScreen")
+          dispatch(actions.setUser({...data, isLoggedIn: true}))
+          navigation.navigate("SettingScreen")
         }
       })
       .catch(() => {

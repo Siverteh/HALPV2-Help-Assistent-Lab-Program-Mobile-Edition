@@ -28,6 +28,10 @@ export type Theme = {
     listItem_light: listItem_light
     iconColor: string
     checkUncheck: string
+    icon: {
+        active: string,
+        inactive: string
+    }
   };
 
 export type CustomTheme = {

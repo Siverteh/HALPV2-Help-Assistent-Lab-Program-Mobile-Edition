@@ -34,7 +34,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
         })
         .catch((error) => console.log('error: ', error))
         //.finally(() => setLoading(false))
-  })
+  }, [course])
 
 
   const updateCourse = async (updatedData: Course) => {
