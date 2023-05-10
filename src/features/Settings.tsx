@@ -193,7 +193,7 @@ const Settings = ({navigation}: any ) => {
 const TimeEdit = React.memo(( ) => {
   const { background, text, boxes } = useContext(ThemeContext);
   const [timeeditData, setTimeeditData] = useState<Array<{ id: string, courseLink: string }>>([]);
-  const { user: { token }} = useSelector((state: AppState) => state.user) 
+  const { user: { token }} = useSelector((state: AppState) => state.user)
   const screenHeight = Dimensions.get("window").height;
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
   const openAddModal = () => setIsAddModalVisible(true);
@@ -201,8 +201,8 @@ const TimeEdit = React.memo(( ) => {
   const containerStyle = {
     backgroundColor: background,
     height: screenHeight * 0.45,
-    width: "70%", 
-    borderRadius: 20 
+    width: "70%",
+    borderRadius: 20
   };
   const [newLink, setNewLink] = useState('');
 
@@ -247,7 +247,7 @@ const TimeEdit = React.memo(( ) => {
         console.error(error);
       });
   }
-  
+
   const deleteItem = (index: number) => {
     const item = timeeditData[index];
     const newData = [...timeeditData];
@@ -268,7 +268,7 @@ const TimeEdit = React.memo(( ) => {
         console.error('Error deleting item', error);
       });
   };
-  
+
 
   const renderItem = ({ item, index }: { item: { id: string, courseLink: string }, index: number }) => (
 
@@ -278,7 +278,7 @@ const TimeEdit = React.memo(( ) => {
         style={{color: text, width:'80%'}}>
             {item.courseLink}
         </Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => deleteItem(index)}
           style={[{backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}]}>
           <Text style={{color: text}}>
@@ -301,7 +301,7 @@ const TimeEdit = React.memo(( ) => {
       {Button_("ADD NEW", openAddModal, '10%')}
       <View style={{ height: '5%' }} />
 
-      
+
       <Portal>
         <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: screenHeight * 0.30 }]}>
           {Text_Input_CB( "TimeEdit Link", newLink, false, setNewLink)}
@@ -317,7 +317,7 @@ const TimeEdit = React.memo(( ) => {
 const Roles = React.memo(() => {
   const { background, text, listItem_dark, listItem_light, text2, buttons, boxes } = useContext(ThemeContext);
   const screenHeight = Dimensions.get("window").height;
-  const { user: { token }} = useSelector((state: AppState) => state.user) 
+  const { user: { token }} = useSelector((state: AppState) => state.user)
   const [showDropDown, setShowDropDown] = useState(false);
   const [courseList, setCourseList] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState<string | null>("admin");
@@ -373,7 +373,7 @@ const Roles = React.memo(() => {
       course: selectedCourse,
       set: isChecked ? false : !checkedItems[itemId],
     };
-  
+
     fetch(url, {
       method: "PUT",
       headers: {
@@ -445,7 +445,7 @@ const Roles = React.memo(() => {
           dropDownItemTextStyle={{color: text}}
           dropDownStyle={{backgroundColor: 'transparent'}}
           dropDownItemSelectedStyle={{backgroundColor: background}}
-          dropDownItemSelectedTextStyle={{color: text}}          
+          dropDownItemSelectedTextStyle={{color: text}}
         />
       </View>
       <View style={{ height: "5%", width: "93%", marginTop: "10%" }}>
@@ -454,8 +454,8 @@ const Roles = React.memo(() => {
         onChangeText={handleChange}
         value={searchText}
         placeholderTextColor={text}
-        containerStyle={{ 
-          backgroundColor: "transparent", 
+        containerStyle={{
+          backgroundColor: "transparent",
           borderTopWidth: 0,
           borderBottomWidth: 0, }}
         inputContainerStyle={{
@@ -469,14 +469,14 @@ const Roles = React.memo(() => {
       />
       </View>
       <View style={{height:'5%', width:'90%', marginTop:'10%'}}/>
-      <FlatList 
+      <FlatList
         data={filteredData}
         renderItem={renderItem}
         style={{width: '90%'}}
         keyExtractor={item => item.id}
       />
-        
-      
+
+
     </View>
   );
 });
@@ -505,7 +505,7 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
     { key: '2', title: 'TimeEdit' },
     { key: '3', title: 'Roles' },
   ]);
-  
+
   const renderScene = ({ route }: { route: { key: string } }) => {
 
     switch (route.key) {
@@ -547,6 +547,6 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
         <View style={{height: '5%', width: '100%', backgroundColor: background}}/>
         <Settings navigation={navigation} />
       </>
-    );    
+    );
   }
 }
