@@ -161,7 +161,8 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         <View
           style={{
             zIndex: 2,
-            width: "85%"
+            width: "85%",
+            marginTop: "1.5%"
           }}>
           <DropDownPicker
             closeAfterSelecting={true}
