@@ -14,6 +14,7 @@ export const Logo = () => {
   )
 }
 
+
 // Header component
 interface Props {
   title: string;
@@ -96,7 +97,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     textStyle,
     titleStyle,
   }) => {
-   
+
     const firstSentence = description.split('. ')[0];
     const subtitle = firstSentence + (firstSentence !== description ? '.' : '');
 
@@ -117,7 +118,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
           </View>
           <View>
             <Text style={textStyle}>Room:{room}</Text>
-            </View>         
+            </View>
           <TouchableOpacity
             onPress={onCheck}
             style={{
