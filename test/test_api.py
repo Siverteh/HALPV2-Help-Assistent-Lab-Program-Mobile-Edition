@@ -86,6 +86,7 @@ def send_request(method, endpoint, **kwargs):
     ({"email": "", "password": "Password1."}, 401),
     ({"email": "", "password": ""}, 401),
 ])
+@pytest.mark.Req1
 def test_auth_login(test_user_and_cleanup ,payload, expected_status_code):
     response = send_request("POST", "Auth/login", json=payload)
     assert response.status_code == expected_status_code
