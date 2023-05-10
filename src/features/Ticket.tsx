@@ -7,6 +7,7 @@ import Styles from "../styles/styles";
 import * as React from "react";
 import { View } from "react-native";
 import DropDown from "react-native-paper-dropdown";
+import DropDownPicker from "react-native-dropdown-picker";
 import { ThemeContext } from '../Components/GlobalHook';
 import { useSelector } from "react-redux";
 import { AppState } from "../types";
@@ -23,7 +24,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     const [open, setOpen] = useState(false);
 
 
-    const [value, setValue] = React.useState<Omit<TicketProp, "room">>({ description: "", name: "", ...ticket });
+    const [value, setValue] = React.useState<Omit<TicketProp, "room">>({ description: "", nickname: "", ...ticket });
     const [validation, setValidation] = React.useState({ description: false, name: false, room: false });
     const [room, setRoom] = useState(null);
 
@@ -122,7 +123,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           body: JSON.stringify(ticketData)
         });
         if (response.ok) {
-          setValue({ description: "", name: "" });
+          setValue({ description: "", nickname: "" });
           if (response.headers.get("Content-Length") !== "0") {
             const responseData = await response.json();
             onSubmit(responseData || { name: "", description: "" });
@@ -133,7 +134,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       } catch (error) {
         console.error(error);
       }
-      setValue({ description: "", name: "" });
+      setValue({ description: "", nickname: "" });
       setRoom(null);
     };
 
@@ -152,9 +153,9 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           label="Name"
           outlineColor={outline.outlineColor}
           activeOutlineColor={outline.outlineColor}
-          value={value.name}
+          value={value.nickname}
           onChangeText={handleChange("name")}
-          onBlur={() => handleBlur("name", value?.name)}
+          onBlur={() => handleBlur("name", value?.nickname)}
           error={validation?.name}
         />
         <View
@@ -211,7 +212,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         />
 
         <Button
-        style={[Styles.buttonStyle,{ backgroundColor: buttons.backgroundColor, margin: "2%" }]}
+        style={[Styles.buttonStyle,{ backgroundColor: boxes, margin: "2%" }]}
         labelStyle={[{color: text}]}
           onPress={handleCreateTicket}
         >

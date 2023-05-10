@@ -11,6 +11,7 @@ import { isEmpty } from "lodash";
 import { authorize } from "react-native-app-auth";
 import { actions } from "../reducers/userReducer";
 import { useDispatch } from "react-redux";
+import { Logo } from "../Components/CustomComponents";
 
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
