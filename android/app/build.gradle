@@ -98,8 +98,8 @@ android {
         applicationId "com.halp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "0.1"
         manifestPlaceholders = [ appAuthRedirectScheme: 'com.halp']
 
 
@@ -121,10 +121,10 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('your_key_name.keystore')
-            storePassword 'HERE_YOUR_KEY_PASSWORD'
-            keyAlias 'your_key_name.keystore'
-            keyPassword 'HERE_YOUR_KEY_PASSWORD'
+            storeFile file('my-upload-key.keystore')
+            storePassword 'Password1.'
+            keyAlias 'my-key-alias'
+            keyPassword 'Password1.'
         }
     }
     buildTypes {

@@ -16,14 +16,7 @@ function SettingsTab() {
       <Stack.Screen name="SettingScreen" component={Settings} options={{ headerShown: false }}/>
       <Stack.Screen name="LoginScreen" component={Login} options={{ headerShown: false }}/>
       <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
-      <Stack.Screen name="ChangePassword" component={ChangePassword} options={{title: 'Change password', headerStyle: {
-        backgroundColor: background,
-      },
-      headerTitleStyle: {
-        color: text,
-      },
-      headerTintColor: text,
-      }}/>
+      <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

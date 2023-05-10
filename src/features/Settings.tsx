@@ -20,16 +20,15 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { ThemeContext, themeHook } from '../Components/GlobalHook';
 import { useDispatch } from "react-redux";
 import { actions } from "../reducers/userReducer";
-import { head } from "lodash";
+import { Header } from "../Components/CustomComponents";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
-  const { background, text, outline } = useContext(ThemeContext)
+  const { background, text, outline, boxes } = useContext(ThemeContext)
 
   return (
     <>
-      <View style={{ height: '7%' }}></View>
       <TextInput
-        style={{ width: "80%" }}
+        style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
         textColor={text}
         activeOutlineColor={outline.activeOutlineColor}
         outlineColor={outline.outlineColor}
@@ -50,16 +49,15 @@ const Text_Input_CB = (lable: string, defaultValue: string = '', password: boole
 }
 
 
-const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
+const Button_ = ( Value: string, onPress: () => void, width: string = '50%') => {
   const { buttons, outline } = useContext(ThemeContext)
 
   return (
     <>
-      <View style={{ height: "5%" }}></View>
-      <Button style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, height: Height, width: "60%" }]}
+      <Button
+        style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, margin: '2%', width: width }]}
         mode="contained"
         textColor={outline.outlineColor}
-        contentStyle={{ flexDirection: 'row-reverse', height: "100%", width: "100%" }}
         onPress={onPress}>
         {Value}
       </Button>
@@ -81,9 +79,9 @@ const Settings = ({navigation}: any ) => {
   const [discord, setDiscord] = useState(discordTag);
   const [error, setError] = useState('');
 
-  const [isExserviceModalVisible, setIsExserviceModalVisible] = React.useState(false);
-  const openExserviceModal = () => setIsExserviceModalVisible(true);
-  const closeExserviceModal = () => setIsExserviceModalVisible(false);
+  // const [isExserviceModalVisible, setIsExserviceModalVisible] = React.useState(false);
+  // const openExserviceModal = () => setIsExserviceModalVisible(true);
+  // const closeExserviceModal = () => setIsExserviceModalVisible(false);
 
   const [isDeleteModalVisible, setIsDeleteModalVisible] = React.useState(false);
   const openDeleteModal = () => setIsDeleteModalVisible(true);
@@ -96,6 +94,12 @@ const Settings = ({navigation}: any ) => {
 
   const handleLogout = () => {
     dispatch(actions.setUser({
+      id: undefined,
+      nickname: undefined,
+      discordTag: undefined,
+      email: undefined,
+      role: undefined,
+      token: undefined,
       isLoggedIn: false
   }))
   }
@@ -108,11 +112,11 @@ const Settings = ({navigation}: any ) => {
     setError("");
     const data = {
       id: id,
-      nickname: name,
+      nickname: nickname,
       email: newEmail,
       discordTag: discord
     };
-    console.log(data);
+
     fetch('https://chanv2.duckdns.org:7006/api/User', {
       method: "PUT",
       headers: {
@@ -124,11 +128,9 @@ const Settings = ({navigation}: any ) => {
       .then((response) => {
         if (response.ok) {
           closeProfileModal();
-          console.log('ok');
         }
       })
       .catch((error) => {
-        console.log('1');
         console.error(error);
       });
   }
@@ -156,19 +158,19 @@ const Settings = ({navigation}: any ) => {
         }
       })
       .catch((error) => {
-        console.log('1');
         console.error(error);
       });
   }
 
   return (
 
-    <View style={[{backgroundColor: background, justifyContent: 'center', alignItems: 'center', height: screenHeight * 0.70 }]}>
-      {Button_( "PROFILE", openProfileModal)}
-      {Button_( "PASSWORD", ()=>navigation.navigate('ChangePassword'))}
-      {Button_("EXTERNAL-SERVICE", openExserviceModal)}
+    <View style={[{backgroundColor: background, alignItems: 'center', height: screenHeight * 0.70 }]}>
+      <View style={[{ margin: "2%"}]}/>
+      {Button_( "EDIT PROFILE", openProfileModal)}
+      {Button_( "CHANGE PASSWORD", ()=>navigation.navigate('ChangePassword'))}
+      {/*Button_("EXTERNAL-SERVICE", openExserviceModal)*/}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
-      {Button_("THEME", () => onChangeTheme() )}
+      {Button_("CHANGE THEME", () => onChangeTheme() )}
       {Button_("LOG OUT", handleLogout)}
 
       <Portal>
@@ -177,13 +179,13 @@ const Settings = ({navigation}: any ) => {
           {Text_Input_CB("Discord", discord, false, setDiscord)}
           <Text style={{ color: 'red',marginTop:'5%', marginBottom:'-10%' }}>{error}</Text>
           {Text_Input_CB("Email", newEmail, false, setNewEmail)}
-          {Button_("SAVE", handleChangeProfile, '15%')}
+          {Button_("SAVE", handleChangeProfile)}
         </Modal>
-        <Modal visible={isExserviceModalVisible} onDismiss={closeExserviceModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
+        {/* <Modal visible={isExserviceModalVisible} onDismiss={closeExserviceModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
           {Button_("CONECT DISCORD", closeExserviceModal, '30%')}
-        </Modal>
+        </Modal> */}
         <Modal visible={isDeleteModalVisible} onDismiss={closeDeleteModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
-          {Button_("DELETE ACCOUNT", handleDeleteAccount, '30%')}
+          {Button_("DELETE ACCOUNT", handleDeleteAccount, '80%')}
         </Modal>
       </Portal>
     </View>
@@ -291,21 +293,21 @@ const TimeEdit = React.memo(( ) => {
 
 
   return (
-    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center', height: screenHeight*0.66 }]}>
+    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center' }]}>
       <FlatList
         data={timeeditData}
         renderItem={renderItem}
         style={{ width: '100%' }}
         keyExtractor={item => item.id}
       />
-      {Button_("ADD NEW", openAddModal, '10%')}
-      <View style={{ height: '5%' }} />
+      {Button_("ADD NEW", openAddModal)}
+      <View style={{ height: 60 }} />
 
 
       <Portal>
         <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: screenHeight * 0.30 }]}>
           {Text_Input_CB( "TimeEdit Link", newLink, false, setNewLink)}
-          {Button_("Add", handleAddNewLink, '25%')
+          {Button_("Add", handleAddNewLink)
           }
         </Modal>
       </Portal>
@@ -315,9 +317,8 @@ const TimeEdit = React.memo(( ) => {
 
 
 const Roles = React.memo(() => {
-  const { background, text, listItem_dark, listItem_light, text2, buttons, boxes } = useContext(ThemeContext);
-  const screenHeight = Dimensions.get("window").height;
-  const { user: { token }} = useSelector((state: AppState) => state.user)
+  const { background, text, buttons, boxes } = useContext(ThemeContext);
+  const { user: { token }} = useSelector((state: AppState) => state.user) 
   const [showDropDown, setShowDropDown] = useState(false);
   const [courseList, setCourseList] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState<string | null>("admin");
@@ -384,7 +385,6 @@ const Roles = React.memo(() => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log('ok');
           fetchUsers();
           setCheckedItems((prevState) => ({
             ...prevState,
@@ -415,6 +415,8 @@ const Roles = React.memo(() => {
           <Checkbox
             status={isChecked ? "checked" : "unchecked"}
             onPress={() => handleCheckboxChange(item.id, selectedCourse)}
+            color={text}
+            uncheckedColor={text}
           />
         </View>
       </View>
@@ -424,12 +426,10 @@ const Roles = React.memo(() => {
   const filteredData = userData.filter((item) =>
     item.nickname.toLowerCase().includes(searchText.toLowerCase())
   );
-
-  const handleChange = (text:string) => setSearchText(text)
-
+  
   return(
-    <View style={[{backgroundColor:background, justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
-      <View style={{height:'5%', width:'90%', marginTop:'10%'}}>
+    <>
+    <View style={{ justifyContent : "center", marginLeft: '2%', width: '93%' }}>
         <DropDown
           label={"Search by Course + Admin"}
           mode={"outlined"}
@@ -439,19 +439,24 @@ const Roles = React.memo(() => {
           value={selectedCourse}
           setValue={setSelectedCourse}
           list={dropdownItems}
-          dropDownContainerHeight={300}
+          dropDownContainerMaxHeight={300}
           theme={{colors: {onSurface:text, background:buttons.backgroundColor, outline: 'transparent', onSurfaceVariant:text}}}
           dropDownItemStyle={{backgroundColor: buttons.backgroundColor}}
           dropDownItemTextStyle={{color: text}}
           dropDownStyle={{backgroundColor: 'transparent'}}
           dropDownItemSelectedStyle={{backgroundColor: background}}
-          dropDownItemSelectedTextStyle={{color: text}}
+          dropDownItemSelectedTextStyle={{color: text}}  
+          inputProps={{
+            style: {
+              ...Styles.textInput,
+              width: '100%'
+            }}
+          }       
         />
-      </View>
-      <View style={{ height: "5%", width: "93%", marginTop: "10%" }}>
+         </View>
       <SearchBar
-        placeholder="Search..."
-        onChangeText={handleChange}
+        placeholder="Search"
+        onChangeText={setSearchText}
         value={searchText}
         placeholderTextColor={text}
         containerStyle={{
@@ -460,34 +465,31 @@ const Roles = React.memo(() => {
           borderBottomWidth: 0, }}
         inputContainerStyle={{
           backgroundColor: buttons.backgroundColor,
-          width: '101%'
+          margin: 5
         }}
         inputStyle={{
           color: text,
           fontSize: 18,
         }}
       />
-      </View>
-      <View style={{height:'5%', width:'90%', marginTop:'10%'}}/>
-      <FlatList
+      <FlatList 
         data={filteredData}
         renderItem={renderItem}
-        style={{width: '90%'}}
         keyExtractor={item => item.id}
       />
-
-
-    </View>
+        
+      
+    </>
   );
 });
 const renderTabBar = (props: any) => {
   const { background, text} = useContext(ThemeContext);
-  const isDarkMode = useColorScheme() === 'dark';
+
   return (
     <TabBar
       {...props}
       indicatorStyle={[{backgroundColor: text}]}
-      style={[{backgroundColor: background, paddingTop: '11%' }]}
+      style={[{backgroundColor: background }]}
       labelStyle={[{color: text, fontSize: 18 }]}
       pressColor={{backgroundColor: background}}
     />
@@ -495,8 +497,7 @@ const renderTabBar = (props: any) => {
 };
 
 export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 'SettingScreen'>) {
-  const isDarkMode = useColorScheme() === 'dark';
-  const { background, text } = useContext(ThemeContext);
+  const { background } = useContext(ThemeContext);
   const { user: { role }} = useSelector((state: AppState) => state.user)
 
   const [index, setIndex] = React.useState(0);
@@ -522,31 +523,24 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
   if(role === 'Admin')
   {
     return (
-        <>
-          <Text style={
-            {color: text, backgroundColor: background, fontSize: 24, textAlign: 'center', paddingTop: '27%'}}
-            >
-              {routes[index].title}
-          </Text>
+      <View style={[{backgroundColor: background, height: '100%' }]}>
+        <Header title= {routes[index].title}/>
+
           <TabView
             navigationState={{ index, routes }}
             renderScene={renderScene}
             onIndexChange={setIndex}
             renderTabBar={renderTabBar}
             />
-      </>
+      </View>
     );
   } else {
     return (
-      <>
-        <Text style={
-          {color: text, backgroundColor: background, fontSize: 40, textAlign: 'center', paddingTop: '27%'}}
-          >
-            {routes[0].title}
-        </Text>
+      <View style={[{backgroundColor: background, height: '100%' }]}>
+        <Header title= {routes[0].title}/>
         <View style={{height: '5%', width: '100%', backgroundColor: background}}/>
         <Settings navigation={navigation} />
-      </>
-    );
+      </View>
+    );    
   }
 }
