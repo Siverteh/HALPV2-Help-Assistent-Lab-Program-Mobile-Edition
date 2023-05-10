@@ -24,6 +24,10 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     const [showDropDown, setShowDropDown] = useState(false);
     const [roomList, setRoomList] = useState([]);
 
+    React.useEffect(()=> {
+      setValue((prevValue) => ({ ...prevValue, name: nickname ?? "" }))
+    }, [nickname])
+
     const fetchRooms = async () => {
       await fetch("https://chanv2.duckdns.org:7006/api/Rooms")
         .then(response => response.json())
