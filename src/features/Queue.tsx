@@ -60,10 +60,12 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
             <Button 
             onPress={handleCancel} 
             textColor={text}
-            style={[{backgroundColor: buttons.queueButton}]}
+            style={[Styles.buttonStyle, {backgroundColor: buttons.queueButton}]}
             contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}>
             CANCEL          
             </Button>
+            
+            <View style={{height:20}}></View>
         </View>
       </View>
     </View>

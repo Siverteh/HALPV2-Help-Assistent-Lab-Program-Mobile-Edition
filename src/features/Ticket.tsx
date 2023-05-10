@@ -85,7 +85,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             setValue={(selectedRoom: any) => setValue((prevValue) => ({ ...prevValue, room: selectedRoom }))}
             list={dropdownItems}
             activeColor={"grey"}
-            dropDownContainerHeight={300}
+            dropDownContainerMaxHeight={300}
             theme={{
               colors: { background: boxes, outline: 'transparent', primary: 'red', onSurface: text, onSurfaceVariant: text,
             }}}
