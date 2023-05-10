@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import React from 'react';
 import ListComponent, { Course } from './List'
 import { useSelector } from 'react-redux';
-import { AppState } from '../types';
+import { AppState, RootStackParamList } from '../types';
+import { IconButton } from 'react-native-paper';
+import { StackScreenProps } from '@react-navigation/stack';
+import { ThemeContext } from '../Components/GlobalHook';
 
 
-const Archive = () => {
+const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'ArchiveScreen'>) => {
 
-  const [tiggerFetch, setTiggerFetch] = useState<boolean>(false)
   const { user: { token }} = useSelector((state: AppState) => state.user)
-  const course = ''
-
+  const { course } = route.params
+  const { text } = useContext(ThemeContext)
   const [data, setData] = useState<Array<Course>>([])
 
   useEffect(() => {
@@ -32,7 +34,7 @@ const Archive = () => {
         })
         .catch((error) => console.log('error: ', error))
         //.finally(() => setLoading(false))
-  })
+  }, [course])
 
 
   const updateCourse = async (updatedData: Course) => {
@@ -47,17 +49,26 @@ const Archive = () => {
         },
         body: JSON.stringify([updatedData])
       })
-      .then(() => setTiggerFetch(true))
       .catch((error) => console.error(error))
   };
+
+  const handleNavigate = () => {
+    navigation.navigate('HelpListScreen', { course })
+  }
   
   return (
     <ListComponent
-      title='Archive'
+      title={`ARCHIVE ${course}`}
       urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Archive?course=${course}`}
       onUpdate={updateCourse}
       data={data}
-    />
+    >
+      <IconButton
+        icon="arrow-left"
+        iconColor={text}
+        onPress={handleNavigate}     
+      />
+    </ListComponent>
   );
 };
 

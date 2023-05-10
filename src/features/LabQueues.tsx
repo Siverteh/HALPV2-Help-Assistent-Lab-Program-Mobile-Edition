@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import { Dimensions } from 'react-native';
@@ -9,6 +9,7 @@ import { AppState, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from "../Components/GlobalHook";
 import { useSelector } from 'react-redux';
+import { Logo } from '../Components/CustomComponents';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -25,9 +26,7 @@ const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueu
           }
       })
           .then(response => response.json())
-          .then(data => {
-            setNewCours(data);
-          })
+          .then(setNewCours)
           .catch(error => {
             console.error(error);
           });
@@ -59,8 +58,8 @@ const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueu
   
       return (
         <View style={[{backgroundColor: background, flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 0, paddingBottom: '7%' }]}>
-            <Image source={require('.././img/halpy3.png')} style={Styles.logo} />
-            <View style={[Styles.boxStyle, {backgroundColor: boxes.backgroundColor, alignItems: 'center', width: '90%', height: '70%', borderRadius: 20}]}>
+            <Logo/>
+            <View style={[{backgroundColor: boxes, alignItems: 'center', width: '90%', height: '70%', borderRadius: 20}]}>
                 <View style={{height:"5%"}}/>
                 <Text style={[{color: text , fontSize: 24, height: '10%'}]}>Lab Queues</Text>
                 <FlatList

@@ -1,10 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
-import { View, Image, ScrollView, Text } from 'react-native'
+import { View, ScrollView, Text } from 'react-native'
 import { List } from "react-native-paper";
-import Styles from "../styles/styles";
 import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react'
-import { Dimensions } from 'react-native'
 import { ThemeContext } from '../Components/GlobalHook'
 
 export type Course = {
@@ -26,15 +24,16 @@ type Props = {
     urlLive: string
     onUpdate: (data: Course) => Promise<void>
     data: Array<Course>
+    children?: JSX.Element
 }
 
 
 const ListComponent = ({
     title,
     onUpdate,
-    data: dataprop
+    data: dataprop,
+    children
 }: Props) => {
-  const windowHeight = Dimensions.get('window').height;
   const { background, text, listItem_dark, listItem_light  } = useContext(ThemeContext)
 
   const [checked, setChecked] = useState(new Map());
@@ -68,13 +67,10 @@ const ListComponent = ({
     setExpanded(new Map(expanded.set(id, !currentExpanded)));
   }
 
-  console.log(data, dataprop)
-
   return (
-    <View style={{backgroundColor: background,  height: windowHeight }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}></View>
-      <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
-      <Header titleStyle= {[Styles.Header, {color: text} ]}  title={title} />
+    <View style={{backgroundColor: background,  height: '100%' }}>
+      {children}
+      <Header title={title} />
       <ScrollView style={{ flex: 1 }}>
         {data && data.length > 0 ? (
           <List.Section>

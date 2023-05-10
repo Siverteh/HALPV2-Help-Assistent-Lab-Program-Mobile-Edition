@@ -5,13 +5,12 @@ import isEmpty from "lodash/isEmpty";
 import v from "lodash/values";
 import Styles from "../styles/styles";
 import * as React from "react";
-import {
-  Image,
-  View
-} from "react-native";
-import { ThemeContext } from "../Components/GlobalHook";
-import DropDownPicker from "react-native-dropdown-picker";
-import { sleep } from "react-hook-form/dist/utils/sleep";
+import { View } from "react-native";
+import DropDown from "react-native-paper-dropdown";
+import { ThemeContext } from '../Components/GlobalHook';
+import { useSelector } from "react-redux";
+import { AppState } from "../types";
+import { Header } from "../Components/CustomComponents"
 
 type Props = {
   ticket?: TicketProp
@@ -140,13 +139,11 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
 
 
     return (
-      <View style={{ backgroundColor: background, flex: 1, alignItems: "center" }}>
-        <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
-        <Text style={{ color: text, fontSize: 24, paddingBottom: 0, marginBottom: "7%" }}>
-          {ticket ? "EDIT TICKET" : "NEW TICKET"}
-        </Text>
+      <View style={[{backgroundColor: background, flex: 1, alignItems: "center" }]}>
+        <Header title={ticket ? 'EDIT TICKET':  'NEW TICKET'}/>
+
         <TextInput
-          style={[{ backgroundColor: boxes, width: "85%", margin: "3%", zIndex: 1 }]}
+          style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
           textColor={text}
           theme={{
             colors: { background: background, onSurfaceVariant: outline.outlineColor }
@@ -198,7 +195,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           />
         </View>
         <TextInput
-          style={[{ backgroundColor: boxes, width: "85%", margin: "2%" }]}
+          style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
           textColor={text}
           theme={{
             colors: { background: background, onSurfaceVariant: outline.outlineColor }
@@ -214,8 +211,8 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         />
 
         <Button
-          style={[Styles.buttonStyle, { backgroundColor: boxes, width: 230, height: 50, margin: "2%" }]}
-          labelStyle={[Styles.textStyle, { color: text }]}
+        style={[Styles.buttonStyle,{ backgroundColor: buttons.backgroundColor, margin: "2%" }]}
+        labelStyle={[{color: text}]}
           onPress={handleCreateTicket}
         >
           {ticket ? "SAVE TICKET" : "CREATE TICKET"}
