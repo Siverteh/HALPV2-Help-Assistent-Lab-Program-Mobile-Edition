@@ -139,6 +139,8 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         <TextInput
           style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
           textColor={text}
+          outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
           theme={{
             colors: {
               background: background,
@@ -147,8 +149,6 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           }}
           label="Name"
           mode={"outlined"}        
-          outlineColor={outline.outlineColor}
-          activeOutlineColor={outline.outlineColor}
           value={value.nickname}
           onChangeText={handleChange("name")}
           onBlur={() => handleBlur("name", value?.nickname)}
