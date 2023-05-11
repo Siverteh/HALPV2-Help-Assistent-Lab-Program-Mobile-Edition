@@ -19,7 +19,14 @@ const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueu
     const { user: { token, email }} = useSelector((state: AppState) => state.user)
 
     const fetchData = () => {
-      fetch("https://chanv2.duckdns.org:7006/api/Courses/all", {headers: {Authorization: `Bearer ${token}`}})
+        fetch('https://chanv2.duckdns.org:7006/api/User/Courses', {
+          method: "PUT",
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({email: email})
+      })
           .then(response => response.json())
           .then(setCourses)
           .catch(error => {
