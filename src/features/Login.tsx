@@ -1,30 +1,38 @@
-import React, { useContext, useState } from "react";
-import { Dimensions, Image, Text, View } from "react-native";
-import { Button, Checkbox, TextInput } from "react-native-paper";
-import { ThemeContext } from "../Components/GlobalHook";
-import Styles from "../styles/styles";
+import React, { useState, useContext, useEffect } from 'react';
+import {
+  Text,
+  View
+} from 'react-native';
+import { Button, TextInput, Checkbox } from 'react-native-paper';
+import Styles from '../styles/styles';
 
-import { StackScreenProps } from "@react-navigation/stack";
-import { Login as LoginType, RootStackParamList } from "../types";
-import { DiscordLogin } from "../types";
-import { isEmpty } from "lodash";
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList, Login as LoginType } from '../types';
+import { useDispatch } from 'react-redux'
+import { isEmpty } from 'lodash';
+import { actions } from '../reducers/userReducer';
+import { Logo } from '../Components/CustomComponents';
+import { asyncStorageHook } from '../hook/asyncStorageHook';
+import { ThemeContext } from '../Components/ThemeContext';
 import { authorize } from "react-native-app-auth";
-import { actions } from "../reducers/userReducer";
-import { useDispatch } from "react-redux";
-import { Logo } from "../Components/CustomComponents";
 
+function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
+  const dispatch = useDispatch()
+  const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(ThemeContext)
 
-function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
-  const windowHeight = Dimensions.get("window").height;
-  const { background, text, outline, iconColor, buttons, boxes, checkUncheck } = useContext(ThemeContext);
-  const dispatch = useDispatch();
-  const [value, setValue] = useState<LoginType>();
-  const [discordValue, setDiscordValue] = useState<DiscordLogin>();
-  const [validation, setValidation] = useState({ password: false, email: false });
-  const [checked, setChecked] = useState(true);
+  const [value, setValue] = useState<LoginType>()
+  const [validation, setValidation] = useState({password: false, email: false})
+  const [checked, setChecked] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  const handleChecked = () => setChecked(x => !x);
+  const {
+    setItem
+  } = asyncStorageHook()
+
+  const handleChecked = () => {
+    setChecked(x => !x)
+    setItem('@remember_me_login', `${!checked}`)
+  }
 
   const handleLogin = async () => {
     console.log(value);
@@ -40,10 +48,13 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
     fetch("https://chanv2.duckdns.org:7006/Auth/login", requestOptions)
       .then(response => response.json())
       .then(data => {
-        if (data.status != 401) {
-          dispatch(actions.setUser({ ...data, isLoggedIn: true }));
-
-          navigation.navigate("SettingScreen");
+        if(data.status != 401) {
+          if(checked) {
+            setItem("@user_email", data.email)
+            setItem("@user_token", data.token)
+          }
+          dispatch(actions.setUser({...data, isLoggedIn: true}))
+          navigation.navigate("SettingScreen")
         }
       })
       .catch(() => {
@@ -218,6 +229,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
         <Checkbox
         color={checkUncheck}
         uncheckedColor={outline.outlineColor}
+        
         status={checked ? 'checked' : 'unchecked'}
         onPress={handleChecked}
         />

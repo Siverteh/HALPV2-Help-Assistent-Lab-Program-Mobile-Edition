@@ -5,7 +5,7 @@ import { RootStackParamList } from '../../types';
 import Register from '../../features/Register';
 import ChangePassword from '../../features/ChangePassword';
 import { useContext } from 'react';
-import { ThemeContext } from '../GlobalHook';
+import { ThemeContext } from '../ThemeContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

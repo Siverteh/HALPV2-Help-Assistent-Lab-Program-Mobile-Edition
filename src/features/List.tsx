@@ -3,7 +3,7 @@ import { View, ScrollView, Text } from 'react-native'
 import { List } from "react-native-paper";
 import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react'
-import { ThemeContext } from '../Components/GlobalHook'
+import { ThemeContext } from '../Components/ThemeContext'
 
 export type Course = {
     Id: string;

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { ThemeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/ThemeContext';
 import {
   View,
   Alert,

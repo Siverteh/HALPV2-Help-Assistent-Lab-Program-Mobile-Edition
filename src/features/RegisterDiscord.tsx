@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { ThemeContext } from "../Components/GlobalHook";
+import { ThemeContext } from '../Components/ThemeContext';
 import {
   Image,
   View,
@@ -61,17 +61,17 @@ function RegisterDiscord({ navigation, route }: StackScreenProps<RootStackParamL
   };
 
   return (
-    <View style={[Styles.view, { backgroundColor: background, flex: 1, height: "100%" }]}>
+    <View style={[{ backgroundColor: background, flex: 1, height: "100%" }]}>
       <Image
-        style={Styles.image}
+        style={Styles.logo}
         source={require(".././img/halpy3.png")} />
-      <Text style={[Styles.textStyle, {
+      <Text style={[Styles.text_lg, {
         color: text,
         margin: "2%",
         textAlign: "center"
       }]}>Successfully authenticated with Discord! Set a nickname to complete registration.</Text>
       <TextInput
-        style={[Styles.boxStyle, {
+        style={[Styles.textInput, {
           backgroundColor: background,
           color: text,
           width: "85%",

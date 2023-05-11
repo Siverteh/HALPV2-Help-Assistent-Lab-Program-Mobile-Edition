@@ -5,7 +5,7 @@ import { StackScreenProps } from '@react-navigation/stack'
 import { AppState, RootStackParamList } from '../types'
 import { useSelector } from 'react-redux';
 import { IconButton } from 'react-native-paper';
-import { ThemeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/ThemeContext';
 import { View } from 'react-native'
 
 const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {

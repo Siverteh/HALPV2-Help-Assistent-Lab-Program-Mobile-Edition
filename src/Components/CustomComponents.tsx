@@ -4,7 +4,7 @@ import React, { ComponentProps, useContext } from 'react';
 import DropDown from 'react-native-paper-dropdown';
 import { Provider, DefaultTheme } from 'react-native-paper';
 import Styles from "../styles/styles";
-import { ThemeContext } from './GlobalHook';
+import { ThemeContext } from './ThemeContext';
 import { Image } from 'react-native';
 
 

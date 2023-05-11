@@ -1,32 +1,31 @@
-import { Ticket as TicketProp } from "../types/ticket";
-import { TextInput, Button, Text, List } from "react-native-paper";
-import { useContext, useState } from "react";
-import isEmpty from "lodash/isEmpty";
-import v from "lodash/values";
+import { Ticket as TicketProp} from "../types/ticket";
+import { TextInput, Button, Text } from "react-native-paper";
+import { useState, useContext } from "react";
 import Styles from "../styles/styles";
 import * as React from "react";
 import { View } from "react-native";
 import DropDown from "react-native-paper-dropdown";
 import DropDownPicker from "react-native-dropdown-picker";
-import { ThemeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/ThemeContext';
 import { useSelector } from "react-redux";
 import { AppState } from "../types";
 import { Header } from "../Components/CustomComponents"
+import { isEmpty } from "lodash";
 
 type Props = {
   ticket?: TicketProp
-  onSubmit: (ticket: TicketProp) => void
+  onSubmit: (ticket: TicketProp) => Promise<void>
 }
 
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
-    const { background, text, boxes, outline } = useContext(ThemeContext);
-    const [open, setOpen] = useState(false);
-
+    const { background, text, buttons, boxes, text2, outline } = useContext(ThemeContext)
+   
 
     const [value, setValue] = React.useState<Omit<TicketProp, "room">>({ description: "", nickname: "", ...ticket });
     const [validation, setValidation] = React.useState({ description: false, name: false, room: false });
     const [room, setRoom] = useState(null);
+    const [open, setOpen] = useState(false);
 
     const [roomList, setRoomList] = useState(["GRM F 202"]);
 
@@ -34,18 +33,12 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       await fetch("https://chanv2.duckdns.org:7006/api/Rooms")
         .then(response => response.json())
         .then(rooms => {
-          //setRoomList(rooms);
-          console.log(rooms);
+          setRoomList(rooms);
         })
         .catch(error => {
           console.error(error);
         });
     };
-
-    React.useEffect(() => {
-      setValidation({ description: false, name: false, room: false });
-    }, []);
-
 
     React.useEffect(() => {
       fetchRooms();
@@ -138,7 +131,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       setRoom(null);
     };
 
-
+    
     return (
       <View style={[{backgroundColor: background, flex: 1, alignItems: "center" }]}>
         <Header title={ticket ? 'EDIT TICKET':  'NEW TICKET'}/>
@@ -146,13 +139,16 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         <TextInput
           style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
           textColor={text}
-          theme={{
-            colors: { background: background, onSurfaceVariant: outline.outlineColor }
-          }}
-          mode={"outlined"}
-          label="Name"
-          outlineColor={outline.outlineColor}
+          outlineColor={outline.activeOutlineColor}
           activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
+          label="Name"
+          mode={"outlined"}        
           value={value.nickname}
           onChangeText={handleChange("name")}
           onBlur={() => handleBlur("name", value?.nickname)}
@@ -195,21 +191,25 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             onPress={handleDropdownOpen}
             onClose={handleDropdownClose}
           />
+
         </View>
         <TextInput
           style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
           textColor={text}
+          outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
           theme={{
-            colors: { background: background, onSurfaceVariant: outline.outlineColor }
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
           }}
           mode={"outlined"}
-          label="Description"
-          outlineColor={outline.outlineColor}
-          activeOutlineColor={outline.outlineColor}
+          label={"Description"}
+          placeholderTextColor={text2}
           value={value.description}
-          onChangeText={handleChange("description")}
-          onBlur={() => handleBlur("description", value?.description)}
-          error={validation?.description}
+          multiline={true}
+          onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, description: text }))}
         />
 
         <Button
@@ -217,7 +217,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         labelStyle={[{color: text}]}
           onPress={handleCreateTicket}
         >
-          {ticket ? "SAVE TICKET" : "CREATE TICKET"}
+         {ticket ? 'SAVE TICKET':  'CREATE TICKET'}
         </Button>
       </View>
     );

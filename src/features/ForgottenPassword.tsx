@@ -9,7 +9,7 @@ import { Button, TextInput } from 'react-native-paper';
 import Styles from '../styles/styles';
 
 import { StackScreenProps } from '@react-navigation/stack';
-import { ThemeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/ThemeContext';
 import { RootStackParamList } from '../types';
 import { Header } from '../Components/CustomComponents';
 

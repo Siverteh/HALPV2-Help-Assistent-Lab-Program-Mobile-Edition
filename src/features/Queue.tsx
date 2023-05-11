@@ -6,14 +6,14 @@ import { Dimensions } from 'react-native';
 import Styles from '../styles/styles';
 import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
-import { ThemeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/ThemeContext';
 import { Logo } from '../Components/CustomComponents';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
 const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Queue'>) => {
-  const isDarkMode = useColorScheme() === 'dark';
+
   const { background, text, buttons, boxes  } = useContext(ThemeContext)
 
   const ticket = route.params;
@@ -23,7 +23,19 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
   };
 
   const handleCancel = () => {
-    navigation.navigate('CreateScreen')
+    fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Cache-Control": "no-cache"
+              },
+              body: JSON.stringify({id: ticket.id})
+            })
+            .then(() => navigation.navigate('CreateScreen'))
+            .catch((error) => {
+            console.error(error);
+          })
   };
 
   return (
@@ -31,7 +43,7 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
       <Logo/>
       <View style={[{ justifyContent: 'space-between', alignItems: 'center', backgroundColor: boxes , width: '90%', height: screenHeight * 0.75, maxWidth: screenWidth * 0.9, maxHeight: screenHeight * 0.75, marginTop: -25, borderRadius: 20}]}>
         <View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }}>
-          <Text style={[{color: text, fontSize: 24 }]}>Hi Charlie</Text>
+          <Text style={[{color: text, fontSize: 24 }]}>{`Hi ${ticket.name}`}</Text>
           <Text style={[{color: text, fontSize: 20 }]}>You are number</Text>
           <Text style={[{color: text, fontSize: 120 }]}>1</Text>
           <Text style={[{color: text, fontSize: 20 }]}>in the queue</Text>
@@ -48,10 +60,12 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
             <Button 
             onPress={handleCancel} 
             textColor={text}
-            style={[{backgroundColor: buttons.queueButton}]}
+            style={[Styles.buttonStyle, {backgroundColor: buttons.queueButton}]}
             contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}>
             CANCEL          
             </Button>
+            
+            <View style={{height:20}}></View>
         </View>
       </View>
     </View>
