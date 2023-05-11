@@ -38,11 +38,6 @@ const ListComponent = ({
 
   const [checked, setChecked] = useState(new Map());
   const [expanded, setExpanded] = useState(new Map())
-  // const [data, setData] = useState<Array<Course>>(dataprop)
-
-  // useEffect(() => {
-  //   setData(dataprop)
-  // }, [dataprop])
 
   const handleCheck = (id: string) => {
     const currentChecked = checked.get(id) || false
@@ -51,12 +46,7 @@ const ListComponent = ({
     const updatedItem = data.find(item => item.Id === id);
 
     if (updatedItem) {
-    
-        // setData((prev) => {
-        //     const filteredData = prev.filter(item => item.Id !== id);
-        //     return filteredData
-        // })
-
+   
         onUpdate(updatedItem)
     }
 
