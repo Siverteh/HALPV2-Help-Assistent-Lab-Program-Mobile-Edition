@@ -21,9 +21,7 @@ const colorScheme = useColorScheme();
 
 const dispatch = useDispatch()
 
-const {
-  getItem
-} = asyncStorageHook()
+const {getItem} = asyncStorageHook()
 
 useEffect(() => {
   if (colorScheme === 'light') {

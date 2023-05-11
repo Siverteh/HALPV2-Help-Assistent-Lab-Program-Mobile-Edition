@@ -31,18 +31,18 @@ type Props = {
 const ListComponent = ({
     title,
     onUpdate,
-    data: dataprop,
+    data,
     children
 }: Props) => {
   const { background, text, listItem_dark, listItem_light  } = useContext(ThemeContext)
 
   const [checked, setChecked] = useState(new Map());
   const [expanded, setExpanded] = useState(new Map())
-  const [data, setData] = useState<Array<Course>>(dataprop)
+  // const [data, setData] = useState<Array<Course>>(dataprop)
 
-  useEffect(() => {
-    setData(dataprop)
-  }, [dataprop])
+  // useEffect(() => {
+  //   setData(dataprop)
+  // }, [dataprop])
 
   const handleCheck = (id: string) => {
     const currentChecked = checked.get(id) || false
@@ -52,10 +52,10 @@ const ListComponent = ({
 
     if (updatedItem) {
     
-        setData((prev) => {
-            const filteredData = prev.filter(item => item.Id !== id);
-            return filteredData
-        })
+        // setData((prev) => {
+        //     const filteredData = prev.filter(item => item.Id !== id);
+        //     return filteredData
+        // })
 
         onUpdate(updatedItem)
     }

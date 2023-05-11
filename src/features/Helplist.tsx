@@ -3,47 +3,55 @@ import React from 'react';
 import ListComponent, { Course } from './List'
 import { StackScreenProps } from '@react-navigation/stack'
 import { AppState, RootStackParamList } from '../types'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IconButton } from 'react-native-paper';
 import { ThemeContext } from '../Components/ThemeContext';
 import { View } from 'react-native'
+import { useSignalR } from '../hook/useSignalR';
+import { actions } from '../reducers/helplistReducer';
+import { actions as archiveActions} from '../reducers/archiveReducer';
 
 const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
 
   const { course } = route.params
-  const [data, setData] = useState<Array<Course>>([])
   const { user: { token }} = useSelector((state: AppState) => state.user)
   const { text } = useContext(ThemeContext)
+  const state = useSelector((state: AppState) => state.helplist)
+  const dispatch = useDispatch()
 
-  // const es = new RNEventSource(`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`);
+  const { connection } = useSignalR("AddToGroup", course)
 
-  // es.addEventListener("message", (event) => {
-  //   const jsonobject: any = event.data;
-  //   console.log("res: ", jsonobject)
-  //   if (jsonobject) {
-  //     setData(jsonobject)
-  //   }
-  // })
+  const dataMapper = (data: any) => data.map((d: any) => {
+    return {
+    Id: d.id,
+    Nickname: d.nickname,
+    Description: d.description,
+    Room: d.room
+}})
 
+  connection.on("AddToHelplist", (Id, Nickname, Description, Room) => 
+    {
+    dispatch(actions.setHelplist([{
+      Id: Id, Nickname: Nickname, Description: Description, Room: Room
+    }]))
+    }
+  )
   useEffect(() => {
-    fetch(`https://chanv2.duckdns.org:7006/api/Helplist?course=${course}`, {
-      headers: {
-        "Authorization": `Bearer ${token}`
+    if (!state.isLoaded) {
+        fetch(
+          `https://chanv2.duckdns.org:7006/api/Helplist?course=${course}`,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          })
+            .then(response => response.json())
+            .then((data) => {
+                dispatch(actions.setHelplist(dataMapper(data)))   
+            })
+            .finally(() => dispatch(actions.setIsLoaded(true)))
+            .catch((error) => console.log('error: ', error))
       }
-  })
-        .then(response => response.json())
-        .then((data) => {
-            const newDataMapper = data.map((d: any) => {
-                return {
-                Id: d.id,
-                Nickname: d.nickname,
-                Description: d.description,
-                Room: d.room
-            }})
-            setData(newDataMapper)
-        })
-        .catch((error) => console.log('error: ', error))
-        //.finally(() => setLoading(false))
   }, [course])
 
   const updateCourse = async (updatedData: Course) => {
@@ -57,6 +65,10 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
           'Content-Type': 'application/json'
         },
         body: JSON.stringify([updatedData])
+      })
+      .then(() => {
+        dispatch(actions.filterHelplist(updatedData))
+        dispatch(archiveActions.setArchive([updatedData]))
       })
       .catch((error) => console.error(error))
   }
@@ -73,7 +85,7 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
       title={`HELPLIST ${course}`}
       urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`}
       onUpdate={updateCourse}
-      data={data}
+      data={state.helplist}
     >
      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
       <IconButton
