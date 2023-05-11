@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { AppState, RootStackParamList } from '../types';
 import { IconButton } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
-import { ThemeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/ThemeContext';
 
 
 const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'ArchiveScreen'>) => {
@@ -33,7 +33,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
             setData(newDataMapper)
         })
         .catch((error) => console.log('error: ', error))
-        //.finally(() => setLoading(false))
+
   }, [course])
 
 

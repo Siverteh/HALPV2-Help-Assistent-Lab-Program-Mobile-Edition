@@ -1,16 +1,21 @@
-import { useState } from "react";
-import { theme } from "../styles/theme";
+import { AppState } from '../types';
+import { useDispatch, useSelector } from 'react-redux'
+import { actions } from '../reducers/themeReducer';
+import { Theme } from '../types/theme';
+import { theme } from '../styles/theme';
+
 
 export const themeHook = () => {
-    const [currentTheme, setCurrentTheme] = useState(theme.dark);
+  const state = useSelector((state: AppState) => state.theme)
 
-    const toggleDarkMode = () => {
-      setCurrentTheme(currentTheme === theme.light ? theme.dark : theme.light)
+  const dispatch = useDispatch()
+
+  const toggleDarkMode = (themeValue?: Theme) => {
+          dispatch(actions.setTheme(themeValue ?? state.theme === theme.light ? theme.dark : theme.light))
     }
 
     return {
-        onChangeTheme: toggleDarkMode,
-        theme: currentTheme
-    }
-    
+      onChangeTheme: toggleDarkMode,
+      Thistheme: state.theme
+    };
 }

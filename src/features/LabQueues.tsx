@@ -3,11 +3,10 @@ import { View, FlatList } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import { Dimensions } from 'react-native';
-import Styles from '../styles/styles';
 import { useState, useContext } from "react";
 import { AppState, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
-import { ThemeContext } from "../Components/GlobalHook";
+import { ThemeContext } from "../Components/ThemeContext";
 import { useSelector } from 'react-redux';
 import { Logo } from '../Components/CustomComponents';
 
@@ -16,17 +15,20 @@ const screenHeight = Dimensions.get('window').height;
 
 const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
   const { background, text, boxes  } = useContext(ThemeContext)
-    const [newCours, setNewCours] = useState([])
-    const { user: { token }} = useSelector((state: AppState) => state.user)
+    const [courses, setCourses] = useState([])
+    const { user: { token, email }} = useSelector((state: AppState) => state.user)
 
     const fetchData = () => {
-        fetch('https://chanv2.duckdns.org:7006/api/Courses/all', {
+        fetch('https://chanv2.duckdns.org:7006/api/User/Courses', {
+          method: "PUT",
           headers: {
+            'Content-Type': 'application/json',
             "Authorization": `Bearer ${token}`
-          }
+          },
+          body: JSON.stringify({email: email})
       })
           .then(response => response.json())
-          .then(setNewCours)
+          .then(setCourses)
           .catch(error => {
             console.error(error);
           });
@@ -63,7 +65,7 @@ const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueu
                 <View style={{height:"5%"}}/>
                 <Text style={[{color: text , fontSize: 24, height: '10%'}]}>Lab Queues</Text>
                 <FlatList
-                    data={newCours}
+                    data={courses}
                     renderItem={renderItem}
                     style={{height:"100%"}}
                     keyExtractor={(item) => item}

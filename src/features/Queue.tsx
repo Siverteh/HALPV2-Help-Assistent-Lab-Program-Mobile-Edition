@@ -6,7 +6,7 @@ import { Dimensions } from 'react-native';
 import Styles from '../styles/styles';
 import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
-import { ThemeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/ThemeContext';
 import { Logo } from '../Components/CustomComponents';
 
 const screenHeight = Dimensions.get('window').height;

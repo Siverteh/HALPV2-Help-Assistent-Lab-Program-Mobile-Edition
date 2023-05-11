@@ -17,10 +17,12 @@ interface UserProps {
 }
 import { AppState, RootStackParamList } from "../types";
 import { StackScreenProps } from "@react-navigation/stack";
-import { ThemeContext, themeHook } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/ThemeContext';
 import { useDispatch } from "react-redux";
 import { actions } from "../reducers/userReducer";
 import { Header } from "../Components/CustomComponents";
+import { themeHook } from '../hook/themeHook'
+import { asyncStorageHook } from "../hook/asyncStorageHook";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
   const { background, text, outline, boxes } = useContext(ThemeContext)
@@ -86,13 +88,14 @@ const Settings = ({navigation}: any ) => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = React.useState(false);
   const openDeleteModal = () => setIsDeleteModalVisible(true);
   const closeDeleteModal = () => setIsDeleteModalVisible(false);
-
+  const { setItem } = asyncStorageHook()
 
 
   const screenHeight = Dimensions.get("window").height;
   const containerStyle = {backgroundColor: background, height: screenHeight * 0.45, width: "70%", borderRadius: 20 };
 
   const handleLogout = () => {
+    setItem('@remember_me_login', 'false')
     dispatch(actions.setUser({
       id: undefined,
       nickname: undefined,

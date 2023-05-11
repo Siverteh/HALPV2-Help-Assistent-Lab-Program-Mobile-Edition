@@ -1,15 +1,12 @@
 import { Ticket as TicketProp } from "../types/ticket";
-import { TextInput, Button, Text, List } from "react-native-paper";
+import { TextInput, Button } from "react-native-paper";
 import { useContext, useState } from "react";
 import isEmpty from "lodash/isEmpty";
-import v from "lodash/values";
 import Styles from "../styles/styles";
 import * as React from "react";
 import { View } from "react-native";
 import DropDown from "react-native-paper-dropdown";
-import { ThemeContext } from '../Components/GlobalHook';
-import { useSelector } from "react-redux";
-import { AppState } from "../types";
+import { ThemeContext } from '../Components/ThemeContext';
 import { Header } from "../Components/CustomComponents"
 
 type Props = {
@@ -19,7 +16,7 @@ type Props = {
 
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
-    const { background, text, boxes, outline } = useContext(ThemeContext);
+    const { background, text, boxes, outline, buttons } = useContext(ThemeContext);
     const [open, setOpen] = useState(false);
 
 
@@ -162,7 +159,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             zIndex: 2,
             width: "85%"
           }}>
-          <DropDownPicker
+          {/* <DropDownPicker
             closeAfterSelecting={true}
             listMode="SCROLLVIEW"
             placeholder={"Room"}
@@ -192,7 +189,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             onChangeSearchText={() => setRoom}
             onPress={handleDropdownOpen}
             onClose={handleDropdownClose}
-          />
+          /> */}
         </View>
         <TextInput
           style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
