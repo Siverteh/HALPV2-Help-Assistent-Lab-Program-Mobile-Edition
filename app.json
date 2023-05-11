@@ -1,4 +1,34 @@
 {
   "name": "halp",
-  "displayName": "halp"
+  "displayName": "halp",
+  "expo": {
+    "name": "halp",
+    "slug": "halp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/img/halpy3.png",
+    "splash": {
+      "image": "./src/img/halpy3.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/img/halpy3.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./src/img/halpy3.png"
+    }
+  }
 }

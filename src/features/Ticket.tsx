@@ -5,10 +5,12 @@ import Styles from "../styles/styles";
 import * as React from "react";
 import { View } from "react-native";
 import DropDown from "react-native-paper-dropdown";
+import DropDownPicker from "react-native-dropdown-picker";
 import { ThemeContext } from '../Components/ThemeContext';
 import { useSelector } from "react-redux";
 import { AppState } from "../types";
 import { Header } from "../Components/CustomComponents"
+import { isEmpty } from "lodash";
 
 type Props = {
   ticket?: TicketProp
@@ -18,15 +20,14 @@ type Props = {
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
     const { background, text, buttons, boxes, text2, outline } = useContext(ThemeContext)
-    const { user: { nickname }} = useSelector((state: AppState) => state.user)
-    const [value, setValue] = React.useState<TicketProp>({ description: "", name: nickname ?? "", room: "", ...ticket });
+   
 
-    const [showDropDown, setShowDropDown] = useState(false);
-    const [roomList, setRoomList] = useState([]);
+    const [value, setValue] = React.useState<Omit<TicketProp, "room">>({ description: "", nickname: "", ...ticket });
+    const [validation, setValidation] = React.useState({ description: false, name: false, room: false });
+    const [room, setRoom] = useState(null);
+    const [open, setOpen] = useState(false);
 
-    React.useEffect(()=> {
-      setValue((prevValue) => ({ ...prevValue, name: nickname ?? "" }))
-    }, [nickname])
+    const [roomList, setRoomList] = useState(["GRM F 202"]);
 
     const fetchRooms = async () => {
       await fetch("https://chanv2.duckdns.org:7006/api/Rooms")
@@ -47,10 +48,87 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       return { value: room, label: room };
     });
 
+    const handleBlur = (name: string, text: string) => {
+      if (isEmpty(text)) {
+        setValidation((prevState) => {
+          return { ...prevState, [name]: true } as any;
+        });
+      }
+    };
+
+    const handleRoomChange = (room: React.SetStateAction<null>) => {
+      setRoom(room);
+      if (room) {
+        setValidation((prevState) => {
+          return { ...prevState, room: false } as any;
+        });
+      } else {
+        setValidation((prevState) => {
+          return { ...prevState, room: true } as any;
+        });
+      }
+    };
+    const handleDropdownClose = () => {
+      if (room == null) {
+        setValidation((prevState) => {
+          return { ...prevState, room: false } as any;
+        });
+      } else {
+        setValidation((prevState) => {
+          return { ...prevState, room: true } as any;
+        });
+      }
+    };
+
+    const handleDropdownOpen = async () => {
+      setValidation((prevState) => {
+        return { ...prevState, room: false } as any;
+      });
+    };
+
+    const handleChange = (name: string) => (text: string) => {
+      setValue((prevValue) => ({ ...prevValue, [name]: text }));
+      if (!isEmpty(text)) {
+        setValidation(prevState => {
+          return { ...prevState, [name]: false };
+        });
+      }
+
+    };
+
     const handleCreateTicket = async () => {
-      onSubmit(value)
-      setValue({ description: "", name: nickname ?? "", room: "" });
-      
+      if (validation.name || validation.description || validation.room) {
+        return;
+      }
+
+      // Add the selected room to the ticket data
+      const ticketData = { ...value, room };
+
+      console.log(JSON.stringify(ticketData));
+      try {
+        const response = await fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Cache-Control": "no-cache"
+          },
+          body: JSON.stringify(ticketData)
+        });
+        if (response.ok) {
+          setValue({ description: "", nickname: "" });
+          if (response.headers.get("Content-Length") !== "0") {
+            const responseData = await response.json();
+            onSubmit(responseData || { name: "", description: "" });
+          }
+        } else {
+          console.error(`Error: ${response.status} - ${response.statusText}`);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      setValue({ description: "", nickname: "" });
+      setRoom(null);
     };
 
     
@@ -61,8 +139,6 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         <TextInput
           style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
           textColor={text}
-          outlineColor={outline.activeOutlineColor}
-          activeOutlineColor={outline.outlineColor}
           theme={{
             colors: {
               background: background,
@@ -70,34 +146,50 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             }
           }}
           label="Name"
-          mode={"outlined"}
-          value={value.name}
-          onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, name: text }))}
+          mode={"outlined"}        
+          outlineColor={outline.outlineColor}
+          activeOutlineColor={outline.outlineColor}
+          value={value.nickname}
+          onChangeText={handleChange("name")}
+          onBlur={() => handleBlur("name", value?.nickname)}
+          error={validation?.name}
         />
         <View
           style={{
-            width: "85%"
-          }}
-        >
-          <DropDown
-            label={"Room"}
-            mode={"outlined"}
-            visible={showDropDown}
-            showDropDown={() => setShowDropDown(true)}
-            onDismiss={() => setShowDropDown(false)}
-            value={value.room}
-            setValue={(selectedRoom: any) => setValue((prevValue) => ({ ...prevValue, room: selectedRoom }))}
-            list={dropdownItems}
-            activeColor={"grey"}
-            dropDownContainerMaxHeight={300}
-            theme={{
-              colors: { background: boxes, outline: 'transparent', primary: 'red', onSurface: text, onSurfaceVariant: text,
-            }}}
-            dropDownItemStyle={{backgroundColor: boxes}}
-            dropDownItemTextStyle={{color: text}}
-            dropDownStyle={{backgroundColor: 'transparent'}}
-            dropDownItemSelectedStyle={{backgroundColor: background}}
-            dropDownItemSelectedTextStyle={{color: text}}
+            zIndex: 2,
+            width: "85%",
+            marginTop: "1.5%"
+          }}>
+          <DropDownPicker
+            closeAfterSelecting={true}
+            listMode="SCROLLVIEW"
+            placeholder={"Room"}
+            value={room}
+            setValue={handleRoomChange}
+            items={dropdownItems}
+            open={open}
+            setOpen={setOpen}
+            modalAnimationType={"slide"}
+            style={{
+              backgroundColor: boxes,
+              borderColor: validation.room ? "red" : outline.outlineColor,
+              borderRadius: 4
+            }}
+            textStyle={{
+              color: validation.room ? "red" : text
+            }}
+            scrollViewProps={{
+              nestedScrollEnabled: true
+            }}
+            dropDownContainerStyle={{
+              position: "relative",
+              top: 0,
+              backgroundColor: boxes,
+              borderColor: outline.outlineColor
+            }}
+            onChangeSearchText={() => setRoom}
+            onPress={handleDropdownOpen}
+            onClose={handleDropdownClose}
           />
 
         </View>
@@ -121,7 +213,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         />
 
         <Button
-        style={[Styles.buttonStyle,{ backgroundColor: buttons.backgroundColor, margin: "2%" }]}
+        style={[Styles.buttonStyle,{ backgroundColor: boxes, margin: "2%" }]}
         labelStyle={[{color: text}]}
           onPress={handleCreateTicket}
         >
