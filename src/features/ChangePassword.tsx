@@ -20,12 +20,13 @@ import { Header } from '../Components/CustomComponents';
 
 function ChangePassword({ navigation }: StackScreenProps<RootStackParamList, 'ChangePassword'>): JSX.Element {
 
+  
   const { user: { email }} = useSelector((state: AppState) => state.user)
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [secureTextEntryRepeat, setSecureTextEntryRepeat] = useState(true);
   const [secureTextEntryCurrent, setSecureTextEntryCurrent] = useState(true);
-  const { background, text, boxes, buttons, outline  } = useContext(ThemeContext)
+  const { background, text, boxes, buttons, outline, iconColor  } = useContext(ThemeContext)
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -131,7 +132,8 @@ return (
         onChangeText={text => setCurrentPassword(text)}
         right={
           <TextInput.Icon
-            icon="eye"
+            icon={secureTextEntryCurrent ? 'eye' : 'eye-off'}
+            iconColor={iconColor}
             onPress={() => {
               setSecureTextEntryCurrent(!secureTextEntryCurrent);
               return false;
@@ -157,7 +159,8 @@ return (
         onChangeText={text => setNewPassword(text)}
         right={
           <TextInput.Icon
-            icon="eye"
+          icon={secureTextEntry ? 'eye' : 'eye-off'}
+          iconColor={iconColor}
             onPress={() => {
               setSecureTextEntry(!secureTextEntry);
               return false;
@@ -183,7 +186,8 @@ return (
         onChangeText={text => setRepeatNewPassword(text)}
         right={
           <TextInput.Icon
-            icon="eye"
+          icon={secureTextEntryRepeat ? 'eye' : 'eye-off'}
+          iconColor={iconColor}
             onPress={() => {
               setSecureTextEntryRepeat(!secureTextEntryRepeat);
               return false;
