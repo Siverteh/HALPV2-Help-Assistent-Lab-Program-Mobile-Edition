@@ -6,6 +6,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 const EditTicket = ({ route, navigation }: StackScreenProps<RootStackParamList, 'Edit'>) => {
 
     const ticket = route.params;
+    console.log(ticket)
 
     const handleSubmit = async (ticketProp: TicketProp) => {
 
@@ -28,7 +29,7 @@ const EditTicket = ({ route, navigation }: StackScreenProps<RootStackParamList, 
         <Ticket
             ticket={ticket}
             onSubmit={handleSubmit}
-            
+
         />
     )
 }
