@@ -11,7 +11,6 @@ import { RootStackParamList } from '../types';
 import { Logo } from '../Components/CustomComponents';
 import { isValidPassword } from '../utils';
   
-
 function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
   const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(ThemeContext)
 
@@ -46,8 +45,8 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
       Alert.alert('Error', 'Please enter a valid email.')
       return;
     }
-    
-    // Check if the passwords match  
+
+    // Check if the passwords match
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match.');
       return;
@@ -75,7 +74,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           requestOptions,
         );
         const data = await response.json();
-  
+
         if (response.ok) {
           Alert.alert('Success', 'Account successfully registered!')
           navigation.navigate('LoginScreen');
@@ -86,7 +85,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         console.error("Registration failed")
         
       }
-    } 
+    }
     else {
       let errMsg = 'Password must:';
       if (password.length < minLength) {

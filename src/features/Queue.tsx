@@ -50,28 +50,28 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
       <Logo/>
       <View style={[{ justifyContent: 'space-between', alignItems: 'center', backgroundColor: boxes , width: '90%', height: height * 0.75, maxWidth: width * 0.9, maxHeight: height * 0.75, marginTop: -25, borderRadius: 20}]}>
         <View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }}>
-          <Text style={[{color: text, fontSize: 24 }]}>{`Hi ${ticket.name}`}</Text>
+          <Text style={[{color: text, fontSize: 24 }]}>{`Hi ${ticket.nickname}`}</Text>
           <Text style={[{color: text, fontSize: 20 }]}>You are number</Text>
           <Text style={[{color: text, fontSize: 120 }]}>{queue}</Text>
           <Text style={[{color: text, fontSize: 20 }]}>in the queue</Text>
         </View>
         <View style={{ alignSelf: 'stretch', justifyContent: 'center', alignItems: 'center' }}>
-          <Button 
-            onPress={handleEdit} 
+          <Button
+            onPress={handleEdit}
             textColor={text}
             style={[Styles.buttonStyle,{ backgroundColor: buttons.queueButton}]}
             contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}>
-            EDIT TICKET          
+            EDIT TICKET
             </Button>
             <View style={{height:20}}></View>
-            <Button 
-            onPress={handleCancel} 
+            <Button
+            onPress={handleCancel}
             textColor={text}
             style={[Styles.buttonStyle, {backgroundColor: buttons.queueButton}]}
             contentStyle={{flexDirection: 'row-reverse', height: "100%", width: "100%"}}>
-            CANCEL          
+            CANCEL
             </Button>
-            
+
             <View style={{height:20}}></View>
         </View>
       </View>
