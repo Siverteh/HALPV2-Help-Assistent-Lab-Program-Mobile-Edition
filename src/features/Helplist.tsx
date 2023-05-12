@@ -4,19 +4,21 @@ import ListComponent from './List'
 import { StackScreenProps } from '@react-navigation/stack'
 import { AppState, RootStackParamList } from '../types'
 import { useDispatch, useSelector } from 'react-redux';
-import { IconButton } from 'react-native-paper';
+import { IconButton, Button } from 'react-native-paper';
 import { ThemeContext } from '../Components/ThemeContext';
-import { View } from 'react-native'
+import { View, Text } from 'react-native'
 import { useSignalR } from '../hook/useSignalR';
 import { actions } from '../reducers/helplistReducer';
 import { actions as archiveActions} from '../reducers/archiveReducer';
 import { TicketWithId } from '../types/ticket';
+import Styles from "../styles/styles";
 
-const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
+
+const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
 
   const { course } = route.params
-  const { user: { token }} = useSelector((state: AppState) => state.user)
-  const { text } = useContext(ThemeContext)
+  const { user: { token } } = useSelector((state: AppState) => state.user)
+  const { text, background } = useContext(ThemeContext)
   const state = useSelector((state: AppState) => state.helplist)
   const dispatch = useDispatch()
 
@@ -24,11 +26,12 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
 
   const dataMapper = (data: any) => data.map((d: any) => {
     return {
-    Id: d.id,
-    Nickname: d.nickname,
-    Description: d.description,
-    Room: d.room
-}})
+      Id: d.id,
+      Nickname: d.nickname,
+      Description: d.description,
+      Room: d.room
+    }
+  })
 
   connection.on("AddToHelplist", (Id, Nickname, Description, Room) => 
     {
@@ -59,6 +62,11 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
             .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
             .catch((error) => {
               console.error("Failed to get help list", error)
+                dispatch(actions.setHelplist({key: course, tickets: dataMapper(data)}))
+            })
+            .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
+            .catch((error) => {
+              console.error("Failed to get helplist", error)
             })
       }
   }, [course])
@@ -66,16 +74,16 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
 
   const updateCourse = async (updatedData: TicketWithId) => {
 
-      const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.Id
-      
-      fetch(link, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify([updatedData])
-      })
+    const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.Id
+
+    fetch(link, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify([updatedData])
+    })
       .then(() => {
         dispatch(actions.filterHelplist({courseKey: course, ticket: updatedData}))
         dispatch(archiveActions.setArchive({courseKey: course, tickets: [updatedData]}))
@@ -98,19 +106,26 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
       onUpdate={updateCourse}
       data={state.helplist[course] ?? []}
     >
-     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-      <IconButton
-        icon="arrow-left"
-        iconColor={text}
-        onPress={handleNavigate}     
-      />
-      <IconButton
-        icon="archive-outline"
-        iconColor={text}
-        onPress={handleClick}     
-      />
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View>
+          <IconButton
+            icon="arrow-left"
+            iconColor={text}
+            onPress={handleNavigate}
+          />
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-end'}}>
+          <Button style={[Styles.buttonStyle, { backgroundColor: background, margin: '2%' }]}
+            mode="contained"
+            textColor={text}
+            onPress={handleClick}
+            contentStyle={{ flexDirection: 'row-reverse', height: "100%", width: "100%" }}
+            icon= "archive-outline">
+            Archive
+          </Button>
+        </View>
       </View>
-      </ListComponent>
+    </ListComponent>
   );
 };
 

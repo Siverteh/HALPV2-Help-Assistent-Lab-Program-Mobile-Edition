@@ -114,6 +114,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       }
     };
 
+
     return (
       <View style={[{ backgroundColor: background, flex: 1, alignItems: "center" }]}>
         <Header title={ticket ? "EDIT TICKET" : "NEW TICKET"} />
