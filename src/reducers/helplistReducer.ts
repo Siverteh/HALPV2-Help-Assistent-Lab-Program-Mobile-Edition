@@ -1,16 +1,16 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import { Course } from '../features/List'
+import { TicketWithId } from '../types/ticket'
 
 export type HelplistState = {
-    helplist: Array<Course>,
+    helplist: {[courseKey: string]: Array<TicketWithId>},
     isConnected: boolean,
-    isLoaded: boolean
+    isLoadedCourse: {[key: string]: boolean}
 }
 
 const initialState = {
-    helplist: [],
+    helplist: {},
     isConnected: false,
-    isLoaded: false
+    isLoadedCourse: {}
 }
 
 const helplistReducer = createSlice({
@@ -19,16 +19,22 @@ const helplistReducer = createSlice({
     reducers: {
         setHelplist: (
             state: HelplistState,
-            { payload }: PayloadAction<Array<Course>>
+            { payload }: PayloadAction<{key: string, tickets: Array<TicketWithId>}>
         ) => {
-            state.helplist = [...payload, ...state.helplist]
+            state.helplist = {
+                ...state.helplist, 
+                [payload.key]: [...state.helplist[payload.key] ?? [], ...payload.tickets]
+            }
         },
         filterHelplist: (
             state: HelplistState,
-            { payload }: PayloadAction<Course>
+            { payload }: PayloadAction<{courseKey: string, ticket: TicketWithId}>
         ) => {
-            const filtered = state.helplist.filter(({ Id }) => Id !== payload.Id)
-            state.helplist = filtered
+            const filtered = state.helplist[payload.courseKey].filter(({ Id }) => Id !== payload.ticket.Id)
+            state.helplist = {
+                ...state.helplist,
+                [payload.courseKey]: filtered
+            }
         },
         setIsConnected: (
             state: HelplistState,
@@ -38,9 +44,12 @@ const helplistReducer = createSlice({
         },
         setIsLoaded: (
             state: HelplistState,
-            { payload }: PayloadAction<boolean>
+            { payload }: PayloadAction<{key: string, isLoaded: boolean}>
         ) => {
-            state.isLoaded = payload
+            state.isLoadedCourse = {
+                ...state.isLoadedCourse, 
+                [payload.key]: payload.isLoaded
+            }
         }
     }
 

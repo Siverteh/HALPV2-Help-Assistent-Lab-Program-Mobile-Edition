@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Provider as PaperProvider, Button } from "react-native-paper";
+import React, { useEffect } from "react";
+import { Provider as PaperProvider } from "react-native-paper";
 import NavigationBar from "../Components/NavigationBar/NavigationBar";
 import { NavigationContainer } from '@react-navigation/native';
 import { themeHook  } from "../hook/themeHook";
@@ -10,28 +10,25 @@ import { useDispatch, useSelector } from "react-redux"
 import { ThemeContext } from "../Components/ThemeContext";
 import { actions } from "../reducers/userReducer";
 import { asyncStorageHook } from "../hook/asyncStorageHook";
-import SystemNavigationBar from 'react-native-system-navigation-bar';
-import { delay } from "lodash";
+import { delay, isEmpty } from "lodash";
 
 function App(): JSX.Element {
 
 const { user: { role, isLoggedIn }} = useSelector((state: AppState) => state.user)
 
-const {Thistheme, onChangeTheme} = themeHook();
+const {Thistheme} = themeHook();
 
 const colorScheme = useColorScheme();
 
 const dispatch = useDispatch()
 
-const {getItem} = asyncStorageHook()
+const {getItem, setItem} = asyncStorageHook()
 
 useEffect(() => {
-  if (colorScheme === 'light') {
-    onChangeTheme(theme.light);
-  } else {
-    onChangeTheme(theme.dark);
+  if (colorScheme) {
+    setItem('@theme', colorScheme)
   }
-}, []);
+}, [colorScheme]);
 
 const getUser = (email: string, token: string) => {
   fetch("https://chanv2.duckdns.org:7006/api/User/get", {
@@ -48,8 +45,8 @@ const getUser = (email: string, token: string) => {
       dispatch(actions.setUser({...data, token: token, isLoggedIn: true}))
     }
   })
-  .catch(() => {
-    console.log('get user error')
+  .catch((error) => {
+    console.error("Failed to get user info", error)
   })
 }
 
@@ -58,7 +55,7 @@ useEffect(() => {
   .then(async (value) => {
     const email = await getItem("@user_email")
     const token = await getItem("@user_token")
-    if (value === 'true' && email && token) {
+    if (value === 'true' && email && !isEmpty(email) && token && !isEmpty(token)) {
         getUser(email, token)
     }
   })

@@ -20,7 +20,7 @@ const CreateTicket = ({ navigation }: StackScreenProps<RootStackParamList, 'Crea
               navigation.navigate('Queue', {...ticket, id: ''})
             })
             .catch((error) => {
-            console.error(error);
+            console.error("Failed to create ticket: ", error);
           })
     }
 

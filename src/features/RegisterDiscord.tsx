@@ -47,16 +47,15 @@ function RegisterDiscord({ navigation, route }: StackScreenProps<RootStackParamL
       );
       const data = await response.json();
 
-      console.log(response.status);
 
       if (response.ok) {
         Alert.alert("Success", "Account successfully registered!");
         navigation.navigate("LoginScreen");
       } else {
-        console.log("Registration failed:", data);
+        console.error("Discord registration failed: ", data)
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Discord registration failed")
     }
   };
 

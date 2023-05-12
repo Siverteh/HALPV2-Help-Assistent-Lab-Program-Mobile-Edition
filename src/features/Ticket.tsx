@@ -20,8 +20,7 @@ type Props = {
 const Ticket = ({ onSubmit, ticket }: Props) => {
     const [validation, setValidation] = useState(false);
     const { user: { nickname, isLoggedIn } } = useSelector((state: AppState) => state.user);
-    const { background, text, buttons, boxes, text2, outline } = useContext(ThemeContext);
-
+    const { background, text, boxes, outline } = useContext(ThemeContext);
 
     const [value, setValue] = React.useState<Omit<TicketProp, "room">>({
       description: ticket ? ticket.description : "",
@@ -31,7 +30,11 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     const [room, setRoom] = useState(ticket ? ticket.room : null);
     const [open, setOpen] = useState(false);
 
-    const [roomList, setRoomList] = useState(["GRM F 202"]);
+    const [roomList, setRoomList] = useState<string[]>([])
+
+    React.useEffect(()=> {
+      setValue((prevValue) => ({ ...prevValue, name: nickname ?? "" }))
+    }, [nickname])
 
     React.useEffect(() => {
       if (isLoggedIn && !ticket) {
@@ -46,7 +49,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           setRoomList(rooms);
         })
         .catch(error => {
-          console.error(error);
+          console.error("Failed to get rooms: ", error);
         });
     };
 

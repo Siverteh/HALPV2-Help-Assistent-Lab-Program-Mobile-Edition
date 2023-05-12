@@ -9,8 +9,8 @@ import Styles from '../styles/styles';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { Logo } from '../Components/CustomComponents';
-
-
+import { isValidPassword } from '../utils';
+  
 function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
   const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(ThemeContext)
 
@@ -65,14 +65,8 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);
     const hasSymbol = /\W|_/.test(password);
-
-    if (
-      password.length >= minLength &&
-      hasUpperCase &&
-      hasLowerCase &&
-      hasNumber &&
-      hasSymbol
-    )
+  
+    if (isValidPassword(password)) 
     {
       try {
         const response = await fetch(
@@ -85,10 +79,11 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           Alert.alert('Success', 'Account successfully registered!')
           navigation.navigate('LoginScreen');
         } else {
-          console.log('Registration failed:', data);
+          console.error("Registration failed: ", data)
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Registration failed")
+        
       }
     }
     else {
