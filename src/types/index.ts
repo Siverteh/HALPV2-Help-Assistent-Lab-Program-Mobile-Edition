@@ -1,3 +1,4 @@
+import { ArchiveState } from "../reducers/archiveReducer";
 import { HelplistState } from "../reducers/helplistReducer";
 import { ThemeState } from "../reducers/themeReducer";
 import { UserState } from "../reducers/userReducer";
@@ -41,5 +42,6 @@ export type RootStackParamList = {
   export interface AppState {
     user: UserState
     helplist: HelplistState
+    archive: ArchiveState
     theme: ThemeState
 }

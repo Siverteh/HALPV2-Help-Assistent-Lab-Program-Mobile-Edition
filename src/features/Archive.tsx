@@ -1,21 +1,24 @@
 import { useState, useEffect, useContext } from 'react'
 import React from 'react';
 import ListComponent, { Course } from './List'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState, RootStackParamList } from '../types';
 import { IconButton } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from '../Components/ThemeContext';
-
+import { actions } from '../reducers/archiveReducer';
+import { actions as helplistActions } from '../reducers/helplistReducer';
 
 const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'ArchiveScreen'>) => {
 
   const { user: { token }} = useSelector((state: AppState) => state.user)
   const { course } = route.params
   const { text } = useContext(ThemeContext)
-  const [data, setData] = useState<Array<Course>>([])
+  const { isLoaded, archive} = useSelector((state: AppState) => state.archive)
+  const dispatch = useDispatch()
 
   useEffect(() => {
+    if (!isLoaded) {
     fetch(`https://chanv2.duckdns.org:7006/api/Archive?course=${course}`, {
         headers: {
           "Authorization": `Bearer ${token}`
@@ -30,10 +33,11 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
                 Description: d.description,
                 Room: d.room
             }})
-            setData(newDataMapper)
+             dispatch(actions.setArchive(newDataMapper))
         })
+        .finally(() => dispatch(actions.setIsLoaded(true)))
         .catch((error) => console.log('error: ', error))
-
+      }
   }, [course])
 
 
@@ -49,6 +53,10 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
         },
         body: JSON.stringify([updatedData])
       })
+      .then(() => {
+        dispatch(actions.filterArchive(updatedData))
+        dispatch(helplistActions.setHelplist([updatedData]))
+      })
       .catch((error) => console.error(error))
   };
 
@@ -61,7 +69,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
       title={`ARCHIVE ${course}`}
       urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Archive?course=${course}`}
       onUpdate={updateCourse}
-      data={data}
+      data={archive}
     >
       <IconButton
         icon="arrow-left"

@@ -24,18 +24,18 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
 
   const handleCancel = () => {
     fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Cache-Control": "no-cache"
-              },
-              body: JSON.stringify({id: ticket.id})
-            })
-            .then(() => navigation.navigate('CreateScreen'))
-            .catch((error) => {
-            console.error(error);
-          })
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Cache-Control": "no-cache"
+        },
+        body: JSON.stringify({id: ticket.id})
+      })
+      .then(() => navigation.navigate('CreateScreen'))
+      .catch((error) => {
+      console.error(error);
+    })
   };
 
   return (

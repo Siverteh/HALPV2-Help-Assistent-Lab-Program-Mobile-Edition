@@ -3,12 +3,13 @@ import { AppState } from '../types'
 import { reducer as themeReducer} from '../reducers/themeReducer'
 import { reducer as userReducer} from '../reducers/userReducer'
 import { reducer as helplistReducer} from '../reducers/helplistReducer'
-
+import { reducer as archiveReducer} from '../reducers/archiveReducer'
 
 export const store = configureStore<AppState>({
     reducer: {
         user: userReducer,
         helplist: helplistReducer,
+        archive: archiveReducer,
         theme: themeReducer
     }
 })
