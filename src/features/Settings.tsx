@@ -69,7 +69,7 @@ const Button_ = ( Value: string, onPress: () => void, width: string = '50%') => 
 }
 
 const Settings = ({navigation}: any ) => {
-  const { background} = useContext(ThemeContext);
+  const { background, text} = useContext(ThemeContext);
   const { onChangeTheme} = themeHook();
   const { user: {email, nickname, discordTag, id, token }} = useSelector((state: AppState) => state.user)
   const dispatch = useDispatch()
@@ -192,7 +192,12 @@ const Settings = ({navigation}: any ) => {
           {Button_("CONECT DISCORD", closeExserviceModal, '30%')}
         </Modal> */}
         <Modal visible={isDeleteModalVisible} onDismiss={closeDeleteModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
-          {Button_("DELETE ACCOUNT", handleDeleteAccount, '80%')}
+          <Text style={{ color: text, fontSize: 20, justifyContent: 'center', width: '75%' }}>Are you sure you want to delete your account?</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} >
+            {Button_("YES", handleDeleteAccount, '30%')}
+            <View style={{width: '5%'}}/>
+            {Button_("NO", closeDeleteModal, '30%')}
+          </View>
         </Modal>
       </Portal>
     </View>
