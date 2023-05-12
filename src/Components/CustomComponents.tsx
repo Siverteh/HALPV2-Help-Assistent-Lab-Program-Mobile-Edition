@@ -8,26 +8,25 @@ import { ThemeContext } from './ThemeContext';
 import { Image } from 'react-native';
 
 
+interface Props {
+  title?: string;
+}
+
 export const Logo = () => {
   return (
     <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
   )
 }
-
-
-// Header component
-interface Props {
-  title: string;
-}
 export const Header = ({ title }: Props) => {
   const { text } = useContext(ThemeContext)
   return (
       <>
-        <Logo/>
+      <Logo></Logo>
         <Text style={[Styles.Header, {color: text} ]}>{title}</Text>
       </>
   );
 }
+
 
 
 // Descripton component

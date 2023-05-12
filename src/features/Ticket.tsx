@@ -9,7 +9,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { ThemeContext } from '../Components/ThemeContext';
 import { useSelector } from "react-redux";
 import { AppState } from "../types";
-import { Header } from "../Components/CustomComponents"
+import { Header, Logo } from "../Components/CustomComponents"
 import { isEmpty } from "lodash";
 
 type Props = {
@@ -135,7 +135,6 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     return (
       <View style={[{backgroundColor: background, flex: 1, alignItems: "center" }]}>
         <Header title={ticket ? 'EDIT TICKET':  'NEW TICKET'}/>
-
         <TextInput
           style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
           textColor={text}
