@@ -3,6 +3,7 @@ import Login from '../../features/Login'
 import { RootStackParamList } from '../../types'
 import Register from '../../features/Register'
 import Settings from '../../features/Settings'
+import RegisterDiscord from "../../features/RegisterDiscord";
 import ForgottenPassword from '../../features/ForgottenPassword'
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -13,6 +14,7 @@ function SettingsTab() {
       <Stack.Screen name="LoginScreen" component={Login} options={{ headerShown: false }}/>
       <Stack.Screen name="SettingScreen" component={Settings} options={{ headerShown: false }}/>
       <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
+      <Stack.Screen name="RegisterDiscord" component={RegisterDiscord} options={{ headerShown: false}}/>
       <Stack.Screen name="ForgottenPassword" component={ForgottenPassword} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
