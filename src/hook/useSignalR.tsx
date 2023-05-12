@@ -21,7 +21,7 @@ export const makeHubConnection = (accessToken: string, signalRUrl: string): HubC
     .build()
 }
 
-export const useSignalR = (groupName: string, arg: any) => {
+export const useSignalR = (groupName?: string, arg?: any) => {
   const state = useSelector((state: AppState) => state.helplist)
   const dispatch = useDispatch()
 
@@ -35,7 +35,9 @@ export const useSignalR = (groupName: string, arg: any) => {
 
       connection.start()
         .then(() => {
-          connection.invoke(groupName, arg);
+          if (groupName && arg) {
+            connection.invoke(groupName, arg);
+          }
         })
 
       dispatch(actions.setIsConnected(true))
