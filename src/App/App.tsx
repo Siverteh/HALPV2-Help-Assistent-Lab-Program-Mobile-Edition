@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { ThemeContext } from "../Components/ThemeContext";
 import { actions } from "../reducers/userReducer";
 import { asyncStorageHook } from "../hook/asyncStorageHook";
-import { delay } from "lodash";
+import { delay, isEmpty } from "lodash";
 
 function App(): JSX.Element {
 
@@ -22,8 +22,7 @@ const colorScheme = useColorScheme();
 
 const dispatch = useDispatch()
 
-const {getItem} = asyncStorageHook()
-const {setItem} = asyncStorageHook()
+const {getItem, setItem} = asyncStorageHook()
 
 useEffect(() => {
   if (colorScheme) {
@@ -56,7 +55,7 @@ useEffect(() => {
   .then(async (value) => {
     const email = await getItem("@user_email")
     const token = await getItem("@user_token")
-    if (value === 'true' && email && token) {
+    if (value === 'true' && email && !isEmpty(email) && token && !isEmpty(token)) {
         getUser(email, token)
     }
   })

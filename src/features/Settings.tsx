@@ -96,6 +96,8 @@ const Settings = ({navigation}: any ) => {
 
   const handleLogout = () => {
     setItem('@remember_me_login', 'false')
+    setItem('@user_email', '')
+    setItem('@user_token', '')
     dispatch(actions.setUser({
       id: undefined,
       nickname: undefined,
