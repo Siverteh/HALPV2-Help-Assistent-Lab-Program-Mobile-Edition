@@ -23,6 +23,7 @@ import { actions } from "../reducers/userReducer";
 import { Header } from "../Components/CustomComponents";
 import { themeHook } from '../hook/themeHook'
 import { asyncStorageHook } from "../hook/asyncStorageHook";
+import { set } from "lodash";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
   const { background, text, outline, boxes } = useContext(ThemeContext)
@@ -32,14 +33,14 @@ const Text_Input_CB = (lable: string, defaultValue: string = '', password: boole
       <TextInput
         style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
         textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
+        outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
         label={lable}
         mode="outlined"
         defaultValue={defaultValue}
@@ -108,7 +109,7 @@ const Settings = ({navigation}: any ) => {
   }
   const handleChangeProfile = () => {
 
-    if (!(newEmail.includes('@') && newEmail.includes('.'))) {
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newEmail))) {
       setError("Invalid Email");
       return;
     }
@@ -140,6 +141,9 @@ const Settings = ({navigation}: any ) => {
 
   const closeProfileModalError = () => {
     setError('');
+    setNewEmail(email ?? '');
+    setDiscord(discordTag ?? '');
+    setName(nickname ?? '');
     closeProfileModal();
   }
 
@@ -180,8 +184,8 @@ const Settings = ({navigation}: any ) => {
         <Modal visible={isProfileModalVisible} onDismiss={closeProfileModalError} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8 }]}>
           {Text_Input_CB( "Name", name, false, setName)}
           {Text_Input_CB("Discord", discord, false, setDiscord)}
-          <Text style={{ color: 'red',marginTop:'5%', marginBottom:'-10%' }}>{error}</Text>
           {Text_Input_CB("Email", newEmail, false, setNewEmail)}
+          <Text style={{ color: background == '#E0EEF7' ? 'red' : '#f18ba5', fontSize: 20 }}>{error}</Text>
           {Button_("SAVE", handleChangeProfile)}
         </Modal>
         {/* <Modal visible={isExserviceModalVisible} onDismiss={closeExserviceModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
@@ -210,6 +214,7 @@ const TimeEdit = React.memo(( ) => {
     borderRadius: 20
   };
   const [newLink, setNewLink] = useState('');
+  const [error, setError] = useState('');
 
   const fetchData = () => {
     fetch('https://chanv2.duckdns.org:7006/api/Timeedit', {headers: {Authorization: `Bearer ${token}`}})
@@ -231,6 +236,11 @@ const TimeEdit = React.memo(( ) => {
 
 
   const handleAddNewLink = () => {
+    if (!newLink.endsWith('html')) {
+      setError('Invalid link, get a valid link from timeedit');
+      return;
+    }
+    setError('');
     fetch(`https://chanv2.duckdns.org:7006/api/Timeedit?link=${newLink}`, {
       method: 'POST',
       headers: {
@@ -294,6 +304,10 @@ const TimeEdit = React.memo(( ) => {
     </View>
   );
 
+  const handelCloseAddModal = () => {
+    setError('');
+    closeAddModal();
+  }
 
   return (
     <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center' }]}>
@@ -308,8 +322,9 @@ const TimeEdit = React.memo(( ) => {
 
 
       <Portal>
-        <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: screenHeight * 0.30 }]}>
+        <Modal visible={isAddModalVisible} onDismiss={handelCloseAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: screenHeight * 0.30 }]}>
           {Text_Input_CB( "TimeEdit Link", newLink, false, setNewLink)}
+          <Text style={{ color: background == '#E0EEF7' ? 'red' : '#f18ba5', fontSize: 14, padding: 0 }}>{error}</Text>
           {Button_("Add", handleAddNewLink)
           }
         </Modal>

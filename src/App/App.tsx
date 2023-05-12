@@ -4,12 +4,14 @@ import NavigationBar from "../Components/NavigationBar/NavigationBar";
 import { NavigationContainer } from '@react-navigation/native';
 import { themeHook  } from "../hook/themeHook";
 import { theme } from "../styles/theme";
-import { useColorScheme } from "react-native";
+import { StatusBar, useColorScheme } from "react-native";
 import { AppState } from "../types";
 import { useDispatch, useSelector } from "react-redux"
 import { ThemeContext } from "../Components/ThemeContext";
 import { actions } from "../reducers/userReducer";
 import { asyncStorageHook } from "../hook/asyncStorageHook";
+import SystemNavigationBar from 'react-native-system-navigation-bar';
+import { delay } from "lodash";
 
 function App(): JSX.Element {
 
@@ -62,9 +64,22 @@ useEffect(() => {
   })
   }, [])
 
+  const topBar = () =>{
+    
+      delay(() => {
+      }, 35)
+      return (
+        <StatusBar 
+      barStyle={Thistheme.barContent} 
+      backgroundColor={Thistheme.background}
+      />
+      )
+  }
+
   return (
       <PaperProvider>
         <ThemeContext.Provider value={Thistheme}>
+        {topBar()}
         <NavigationContainer>
           <NavigationBar
             isStudass={(role === 'Studass' || role === 'Admin')  ?? false}
