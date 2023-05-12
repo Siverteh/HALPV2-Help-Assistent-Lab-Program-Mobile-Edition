@@ -1,15 +1,14 @@
-import { Ticket as TicketProp} from "../types/ticket";
+import { Ticket as TicketProp } from "../types/ticket";
 import { TextInput, Button, Text } from "react-native-paper";
 import { useState, useContext } from "react";
 import Styles from "../styles/styles";
 import * as React from "react";
 import { View } from "react-native";
-import DropDown from "react-native-paper-dropdown";
 import DropDownPicker from "react-native-dropdown-picker";
-import { ThemeContext } from '../Components/ThemeContext';
+import { ThemeContext } from "../Components/ThemeContext";
 import { useSelector } from "react-redux";
 import { AppState } from "../types";
-import { Header } from "../Components/CustomComponents"
+import { Header } from "../Components/CustomComponents";
 import { isEmpty } from "lodash";
 
 type Props = {
@@ -19,15 +18,26 @@ type Props = {
 
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
-    const { background, text, buttons, boxes, text2, outline } = useContext(ThemeContext)
-   
+    const [validation, setValidation] = useState(false);
+    const { user: { nickname, isLoggedIn } } = useSelector((state: AppState) => state.user);
+    const { background, text, buttons, boxes, text2, outline } = useContext(ThemeContext);
 
-    const [value, setValue] = React.useState<Omit<TicketProp, "room">>({ description: "", nickname: "", ...ticket });
-    const [validation, setValidation] = React.useState({ description: false, name: false, room: false });
-    const [room, setRoom] = useState(null);
+
+    const [value, setValue] = React.useState<Omit<TicketProp, "room">>({
+      description: ticket ? ticket.description : "",
+      nickname: ticket ? ticket.nickname : "",
+      ...ticket
+    });
+    const [room, setRoom] = useState(ticket ? ticket.room : null);
     const [open, setOpen] = useState(false);
 
     const [roomList, setRoomList] = useState(["GRM F 202"]);
+
+    React.useEffect(() => {
+      if (isLoggedIn && !ticket) {
+        setValue((prevValue) => ({ ...prevValue, nickname: nickname ?? "" }));
+      }
+    }, [nickname]);
 
     const fetchRooms = async () => {
       await fetch("https://chanv2.duckdns.org:7006/api/Rooms")
@@ -48,63 +58,26 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       return { value: room, label: room };
     });
 
-    const handleBlur = (name: string, text: string) => {
-      if (isEmpty(text)) {
-        setValidation((prevState) => {
-          return { ...prevState, [name]: true } as any;
-        });
-      }
-    };
 
-    const handleRoomChange = (room: React.SetStateAction<null>) => {
+    const handleRoomChange = (room: string | null) => {
       setRoom(room);
-      if (room) {
-        setValidation((prevState) => {
-          return { ...prevState, room: false } as any;
-        });
-      } else {
-        setValidation((prevState) => {
-          return { ...prevState, room: true } as any;
-        });
-      }
-    };
-    const handleDropdownClose = () => {
-      if (room == null) {
-        setValidation((prevState) => {
-          return { ...prevState, room: false } as any;
-        });
-      } else {
-        setValidation((prevState) => {
-          return { ...prevState, room: true } as any;
-        });
-      }
+      setValidation(false);
     };
 
-    const handleDropdownOpen = async () => {
-      setValidation((prevState) => {
-        return { ...prevState, room: false } as any;
-      });
-    };
-
-    const handleChange = (name: string) => (text: string) => {
-      setValue((prevValue) => ({ ...prevValue, [name]: text }));
-      if (!isEmpty(text)) {
-        setValidation(prevState => {
-          return { ...prevState, [name]: false };
-        });
-      }
-
+    const handleChange = (nickname: string) => (text: string) => {
+      setValue((prevValue) => ({ ...prevValue, [nickname]: text }));
+      setValidation(false);
     };
 
     const handleCreateTicket = async () => {
-      if (validation.name || validation.description || validation.room) {
+      if (isEmpty(value.description) || isEmpty(value.nickname) || isEmpty(room)) {
+        setValidation(true);
         return;
       }
 
       // Add the selected room to the ticket data
       const ticketData = { ...value, room };
 
-      console.log(JSON.stringify(ticketData));
       try {
         const response = await fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
           method: "POST",
@@ -116,10 +89,19 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           body: JSON.stringify(ticketData)
         });
         if (response.ok) {
-          setValue({ description: "", nickname: "" });
+          if (isLoggedIn) {
+            setValue({ description: "", nickname: nickname ?? "" });
+            setRoom(null);
+            setValidation(false);
+          } else {
+            setValue({ description: "", nickname: "" });
+            setRoom(null);
+            setValidation(false);
+          }
+
           if (response.headers.get("Content-Length") !== "0") {
             const responseData = await response.json();
-            onSubmit(responseData || { name: "", description: "" });
+            await onSubmit(responseData || { nickname: "", description: "" });
           }
         } else {
           console.error(`Error: ${response.status} - ${response.statusText}`);
@@ -127,33 +109,30 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       } catch (error) {
         console.error(error);
       }
-      setValue({ description: "", nickname: "" });
-      setRoom(null);
     };
 
-    
     return (
-      <View style={[{backgroundColor: background, flex: 1, alignItems: "center" }]}>
-        <Header title={ticket ? 'EDIT TICKET':  'NEW TICKET'}/>
+      <View style={[{ backgroundColor: background, flex: 1, alignItems: "center" }]}>
+        <Header title={ticket ? "EDIT TICKET" : "NEW TICKET"} />
 
-        <TextInput
-          style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
-          textColor={text}
-          outlineColor={outline.activeOutlineColor}
-          activeOutlineColor={outline.outlineColor}
-          theme={{
-            colors: {
-              background: background,
-              onSurfaceVariant: outline.outlineColor
-            }
-          }}
-          label="Name"
-          mode={"outlined"}        
-          value={value.nickname}
-          onChangeText={handleChange("name")}
-          onBlur={() => handleBlur("name", value?.nickname)}
-          error={validation?.name}
-        />
+        {!isLoggedIn &&
+          <TextInput
+            style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
+            textColor={text}
+            outlineColor={outline.activeOutlineColor}
+            activeOutlineColor={outline.outlineColor}
+            theme={{
+              colors: {
+                background: background,
+                onSurfaceVariant: outline.outlineColor
+              }
+            }}
+            label="Name"
+            mode={"outlined"}
+            value={value.nickname}
+            onChangeText={handleChange("nickname")}
+          />
+        }
         <View
           style={{
             zIndex: 2,
@@ -165,18 +144,18 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             listMode="SCROLLVIEW"
             placeholder={"Room"}
             value={room}
-            setValue={handleRoomChange}
+            setValue={setRoom}
             items={dropdownItems}
             open={open}
             setOpen={setOpen}
             modalAnimationType={"slide"}
             style={{
               backgroundColor: boxes,
-              borderColor: validation.room ? "red" : outline.outlineColor,
+              borderColor: outline.outlineColor,
               borderRadius: 4
             }}
             textStyle={{
-              color: validation.room ? "red" : text
+              color: text
             }}
             scrollViewProps={{
               nestedScrollEnabled: true
@@ -187,14 +166,12 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
               backgroundColor: boxes,
               borderColor: outline.outlineColor
             }}
-            onChangeSearchText={() => setRoom}
-            onPress={handleDropdownOpen}
-            onClose={handleDropdownClose}
+
           />
 
         </View>
         <TextInput
-          style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+          style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
           textColor={text}
           outlineColor={outline.activeOutlineColor}
           activeOutlineColor={outline.outlineColor}
@@ -204,20 +181,26 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
               onSurfaceVariant: outline.outlineColor
             }
           }}
-          mode={"outlined"}
-          label={"Description"}
-          placeholderTextColor={text2}
-          value={value.description}
+          label="Description"
           multiline={true}
-          onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, description: text }))}
+          mode={"outlined"}
+          value={value.description}
+          onChangeText={handleChange("description")}
         />
+        {validation && (
+
+          <Text style={{ color: background == "#E0EEF7" ? "red" : "#f18ba5", fontSize: 20 }}>You need to fill all
+            fields!</Text>
+
+        )
+        }
 
         <Button
-        style={[Styles.buttonStyle,{ backgroundColor: boxes, margin: "2%" }]}
-        labelStyle={[{color: text}]}
+          style={[Styles.buttonStyle, { backgroundColor: boxes, margin: "2%" }]}
+          labelStyle={[{ color: text }]}
           onPress={handleCreateTicket}
         >
-         {ticket ? 'SAVE TICKET':  'CREATE TICKET'}
+          {ticket ? "SAVE TICKET" : "CREATE TICKET"}
         </Button>
       </View>
     );

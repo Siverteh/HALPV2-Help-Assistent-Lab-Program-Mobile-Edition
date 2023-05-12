@@ -1,5 +1,5 @@
 export type Ticket = {
     nickname: string
     description: string
-    room: string | null
+    room: string
 }

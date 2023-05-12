@@ -28,7 +28,7 @@ const EditTicket = ({ route, navigation }: StackScreenProps<RootStackParamList, 
         <Ticket
             ticket={ticket}
             onSubmit={handleSubmit}
-            
+
         />
     )
 }
