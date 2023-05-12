@@ -15,7 +15,7 @@ export const makeHubConnection = (accessToken: string, signalRUrl: string): HubC
     })
     .configureLogging({
       log: function (logLevel, message) {
-        // console.log('SIGNALR: ' + new Date().toISOString() + ': ' + message)
+        console.log('SIGNALR: ' + new Date().toISOString() + ': ' + message)
       }
     })
     .build()

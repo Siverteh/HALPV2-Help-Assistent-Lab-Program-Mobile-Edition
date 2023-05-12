@@ -51,8 +51,8 @@ export const theme: CustomTheme = {
         iconColor:'#E0E0E0',
         checkUncheck:'#FFFFFF',
         icon: {
-            active: "#0070C0",
-            inactive: "#FFFFFF"
+            active: "#FFFFFF",
+            inactive: "#a9a9a9"
         }
         
     }

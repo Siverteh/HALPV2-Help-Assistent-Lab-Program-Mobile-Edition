@@ -11,7 +11,11 @@ export const themeHook = () => {
   const dispatch = useDispatch()
 
   const toggleDarkMode = (themeValue?: Theme) => {
-          dispatch(actions.setTheme(themeValue ?? state.theme === theme.light ? theme.dark : theme.light))
+          if(themeValue) {
+            dispatch(actions.setTheme(themeValue))
+          } else {
+            dispatch(actions.setTheme(state.theme === theme.light ? theme.dark : theme.light))
+          }
     }
 
     return {

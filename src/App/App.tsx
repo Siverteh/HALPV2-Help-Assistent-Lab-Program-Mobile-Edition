@@ -24,12 +24,12 @@ const dispatch = useDispatch()
 const {getItem} = asyncStorageHook()
 
 useEffect(() => {
-  if (colorScheme === 'light') {
-    onChangeTheme(theme.light);
-  } else {
+  if (colorScheme === 'dark') {
     onChangeTheme(theme.dark);
+  } else {
+    onChangeTheme(theme.light);
   }
-}, []);
+}, [colorScheme]);
 
 const getUser = (email: string, token: string) => {
   fetch("https://chanv2.duckdns.org:7006/api/User/get", {

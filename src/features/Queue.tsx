@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { View, useColorScheme } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
-import { Dimensions } from 'react-native';
 import Styles from '../styles/styles';
 import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -10,11 +9,9 @@ import { ThemeContext } from '../Components/ThemeContext';
 import { Logo } from '../Components/CustomComponents';
 import { useSignalR } from '../hook/useSignalR';
 
-const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
 
 const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Queue'>) => {
-
+  const {height, width} = useWindowDimensions();
   const { background, text, buttons, boxes  } = useContext(ThemeContext)
   const [queue, setQueue] = useState<number>(1)
   const ticket = route.params;
@@ -51,7 +48,7 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
   return (
     <View style={{backgroundColor: background, flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 0, paddingBottom: 100 }}>
       <Logo/>
-      <View style={[{ justifyContent: 'space-between', alignItems: 'center', backgroundColor: boxes , width: '90%', height: screenHeight * 0.75, maxWidth: screenWidth * 0.9, maxHeight: screenHeight * 0.75, marginTop: -25, borderRadius: 20}]}>
+      <View style={[{ justifyContent: 'space-between', alignItems: 'center', backgroundColor: boxes , width: '90%', height: height * 0.75, maxWidth: width * 0.9, maxHeight: height * 0.75, marginTop: -25, borderRadius: 20}]}>
         <View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }}>
           <Text style={[{color: text, fontSize: 24 }]}>{`Hi ${ticket.name}`}</Text>
           <Text style={[{color: text, fontSize: 20 }]}>You are number</Text>
