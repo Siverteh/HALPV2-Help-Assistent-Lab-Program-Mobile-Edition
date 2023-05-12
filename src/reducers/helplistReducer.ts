@@ -23,7 +23,7 @@ const helplistReducer = createSlice({
         ) => {
             state.helplist = {
                 ...state.helplist, 
-                [payload.key]: [...payload.tickets, ...state.helplist[payload.key] ?? []]
+                [payload.key]: [...state.helplist[payload.key] ?? [], ...payload.tickets]
             }
         },
         filterHelplist: (
