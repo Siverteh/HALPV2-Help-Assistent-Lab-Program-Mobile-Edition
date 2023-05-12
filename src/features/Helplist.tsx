@@ -61,6 +61,11 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
             })
             .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
             .catch((error) => {
+              console.error("Failed to get help list", error)
+                dispatch(actions.setHelplist({key: course, tickets: dataMapper(data)}))
+            })
+            .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
+            .catch((error) => {
               console.error("Failed to get helplist", error)
             })
       }

@@ -11,9 +11,8 @@ import { RootStackParamList } from '../types';
 import { Logo } from '../Components/CustomComponents';
 import { isValidPassword } from '../utils';
   
-
 function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
-  const { background, text, buttons, outline, iconColor } = useContext(ThemeContext)
+  const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(ThemeContext)
 
 
   // State for error message
@@ -26,6 +25,8 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
   const [confirmPassword, setConfirmPassword] = useState('');
   const [discordtag, setDiscordtag] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [secureTextEntryConfirm, setSecureTextEntryConfirm] = useState(true);
+
 
   const isValidEmail = (email: string) => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -34,8 +35,8 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
 
   const handleRegister = async () => {
     // Check if all fields are filled
-    if (!email || !username || !password || !confirmPassword || !discordtag) {
-      Alert.alert('Error', 'All boxes needs to be filled.')
+    if (!email || !username || !password || !confirmPassword) {
+      Alert.alert('Error', 'You need to fill all required boxes.')
       return;
     }
 
@@ -44,8 +45,8 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
       Alert.alert('Error', 'Please enter a valid email.')
       return;
     }
-    
-    // Check if the passwords match  
+
+    // Check if the passwords match
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match.');
       return;
@@ -73,7 +74,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           requestOptions,
         );
         const data = await response.json();
-  
+
         if (response.ok) {
           Alert.alert('Success', 'Account successfully registered!')
           navigation.navigate('LoginScreen');
@@ -84,7 +85,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         console.error("Registration failed")
         
       }
-    } 
+    }
     else {
       let errMsg = 'Password must:';
       if (password.length < minLength) {
@@ -111,71 +112,68 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
       <View style={[{ backgroundColor: background, height: '100%', alignItems: 'center' }]}>
       <Logo/>
       <TextInput
-        style={[Styles.textInput, { backgroundColor: background, color: text }]}
+        style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+        textColor={text}
+        outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
         label="Email"
         mode="outlined"
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-
         onChangeText={text => setEmail(text)}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
       />
       <TextInput
-        style={[Styles.textInput, { backgroundColor: background, color: text }]}
+        style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+        textColor={text}
+        outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
         label="Nickname"
         mode="outlined"
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-
         onChangeText={text => setUsername(text)}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
       />
       <TextInput
-       style={[Styles.textInput, { backgroundColor: background, color: text}]}
+       style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+       textColor={text}
+       outlineColor={outline.activeOutlineColor}
+         activeOutlineColor={outline.outlineColor}
+         theme={{
+           colors: {
+             background: background,
+             onSurfaceVariant: outline.outlineColor
+           }
+         }}
         label="Discord Tag"
         mode="outlined"
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
         onChangeText={text => setDiscordtag(text)}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
       />
       <TextInput
-       style={[Styles.textInput, { backgroundColor: background, color: text }]}
+       style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+       textColor={text}
+       outlineColor={outline.activeOutlineColor}
+         activeOutlineColor={outline.outlineColor}
+         theme={{
+           colors: {
+             background: background,
+             onSurfaceVariant: outline.outlineColor
+           }
+         }}
         label="Password"
         mode="outlined"
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-
         onChangeText={text => setPassword(text)}
         secureTextEntry={secureTextEntry}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
         right={
           <TextInput.Icon
-            icon="eye"
+            icon={secureTextEntry ? 'eye' : 'eye-off'}
             iconColor={iconColor}
             onPress={() => {
               setSecureTextEntry(!secureTextEntry);
@@ -185,27 +183,26 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         }
       />
       <TextInput
-       style={[Styles.textInput, { backgroundColor: background }]}
+       style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+       textColor={text}
+       outlineColor={outline.activeOutlineColor}
+         activeOutlineColor={outline.outlineColor}
+         theme={{
+           colors: {
+             background: background,
+             onSurfaceVariant: outline.outlineColor
+           }
+         }}
         label="Confirm password"
         mode="outlined"
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-
         onChangeText={text => setConfirmPassword(text)}
-        secureTextEntry={secureTextEntry}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
+        secureTextEntry={secureTextEntryConfirm}
         right={
           <TextInput.Icon
-            icon="eye"
+            icon={secureTextEntryConfirm ? 'eye' : 'eye-off'}
             iconColor={iconColor}
             onPress={() => {
-              setSecureTextEntry(!secureTextEntry);
+              setSecureTextEntryConfirm(!secureTextEntryConfirm);
               return false;
             }}
           />

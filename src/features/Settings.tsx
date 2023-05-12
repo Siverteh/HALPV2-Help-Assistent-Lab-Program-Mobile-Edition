@@ -24,6 +24,7 @@ import { Header } from "../Components/CustomComponents";
 import { themeHook } from '../hook/themeHook'
 import { asyncStorageHook } from "../hook/asyncStorageHook";
 import { set } from "lodash";
+import { isValidEmail } from "../utils";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
   const { background, text, outline, boxes } = useContext(ThemeContext)
@@ -96,6 +97,8 @@ const Settings = ({navigation}: any ) => {
 
   const handleLogout = () => {
     setItem('@remember_me_login', 'false')
+    setItem('@user_email', '')
+    setItem('@user_token', '')
     dispatch(actions.setUser({
       id: undefined,
       nickname: undefined,
@@ -108,7 +111,7 @@ const Settings = ({navigation}: any ) => {
   }
   const handleChangeProfile = () => {
 
-    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newEmail))) {
+    if (!isValidEmail(newEmail)) {
       setError("Invalid Email");
       return;
     }
