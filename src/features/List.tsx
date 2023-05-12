@@ -4,27 +4,14 @@ import { List } from "react-native-paper";
 import { CustomAccordion, Header, Logo } from "../Components/CustomComponents"
 import React from 'react'
 import { ThemeContext } from '../Components/ThemeContext'
-
-export type Course = {
-  Id: string;
-  Nickname: string;
-  Description: string;
-  Room: string;
-}
-
-type CourseRes = {
-  id: string;
-  nickname: string;
-  description: string;
-  room: string;
-}
+import { TicketWithId } from '../types/ticket';
 
 type Props = {
-  title: string,
-  urlLive: string
-  onUpdate: (data: Course) => Promise<void>
-  data: Array<Course>
-  children?: JSX.Element
+    title: string,
+    urlLive: string
+    onUpdate: (data: TicketWithId) => Promise<void>
+    data: Array<TicketWithId>
+    children?: JSX.Element
 }
 
 
@@ -75,9 +62,8 @@ const ListComponent = ({
                 style={index % 2 === 0 ? listItem_light : listItem_dark}
                 titleStyle={{
                   color: text,
-                  paddingHorizontal: 16,
                   paddingVertical: 2,
-                  fontSize: 14,
+                  fontSize: 20,
                 }}
                 expanded={expanded.get(item.Id) || false}
                 onPress={() => handleExpand(item.Id)}

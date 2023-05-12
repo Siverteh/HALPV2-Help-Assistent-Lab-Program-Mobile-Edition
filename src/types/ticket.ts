@@ -3,3 +3,10 @@ export type Ticket = {
     description: string
     room: string | null
 }
+
+export type TicketWithId = {
+    Id: string;
+    Nickname: string;
+    Description: string;
+    Room: string;
+}

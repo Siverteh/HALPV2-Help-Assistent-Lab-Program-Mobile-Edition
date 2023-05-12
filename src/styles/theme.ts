@@ -9,6 +9,7 @@ export const theme: CustomTheme = {
            activeOutlineColor: "#201C24"
         },
         background: "#E0EEF7",
+        barContent: "dark-content",
         boxes: "#FFFFFF",
         buttons: {
             backgroundColor: "#94CCFF",
@@ -37,6 +38,7 @@ export const theme: CustomTheme = {
             activeOutlineColor: '#0070C0'
         } ,
         background: "#004082",
+        barContent: "light-content",
         boxes: "#0070C0",
         buttons: {
             backgroundColor: "#0070C0",
@@ -51,8 +53,8 @@ export const theme: CustomTheme = {
         iconColor:'#E0E0E0',
         checkUncheck:'#FFFFFF',
         icon: {
-            active: "#0070C0",
-            inactive: "#FFFFFF"
+            active: "#FFFFFF",
+            inactive: "#a9a9a9"
         }
     }
 }

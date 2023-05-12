@@ -15,6 +15,7 @@ import { Logo } from '../Components/CustomComponents';
 import { asyncStorageHook } from '../hook/asyncStorageHook';
 import { ThemeContext } from '../Components/ThemeContext';
 import { authorize } from "react-native-app-auth";
+import { isValidDiscordTag, isValidEmail, isValidPassword } from '../utils';
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen'>): JSX.Element {
   const dispatch = useDispatch()
@@ -35,9 +36,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
   }
 
   const handleLogin = async () => {
-    console.log(value);
     if (isEmpty(value)) {
-      console.log("feiiillll");
+      console.error("Empty login values")
     }
     const requestOptions = {
       method: "POST",
@@ -57,8 +57,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
           navigation.navigate("SettingScreen")
         }
       })
-      .catch(() => {
-        console.log("error");
+      .catch((error) => {
+        console.error("Failed to login", error)
       });
   };
 
@@ -83,7 +83,6 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
     const user = await getUserInfo(authState.accessToken);
     const discordTag = `${user.username}#${user.discriminator}`;
     const email = `${user.email}`;
-    const accessToken = `${authState.accessToken}`;
 
     const requestOptions = {
       method: "PUT",
@@ -92,9 +91,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
     };
     fetch("https://chanv2.duckdns.org:7006/api/User/checkEmailExists", requestOptions)
       .then(response => {
-        console.log(response);
         if (response.ok) {
-          if (isValidDiscordTag(discordTag) && isEmail(email)) {
+          if (isValidDiscordTag(discordTag) && isValidEmail(email)) {
             const requestOptions = {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -103,8 +101,6 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
             fetch("https://chanv2.duckdns.org:7006/Auth/discord/login", requestOptions)
               .then(response => response.json())
               .then(response => {
-                console.log(requestOptions);
-                console.log(response);
                 if (response.status != 401) {
 
                   dispatch(actions.setUser({ ...response, isLoggedIn: true }));
@@ -112,12 +108,12 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
                 }
               })
               .catch((error) => {
-                console.log("Failed to log in: " + error);
+                console.error("Login fail", error)
               });
           }
         } else if (response.status === 404) {
-          console.log("User not found: " + response.status);
           navigation.navigate("RegisterDiscord", { email: email, discordTag: discordTag });
+          console.error("User not found")
         }
       });
   };
@@ -130,7 +126,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
     });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch user info");
+      console.error("Failed to fetch user info");
     }
 
     return await response.json();
@@ -143,7 +139,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
         return { ...prev, [name]: true };
       });
     }
-    if (name === "email" && value && !isEmail(value.email)) {
+    if (name === "email" && value && !isValidEmail(value.email)) {
       setValidation(prev => {
         return { ...prev, [name]: true };
       });
@@ -165,12 +161,6 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, 'LoginScreen
       });
     }
   };
-
-
-  const isEmail = (value: string) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value));
-  const isValidPassword = (value: string) => (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(value));
-  const isValidDiscordTag = (value: string) => (/^[a-zA-Z0-9_]{2,32}#\d{4}$/.test(value));
-
 
   const handleRegister = () => navigation.navigate("Register");
 

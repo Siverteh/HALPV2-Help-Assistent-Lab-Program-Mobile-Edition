@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, useWindowDimensions } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
-import { Dimensions } from 'react-native';
 import { useState, useContext } from "react";
 import { AppState, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -10,10 +9,8 @@ import { ThemeContext } from "../Components/ThemeContext";
 import { useSelector } from 'react-redux';
 import { Logo } from '../Components/CustomComponents';
 
-const screenHeight = Dimensions.get('window').height;
-
-
 const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueues'>) => {
+  const {height} = useWindowDimensions();
   const { background, text, boxes  } = useContext(ThemeContext)
     const [courses, setCourses] = useState([])
     const { user: { token, email }} = useSelector((state: AppState) => state.user)
@@ -47,7 +44,7 @@ const LabQueues = ({ navigation }: StackScreenProps<RootStackParamList, 'LabQueu
           <Button
             style={[{backgroundColor: background, marginBottom: '5%'}]}
             mode="contained"
-            contentStyle={{ flexDirection: 'row-reverse', height: screenHeight*0.08,  width: "100%" }}
+            contentStyle={{ flexDirection: 'row-reverse', height: height*0.08,  width: "100%" }}
             labelStyle={[{color: text,  fontSize: 20, textAlign: 'center' }]}
             onPress={() => handlePress(item)}
             key={item}

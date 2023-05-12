@@ -1,7 +1,7 @@
 import Styles from "../styles/styles";
 import { Button, Text, Modal, Portal, TextInput, Checkbox } from "react-native-paper";
 import { TabView, TabBar } from 'react-native-tab-view';
-import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View } from 'react-native';
+import { FlatList, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import * as React from 'react';
 import DropDown from "react-native-paper-dropdown";
 import { useContext, useState } from "react";
@@ -23,6 +23,7 @@ import { actions } from "../reducers/userReducer";
 import { Header } from "../Components/CustomComponents";
 import { themeHook } from '../hook/themeHook'
 import { asyncStorageHook } from "../hook/asyncStorageHook";
+import { set } from "lodash";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
   const { background, text, outline, boxes } = useContext(ThemeContext)
@@ -32,14 +33,14 @@ const Text_Input_CB = (lable: string, defaultValue: string = '', password: boole
       <TextInput
         style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
         textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
+        outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
         label={lable}
         mode="outlined"
         defaultValue={defaultValue}
@@ -68,7 +69,7 @@ const Button_ = ( Value: string, onPress: () => void, width: string = '50%') => 
 }
 
 const Settings = ({navigation}: any ) => {
-  const { background} = useContext(ThemeContext);
+  const { background, text} = useContext(ThemeContext);
   const { onChangeTheme} = themeHook();
   const { user: {email, nickname, discordTag, id, token }} = useSelector((state: AppState) => state.user)
   const dispatch = useDispatch()
@@ -90,9 +91,8 @@ const Settings = ({navigation}: any ) => {
   const closeDeleteModal = () => setIsDeleteModalVisible(false);
   const { setItem } = asyncStorageHook()
 
-
-  const screenHeight = Dimensions.get("window").height;
-  const containerStyle = {backgroundColor: background, height: screenHeight * 0.45, width: "70%", borderRadius: 20 };
+  const {height} = useWindowDimensions();
+  const containerStyle = {backgroundColor: background, height: height * 0.45, width: "70%", borderRadius: 20 };
 
   const handleLogout = () => {
     setItem('@remember_me_login', 'false')
@@ -108,7 +108,7 @@ const Settings = ({navigation}: any ) => {
   }
   const handleChangeProfile = () => {
 
-    if (!(newEmail.includes('@') && newEmail.includes('.'))) {
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newEmail))) {
       setError("Invalid Email");
       return;
     }
@@ -134,12 +134,15 @@ const Settings = ({navigation}: any ) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to update user: ", error);
       });
   }
 
   const closeProfileModalError = () => {
     setError('');
+    setNewEmail(email ?? '');
+    setDiscord(discordTag ?? '');
+    setName(nickname ?? '');
     closeProfileModal();
   }
 
@@ -161,13 +164,13 @@ const Settings = ({navigation}: any ) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to delete user: ", error);
       });
   }
 
   return (
 
-    <View style={[{backgroundColor: background, alignItems: 'center', height: screenHeight * 0.70 }]}>
+    <View style={[{backgroundColor: background, alignItems: 'center', height: height * 0.70 }]}>
       <View style={[{ margin: "2%"}]}/>
       {Button_( "EDIT PROFILE", openProfileModal)}
       {Button_( "CHANGE PASSWORD", ()=>navigation.navigate('ChangePassword'))}
@@ -180,15 +183,20 @@ const Settings = ({navigation}: any ) => {
         <Modal visible={isProfileModalVisible} onDismiss={closeProfileModalError} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8 }]}>
           {Text_Input_CB( "Name", name, false, setName)}
           {Text_Input_CB("Discord", discord, false, setDiscord)}
-          <Text style={{ color: 'red',marginTop:'5%', marginBottom:'-10%' }}>{error}</Text>
           {Text_Input_CB("Email", newEmail, false, setNewEmail)}
+          <Text style={{ color: background == '#E0EEF7' ? 'red' : '#f18ba5', fontSize: 20 }}>{error}</Text>
           {Button_("SAVE", handleChangeProfile)}
         </Modal>
         {/* <Modal visible={isExserviceModalVisible} onDismiss={closeExserviceModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
           {Button_("CONECT DISCORD", closeExserviceModal, '30%')}
         </Modal> */}
-        <Modal visible={isDeleteModalVisible} onDismiss={closeDeleteModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
-          {Button_("DELETE ACCOUNT", handleDeleteAccount, '80%')}
+        <Modal visible={isDeleteModalVisible} onDismiss={closeDeleteModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: height * 0.20 }]} >
+          <Text style={{ color: text, fontSize: 20, justifyContent: 'center', width: '75%' }}>Are you sure you want to delete your account?</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} >
+            {Button_("YES", handleDeleteAccount, '30%')}
+            <View style={{width: '5%'}}/>
+            {Button_("NO", closeDeleteModal, '30%')}
+          </View>
         </Modal>
       </Portal>
     </View>
@@ -199,17 +207,18 @@ const TimeEdit = React.memo(( ) => {
   const { background, text, boxes } = useContext(ThemeContext);
   const [timeeditData, setTimeeditData] = useState<Array<{ id: string, courseLink: string }>>([]);
   const { user: { token }} = useSelector((state: AppState) => state.user)
-  const screenHeight = Dimensions.get("window").height;
+  const {height} = useWindowDimensions();
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
   const openAddModal = () => setIsAddModalVisible(true);
   const closeAddModal = () => setIsAddModalVisible(false);
   const containerStyle = {
     backgroundColor: background,
-    height: screenHeight * 0.45,
+    height: height * 0.45,
     width: "70%",
     borderRadius: 20
   };
   const [newLink, setNewLink] = useState('');
+  const [error, setError] = useState('');
 
   const fetchData = () => {
     fetch('https://chanv2.duckdns.org:7006/api/Timeedit', {headers: {Authorization: `Bearer ${token}`}})
@@ -218,7 +227,7 @@ const TimeEdit = React.memo(( ) => {
         setTimeeditData(data);
       })
       .catch(error => {
-        console.error(error);
+        console.error("Failed to get timeedit links: ", error);
       });
   };
 
@@ -231,6 +240,11 @@ const TimeEdit = React.memo(( ) => {
 
 
   const handleAddNewLink = () => {
+    if (!newLink.endsWith('html')) {
+      setError('Invalid link, get a valid link from timeedit');
+      return;
+    }
+    setError('');
     fetch(`https://chanv2.duckdns.org:7006/api/Timeedit?link=${newLink}`, {
       method: 'POST',
       headers: {
@@ -248,8 +262,7 @@ const TimeEdit = React.memo(( ) => {
         setNewLink('');
       })
       .catch(error => {
-        console.error(error.response);
-        console.error(error);
+        console.error("Failed to post timeedit link: ", error);
       });
   }
 
@@ -270,7 +283,7 @@ const TimeEdit = React.memo(( ) => {
         console.log('Item deleted successfully', data);
       })
       .catch(error => {
-        console.error('Error deleting item', error);
+        console.error("Error deleting item ", error)
       });
   };
 
@@ -294,6 +307,10 @@ const TimeEdit = React.memo(( ) => {
     </View>
   );
 
+  const handelCloseAddModal = () => {
+    setError('');
+    closeAddModal();
+  }
 
   return (
     <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center' }]}>
@@ -308,8 +325,9 @@ const TimeEdit = React.memo(( ) => {
 
 
       <Portal>
-        <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: screenHeight * 0.30 }]}>
+        <Modal visible={isAddModalVisible} onDismiss={handelCloseAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: height * 0.30 }]}>
           {Text_Input_CB( "TimeEdit Link", newLink, false, setNewLink)}
+          <Text style={{ color: background == '#E0EEF7' ? 'red' : '#f18ba5', fontSize: 14, padding: 0 }}>{error}</Text>
           {Button_("Add", handleAddNewLink)
           }
         </Modal>
@@ -396,7 +414,7 @@ const Roles = React.memo(() => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to update roles: ", error);
       });
   };
 
