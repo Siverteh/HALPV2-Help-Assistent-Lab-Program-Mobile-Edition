@@ -2,7 +2,6 @@ import React from 'react';
 import { View, FlatList, useWindowDimensions } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
-import { Dimensions } from 'react-native';
 import { useState, useContext } from "react";
 import { AppState, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
