@@ -19,7 +19,7 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
   const state = useSelector((state: AppState) => state.helplist)
   const dispatch = useDispatch()
 
-  const { connection } = useSignalR("AddToGroup", course)
+  const connection = useSignalR("AddToGroup", course)
 
   const dataMapper = (data: any) => data.map((d: any) => {
     return {

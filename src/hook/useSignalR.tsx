@@ -42,9 +42,7 @@ export const useSignalR = (groupName: string, arg: any) => {
     }
   }, [])
 
-  return {
-    connection
-  }
+  return connection
 
 }
   
