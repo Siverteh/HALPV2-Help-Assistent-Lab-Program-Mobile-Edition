@@ -134,7 +134,7 @@ const Settings = ({navigation}: any ) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to update user: ", error);
       });
   }
 
@@ -161,7 +161,7 @@ const Settings = ({navigation}: any ) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to delete user: ", error);
       });
   }
 
@@ -218,7 +218,7 @@ const TimeEdit = React.memo(( ) => {
         setTimeeditData(data);
       })
       .catch(error => {
-        console.error(error);
+        console.error("Failed to get timeedit links: ", error);
       });
   };
 
@@ -248,8 +248,7 @@ const TimeEdit = React.memo(( ) => {
         setNewLink('');
       })
       .catch(error => {
-        console.error(error.response);
-        console.error(error);
+        console.error("Failed to post timeedit link: ", error);
       });
   }
 
@@ -270,7 +269,7 @@ const TimeEdit = React.memo(( ) => {
         console.log('Item deleted successfully', data);
       })
       .catch(error => {
-        console.error('Error deleting item', error);
+        console.error("Error deleting item ", error)
       });
   };
 
@@ -396,7 +395,7 @@ const Roles = React.memo(() => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to update roles: ", error);
       });
   };
 

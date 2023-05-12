@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Provider as PaperProvider, Button } from "react-native-paper";
+import React, { useEffect } from "react";
+import { Provider as PaperProvider } from "react-native-paper";
 import NavigationBar from "../Components/NavigationBar/NavigationBar";
 import { NavigationContainer } from '@react-navigation/native';
 import { themeHook  } from "../hook/themeHook";
@@ -46,8 +46,8 @@ const getUser = (email: string, token: string) => {
       dispatch(actions.setUser({...data, token: token, isLoggedIn: true}))
     }
   })
-  .catch(() => {
-    console.log('get user error')
+  .catch((error) => {
+    console.error("Failed to get user info", error)
   })
 }
 

@@ -34,7 +34,7 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
       })
       .then(() => navigation.navigate('CreateScreen'))
       .catch((error) => {
-      console.error(error);
+      console.error("Failed to delete ticket: ", error);
     })
   };
 

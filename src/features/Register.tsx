@@ -9,6 +9,7 @@ import Styles from '../styles/styles';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { Logo } from '../Components/CustomComponents';
+import { isValidPassword } from '../utils';
   
 
 function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
@@ -54,7 +55,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, username, discordtag, password }),
+      body: JSON.stringify({ email, nickname: username, discordtag, password }),
     };
 
     // Password requirements
@@ -64,13 +65,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
     const hasNumber = /\d/.test(password);
     const hasSymbol = /\W|_/.test(password);
   
-    if (
-      password.length >= minLength &&
-      hasUpperCase &&
-      hasLowerCase &&
-      hasNumber &&
-      hasSymbol
-    ) 
+    if (isValidPassword(password)) 
     {
       try {
         const response = await fetch(
@@ -83,10 +78,11 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           Alert.alert('Success', 'Account successfully registered!')
           navigation.navigate('LoginScreen');
         } else {
-          console.log('Registration failed:', data);
+          console.error("Registration failed: ", data)
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Registration failed")
+        
       }
     } 
     else {

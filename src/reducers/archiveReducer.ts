@@ -1,14 +1,14 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import { Course } from '../features/List'
+import { TicketWithId } from '../types/ticket'
 
 export type ArchiveState = {
-    archive: Array<Course>,
-    isLoaded: boolean
+    archive: {[courseKey: string]: Array<TicketWithId>},
+    isLoaded: {[key: string]: boolean}
 }
 
 const initialState = {
-    archive: [],
-    isLoaded: false
+    archive: {},
+    isLoaded: {}
 }
 
 const archiveReducer = createSlice({
@@ -17,22 +17,32 @@ const archiveReducer = createSlice({
     reducers: {
         setArchive: (
             state: ArchiveState,
-            { payload }: PayloadAction<Array<Course>>
+            { payload }: PayloadAction<{courseKey: string, tickets: Array<TicketWithId>}>
         ) => {
-            state.archive = [...payload, ...state.archive]
+            state.archive = {
+                ...state.archive,
+                [payload.courseKey]: [...payload.tickets, ...state.archive[payload.courseKey] ?? []]
+            }
         },
         filterArchive: (
             state: ArchiveState,
-            { payload }: PayloadAction<Course>
+            { payload }: PayloadAction<{courseKey: string, ticket: TicketWithId}>
         ) => {
-            const filtered = state.archive.filter(({ Id }) => Id !== payload.Id)
-            state.archive = filtered
+            const filtered = state.archive[payload.courseKey].filter(({ Id }) => Id !== payload.ticket.Id)
+        
+            state.archive = {
+                ...state.archive,
+                [payload.courseKey]: filtered
+            }
         },
         setIsLoaded: (
             state: ArchiveState,
-            { payload }: PayloadAction<boolean>
+            { payload }: PayloadAction<{key: string, isLoaded: boolean}>
         ) => {
-            state.isLoaded = payload
+            state.isLoaded = {
+                ...state.isLoaded, 
+                [payload.key]: payload.isLoaded
+            }
         }
     }
 

@@ -4,26 +4,13 @@ import { List } from "react-native-paper";
 import { Header, CustomAccordion } from "../Components/CustomComponents"
 import React from 'react'
 import { ThemeContext } from '../Components/ThemeContext'
-
-export type Course = {
-    Id: string;
-    Nickname: string;
-    Description: string;
-    Room: string;
-}
-
-type CourseRes = {
-    id: string;
-    nickname: string;
-    description: string;
-    room: string;
-}
+import { TicketWithId } from '../types/ticket';
 
 type Props = {
     title: string,
     urlLive: string
-    onUpdate: (data: Course) => Promise<void>
-    data: Array<Course>
+    onUpdate: (data: TicketWithId) => Promise<void>
+    data: Array<TicketWithId>
     children?: JSX.Element
 }
 

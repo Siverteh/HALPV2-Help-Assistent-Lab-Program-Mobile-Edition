@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import React from 'react';
-import ListComponent, { Course } from './List'
+import ListComponent from './List'
 import { StackScreenProps } from '@react-navigation/stack'
 import { AppState, RootStackParamList } from '../types'
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { View } from 'react-native'
 import { useSignalR } from '../hook/useSignalR';
 import { actions } from '../reducers/helplistReducer';
 import { actions as archiveActions} from '../reducers/archiveReducer';
+import { TicketWithId } from '../types/ticket';
 
 const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
 
@@ -31,13 +32,19 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
 
   connection.on("AddToHelplist", (Id, Nickname, Description, Room) => 
     {
-    dispatch(actions.setHelplist([{
-      Id: Id, Nickname: Nickname, Description: Description, Room: Room
-    }]))
+    dispatch(actions.setHelplist({
+      key: course,
+      tickets: [{
+        Id: Id,
+        Nickname: Nickname,
+        Description: Description,
+        Room: Room
+      }]
+    }))
     }
   )
   useEffect(() => {
-    if (!state.isLoaded) {
+    if (!state.isLoadedCourse[course]) {
         fetch(
           `https://chanv2.duckdns.org:7006/api/Helplist?course=${course}`,
           {
@@ -47,14 +54,17 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
           })
             .then(response => response.json())
             .then((data) => {
-                dispatch(actions.setHelplist(dataMapper(data)))   
+                dispatch(actions.setHelplist({key: course, tickets: dataMapper(data)}))
             })
-            .finally(() => dispatch(actions.setIsLoaded(true)))
-            .catch((error) => console.log('error: ', error))
+            .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
+            .catch((error) => {
+              console.error("Failed to get help list", error)
+            })
       }
   }, [course])
+  // console.log(state.helplist[course])
 
-  const updateCourse = async (updatedData: Course) => {
+  const updateCourse = async (updatedData: TicketWithId) => {
 
       const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.Id
       
@@ -67,10 +77,10 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
         body: JSON.stringify([updatedData])
       })
       .then(() => {
-        dispatch(actions.filterHelplist(updatedData))
-        dispatch(archiveActions.setArchive([updatedData]))
+        dispatch(actions.filterHelplist({courseKey: course, ticket: updatedData}))
+        dispatch(archiveActions.setArchive({courseKey: course, tickets: [updatedData]}))
       })
-      .catch((error) => console.error(error))
+      .catch((error) => console.error("Failed to update ticket from helplist: ", error))
   }
 
   const handleClick = () => {
@@ -80,12 +90,13 @@ const Helplist = ({ route, navigation }:  StackScreenProps<RootStackParamList, '
   const handleNavigate = () => {
     navigation.navigate('LabQueues')
   }
+
   return (
     <ListComponent
       title={`HELPLIST ${course}`}
       urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`}
       onUpdate={updateCourse}
-      data={state.helplist}
+      data={state.helplist[course] ?? []}
     >
      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
       <IconButton
