@@ -15,7 +15,7 @@ import { Header } from '../Components/CustomComponents';
 
 
 function ForgottenPassword({ navigation }: StackScreenProps<RootStackParamList, 'ForgottenPassword'>): JSX.Element {
-    const { background, text, buttons, boxes } = useContext(ThemeContext)
+  const { background, text, boxes, buttons, outline, iconColor  } = useContext(ThemeContext)
 
 
     const handleSendResetLink = () => {
@@ -26,7 +26,18 @@ function ForgottenPassword({ navigation }: StackScreenProps<RootStackParamList, 
     <View style={[{backgroundColor: background, alignItems: 'center', width: '100%', height: '100%' }]}>
       <Header title='Forgotten Password'/>
       <TextInput
-        style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+        style={[Styles.textInput, { color: text, backgroundColor: boxes }]}
+        label="Current Password"
+        mode="outlined"
+        textColor={text}
+            outlineColor={outline.activeOutlineColor}
+            activeOutlineColor={outline.outlineColor}
+            theme={{
+              colors: {
+                background: background,
+                onSurfaceVariant: outline.outlineColor
+              }
+            }}
         label="Email Address"
         mode="outlined"
         keyboardType="email-address"
