@@ -64,17 +64,19 @@ const ListComponent = ({
                   color: text,
                   paddingVertical: 2,
                   fontSize: 20,
+                  paddingHorizontal: 15,
                 }}
                 expanded={expanded.get(item.Id) || false}
                 onPress={() => handleExpand(item.Id)}
                 description={item.Description}
                 onCheck={() => handleCheck(item.Id)}
                 checked={checked.get(item.Id) || false}
-                textStyle={{ color: text }} />
+                textStyle={{ color: text, paddingHorizontal: 15,
+                }} />
             ))}
           </List.Section>
         ) : (
-          <Text style={{ textAlign: 'center', color: text, fontSize: 20 }} >No requests yet</Text>
+          <Text style={{ textAlign: 'center', color: text, fontSize: 20 }} >List empty</Text>
         )}
       </ScrollView>
     </View>
