@@ -38,9 +38,6 @@ function ForgottenPassword({ navigation }: StackScreenProps<RootStackParamList, 
                 onSurfaceVariant: outline.outlineColor
               }
             }}
-        label="Email Address"
-        mode="outlined"
-        keyboardType="email-address"
       />
       <Text style={[{color: text, width: '85%', textAlign: 'center' }]}>
         Type in your email address to receive a link where you can create a new password.
