@@ -76,7 +76,7 @@ const ListComponent = ({
             ))}
           </List.Section>
         ) : (
-          <Text style={{ textAlign: 'center', color: text, fontSize: 20 }} >No requests yet</Text>
+          <Text style={{ textAlign: 'center', color: text, fontSize: 20 }} >List empty</Text>
         )}
       </ScrollView>
     </View>
