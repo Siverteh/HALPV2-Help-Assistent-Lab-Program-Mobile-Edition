@@ -23,6 +23,7 @@ export type RootStackParamList = {
     RegisterDiscord: {
       email: string;
       discordTag: string;
+      discordId: string;
     }
     ForgottenPassword: undefined
   };

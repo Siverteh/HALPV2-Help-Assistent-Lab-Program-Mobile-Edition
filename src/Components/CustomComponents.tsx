@@ -138,22 +138,3 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
       </View>
     );
   };
-
-  //custom dropdown component
-type DropDownProps = ComponentProps<typeof DropDown>;
-const customTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'transparent',
-  },
-};
-
-const CustomDropDown: React.FC<DropDownProps> = (props) => {
-  return (
-    <Provider theme={customTheme}>
-      <DropDown {...props} />
-    </Provider>
-  );
-};
-
