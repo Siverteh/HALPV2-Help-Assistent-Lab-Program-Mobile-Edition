@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { ThemeContext } from '../Components/ThemeContext';
+import { ThemeContext } from "../Components/ThemeContext";
 import {
   Image,
   View,
@@ -11,33 +11,33 @@ import Styles from "../styles/styles";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
-type RegisterDiscordProps = {
-  email: string,
-  discordTag: string;
-}
 
 function RegisterDiscord({ navigation, route }: StackScreenProps<RootStackParamList, "RegisterDiscord">): JSX.Element {
-  const { email, discordTag } = route.params;
+  const { email, discordTag, discordId } = route.params;
   const { background, text, buttons, boxes, outline, iconColor, checkUncheck } = useContext(ThemeContext);
-
-  // State for error message
-  const [errorMessage, setErrorMessage] = useState("");
+  const [validationName, setValidationName] = useState(false);
+  const [validationEmpty, setValidationEmpty] = useState(false);
 
   // States for form fields
   const [nickname, setNickname] = useState("");
 
+  const handleChange = (nickname: string) => {
+    setNickname(nickname);
+    setValidationName(false);
+    setValidationEmpty(false);
+  };
+
   const handleRegister = async () => {
     // Check if the username field is filled
     if (!nickname) {
-      Alert.alert("Error", "The nickname box needs to be filled.");
+      setValidationEmpty(true);
       return;
     }
 
-    // Implement your registration logic here
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, nickname, discordTag })
+      body: JSON.stringify({ email, nickname, discordTag, discordId })
     };
 
     try {
@@ -46,53 +46,60 @@ function RegisterDiscord({ navigation, route }: StackScreenProps<RootStackParamL
         requestOptions
       );
       const data = await response.json();
-
-
       if (response.ok) {
         Alert.alert("Success", "Account successfully registered!");
         navigation.navigate("LoginScreen");
       } else {
-        console.error("Discord registration failed: ", data)
+        console.error("Registration failed:", data);
+        setValidationName(true);
       }
     } catch (error) {
-      console.error("Discord registration failed")
+      console.error("Error:", error);
     }
   };
 
   return (
-    <View style={[{ backgroundColor: background, flex: 1, height: "100%" }]}>
+    <View style={[{ backgroundColor: background, flex: 1, height: "100%", alignItems: "center" }]}>
       <Image
         style={Styles.logo}
         source={require(".././img/halpy3.png")} />
-      <Text style={[Styles.text_lg, {
-        color: text,
-        margin: "2%",
-        textAlign: "center"
-      }]}>Successfully authenticated with Discord! Set a nickname to complete registration.</Text>
       <TextInput
-        style={[Styles.textInput, {
-          backgroundColor: background,
-          color: text,
-          width: "85%",
-          height: 50,
-          margin: "2%",
-          marginBottom: 10
-        }]}
-        label="Nickname"
-        mode="outlined"
+        style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
         textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-
-        onChangeText={text => setNickname(text)}
+        outlineColor={outline.activeOutlineColor}
+        activeOutlineColor={outline.outlineColor}
         theme={{
           colors: {
             background: background,
             onSurfaceVariant: outline.outlineColor
           }
         }}
+        label="Nickname"
+        mode="outlined"
+        onChangeText={text => handleChange(text)}
+
       />
-      <View style={{ height: "6%" }}></View>
+      <Text style={[Styles.text_lg, {
+        color: text,
+        margin: "2%",
+        textAlign: "center"
+      }]}>Successfully authenticated with Discord! Set a nickname to complete registration.</Text>
+      <View style={{ height: "1%" }}></View>
+      {validationName && (
+
+        <Text style={{ color: background == "#E0EEF7" ? "red" : "#f18ba5", fontSize: 20 }}>Nickname can only contain
+          letters or digits.</Text>
+
+      )
+      }
+      {validationEmpty && (
+
+        <Text style={{ color: background == "#E0EEF7" ? "red" : "#f18ba5", fontSize: 20 }}>Nickname can not be
+          empty.</Text>
+
+      )
+      }
+      <View style={{ height: "3%" }}></View>
       <Button
         style={[
           Styles.buttonStyle,
