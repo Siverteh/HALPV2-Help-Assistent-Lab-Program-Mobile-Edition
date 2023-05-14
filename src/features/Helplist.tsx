@@ -46,6 +46,13 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
     }))
     }
   )
+
+  connection.on("RemoveFromHelplist", (Course, Id) => 
+  {
+    // Needs some charlie magic to remove ticket
+  }
+)
+
   useEffect(() => {
     if (!state.isLoadedCourse[course]) {
         fetch(
