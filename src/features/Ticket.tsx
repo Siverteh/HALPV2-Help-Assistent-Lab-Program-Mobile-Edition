@@ -175,7 +175,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
 
         </View>
         <TextInput
-          style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
+          style={[Styles.textInput, { backgroundColor: boxes, color: text, minHeight: 48 }]}
           textColor={text}
           outlineColor={outline.activeOutlineColor}
           activeOutlineColor={outline.outlineColor}
@@ -190,6 +190,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           mode={"outlined"}
           value={value.description}
           onChangeText={handleChange("description")}
+          textAlignVertical="center"
         />
         {validation && (
 
@@ -200,7 +201,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         }
 
         <Button
-          style={[Styles.buttonStyle, { backgroundColor: boxes, margin: "2%" }]}
+          style={[Styles.buttonStyle, { backgroundColor: boxes, margin: "2%", height: 48 }]}
           labelStyle={[{ color: text }]}
           onPress={handleCreateTicket}
         >
