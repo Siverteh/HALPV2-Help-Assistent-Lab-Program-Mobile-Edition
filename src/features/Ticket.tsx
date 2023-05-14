@@ -31,7 +31,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
   const [room, setRoom] = useState(ticket ? ticket.room : null);
   const [open, setOpen] = useState(false);
 
-  const [roomList, setRoomList] = useState(["GRM F 202"]);
+    const [roomList, setRoomList] = useState<string[]>([]);
 
   React.useEffect(() => {
     if (isLoggedIn && !ticket) {

@@ -6,13 +6,18 @@ const Styles = StyleSheet.create({
     height: "25%",
     resizeMode: "contain"
   },
+  listlogo: {
+    width: "100%",
+    height: "25%",
+    resizeMode: "contain"
+  },
   buttonStyle: {
     borderRadius: 4,
     width: '50%',
     height: 45,
     justifyContent: 'center'
   },
-  Header:{
+  Header: {
     fontSize: 24,
     marginBottom: "5%",
     fontFamily: "Roboto",
@@ -26,7 +31,7 @@ const Styles = StyleSheet.create({
     fontWeight: "bold",
     alignItems: "center",
     textAlign: "center"
-    },
+  },
   text_sm: {
     alignSelf: "center",
     textAlignVertical: "center",

@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import React from 'react';
-import ListComponent, { Course } from './List'
+import ListComponent from './List'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState, RootStackParamList } from '../types';
 import { IconButton } from 'react-native-paper';
@@ -8,6 +8,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from '../Components/ThemeContext';
 import { actions } from '../reducers/archiveReducer';
 import { actions as helplistActions } from '../reducers/helplistReducer';
+import { TicketWithId } from '../types/ticket';
 
 const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'ArchiveScreen'>) => {
 
@@ -18,7 +19,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!isLoaded) {
+    if (!isLoaded[course]) {
     fetch(`https://chanv2.duckdns.org:7006/api/Archive?course=${course}`, {
         headers: {
           "Authorization": `Bearer ${token}`
@@ -33,15 +34,17 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
                 Description: d.description,
                 Room: d.room
             }})
-             dispatch(actions.setArchive(newDataMapper))
+             dispatch(actions.setArchive({courseKey: course, tickets: newDataMapper}))
         })
-        .finally(() => dispatch(actions.setIsLoaded(true)))
-        .catch((error) => console.log('error: ', error))
+        .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
+        .catch((error) => {
+          console.error("Failed to get archive list", error)
+        })
       }
   }, [course])
 
 
-  const updateCourse = async (updatedData: Course) => {
+  const updateCourse = async (updatedData: TicketWithId) => {
 
       const link = "https://chanv2.duckdns.org:7006/api/Archive?id=" + updatedData.Id
       
@@ -54,10 +57,10 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
         body: JSON.stringify([updatedData])
       })
       .then(() => {
-        dispatch(actions.filterArchive(updatedData))
-        dispatch(helplistActions.setHelplist([updatedData]))
+        dispatch(actions.filterArchive({courseKey: course, ticket: updatedData}))
+        dispatch(helplistActions.setHelplist({key: course, tickets: [updatedData]}))
       })
-      .catch((error) => console.error(error))
+      .catch((error) => console.error("Failed to update ticket from archive: ", error))
   };
 
   const handleNavigate = () => {
@@ -69,7 +72,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
       title={`ARCHIVE ${course}`}
       urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Archive?course=${course}`}
       onUpdate={updateCourse}
-      data={archive}
+      data={archive[course] ?? []}
     >
       <IconButton
         icon="arrow-left"

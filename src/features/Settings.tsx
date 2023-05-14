@@ -1,7 +1,7 @@
 import Styles from "../styles/styles";
 import { Button, Text, Modal, Portal, TextInput, Checkbox } from "react-native-paper";
 import { TabView, TabBar } from 'react-native-tab-view';
-import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View } from 'react-native';
+import { FlatList, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import * as React from 'react';
 import DropDown from "react-native-paper-dropdown";
 import { useContext, useState } from "react";
@@ -24,6 +24,7 @@ import { Header } from "../Components/CustomComponents";
 import { themeHook } from '../hook/themeHook'
 import { asyncStorageHook } from "../hook/asyncStorageHook";
 import { set } from "lodash";
+import { isValidEmail } from "../utils";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
   const { background, text, outline, boxes } = useContext(ThemeContext)
@@ -91,12 +92,13 @@ const Settings = ({navigation}: any ) => {
   const closeDeleteModal = () => setIsDeleteModalVisible(false);
   const { setItem } = asyncStorageHook()
 
-
-  const screenHeight = Dimensions.get("window").height;
-  const containerStyle = {backgroundColor: background, height: screenHeight * 0.45, width: "70%", borderRadius: 20 };
+  const {height} = useWindowDimensions();
+  const containerStyle = {backgroundColor: background, height: height * 0.45, width: "70%", borderRadius: 20 };
 
   const handleLogout = () => {
     setItem('@remember_me_login', 'false')
+    setItem('@user_email', '')
+    setItem('@user_token', '')
     dispatch(actions.setUser({
       id: undefined,
       nickname: undefined,
@@ -109,7 +111,7 @@ const Settings = ({navigation}: any ) => {
   }
   const handleChangeProfile = () => {
 
-    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newEmail))) {
+    if (!isValidEmail(newEmail)) {
       setError("Invalid Email");
       return;
     }
@@ -135,7 +137,7 @@ const Settings = ({navigation}: any ) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to update user: ", error);
       });
   }
 
@@ -165,13 +167,13 @@ const Settings = ({navigation}: any ) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to delete user: ", error);
       });
   }
 
   return (
 
-    <View style={[{backgroundColor: background, alignItems: 'center', height: screenHeight * 0.70 }]}>
+    <View style={[{backgroundColor: background, alignItems: 'center', height: height * 0.70 }]}>
       <View style={[{ margin: "2%"}]}/>
       {Button_( "EDIT PROFILE", openProfileModal)}
       {Button_( "CHANGE PASSWORD", ()=>navigation.navigate('ChangePassword'))}
@@ -191,7 +193,7 @@ const Settings = ({navigation}: any ) => {
         {/* <Modal visible={isExserviceModalVisible} onDismiss={closeExserviceModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
           {Button_("CONECT DISCORD", closeExserviceModal, '30%')}
         </Modal> */}
-        <Modal visible={isDeleteModalVisible} onDismiss={closeDeleteModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
+        <Modal visible={isDeleteModalVisible} onDismiss={closeDeleteModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: height * 0.20 }]} >
           <Text style={{ color: text, fontSize: 20, justifyContent: 'center', width: '75%' }}>Are you sure you want to delete your account?</Text>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} >
             {Button_("YES", handleDeleteAccount, '30%')}
@@ -208,13 +210,13 @@ const TimeEdit = React.memo(( ) => {
   const { background, text, boxes } = useContext(ThemeContext);
   const [timeeditData, setTimeeditData] = useState<Array<{ id: string, courseLink: string }>>([]);
   const { user: { token }} = useSelector((state: AppState) => state.user)
-  const screenHeight = Dimensions.get("window").height;
+  const {height} = useWindowDimensions();
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
   const openAddModal = () => setIsAddModalVisible(true);
   const closeAddModal = () => setIsAddModalVisible(false);
   const containerStyle = {
     backgroundColor: background,
-    height: screenHeight * 0.45,
+    height: height * 0.45,
     width: "70%",
     borderRadius: 20
   };
@@ -228,7 +230,7 @@ const TimeEdit = React.memo(( ) => {
         setTimeeditData(data);
       })
       .catch(error => {
-        console.error(error);
+        console.error("Failed to get timeedit links: ", error);
       });
   };
 
@@ -263,8 +265,7 @@ const TimeEdit = React.memo(( ) => {
         setNewLink('');
       })
       .catch(error => {
-        console.error(error.response);
-        console.error(error);
+        console.error("Failed to post timeedit link: ", error);
       });
   }
 
@@ -285,7 +286,7 @@ const TimeEdit = React.memo(( ) => {
         console.log('Item deleted successfully', data);
       })
       .catch(error => {
-        console.error('Error deleting item', error);
+        console.error("Error deleting item ", error)
       });
   };
 
@@ -327,7 +328,7 @@ const TimeEdit = React.memo(( ) => {
 
 
       <Portal>
-        <Modal visible={isAddModalVisible} onDismiss={handelCloseAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: screenHeight * 0.30 }]}>
+        <Modal visible={isAddModalVisible} onDismiss={handelCloseAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: height * 0.30 }]}>
           {Text_Input_CB( "TimeEdit Link", newLink, false, setNewLink)}
           <Text style={{ color: background == '#E0EEF7' ? 'red' : '#f18ba5', fontSize: 14, padding: 0 }}>{error}</Text>
           {Button_("Add", handleAddNewLink)
@@ -416,7 +417,7 @@ const Roles = React.memo(() => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to update roles: ", error);
       });
   };
 

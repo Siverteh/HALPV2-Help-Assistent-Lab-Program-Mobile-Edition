@@ -15,13 +15,13 @@ export const makeHubConnection = (accessToken: string, signalRUrl: string): HubC
     })
     .configureLogging({
       log: function (logLevel, message) {
-        // console.log('SIGNALR: ' + new Date().toISOString() + ': ' + message)
+        //console.log('SIGNALR: ' + new Date().toISOString() + ': ' + message)
       }
     })
     .build()
 }
 
-export const useSignalR = (groupName: string, arg: any) => {
+export const useSignalR = (groupName?: string) => {
   const state = useSelector((state: AppState) => state.helplist)
   const dispatch = useDispatch()
 
@@ -35,8 +35,18 @@ export const useSignalR = (groupName: string, arg: any) => {
 
       connection.start()
         .then(() => {
-          connection.invoke(groupName, arg);
+          if (groupName) {
+            console.log("Registering listener on", groupName)
+            connection.invoke("AddToGroup", groupName);          
+          }
+          else {
+            console.warn("Groupname is", groupName)
+          }
         })
+        .catch((error) => {
+          console.error("SignalR error")
+        })
+        
 
       dispatch(actions.setIsConnected(true))
     }

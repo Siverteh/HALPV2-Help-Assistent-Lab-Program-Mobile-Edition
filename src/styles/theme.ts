@@ -20,7 +20,7 @@ export const theme: CustomTheme = {
             backgroundColor: "#FFFFFF", 
         },
         listItem_dark:{
-            backgroundColor: "#94CCFF",
+            backgroundColor: "#E0EEF7",
         },   
         iconColor: '#201C24',
         checkUncheck: '#0079C0',
@@ -45,7 +45,7 @@ export const theme: CustomTheme = {
             queueButton: "#004082"
         },
         listItem_light:{ 
-            backgroundColor: "#94CCFF",
+            backgroundColor: "#0070C0",
         },
         listItem_dark: {
             backgroundColor: "#004082",
@@ -53,9 +53,8 @@ export const theme: CustomTheme = {
         iconColor:'#E0E0E0',
         checkUncheck:'#FFFFFF',
         icon: {
-            active: "#0070C0",
-            inactive: "#FFFFFF"
+            active: "#FFFFFF",
+            inactive: "#a9a9a9"
         }
-        
     }
 }

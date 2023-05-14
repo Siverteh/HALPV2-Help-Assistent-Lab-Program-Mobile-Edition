@@ -15,6 +15,7 @@ import { Logo } from "../Components/CustomComponents";
 import { asyncStorageHook } from "../hook/asyncStorageHook";
 import { ThemeContext } from "../Components/ThemeContext";
 import { authorize } from "react-native-app-auth";
+import { isValidEmail, isValidPassword } from "../utils";
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
   const dispatch = useDispatch();
@@ -35,9 +36,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   };
 
   const handleLogin = async () => {
-    console.log(value);
     if (isEmpty(value)) {
-      console.log("feiiillll");
+      console.error("Empty login values");
     }
     const requestOptions = {
       method: "POST",
@@ -57,8 +57,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
           navigation.navigate("SettingScreen");
         }
       })
-      .catch(() => {
-        console.log("error");
+      .catch((error) => {
+        console.error("Failed to login", error);
       });
   };
 
@@ -139,7 +139,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
         return { ...prev, [name]: true };
       });
     }
-    if (name === "email" && value && !isEmail(value.email)) {
+    if (name === "email" && value && !isValidEmail(value.email)) {
       setValidation(prev => {
         return { ...prev, [name]: true };
       });
@@ -161,10 +161,6 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
       });
     }
   };
-
-
-  const isEmail = (value: string) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value));
-  const isValidPassword = (value: string) => (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(value));
 
 
   const handleRegister = () => navigation.navigate("Register");
