@@ -2,6 +2,8 @@ export type Ticket = {
     nickname: string
     description: string
     room: string
+    id: string
+    placement: number
 }
 
 export type TicketWithId = {

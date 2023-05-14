@@ -16,8 +16,8 @@ const CreateTicket = ({ navigation }: StackScreenProps<RootStackParamList, 'Crea
               body: JSON.stringify(ticket)
             })
             .then((res) => {
-              const response = res.json()
-              navigation.navigate('Queue', {...ticket, id: ''})
+              console.log("Creating new ticket")
+              navigation.navigate('Queue', {...ticket})
             })
             .catch((error) => {
             console.error("Failed to create ticket: ", error);
