@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
   Text,
-  View
+  View,
+  Linking
 } from "react-native";
 import { Button, TextInput, Checkbox } from "react-native-paper";
 import Styles from "../styles/styles";
@@ -16,6 +17,7 @@ import { asyncStorageHook } from "../hook/asyncStorageHook";
 import { ThemeContext } from "../Components/ThemeContext";
 import { authorize } from "react-native-app-auth";
 import { isValidEmail, isValidPassword } from "../utils";
+import { WebView } from 'react-native-webview';
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
   const dispatch = useDispatch();
@@ -25,6 +27,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const [validation, setValidation] = useState({ password: false, email: false });
   const [checked, setChecked] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [showWebView, setShowWebView] = useState(false);
 
   const {
     setItem
@@ -165,7 +168,22 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
 
   const handleRegister = () => navigation.navigate("Register");
 
+  const handlePrivacyPolicy = () => {
+    setShowWebView(true);
+  };
+  
+
   return (
+    showWebView ? (
+      <WebView
+        source={{ uri: 'https://chanv2.duckdns.org:7006/identity/privacy' }}
+        onNavigationStateChange={navState => {
+          if (!navState.canGoBack) {
+            setShowWebView(false);
+          }
+        }}
+      />
+    ) : (
     <View style={
       [{ backgroundColor: background, height: "100%", alignItems: "center" }]}>
       <Logo />
@@ -264,7 +282,20 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
               icon="discord">
         DISCORD
       </Button>
+      <Text
+        style={[Styles.text_lg, { color: text, marginTop: "4%" }]}>
+        OUR PRIVACY POLICY
+      </Text>
+      <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: "2%" }]}
+              mode="contained"
+              textColor={text}
+              onPress={handlePrivacyPolicy}
+              contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
+              icon="info">
+        PRIVACY POLICY
+      </Button>
     </View>
+    )
   );
 }
 

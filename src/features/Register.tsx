@@ -4,14 +4,14 @@ import {
   View,
   Alert,
 } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, TextInput, IconButton } from 'react-native-paper';
 import Styles from '../styles/styles';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { Logo } from '../Components/CustomComponents';
 import { isValidPassword } from '../utils';
   
-function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
+function Register({ route, navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
   const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(ThemeContext)
 
 
@@ -108,9 +108,23 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
     }
   };
 
+  const handleNavigate = () => {
+    navigation.navigate('LoginScreen')
+  }
+
   return (
-      <View style={[{ backgroundColor: background, height: '100%', alignItems: 'center' }]}>
+    
+      <View style={[{ backgroundColor: background, height: '100%'}]}>
+        
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start'}}>
+          <IconButton
+            icon="arrow-left"
+            iconColor={text}
+            onPress={handleNavigate}
+          />
+        </View>
       <Logo/>
+      <View style={[{alignItems: 'center'}]}>
       <TextInput
         style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
         textColor={text}
@@ -221,6 +235,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         REGISTER
       </Button>
       <View style={{ height: "4%" }}></View>
+  </View>
   </View>
   );
 }
