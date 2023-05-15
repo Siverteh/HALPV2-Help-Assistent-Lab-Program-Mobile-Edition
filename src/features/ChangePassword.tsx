@@ -132,7 +132,7 @@ return (
         onChangeText={text => setCurrentPassword(text)}
         right={
           <TextInput.Icon
-            icon={secureTextEntryCurrent ? 'eye' : 'eye-off'}
+            icon={secureTextEntryCurrent ? 'eye-off': 'eye'}
             iconColor={iconColor}
             onPress={() => {
               setSecureTextEntryCurrent(!secureTextEntryCurrent);
@@ -159,7 +159,7 @@ return (
         onChangeText={text => setNewPassword(text)}
         right={
           <TextInput.Icon
-          icon={secureTextEntry ? 'eye' : 'eye-off'}
+          icon={secureTextEntry ? 'eye-off': 'eye'}
           iconColor={iconColor}
             onPress={() => {
               setSecureTextEntry(!secureTextEntry);
@@ -186,7 +186,7 @@ return (
         onChangeText={text => setRepeatNewPassword(text)}
         right={
           <TextInput.Icon
-          icon={secureTextEntryRepeat ? 'eye' : 'eye-off'}
+          icon={secureTextEntryRepeat ? 'eye-off': 'eye'}
           iconColor={iconColor}
             onPress={() => {
               setSecureTextEntryRepeat(!secureTextEntryRepeat);

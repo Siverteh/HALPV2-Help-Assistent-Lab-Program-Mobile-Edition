@@ -36,7 +36,6 @@ export const useSignalR = (groupName?: string) => {
       connection.start()
         .then(() => {
           if (groupName) {
-            console.log("Registering listener on", groupName)
             connection.invoke("AddToGroup", groupName);          
           }
           else {

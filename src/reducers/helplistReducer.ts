@@ -28,9 +28,24 @@ const helplistReducer = createSlice({
         },
         filterHelplist: (
             state: HelplistState,
+            { payload }: PayloadAction<{courseKey: string, ticketId: string}>
+        ) => {
+            const filtered = state.helplist[payload.courseKey].filter(({ Id }) => Id !== payload.ticketId)
+            state.helplist = {
+                ...state.helplist,
+                [payload.courseKey]: filtered
+            }
+        },
+        updateTicket: (
+            state: HelplistState,
             { payload }: PayloadAction<{courseKey: string, ticket: TicketWithId}>
         ) => {
-            const filtered = state.helplist[payload.courseKey].filter(({ Id }) => Id !== payload.ticket.Id)
+            const filtered = state.helplist[payload.courseKey].map((t) => {
+                if (t.Id === payload.ticket.Id) {
+                    return payload.ticket
+                }
+                return t
+            })
             state.helplist = {
                 ...state.helplist,
                 [payload.courseKey]: filtered

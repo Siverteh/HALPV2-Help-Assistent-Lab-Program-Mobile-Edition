@@ -15,8 +15,7 @@ const CreateTicket = ({ navigation }: StackScreenProps<RootStackParamList, 'Crea
               },
               body: JSON.stringify(ticket)
             })
-            .then((res) => {
-              console.log("Creating new ticket")
+            .then(() => {
               navigation.navigate('Queue', {...ticket})
             })
             .catch((error) => {
