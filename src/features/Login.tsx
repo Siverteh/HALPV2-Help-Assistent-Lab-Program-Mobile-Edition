@@ -18,6 +18,7 @@ import { ThemeContext } from "../Components/ThemeContext";
 import { authorize } from "react-native-app-auth";
 import { isValidEmail, isValidPassword } from "../utils";
 import { WebView } from 'react-native-webview';
+import { Icon } from 'react-native-elements';
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
   const dispatch = useDispatch();
