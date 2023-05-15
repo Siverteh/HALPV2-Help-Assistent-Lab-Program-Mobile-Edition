@@ -155,7 +155,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   
 
   return (
-    <View style={{ backgroundColor: background, height: height, alignItems: "center", justifyContent: "center" }}>
+    <View style={{ backgroundColor: background, height: height, alignItems: "center", justifyContent: "center", marginTop: 0}}>
       <Logo />
       <TextInput
         style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
@@ -203,7 +203,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
         onChangeText={handleChange("password")}
         error={!isValidPassword(value.password)}
       />
-      <View style={{ flexDirection: "row", justifyContent: "flex-start", width: width*0.85, marginTop: height*0.02 }}>
+      <View style={{ flexDirection: "row", justifyContent: "flex-start", width: width*0.85, marginTop: height*0.01 }}>
         <View style={{ width: 48, height: 48 }}>
         <TouchableOpacity onPress={handleChecked} style={{
         position: 'absolute',
@@ -234,7 +234,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
           Remember me
         </Text>
       </View>
-      <View style={{ height: height*0.02 }}></View>
+      <View style={{ height: height*0.01 }}></View>
       <Button
         style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor }]}
         mode="contained"
@@ -258,10 +258,10 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
       REGISTER AS A USER
     </Button>
     <Text
-      style={[Styles.text_lg, { color: text, marginTop: height*0.04 }]}>
+      style={[Styles.text_lg, { color: text, marginTop: height*0.01 }]}>
       USE ANOTHER SERVICE TO LOG IN
     </Text>
-    <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: height*0.02 }]}
+    <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: height*0.01}]}
             mode="contained"
             textColor={text}
             onPress={handleDiscord}
@@ -270,10 +270,10 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
       DISCORD
     </Button>
     <Text
-      style={[Styles.text_lg, { color: text, marginTop: height*0.04 }]}>
+      style={[Styles.text_lg, { color: text, marginTop: height*0.01}]}>
       OUR PRIVACY POLICY
     </Text>
-    <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: height*0.02 }]}
+    <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: height*0.01 }]}
             mode="contained"
             textColor={text}
             onPress={handlePrivacyPolicy}
