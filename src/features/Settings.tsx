@@ -59,7 +59,7 @@ const Button_ = ( Value: string, onPress: () => void, width: string = '50%') => 
   return (
     <>
       <Button
-        style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, margin: '2%', width: width }]}
+        style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, margin: '2%', width: width, height: 48 }]}
         mode="contained"
         textColor={outline.outlineColor}
         onPress={onPress}>
@@ -207,7 +207,7 @@ const Settings = ({navigation}: any ) => {
 };
 
 const TimeEdit = React.memo(( ) => {
-  const { background, text, boxes } = useContext(ThemeContext);
+  const { background, text, boxes, listItem_dark, listItem_light } = useContext(ThemeContext);
   const [timeeditData, setTimeeditData] = useState<Array<{ id: string, courseLink: string }>>([]);
   const { user: { token }} = useSelector((state: AppState) => state.user)
   const {height} = useWindowDimensions();
@@ -293,7 +293,7 @@ const TimeEdit = React.memo(( ) => {
 
   const renderItem = ({ item, index }: { item: { id: string, courseLink: string }, index: number }) => (
 
-    <View style={[{backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}]}>
+    <View style={[{backgroundColor: index % 2 == 0 ? listItem_light.backgroundColor : listItem_dark.backgroundColor, padding: 10}]}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
         style={{color: text, width:'80%'}}>
@@ -341,7 +341,7 @@ const TimeEdit = React.memo(( ) => {
 
 
 const Roles = React.memo(() => {
-  const { background, text, buttons, boxes } = useContext(ThemeContext);
+  const { background, text, buttons, listItem_dark,listItem_light, boxes } = useContext(ThemeContext);
   const { user: { token }} = useSelector((state: AppState) => state.user) 
   const [showDropDown, setShowDropDown] = useState(false);
   const [courseList, setCourseList] = useState([]);
@@ -428,10 +428,7 @@ const Roles = React.memo(() => {
 
     return (
       <View
-        style={[
-          {backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}
-        ]}
-      >
+        style={[{backgroundColor: index % 2 == 0 ? listItem_light.backgroundColor : listItem_dark.backgroundColor, padding: 10}]}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={[{color:text, width: "80%", fontSize: 22 }]}>
             {item.nickname}
@@ -464,8 +461,8 @@ const Roles = React.memo(() => {
           setValue={setSelectedCourse}
           list={dropdownItems}
           dropDownContainerMaxHeight={300}
-          theme={{colors: {onSurface:text, background:buttons.backgroundColor, outline: 'transparent', onSurfaceVariant:text}}}
-          dropDownItemStyle={{backgroundColor: buttons.backgroundColor}}
+          theme={{colors: {onSurface:text, background:boxes, outline: 'transparent', onSurfaceVariant:text}}}
+          dropDownItemStyle={{backgroundColor: boxes}}
           dropDownItemTextStyle={{color: text}}
           dropDownStyle={{backgroundColor: 'transparent'}}
           dropDownItemSelectedStyle={{backgroundColor: background}}
@@ -488,7 +485,7 @@ const Roles = React.memo(() => {
           borderTopWidth: 0,
           borderBottomWidth: 0, }}
         inputContainerStyle={{
-          backgroundColor: buttons.backgroundColor,
+          backgroundColor: boxes,
           margin: 5
         }}
         inputStyle={{
@@ -501,8 +498,6 @@ const Roles = React.memo(() => {
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
-        
-      
     </>
   );
 });

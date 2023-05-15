@@ -1,9 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   Text,
+  TouchableOpacity,
   View
 } from "react-native";
-import { Button, TextInput, Checkbox } from "react-native-paper";
+import { Button, TextInput, } from "react-native-paper";
 import Styles from "../styles/styles";
 
 import { StackScreenProps } from "@react-navigation/stack";
@@ -16,13 +17,13 @@ import { asyncStorageHook } from "../hook/asyncStorageHook";
 import { ThemeContext } from "../Components/ThemeContext";
 import { authorize } from "react-native-app-auth";
 import { isValidEmail, isValidPassword } from "../utils";
+import { Icon } from 'react-native-elements';
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
   const dispatch = useDispatch();
   const { background, text, outline, iconColor, buttons, boxes, checkUncheck } = useContext(ThemeContext);
 
-  const [value, setValue] = useState<LoginType>();
-  const [validation, setValidation] = useState({ password: false, email: false });
+  const [value, setValue] = useState<LoginType>({ password: '', email: ''});
   const [checked, setChecked] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
@@ -34,10 +35,14 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
     setChecked(x => !x);
     setItem("@remember_me_login", `${!checked}`);
   };
-
   const handleLogin = async () => {
-    if (isEmpty(value)) {
+    if (isEmpty(value.email) || isEmpty(value.password)) {
       console.error("Empty login values");
+      return
+    }
+    if (!isValidEmail(value.email) || !isValidPassword(value.password)) {
+      console.error("Validation error");
+      return
     }
     const requestOptions = {
       method: "POST",
@@ -108,11 +113,11 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
               }
             })
             .catch((error) => {
-              console.log("Failed to log in: " + error);
+              console.error("Failed to log in: " + error);
             });
 
         } else if (response.status === 404) {
-          console.log("User not found: " + response.status);
+          console.error("User not found: " + response.status);
           navigation.navigate("RegisterDiscord", { email: email, discordTag: discordTag, discordId: discordId });
         }
       });
@@ -133,35 +138,11 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   };
 
 
-  const handleValidation = (name: string) => {
-    if (isEmpty(value && (value as any)[name])) {
-      setValidation(prev => {
-        return { ...prev, [name]: true };
-      });
-    }
-    if (name === "email" && value && !isValidEmail(value.email)) {
-      setValidation(prev => {
-        return { ...prev, [name]: true };
-      });
-    }
-    if (name === "password" && value && !isValidPassword(value.password)) {
-      setValidation(prev => {
-        return { ...prev, [name]: true };
-      });
-    }
-  };
-
   const handleChange = (name: string) => (text: string) => {
     setValue((prev) => {
       return { ...prev, [name]: text } as any;
     });
-    if (!isEmpty(text)) {
-      setValidation(prev => {
-        return { ...prev, [name]: false };
-      });
-    }
   };
-
 
   const handleRegister = () => navigation.navigate("Register");
 
@@ -184,8 +165,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
         mode="outlined"
         value={value?.email ?? ""}
         onChangeText={handleChange("email")}
-        onBlur={() => handleValidation("email")}
-        error={validation.email}
+        error={!isValidEmail(value.email)}
       />
       <TextInput
         style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
@@ -203,8 +183,9 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
         }}
         right={
           <TextInput.Icon
-            icon="eye"
+            icon={secureTextEntry ? 'eye-off': 'eye' }
             iconColor={iconColor}
+            style={{height: 48, width: 48}}
             onPress={() => {
               setSecureTextEntry(!secureTextEntry);
               return false;
@@ -213,17 +194,35 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
         }
         value={value?.password ?? ""}
         onChangeText={handleChange("password")}
-        onBlur={() => handleValidation("password")}
-        error={validation.password}
+        error={!isValidPassword(value.password)}
       />
       <View style={{ flexDirection: "row", justifyContent: "flex-start", width: "85%", marginTop: "2%" }}>
-        <Checkbox
-          color={checkUncheck}
-          uncheckedColor={outline.outlineColor}
-
-          status={checked ? "checked" : "unchecked"}
-          onPress={handleChecked}
-        />
+      <View style={{ width: 48, height: 48 }}>
+      <TouchableOpacity onPress={handleChecked} style={{
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <View
+        style={{
+          borderWidth: checked ? 0 : 1,
+          borderRadius: 5,
+          width: 24,
+          height: 24,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: checked ? checkUncheck : 'transparent',
+          borderColor: 'black',
+        }}
+      >
+        {checked && <Icon name="check" size={20} color="white" />}
+      </View>
+    </TouchableOpacity>
+    </View>
         <Text style={[Styles.text_sm, { color: text }]}>
           Remember me
         </Text>
@@ -235,7 +234,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
         textColor={text}
         contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
         onPress={handleLogin}
-        // disabled={Object.values(validation).some(v => v === false)}
+        // disabled={isNotValid}
       >
         SIGN IN
       </Button>

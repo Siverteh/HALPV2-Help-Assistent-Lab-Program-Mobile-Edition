@@ -110,7 +110,8 @@ return (
     <IconButton
         icon="arrow-left"
         iconColor={text}
-        onPress={handleNavigate}     
+        onPress={handleNavigate}
+        style={{ height: 48, width: 48, margin: 2}}
       />
     <Header title='Change Password' />
     <View style={{ alignItems: 'center' }}>
@@ -132,8 +133,9 @@ return (
         onChangeText={text => setCurrentPassword(text)}
         right={
           <TextInput.Icon
-            icon={secureTextEntryCurrent ? 'eye' : 'eye-off'}
+            icon={secureTextEntryCurrent ? 'eye-off': 'eye'}
             iconColor={iconColor}
+            style={{height: 48, width: 48}}
             onPress={() => {
               setSecureTextEntryCurrent(!secureTextEntryCurrent);
               return false;
@@ -159,8 +161,9 @@ return (
         onChangeText={text => setNewPassword(text)}
         right={
           <TextInput.Icon
-          icon={secureTextEntry ? 'eye' : 'eye-off'}
+          icon={secureTextEntry ? 'eye-off': 'eye'}
           iconColor={iconColor}
+          style={{height: 48, width: 48}}
             onPress={() => {
               setSecureTextEntry(!secureTextEntry);
               return false;
@@ -186,8 +189,9 @@ return (
         onChangeText={text => setRepeatNewPassword(text)}
         right={
           <TextInput.Icon
-          icon={secureTextEntryRepeat ? 'eye' : 'eye-off'}
+          icon={secureTextEntryRepeat ? 'eye-off': 'eye'}
           iconColor={iconColor}
+          style={{height: 48, width: 48}}
             onPress={() => {
               setSecureTextEntryRepeat(!secureTextEntryRepeat);
               return false;

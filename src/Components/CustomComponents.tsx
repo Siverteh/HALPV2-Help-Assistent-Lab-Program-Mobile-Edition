@@ -1,8 +1,6 @@
 import { View, Text, TouchableOpacity, ViewStyle  } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { ComponentProps, useContext } from 'react';
-import DropDown from 'react-native-paper-dropdown';
-import { Provider, DefaultTheme } from 'react-native-paper';
+import React, { useContext } from 'react';
 import Styles from "../styles/styles";
 import { ThemeContext } from './ThemeContext';
 import { Image } from 'react-native';
@@ -21,7 +19,7 @@ export const Header = ({ title }: Props) => {
   const { text } = useContext(ThemeContext)
   return (
       <>
-      <Logo></Logo>
+        <Logo/>
         <Text style={[Styles.Header, {color: text} ]}>{title}</Text>
       </>
   );
@@ -94,9 +92,6 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     const firstSentence = sentences[0];
     const remainingSentences = sentences.slice(1).join('. ');
   
-    console.log(sentences)
-    console.log(firstSentence)
-    console.log(remainingSentences)
     return (
       <View style={style}>
         <TouchableOpacity
