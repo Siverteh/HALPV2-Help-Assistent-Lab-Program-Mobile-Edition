@@ -149,33 +149,11 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const handleRegister = () => navigation.navigate("Register");
 
   const handlePrivacyPolicy = () => {
-    navigation.navigate("PrivacyPolicy");
+    navigation.navigate('PrivacyPolicy', { previousScreen: 'LoginScreen' });
   };
   
 
   return (
-    showWebView ? (
-      <View style={{ flex: 1 }}>
-        <WebView
-          style={{flex: 1}}
-          source={{ uri: 'https://chanv2.duckdns.org:7006/identity/privacy' }}
-        />
-        <Button 
-          style={{
-            position: 'absolute',
-            top: 20, 
-            left: 20, // Changed from right to left
-            backgroundColor: 'white'
-            }}
-          labelStyle={{fontSize: 24, color: 'black'}}
-          icon="close" 
-          compact={true} 
-          onPress={() => setShowWebView(false)}
-          >
-          {''}
-        </Button>
-      </View>
-    ) : (
     <View style={
       [{ backgroundColor: background, height: "100%", alignItems: "center" }]}>
       <Logo />
@@ -305,7 +283,6 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
         PRIVACY POLICY
       </Button>
     </View>
-    )
   );
 }
 
