@@ -176,13 +176,14 @@ def test_put_edit_password(test_user_and_cleanup, payload, expected_status_code)
     assert response.status_code == expected_status_code
     
 @pytest.mark.parametrize("payload,expected_status_code", [
-    ({"email": "testCreate@test.no", "nickname": "testCreate", "discordTag":"testCreate#1234"}, 201),
-    ({"email": "test@test.no", "nickname": "testEmail", "discordTag":"testEmail#1234"}, 400),
-    ({"email": "testNickname@test.no", "nickname": "test", "discordTag":"testNickname#1234"}, 400),
-    ({"email": "testDiscord@test.no", "nickname": "testDiscord", "discordTag":"test"}, 400),
+    ({"email": "testCreate@test.no", "nickname": "testCreate", "discordTag":"testCreate#1234", "discordId": "1"}, 201),
+    ({"email": "test@test.no", "nickname": "testEmail", "discordTag":"testEmail#1234", "discordId": "1"}, 400),
+    ({"email": "testNickname@test.no", "nickname": "test", "discordTag":"testNickname#1234", "discordId": "1"}, 400),
+    ({"email": "testDiscord@test.no", "nickname": "testDiscord", "discordTag":"testDiscord#1234", "discordId": "-1"}, 400),
 ])      
 def test_post_discord_register(test_user_and_cleanup, payload, expected_status_code):
     response = send_request("POST", "Auth/discord/register", json=payload)
+    print(response.json())
     assert response.status_code == expected_status_code
     
 def test_delete_user(test_user_and_cleanup):
@@ -254,7 +255,7 @@ def test_delete_ticket(test_ticket_and_cleanup):
     payload =   {
                     "id": test_ticket_and_cleanup.json()["id"]
                 }
-    send_request("DELETE", "api/Ticket", json=payload, headers=Authorization())
+    assert send_request("DELETE", "api/Ticket", json=payload, headers=Authorization()).status_code == 204
         
 @pytest.mark.parametrize("link, expected_status", [
     ("https://www.timeedit.html", 201),

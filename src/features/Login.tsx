@@ -40,6 +40,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const handleLogin = async () => {
     if (isEmpty(value)) {
       console.error("Empty login values");
+      return;
     }
     const requestOptions = {
       method: "POST",
