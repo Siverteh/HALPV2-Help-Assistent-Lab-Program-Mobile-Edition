@@ -59,7 +59,7 @@ const Button_ = ( Value: string, onPress: () => void, width: string = '50%') => 
   return (
     <>
       <Button
-        style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, margin: '2%', width: width }]}
+        style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, margin: '2%', width: width, height: 48 }]}
         mode="contained"
         textColor={outline.outlineColor}
         onPress={onPress}>

@@ -125,7 +125,7 @@ def test_get_archived(test_ticket_and_cleanup, course, expected_status_code):
 def test_put_archived_to_helplist(test_ticket_and_cleanup, id, expected_status_code):
     if id == "":
         id = test_ticket_and_cleanup.json()["id"]
-        send_request("PUT", "api/Archive", params={"id": id}, headers=Authorization())
+        send_request("PUT", "api/Helplist", params={"id": id}, headers=Authorization())
     response = send_request("PUT", "api/Archive", params={"id": id}, headers=Authorization())
     assert response.status_code == expected_status_code
 
@@ -143,7 +143,7 @@ def test_post_register(test_user_and_cleanup, payload, expected_status_code):
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("password", [
-    "Password.", "Password1", "password1.", "PASSWORD1.", "passwor"
+    "Password.", "Password1", "password1.", "PASSWORD1.", "passw1."
 ])
 def test_post_register_invalid_password(password):
     payload = {

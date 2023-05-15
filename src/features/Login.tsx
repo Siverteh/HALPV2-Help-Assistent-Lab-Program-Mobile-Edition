@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
   Text,
+  TouchableOpacity,
   View
 } from "react-native";
-import { Button, TextInput, Checkbox } from "react-native-paper";
+import { Button, TextInput, } from "react-native-paper";
 import Styles from "../styles/styles";
 
 import { StackScreenProps } from "@react-navigation/stack";
@@ -16,6 +17,7 @@ import { asyncStorageHook } from "../hook/asyncStorageHook";
 import { ThemeContext } from "../Components/ThemeContext";
 import { authorize } from "react-native-app-auth";
 import { isValidEmail, isValidPassword } from "../utils";
+import { Icon } from 'react-native-elements';
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
   const dispatch = useDispatch();
@@ -205,6 +207,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
           <TextInput.Icon
             icon="eye"
             iconColor={iconColor}
+            style={{height: 48, width: 48}}
             onPress={() => {
               setSecureTextEntry(!secureTextEntry);
               return false;
@@ -217,13 +220,32 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
         error={validation.password}
       />
       <View style={{ flexDirection: "row", justifyContent: "flex-start", width: "85%", marginTop: "2%" }}>
-        <Checkbox
-          color={checkUncheck}
-          uncheckedColor={outline.outlineColor}
-
-          status={checked ? "checked" : "unchecked"}
-          onPress={handleChecked}
-        />
+      <View style={{ width: 48, height: 48 }}>
+      <TouchableOpacity onPress={handleChecked} style={{
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <View
+        style={{
+          borderWidth: checked ? 0 : 1,
+          borderRadius: 5,
+          width: 24,
+          height: 24,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: checked ? checkUncheck : 'transparent',
+          borderColor: 'black',
+        }}
+      >
+        {checked && <Icon name="check" size={20} color="white" />}
+      </View>
+    </TouchableOpacity>
+    </View>
         <Text style={[Styles.text_sm, { color: text }]}>
           Remember me
         </Text>
