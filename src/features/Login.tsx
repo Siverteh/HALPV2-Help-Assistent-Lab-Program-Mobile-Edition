@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import {
   Text,
-  TouchableOpacity,
-  View
+  View,
+  TouchableOpacity
 } from "react-native";
 import { Button, TextInput, } from "react-native-paper";
 import Styles from "../styles/styles";
@@ -17,6 +17,7 @@ import { asyncStorageHook } from "../hook/asyncStorageHook";
 import { ThemeContext } from "../Components/ThemeContext";
 import { authorize } from "react-native-app-auth";
 import { isValidEmail, isValidPassword } from "../utils";
+import { WebView } from 'react-native-webview';
 import { Icon } from 'react-native-elements';
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
@@ -26,6 +27,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const [value, setValue] = useState<LoginType>({ password: '', email: ''});
   const [checked, setChecked] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [showWebView, setShowWebView] = useState(false);
 
   const {
     setItem
@@ -146,7 +148,34 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
 
   const handleRegister = () => navigation.navigate("Register");
 
+  const handlePrivacyPolicy = () => {
+    setShowWebView(true);
+  };
+  
+
   return (
+    showWebView ? (
+      <View style={{ flex: 1 }}>
+        <WebView
+          style={{flex: 1}}
+          source={{ uri: 'https://chanv2.duckdns.org:7006/identity/privacy' }}
+        />
+        <Button 
+          style={{
+            position: 'absolute',
+            top: 20, 
+            left: 20, // Changed from right to left
+            backgroundColor: 'white'
+            }}
+          labelStyle={{fontSize: 24, color: 'black'}}
+          icon="close" 
+          compact={true} 
+          onPress={() => setShowWebView(false)}
+          >
+          {''}
+        </Button>
+      </View>
+    ) : (
     <View style={
       [{ backgroundColor: background, height: "100%", alignItems: "center" }]}>
       <Logo />
@@ -263,7 +292,20 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
               icon="discord">
         DISCORD
       </Button>
+      <Text
+        style={[Styles.text_lg, { color: text, marginTop: "4%" }]}>
+        OUR PRIVACY POLICY
+      </Text>
+      <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: "2%" }]}
+              mode="contained"
+              textColor={text}
+              onPress={handlePrivacyPolicy}
+              contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
+              icon="security">
+        PRIVACY POLICY
+      </Button>
     </View>
+    )
   );
 }
 
