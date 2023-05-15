@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import {
   Text,
   View,
-  Linking
+  TouchableOpacity
 } from "react-native";
 import { Button, TextInput, Checkbox } from "react-native-paper";
 import Styles from "../styles/styles";
@@ -175,14 +175,26 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
 
   return (
     showWebView ? (
-      <WebView
-        source={{ uri: 'https://chanv2.duckdns.org:7006/identity/privacy' }}
-        onNavigationStateChange={navState => {
-          if (!navState.canGoBack) {
-            setShowWebView(false);
-          }
-        }}
-      />
+      <View style={{ flex: 1 }}>
+        <WebView
+          style={{flex: 1}}
+          source={{ uri: 'https://chanv2.duckdns.org:7006/identity/privacy' }}
+        />
+        <Button 
+          style={{
+            position: 'absolute',
+            top: 20, 
+            left: 20, // Changed from right to left
+            backgroundColor: 'white'
+            }}
+          labelStyle={{fontSize: 24, color: 'black'}}
+          icon="close" 
+          compact={true} 
+          onPress={() => setShowWebView(false)}
+          >
+          {''}
+        </Button>
+      </View>
     ) : (
     <View style={
       [{ backgroundColor: background, height: "100%", alignItems: "center" }]}>
@@ -291,7 +303,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
               textColor={text}
               onPress={handlePrivacyPolicy}
               contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
-              icon="info">
+              icon="security">
         PRIVACY POLICY
       </Button>
     </View>
