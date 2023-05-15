@@ -75,7 +75,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
 
 
     if (isLoggedIn) {
-      setValue({ description: "", nickname: nickname ?? ""});
+      setValue({ description: "", nickname: nickname ?? "" });
       setRoom(null);
       setValidation(false);
     } else {
@@ -87,67 +87,13 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
   };
 
 
-    return (
-      <View style={[{ backgroundColor: background, flex: 1, alignItems: "center" }]}>
-        <Header title={ticket ? "EDIT TICKET" : "NEW TICKET"} />
+  return (
+    <View style={[{ backgroundColor: background, flex: 1, alignItems: "center" }]}>
+      <Header title={ticket ? "EDIT TICKET" : "NEW TICKET"} />
 
-        {!isLoggedIn &&
-          <TextInput
-            style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
-            textColor={text}
-            outlineColor={outline.activeOutlineColor}
-            activeOutlineColor={outline.outlineColor}
-            theme={{
-              colors: {
-                background: background,
-                onSurfaceVariant: outline.outlineColor
-              }
-            }}
-            label="Name"
-            mode={"outlined"}
-            value={value.nickname}
-            onChangeText={handleChange("nickname")}
-          />
-        }
-        <View
-          style={{
-            zIndex: 2,
-            width: "85%",
-            marginTop: "1.5%"
-          }}>
-          <DropDownPicker
-            closeAfterSelecting={true}
-            listMode="SCROLLVIEW"
-            placeholder={"Room"}
-            value={room}
-            setValue={setRoom}
-            items={dropdownItems}
-            open={open}
-            setOpen={setOpen}
-            modalAnimationType={"slide"}
-            style={{
-              backgroundColor: boxes,
-              borderColor: outline.outlineColor,
-              borderRadius: 4
-            }}
-            textStyle={{
-              color: text
-            }}
-            scrollViewProps={{
-              nestedScrollEnabled: true
-            }}
-            dropDownContainerStyle={{
-              position: "relative",
-              top: 0,
-              backgroundColor: boxes,
-              borderColor: outline.outlineColor
-            }}
-
-          />
-
-        </View>
+      {!isLoggedIn &&
         <TextInput
-          style={[Styles.textInput, { backgroundColor: boxes, color: text, minHeight: 48 }]}
+          style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
           textColor={text}
           outlineColor={outline.activeOutlineColor}
           activeOutlineColor={outline.outlineColor}
@@ -157,14 +103,68 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
               onSurfaceVariant: outline.outlineColor
             }
           }}
-          label="Description"
-          multiline={true}
+          label="Name"
           mode={"outlined"}
-          value={value.description}
-          onChangeText={handleChange("description")}
-          textAlignVertical="center"
+          value={value.nickname}
+          onChangeText={handleChange("nickname")}
         />
-        {validation && (
+      }
+      <View
+        style={{
+          zIndex: 2,
+          width: "85%",
+          marginTop: "1.5%"
+        }}>
+        <DropDownPicker
+          closeAfterSelecting={true}
+          listMode="SCROLLVIEW"
+          placeholder={"Room"}
+          value={room}
+          setValue={setRoom}
+          items={dropdownItems}
+          open={open}
+          setOpen={setOpen}
+          modalAnimationType={"slide"}
+          style={{
+            backgroundColor: boxes,
+            borderColor: outline.outlineColor,
+            borderRadius: 4
+          }}
+          textStyle={{
+            color: text
+          }}
+          scrollViewProps={{
+            nestedScrollEnabled: true
+          }}
+          dropDownContainerStyle={{
+            position: "relative",
+            top: 0,
+            backgroundColor: boxes,
+            borderColor: outline.outlineColor
+          }}
+
+        />
+
+      </View>
+      <TextInput
+        style={[Styles.textInput, { backgroundColor: boxes, color: text, minHeight: 48 }]}
+        textColor={text}
+        outlineColor={outline.activeOutlineColor}
+        activeOutlineColor={outline.outlineColor}
+        theme={{
+          colors: {
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
+        }}
+        label="Description"
+        multiline={true}
+        mode={"outlined"}
+        value={value.description}
+        onChangeText={handleChange("description")}
+        textAlignVertical="center"
+      />
+      {validation && (
 
         <Text style={{ color: background == "#E0EEF7" ? "red" : "#f18ba5", fontSize: 20 }}>You need to fill all
           fields!</Text>
