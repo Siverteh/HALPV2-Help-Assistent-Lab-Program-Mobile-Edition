@@ -17,7 +17,7 @@ export type RootStackParamList = {
     ArchiveScreen: { course: string }
     HelpListScreen: { course: string }
     Queue: {nickname: string, description: string, room: string | null, id: string, placement: number}
-    SettingScreen: undefined
+    SettingScreen: { previousScreen?: string } | undefined
     Register: undefined
     ChangePassword: undefined
     RegisterDiscord: {
@@ -26,7 +26,8 @@ export type RootStackParamList = {
       discordId: string;
     }
     ForgottenPassword: undefined
-    PrivacyPolicy: undefined
+    PrivacyPolicy: { previousScreen: string } | undefined;
+    previousScreen: undefined
   };
 
   export type Login = {

@@ -172,6 +172,10 @@ const Settings = ({navigation}: any ) => {
       });
   }
 
+  const handlePrivacyPolicy = () => {
+    navigation.navigate('PrivacyPolicy', { previousScreen: 'SettingScreen' });
+  };
+
   return (
 
     <View style={[{backgroundColor: background, alignItems: 'center', height: height * 0.70 }]}>
@@ -181,6 +185,7 @@ const Settings = ({navigation}: any ) => {
       {/*Button_("EXTERNAL-SERVICE", openExserviceModal)*/}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
       {Button_("CHANGE THEME", () => onChangeTheme() )}
+      {Button_("PRIVACY POLICY", () => navigation.navigate('PrivacyPolicy', { previousScreen: 'SettingScreen' }))}
       {Button_("LOG OUT", handleLogout)}
 
       <Portal>

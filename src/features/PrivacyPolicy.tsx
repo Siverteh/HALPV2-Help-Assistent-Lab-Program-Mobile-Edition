@@ -7,12 +7,18 @@ import { RootStackParamList } from '../types';
 import Styles from '../styles/styles';
 import { ThemeContext } from '../Components/ThemeContext';
 
-const PrivacyPolicy = ({ navigation }: StackScreenProps<RootStackParamList, 'PrivacyPolicy'>): JSX.Element => {
+const PrivacyPolicy = ({ route, navigation }: StackScreenProps<RootStackParamList, 'PrivacyPolicy'>): JSX.Element => {
   const {height, width} = useWindowDimensions();
   const { background, text, boxes } = useContext(ThemeContext)
 
   const handleNavigate = () => {
-    navigation.navigate('LoginScreen')
+    const { previousScreen } = route.params || {};
+    if (previousScreen == 'LoginScreen') {
+        navigation.navigate('LoginScreen');
+    } else {
+        // Default navigation if previousScreen is not defined
+        navigation.navigate('SettingScreen');
+    };
   }
 
   return (
