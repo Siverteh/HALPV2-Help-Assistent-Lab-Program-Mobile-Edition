@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import {
   Text,
   View,
+  useWindowDimensions,
   TouchableOpacity
 } from "react-native";
 import { Button, TextInput, } from "react-native-paper";
@@ -17,7 +18,6 @@ import { asyncStorageHook } from "../hook/asyncStorageHook";
 import { ThemeContext } from "../Components/ThemeContext";
 import { authorize } from "react-native-app-auth";
 import { isValidEmail, isValidPassword } from "../utils";
-import { WebView } from 'react-native-webview';
 import { Icon } from 'react-native-elements';
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
@@ -27,7 +27,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const [value, setValue] = useState<LoginType>({ password: '', email: ''});
   const [checked, setChecked] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [showWebView, setShowWebView] = useState(false);
+
+  const {height, width} = useWindowDimensions();
 
   const {
     setItem
@@ -154,8 +155,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   
 
   return (
-    <View style={
-      [{ backgroundColor: background, height: "100%", alignItems: "center" }]}>
+    <View style={{ backgroundColor: background, height: height, alignItems: "center", justifyContent: "center" }}>
       <Logo />
       <TextInput
         style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
@@ -203,87 +203,86 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
         onChangeText={handleChange("password")}
         error={!isValidPassword(value.password)}
       />
-      <View style={{ flexDirection: "row", justifyContent: "flex-start", width: "85%", marginTop: "2%" }}>
-      <View style={{ width: 48, height: 48 }}>
-      <TouchableOpacity onPress={handleChecked} style={{
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
-      <View
-        style={{
-          borderWidth: checked ? 0 : 1,
-          borderRadius: 5,
-          width: 24,
-          height: 24,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: checked ? checkUncheck : 'transparent',
-          borderColor: 'black',
-        }}
-      >
-        {checked && <Icon name="check" size={20} color="white" />}
+      <View style={{ flexDirection: "row", justifyContent: "flex-start", width: width*0.85, marginTop: height*0.02 }}>
+        <View style={{ width: 48, height: 48 }}>
+        <TouchableOpacity onPress={handleChecked} style={{
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <View
+          style={{
+            borderWidth: checked ? 0 : 1,
+            borderRadius: 5,
+            width: 24,
+            height: 24,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: checked ? checkUncheck : 'transparent',
+            borderColor: 'black',
+          }}
+        >
+          {checked && <Icon name="check" size={20} color="white" />}
+        </View>
+      </TouchableOpacity>
       </View>
-    </TouchableOpacity>
-    </View>
         <Text style={[Styles.text_sm, { color: text }]}>
           Remember me
         </Text>
       </View>
-      <View style={{ height: "2%" }}></View>
+      <View style={{ height: height*0.02 }}></View>
       <Button
         style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor }]}
         mode="contained"
         textColor={text}
         contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
         onPress={handleLogin}
-        // disabled={isNotValid}
       >
         SIGN IN
       </Button>
-      <View style={{ height: "1%" }}></View>
+      <View style={{ height: height*0.01 }}></View>
       <Button
         mode="text"
         textColor={text}
         onPress={handleForgottenPassword}>
         FORGOT YOUR PASSWORD?
-      </Button>
-      <Button
-        mode="text"
-        textColor={text}
-        onPress={handleRegister}>
-        REGISTER AS A USER
-      </Button>
-      <Text
-        style={[Styles.text_lg, { color: text, marginTop: "4%" }]}>
-        USE ANOTHER SERVICE TO LOG IN
-      </Text>
-      <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: "2%" }]}
-              mode="contained"
-              textColor={text}
-              onPress={handleDiscord}
-              contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
-              icon="discord">
-        DISCORD
-      </Button>
-      <Text
-        style={[Styles.text_lg, { color: text, marginTop: "4%" }]}>
-        OUR PRIVACY POLICY
-      </Text>
-      <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: "2%" }]}
-              mode="contained"
-              textColor={text}
-              onPress={handlePrivacyPolicy}
-              contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
-              icon="security">
-        PRIVACY POLICY
-      </Button>
-    </View>
-  );
-}
+        </Button>
+    <Button
+      mode="text"
+      textColor={text}
+      onPress={handleRegister}>
+      REGISTER AS A USER
+    </Button>
+    <Text
+      style={[Styles.text_lg, { color: text, marginTop: height*0.04 }]}>
+      USE ANOTHER SERVICE TO LOG IN
+    </Text>
+    <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: height*0.02 }]}
+            mode="contained"
+            textColor={text}
+            onPress={handleDiscord}
+            contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
+            icon="discord">
+      DISCORD
+    </Button>
+    <Text
+      style={[Styles.text_lg, { color: text, marginTop: height*0.04 }]}>
+      OUR PRIVACY POLICY
+    </Text>
+    <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: height*0.02 }]}
+            mode="contained"
+            textColor={text}
+            onPress={handlePrivacyPolicy}
+            contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
+            icon="security">
+      PRIVACY POLICY
+    </Button>
+  </View>
+);
+        }
 
 export default Login;

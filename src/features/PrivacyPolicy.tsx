@@ -84,7 +84,7 @@ const PrivacyPolicy = ({ route, navigation }: StackScreenProps<RootStackParamLis
 
     <Text style={[{color: text, fontSize: 22, marginTop: 25 }]}>Changes to this privacy policy:</Text>
     
-    <Text style={[{color: text, fontSize: 16, marginTop: 0, marginBottom: 10}]}>
+    <Text style={[{color: text, fontSize: 16, marginTop: 0, marginBottom: 100}]}>
       We may update this privacy policy from time to time. If we make any material changes to this privacy policy, we will notify you by posting a notice in the app and on the website.
     </Text>
   </View>
