@@ -46,8 +46,7 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
   };
 
   return (
-    <View style={{backgroundColor: background, flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 0, paddingBottom: 100 }}>
-      <Logo/>
+    <View style={{backgroundColor: background, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <View style={[{ justifyContent: 'space-between', alignItems: 'center', backgroundColor: boxes , width: '90%', height: height * 0.75, maxWidth: width * 0.9, maxHeight: height * 0.75, marginTop: -25, borderRadius: 20}]}>
         <View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }}>
           <Text style={[{color: text, fontSize: 24 }]}>{`Hi ${ticket.nickname}`}</Text>
