@@ -31,7 +31,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
   const [room, setRoom] = useState(ticket ? ticket.room : null);
   const [open, setOpen] = useState(false);
 
-    const [roomList, setRoomList] = useState<string[]>([]);
+  const [roomList, setRoomList] = useState<string[]>([]);
 
   React.useEffect(() => {
     if (isLoggedIn && !ticket) {
@@ -73,37 +73,17 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
     // Add the selected room to the ticket data
     const ticketData = { ...value, room };
 
-    try {
-      const response = await fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Cache-Control": "no-cache"
-        },
-        body: JSON.stringify(ticketData)
-      });
-      if (response.ok) {
-        if (isLoggedIn) {
-          setValue({ description: "", nickname: nickname ?? "" });
-          setRoom(null);
-          setValidation(false);
-        } else {
-          setValue({ description: "", nickname: "" });
-          setRoom(null);
-          setValidation(false);
-        }
 
-        if (response.headers.get("Content-Length") !== "0") {
-          const responseData = await response.json();
-          await onSubmit(responseData || { nickname: "", description: "" });
-        }
-      } else {
-        console.error(`Error: ${response.status} - ${response.statusText}`);
-      }
-    } catch (error) {
-      console.error(error);
+    if (isLoggedIn) {
+      setValue({ description: "", nickname: nickname ?? ""});
+      setRoom(null);
+      setValidation(false);
+    } else {
+      setValue({ description: "", nickname: "" });
+      setRoom(null);
+      setValidation(false);
     }
+    await onSubmit(ticketData);
   };
 
   return (
@@ -191,7 +171,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           fields!</Text>
       )}
       <Button
-        style={[Styles.buttonStyle, { backgroundColor: boxes, margin: "2%" }]}
+        style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: "2%" }]}
         labelStyle={[{ color: text }]}
         onPress={handleCreateTicket}
       >
