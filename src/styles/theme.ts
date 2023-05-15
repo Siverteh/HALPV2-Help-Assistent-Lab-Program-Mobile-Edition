@@ -20,7 +20,7 @@ export const theme: CustomTheme = {
             backgroundColor: "#FFFFFF", 
         },
         listItem_dark:{
-            backgroundColor: "#E0EEF7",
+            backgroundColor: "#94CCFF",
         },   
         iconColor: '#201C24',
         checkUncheck: '#0079C0',
