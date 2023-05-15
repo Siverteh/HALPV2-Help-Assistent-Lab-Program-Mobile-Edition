@@ -11,6 +11,7 @@ import {useSelector} from 'react-redux';
 
 interface UserProps {
   isAdmin: any;
+  role: string;
   courses: string;
   id: string;
   nickname: string;
@@ -340,7 +341,7 @@ const TimeEdit = React.memo(( ) => {
 });
 
 
-const Roles = React.memo(() => {
+const Roles = () => {
   const { background, text, buttons, listItem_dark,listItem_light, boxes } = useContext(ThemeContext);
   const { user: { token }} = useSelector((state: AppState) => state.user) 
   const [showDropDown, setShowDropDown] = useState(false);
@@ -374,7 +375,8 @@ const Roles = React.memo(() => {
   React.useEffect(() => {
     fetchUsers();
     fetchCourse();
-  }, []);
+    console.log("fetching data");
+  }, [showDropDown, searchText, ]);
 
   const dropdownItems = [
     { value: "admin", label: "Admin" },
@@ -423,6 +425,14 @@ const Roles = React.memo(() => {
 
   const renderItem = ({ item, index }: { item: UserProps; index: number }) => {
     const isAdmin = item.isAdmin;
+    if (isAdmin){
+      item.role = 'Admin'
+    } else if (item.courses.length > 0){
+      item.role = 'Student Assistant'
+    } else {
+        item.role = 'User'
+    }
+
   const isChecked =
     (selectedCourse && item.courses.includes(selectedCourse)) || isAdmin;
 
@@ -430,9 +440,14 @@ const Roles = React.memo(() => {
       <View
         style={[{backgroundColor: index % 2 == 0 ? listItem_light.backgroundColor : listItem_dark.backgroundColor, padding: 10}]}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={[{color:text, width: "80%", fontSize: 22 }]}>
-            {item.nickname}
-          </Text>
+          <View style={{width: '80%'}}>
+            <Text style={[{color:text, width: "80%", fontSize: 22 }]}>
+              {item.nickname}
+            </Text>
+            <Text style={[{color:text, width: "80%", fontSize: 12 }]}>
+              {userData[index].role}
+            </Text>
+          </View>
           <Checkbox
             status={isChecked ? "checked" : "unchecked"}
             onPress={() => handleCheckboxChange(item.id, selectedCourse)}
@@ -500,7 +515,7 @@ const Roles = React.memo(() => {
       />
     </>
   );
-});
+};
 const renderTabBar = (props: any) => {
   const { background, text} = useContext(ThemeContext);
 
