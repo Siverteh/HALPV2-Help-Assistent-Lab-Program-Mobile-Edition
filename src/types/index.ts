@@ -11,12 +11,12 @@ export type RouteType = {
 
 export type RootStackParamList = {
     CreateScreen: undefined
-    Edit: {nickname: string, description: string, room: string, id: string}
+    Edit: {nickname: string, description: string, room: string | null, id: string, placement: number}
     LoginScreen: undefined
     LabQueues: undefined
     ArchiveScreen: { course: string }
     HelpListScreen: { course: string }
-    Queue: {nickname: string, description: string, room: string, id: string, placement: number}
+    Queue: {nickname: string, description: string, room: string | null, id: string, placement: number}
     SettingScreen: undefined
     Register: undefined
     ChangePassword: undefined

@@ -1,14 +1,14 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { View, ScrollView, Text } from 'react-native'
-import { List } from "react-native-paper";
-import { CustomAccordion, Header, Logo } from "../Components/CustomComponents"
+import { ActivityIndicator, List } from "react-native-paper";
+import { CustomAccordion, Header } from "../Components/CustomComponents"
 import React from 'react'
 import { ThemeContext } from '../Components/ThemeContext'
 import { TicketWithId } from '../types/ticket';
 
 type Props = {
     title: string,
-    urlLive: string
+    loading: boolean
     onUpdate: (data: TicketWithId) => Promise<void>
     data: Array<TicketWithId>
     children?: JSX.Element
@@ -19,9 +19,10 @@ const ListComponent = ({
   title,
   onUpdate,
   data,
+  loading,
   children
 }: Props) => {
-  const { background, text, listItem_dark, listItem_light } = useContext(ThemeContext)
+  const { background, text, listItem_dark, listItem_light, icon: {active} } = useContext(ThemeContext)
 
   const [checked, setChecked] = useState(new Map());
   const [expanded, setExpanded] = useState(new Map())
@@ -48,15 +49,19 @@ const ListComponent = ({
     <View style={{ backgroundColor: background, height: '100%', }}>
      <View style={{height: "-10%"}} />
       <Header title={title} />
-      <View style={{marginTop: "-60%"}} />
+      <View style={{marginTop: "-50%"}} />
       {children}
-      <View style={{marginTop: "50%"}} />
+      <View style={{marginTop: "40%"}} />
       <ScrollView style={{ flex: 1 }}>
+        {loading ? (
+          <ActivityIndicator size="large" color={active} />
+        ): (
+        <>
         {data && data.length > 0 ? (
           <List.Section>
             {data.map((item, index) => (
               <CustomAccordion
-                key={item.Id}
+                key={item.Id + index}
                 title={item.Nickname}
                 room={item.Room}
                 style={index % 2 === 0 ? listItem_light : listItem_dark}
@@ -76,7 +81,9 @@ const ListComponent = ({
             ))}
           </List.Section>
         ) : (
-          <Text style={{ textAlign: 'center', color: text, fontSize: 20 }} >List empty</Text>
+          <Text style={{ textAlign: 'center', color: text, fontSize: 20 }} >List is empty</Text>
+        )}
+        </>
         )}
       </ScrollView>
     </View>

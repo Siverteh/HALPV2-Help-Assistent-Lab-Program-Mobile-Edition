@@ -3,7 +3,6 @@ import { Provider as PaperProvider } from "react-native-paper";
 import NavigationBar from "../Components/NavigationBar/NavigationBar";
 import { NavigationContainer } from '@react-navigation/native';
 import { themeHook  } from "../hook/themeHook";
-import { theme } from "../styles/theme";
 import { StatusBar, useColorScheme } from "react-native";
 import { AppState } from "../types";
 import { useDispatch, useSelector } from "react-redux"
