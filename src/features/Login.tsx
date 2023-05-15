@@ -149,7 +149,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const handleRegister = () => navigation.navigate("Register");
 
   const handlePrivacyPolicy = () => {
-    setShowWebView(true);
+    navigation.navigate("PrivacyPolicy");
   };
   
 
