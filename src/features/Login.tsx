@@ -3,9 +3,10 @@ import {
   Text,
   View,
   useWindowDimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
-import { Button, TextInput, } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import Styles from "../styles/styles";
 
 import { StackScreenProps } from "@react-navigation/stack";
@@ -18,17 +19,17 @@ import { asyncStorageHook } from "../hook/asyncStorageHook";
 import { ThemeContext } from "../Components/ThemeContext";
 import { authorize } from "react-native-app-auth";
 import { isValidEmail, isValidPassword } from "../utils";
-import { Icon } from 'react-native-elements';
+import { Icon } from "react-native-elements";
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
   const dispatch = useDispatch();
   const { background, text, outline, iconColor, buttons, boxes, checkUncheck } = useContext(ThemeContext);
 
-  const [value, setValue] = useState<LoginType>({ password: '', email: ''});
+  const [value, setValue] = useState<LoginType>({ password: "", email: "" });
   const [checked, setChecked] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-  const {height, width} = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
 
   const {
     setItem
@@ -41,11 +42,11 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const handleLogin = async () => {
     if (isEmpty(value.email) || isEmpty(value.password)) {
       console.error("Empty login values");
-      return
+      return;
     }
     if (!isValidEmail(value.email) || !isValidPassword(value.password)) {
       console.error("Validation error");
-      return
+      return;
     }
     const requestOptions = {
       method: "POST",
@@ -150,139 +151,148 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const handleRegister = () => navigation.navigate("Register");
 
   const handlePrivacyPolicy = () => {
-    navigation.navigate('PrivacyPolicy', { previousScreen: 'LoginScreen' });
+    navigation.navigate("PrivacyPolicy", { previousScreen: "LoginScreen" });
   };
-  
+
 
   return (
-    <View style={{ backgroundColor: background, height: height, alignItems: "center", justifyContent: "center", marginTop: 0}}>
-      <Logo />
-      <TextInput
-        style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
-        textColor={text}
-        outlineColor={outline.activeOutlineColor}
-        activeOutlineColor={outline.outlineColor}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
-        label="Email Address"
-        mode="outlined"
-        value={value?.email ?? ""}
-        onChangeText={handleChange("email")}
-        error={!isValidEmail(value.email)}
-      />
-      <TextInput
-        style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
-        label="Password"
-        mode="outlined"
-        textColor={text}
-        secureTextEntry={secureTextEntry}
-        outlineColor={outline.activeOutlineColor}
-        activeOutlineColor={outline.outlineColor}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
-        right={
-          <TextInput.Icon
-            icon={secureTextEntry ? 'eye-off': 'eye' }
-            iconColor={iconColor}
-            style={{height: 48, width: 48}}
-            onPress={() => {
-              setSecureTextEntry(!secureTextEntry);
-              return false;
-            }}
-          />
-        }
-        value={value?.password ?? ""}
-        onChangeText={handleChange("password")}
-        error={!isValidPassword(value.password)}
-      />
-      <View style={{ flexDirection: "row", justifyContent: "flex-start", width: width*0.85, marginTop: height*0.01 }}>
-        <View style={{ width: 48, height: 48 }}>
-        <TouchableOpacity onPress={handleChecked} style={{
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
+    <ScrollView>
+      <View style={{
+        backgroundColor: background,
+        height: height,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 0
       }}>
-        <View
-          style={{
-            borderWidth: checked ? 0 : 1,
-            borderRadius: 5,
-            width: 24,
-            height: 24,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: checked ? checkUncheck : 'transparent',
-            borderColor: 'black',
+        <Logo />
+        <TextInput
+          style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
+          textColor={text}
+          outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
           }}
-        >
-          {checked && <Icon name="check" size={20} color="white" />}
+          label="Email Address"
+          mode="outlined"
+          value={value?.email ?? ""}
+          onChangeText={handleChange("email")}
+          error={!isValidEmail(value.email)}
+        />
+        <TextInput
+          style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
+          label="Password"
+          mode="outlined"
+          textColor={text}
+          secureTextEntry={secureTextEntry}
+          outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
+          right={
+            <TextInput.Icon
+              icon={secureTextEntry ? "eye-off" : "eye"}
+              iconColor={iconColor}
+              style={{ height: 48, width: 48 }}
+              onPress={() => {
+                setSecureTextEntry(!secureTextEntry);
+                return false;
+              }}
+            />
+          }
+          value={value?.password ?? ""}
+          onChangeText={handleChange("password")}
+          error={!isValidPassword(value.password)}
+        />
+        <View
+          style={{ flexDirection: "row", justifyContent: "flex-start", width: width * 0.85, marginTop: height * 0.01 }}>
+          <View style={{ width: 48, height: 48 }}>
+            <TouchableOpacity onPress={handleChecked} style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              alignItems: "center",
+              justifyContent: "center"
+            }}>
+              <View
+                style={{
+                  borderWidth: checked ? 0 : 1,
+                  borderRadius: 5,
+                  width: 24,
+                  height: 24,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: checked ? checkUncheck : "transparent",
+                  borderColor: "black"
+                }}
+              >
+                {checked && <Icon name="check" size={20} color="white" />}
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Text style={[Styles.text_sm, { color: text }]}>
+            Remember me
+          </Text>
         </View>
-      </TouchableOpacity>
-      </View>
-        <Text style={[Styles.text_sm, { color: text }]}>
-          Remember me
-        </Text>
-      </View>
-      <View style={{ height: height*0.01 }}></View>
-      <Button
-        style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor }]}
-        mode="contained"
-        textColor={text}
-        contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
-        onPress={handleLogin}
-      >
-        SIGN IN
-      </Button>
-      <View style={{ height: height*0.01 }}></View>
-      <Button
-        mode="text"
-        textColor={text}
-        onPress={handleForgottenPassword}>
-        FORGOT YOUR PASSWORD?
+        <View style={{ height: height * 0.01 }}></View>
+        <Button
+          style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor }]}
+          mode="contained"
+          textColor={text}
+          contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
+          onPress={handleLogin}
+        >
+          SIGN IN
         </Button>
-    <Button
-      mode="text"
-      textColor={text}
-      onPress={handleRegister}>
-      REGISTER AS A USER
-    </Button>
-    <Text
-      style={[Styles.text_lg, { color: text, marginTop: height*0.01 }]}>
-      USE ANOTHER SERVICE TO LOG IN
-    </Text>
-    <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: height*0.01}]}
-            mode="contained"
-            textColor={text}
-            onPress={handleDiscord}
-            contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
-            icon="discord">
-      DISCORD
-    </Button>
-    <Text
-      style={[Styles.text_lg, { color: text, marginTop: height*0.01}]}>
-      OUR PRIVACY POLICY
-    </Text>
-    <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: height*0.01 }]}
-            mode="contained"
-            textColor={text}
-            onPress={handlePrivacyPolicy}
-            contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
-            icon="security">
-      PRIVACY POLICY
-    </Button>
-  </View>
-);
-        }
+        <View style={{ height: height * 0.01 }}></View>
+        <Button
+          mode="text"
+          textColor={text}
+          onPress={handleForgottenPassword}>
+          FORGOT YOUR PASSWORD?
+        </Button>
+        <Button
+          mode="text"
+          textColor={text}
+          onPress={handleRegister}>
+          REGISTER AS A USER
+        </Button>
+        <Text
+          style={[Styles.text_lg, { color: text, marginTop: height * 0.01 }]}>
+          USE ANOTHER SERVICE TO LOG IN
+        </Text>
+        <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: height * 0.01 }]}
+                mode="contained"
+                textColor={text}
+                onPress={handleDiscord}
+                contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
+                icon="discord">
+          DISCORD
+        </Button>
+        <Text
+          style={[Styles.text_lg, { color: text, marginTop: height * 0.01 }]}>
+          OUR PRIVACY POLICY
+        </Text>
+        <Button style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: height * 0.01 }]}
+                mode="contained"
+                textColor={text}
+                onPress={handlePrivacyPolicy}
+                contentStyle={{ flexDirection: "row-reverse", height: "100%", width: "100%" }}
+                icon="security">
+          PRIVACY POLICY
+        </Button>
+      </View>
+    </ScrollView>
+  );
+}
 
 export default Login;
