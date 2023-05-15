@@ -15,7 +15,7 @@ export const themeHook = () => {
 
   const initializeBottomBar = async () => {
     const mode = await getItem("@theme")
-    SystemNavigationBar.setNavigationColor(mode === 'light' ? theme.dark.background : theme.light.background)
+    SystemNavigationBar.setNavigationColor(mode === 'light' ? theme.light.background : theme.dark.background)
   }
 
   const toggleDarkMode = async () => {

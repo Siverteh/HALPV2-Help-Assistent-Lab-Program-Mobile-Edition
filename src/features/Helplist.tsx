@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react'
+import { useEffect, useContext, useState } from 'react'
 import React from 'react';
 import ListComponent from './List'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -47,11 +47,28 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
     }
   )
 
+  
+connection.on("UpdateHelplist", (id, nickname, description, room) => {
+  dispatch(actions.updateTicket({
+    courseKey: course,
+    ticket: {
+      Id: id,
+      Nickname: nickname,
+      Description: description,
+      Room: room
+    }
+  }))
+})
+
+  connection.on("RemovedByUser",
+    (id) => dispatch(actions.filterHelplist({courseKey: course, ticketId: id}))
+);
+
   connection.on("RemoveFromHelplist", (Course, Id) => 
   {
-    // Needs some charlie magic to remove ticket
+    dispatch(actions.filterHelplist({courseKey: Course, ticketId: Id}))
   }
-)
+  )
 
   useEffect(() => {
     if (!state.isLoadedCourse[course]) {
@@ -76,7 +93,6 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
             })
       }
   }, [course])
-  // console.log(state.helplist[course])
 
   const updateCourse = async (updatedData: TicketWithId) => {
 
@@ -91,8 +107,8 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
       body: JSON.stringify([updatedData])
     })
       .then(() => {
-        dispatch(actions.filterHelplist({courseKey: course, ticket: updatedData}))
-        dispatch(archiveActions.setArchive({courseKey: course, tickets: [updatedData]}))
+        // dispatch(actions.filterHelplist({courseKey: course, ticketId: updatedData.Id}))
+        // dispatch(archiveActions.setArchive({courseKey: course, tickets: [updatedData]}))
       })
       .catch((error) => console.error("Failed to update ticket from helplist: ", error))
   }
@@ -108,7 +124,7 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
   return (
     <ListComponent
       title={`HELPLIST ${course}`}
-      urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`}
+      loading={!state.isLoadedCourse[course]}
       onUpdate={updateCourse}
       data={state.helplist[course] ?? []}
     >

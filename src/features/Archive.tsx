@@ -9,6 +9,7 @@ import { ThemeContext } from '../Components/ThemeContext';
 import { actions } from '../reducers/archiveReducer';
 import { actions as helplistActions } from '../reducers/helplistReducer';
 import { TicketWithId } from '../types/ticket';
+import { useSignalR } from '../hook/useSignalR';
 
 const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'ArchiveScreen'>) => {
 
@@ -17,6 +18,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   const { text } = useContext(ThemeContext)
   const { isLoaded, archive} = useSelector((state: AppState) => state.archive)
   const dispatch = useDispatch()
+  const connection = useSignalR(course)
 
   useEffect(() => {
     if (!isLoaded[course]) {
@@ -43,6 +45,27 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
       }
   }, [course])
 
+  connection.on("AddToArchive", (Id, Nickname, Description, Room) => 
+  {
+  dispatch(actions.setArchive({
+    courseKey: course,
+    tickets: [{
+      Id: Id,
+      Nickname: Nickname,
+      Description: Description,
+      Room: Room
+    }]
+  }))
+  }
+)
+
+  connection.on("RemoveFromArchive", (Course, Id) => 
+  {
+    dispatch(actions.filterArchive({courseKey: Course, ticketId: Id}))
+    //dispatch(archiveActions.setArchive({courseKey: Course, tickets: [ticket]}))
+  }
+  )
+
 
   const updateCourse = async (updatedData: TicketWithId) => {
 
@@ -57,8 +80,8 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
         body: JSON.stringify([updatedData])
       })
       .then(() => {
-        dispatch(actions.filterArchive({courseKey: course, ticket: updatedData}))
-        dispatch(helplistActions.setHelplist({key: course, tickets: [updatedData]}))
+        // dispatch(actions.filterArchive({courseKey: course, ticketId: updatedData.Id}))
+        // dispatch(helplistActions.setHelplist({key: course, tickets: [updatedData]}))
       })
       .catch((error) => console.error("Failed to update ticket from archive: ", error))
   };
@@ -70,7 +93,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   return (
     <ListComponent
       title={`ARCHIVE ${course}`}
-      urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Archive?course=${course}`}
+      loading={!isLoaded[course]}
       onUpdate={updateCourse}
       data={archive[course] ?? []}
     >
