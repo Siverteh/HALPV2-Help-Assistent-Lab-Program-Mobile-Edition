@@ -22,7 +22,7 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
   const state = useSelector((state: AppState) => state.helplist)
   const dispatch = useDispatch()
 
-  const connection = useSignalR("AddToGroup", course)
+  const connection = useSignalR(course)
 
   const dataMapper = (data: any) => data.map((d: any) => {
     return {
@@ -46,6 +46,13 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
     }))
     }
   )
+
+  connection.on("RemoveFromHelplist", (Course, Id) => 
+  {
+    // Needs some charlie magic to remove ticket
+  }
+)
+
   useEffect(() => {
     if (!state.isLoadedCourse[course]) {
         fetch(
@@ -62,7 +69,6 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
             .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
             .catch((error) => {
               console.error("Failed to get help list", error)
-                dispatch(actions.setHelplist({key: course, tickets: dataMapper(data)}))
             })
             .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
             .catch((error) => {

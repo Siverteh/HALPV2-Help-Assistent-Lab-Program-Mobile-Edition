@@ -13,10 +13,10 @@ import { useSignalR } from '../hook/useSignalR';
 const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Queue'>) => {
   const {height, width} = useWindowDimensions();
   const { background, text, buttons, boxes  } = useContext(ThemeContext)
-  const [queue, setQueue] = useState<number>(1)
   const ticket = route.params;
+  const [queue, setQueue] = useState<number>(ticket.placement)
 
-  const connection = useSignalR()
+  const connection = useSignalR(ticket.id.toString())
 
   connection.on("Queue",
     (id, count, counter, course) => {

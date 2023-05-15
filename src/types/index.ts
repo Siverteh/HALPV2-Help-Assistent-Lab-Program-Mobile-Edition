@@ -16,13 +16,14 @@ export type RootStackParamList = {
     LabQueues: undefined
     ArchiveScreen: { course: string }
     HelpListScreen: { course: string }
-    Queue: {nickname: string, description: string, room: string, id: string}
+    Queue: {nickname: string, description: string, room: string, id: string, placement: number}
     SettingScreen: undefined
     Register: undefined
     ChangePassword: undefined
     RegisterDiscord: {
       email: string;
       discordTag: string;
+      discordId: string;
     }
     ForgottenPassword: undefined
   };

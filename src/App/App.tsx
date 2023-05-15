@@ -17,6 +17,7 @@ function App(): JSX.Element {
 const { user: { role, isLoggedIn }} = useSelector((state: AppState) => state.user)
 
 const {Thistheme} = themeHook();
+themeHook().initializeBottomBar()
 
 const colorScheme = useColorScheme();
 

@@ -13,6 +13,11 @@ export const themeHook = () => {
 
   const {getItem, setItem} = asyncStorageHook()
 
+  const initializeBottomBar = async () => {
+    const mode = await getItem("@theme")
+    SystemNavigationBar.setNavigationColor(mode === 'light' ? theme.dark.background : theme.light.background)
+  }
+
   const toggleDarkMode = async () => {
           const mode = await getItem("@theme")
           dispatch(actions.setTheme(mode === 'light' ? theme.dark : theme.light))
@@ -24,6 +29,7 @@ export const themeHook = () => {
 
     return {
       onChangeTheme: toggleDarkMode,
-      Thistheme: state.theme
+      Thistheme: state.theme,
+      initializeBottomBar
     };
 }
