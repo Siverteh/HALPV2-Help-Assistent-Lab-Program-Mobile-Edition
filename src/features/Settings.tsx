@@ -172,10 +172,6 @@ const Settings = ({navigation}: any ) => {
       });
   }
 
-  const handlePrivacyPolicy = () => {
-    navigation.navigate('PrivacyPolicy', { previousScreen: 'SettingScreen' });
-  };
-
   return (
 
     <View style={[{backgroundColor: background, alignItems: 'center', height: height * 0.70 }]}>
