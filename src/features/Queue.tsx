@@ -3,11 +3,12 @@ import { View, useWindowDimensions } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import Styles from '../styles/styles';
-import { RootStackParamList } from '../types';
+import { AppState, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from '../Components/ThemeContext';
 import { Logo } from '../Components/CustomComponents';
 import { useSignalR } from '../hook/useSignalR';
+import { useSelector } from 'react-redux';
 
 
 const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Queue'>) => {
@@ -20,8 +21,15 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
 
   connection.on("Queue",
     (id, count, counter, course) => {
-      console.log("signalR: ", id, count, counter)
-      setQueue(counter)
+      if (ticket.id == id) {
+        if (counter == 0) {
+          navigation.navigate('CreateScreen');
+        }
+        else {
+          console.log("signalR: ", id, count, counter)
+          setQueue(counter)
+        }
+      }
     }
 );
 
