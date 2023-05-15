@@ -26,6 +26,7 @@ export type RootStackParamList = {
       discordId: string;
     }
     ForgottenPassword: undefined
+    PrivacyPolicy: undefined
   };
 
   export type Login = {
