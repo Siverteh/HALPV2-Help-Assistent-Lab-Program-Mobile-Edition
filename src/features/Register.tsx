@@ -173,7 +173,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         secureTextEntry={secureTextEntry}
         right={
           <TextInput.Icon
-            icon={secureTextEntry ? 'eye' : 'eye-off'}
+            icon={secureTextEntry ? 'eye-off': 'eye'}
             iconColor={iconColor}
             style={{height: 48, width: 48}}
             onPress={() => {
@@ -200,7 +200,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         secureTextEntry={secureTextEntryConfirm}
         right={
           <TextInput.Icon
-            icon={secureTextEntryConfirm ? 'eye' : 'eye-off'}
+            icon={secureTextEntryConfirm ? 'eye-off': 'eye'}
             iconColor={iconColor}
             style={{height: 48, width: 48}}
             onPress={() => {
