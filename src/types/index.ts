@@ -27,8 +27,7 @@ export type RootStackParamList = {
     }
     ForgottenPassword: undefined
     PrivacyPolicy: { previousScreen: string } | undefined;
-    previousScreen: undefined
-  };
+    };
 
   export type Login = {
     email: string
