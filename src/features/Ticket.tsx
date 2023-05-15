@@ -127,7 +127,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           modalAnimationType={"slide"}
           style={{
             backgroundColor: boxes,
-            borderColor: outline.outlineColor,
+            borderColor: outline.activeOutlineColor,
             borderRadius: 4
           }}
           textStyle={{
@@ -140,7 +140,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
             position: "relative",
             top: 0,
             backgroundColor: boxes,
-            borderColor: outline.outlineColor
+            borderColor: outline.activeOutlineColor
           }}
 
         />
