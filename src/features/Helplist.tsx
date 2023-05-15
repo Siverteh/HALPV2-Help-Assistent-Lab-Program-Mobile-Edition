@@ -76,7 +76,6 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
             })
       }
   }, [course])
-  // console.log(state.helplist[course])
 
   const updateCourse = async (updatedData: TicketWithId) => {
 
