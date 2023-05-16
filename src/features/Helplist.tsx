@@ -12,6 +12,7 @@ import { actions as helplistAction } from '../reducers/helplistReducer';
 import { actions as archiveActions} from '../reducers/archiveReducer';
 import { TicketWithId } from '../types/ticket';
 import Styles from "../styles/styles";
+import { useListener } from '../hook/useListener';
 
 
 const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
@@ -23,6 +24,7 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
   const dispatch = useDispatch()
 
   const { connection } = useSignalR(course)
+  useListener(course)
 
   const dataMapper = (data: any) => data.map((d: any) => {
     return {
@@ -120,14 +122,17 @@ connection.on("RemoveFromHelplist",
   }, [course])
 
   const invokeUpdate = (id: string) => {
+    connection.stop()
     connection.start()
-      .then(() => connection.invoke("RemoveFromHelplist", id))
+          .then(() => connection.invoke("RemoveFromHelplist", id))
+          .catch(err => console.error(err.toString()))
   }
+
 
   const updateCourse = (updatedData: TicketWithId) => {
     const id = updatedData.Id
 
-    const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.Id
+    const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + id
 
     fetch(link, {
       method: 'PUT',
@@ -138,6 +143,7 @@ connection.on("RemoveFromHelplist",
       body: JSON.stringify([updatedData])
     })
       .then(() => {
+        
         invokeUpdate(id)
         // dispatch(actions.filterHelplist({courseKey: course, ticketId: updatedData.Id}))
         // dispatch(archiveActions.setArchive({courseKey: course, tickets: [updatedData]}))
