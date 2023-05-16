@@ -70,8 +70,8 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
         body: JSON.stringify([updatedData])
       })
       .then(() => {
-        invokeUpdate(id)
-        dispatch(actions.filterArchive({courseKey: course, ticketId: updatedData.Id}))
+        // invokeUpdate(id)
+        // dispatch(actions.filterArchive({courseKey: course, ticketId: updatedData.Id}))
         // dispatch(helplistActions.setHelplist({key: course, tickets: [updatedData]}))
       })
       .catch((error) => console.error("Failed to update ticket from archive: ", error))
