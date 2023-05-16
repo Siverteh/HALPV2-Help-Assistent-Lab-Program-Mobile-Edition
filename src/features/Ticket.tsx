@@ -1,13 +1,15 @@
-import { Ticket as TicketProp} from "../types/ticket";
+import { Ticket as TicketProp } from "../types/ticket";
 import { TextInput, Button, Text } from "react-native-paper";
 import { useState, useContext } from "react";
 import Styles from "../styles/styles";
 import * as React from "react";
-import { Dimensions, Image, TextInputBase, useColorScheme, View } from "react-native";
-import DropDown from "react-native-paper-dropdown";
-import { ThemeContext } from '../Components/GlobalHook';
+import { View } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
+import { ThemeContext } from "../Components/ThemeContext";
 import { useSelector } from "react-redux";
 import { AppState } from "../types";
+import { Header } from "../Components/CustomComponents";
+import { isEmpty } from "lodash";
 
 type Props = {
   ticket?: TicketProp
@@ -16,47 +18,80 @@ type Props = {
 
 
 const Ticket = ({ onSubmit, ticket }: Props) => {
-    const { background, text, buttons, boxes, text2, outline } = useContext(ThemeContext)
-    const { user: { nickname }} = useSelector((state: AppState) => state.user)
-    const [value, setValue] = React.useState<TicketProp>({ description: "", name: nickname ?? "", room: "", ...ticket });
+  const [validation, setValidation] = useState(false);
+  const { user: { nickname, isLoggedIn } } = useSelector((state: AppState) => state.user);
+  const { background, text, buttons, boxes, text2, outline } = useContext(ThemeContext);
 
-    const [showDropDown, setShowDropDown] = useState(false);
-    const [roomList, setRoomList] = useState([]);
 
-    const fetchRooms = async () => {
-      await fetch("https://chanv2.duckdns.org:7006/api/Rooms")
-        .then(response => response.json())
-        .then(rooms => {
-          setRoomList(rooms);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    };
+  const [value, setValue] = React.useState<Omit<TicketProp, "room">>({
+    description: ticket ? ticket.description : "",
+    nickname: ticket ? ticket.nickname : "",
+    ...ticket
+  });
+  const [room, setRoom] = useState(ticket ? ticket.room : null);
+  const [open, setOpen] = useState(false);
 
-    React.useEffect(() => {
-      fetchRooms();
-    }, []);
+  const [roomList, setRoomList] = useState<string[]>([]);
 
-    const dropdownItems = roomList.map((room) => {
-      return { value: room, label: room };
-    });
+  React.useEffect(() => {
+      setValue((prevValue) => ({ ...prevValue, nickname: nickname ?? "" }));
+  }, [nickname]);
 
-    const handleCreateTicket = async () => {
-      onSubmit(value)
-      setValue({ description: "", name: nickname ?? "", room: "" });
-      
-    };
+  const fetchRooms = async () => {
+    await fetch("https://chanv2.duckdns.org:7006/api/Rooms")
+      .then(response => response.json())
+      .then(rooms => {
+        setRoomList(rooms);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
 
-    
-    return (
-      <View style={[{backgroundColor: background, flex: 1, alignItems: "center" }]}>
-        <Image source={require(".././img/halpy3.png")} style={Styles.logo} />
-        <Text style={[{color: 'white',  fontSize: 24, paddingBottom: 0, marginBottom: "7%" }]}>
-          {ticket ? 'EDIT TICKET':  'NEW TICKET'}
-        </Text>
+  React.useEffect(() => {
+    fetchRooms();
+  }, []);
+
+  const dropdownItems = roomList.map((room) => {
+    return { value: room, label: room };
+  });
+
+
+  const handleChange = (nickname: string) => (text: string) => {
+    setValue((prevValue) => ({ ...prevValue, [nickname]: text }));
+    setValidation(false);
+  };
+
+  const handleCreateTicket = async () => {
+    if (isEmpty(value.description) || isEmpty(value.nickname) || isEmpty(room)) {
+      setValidation(true);
+      return;
+    }
+
+    // Add the selected room to the ticket data
+    const ticketData = { ...value, room };
+
+
+    if (isLoggedIn) {
+      setValue({ description: "", nickname: nickname ?? "" });
+      setRoom(null);
+      setValidation(false);
+    } else {
+      setValue({ description: "", nickname: "" });
+      setRoom(null);
+      setValidation(false);
+    }
+    await onSubmit(ticketData);
+  };
+
+
+  return (
+    <View style={[{ backgroundColor: background, flex: 1, alignItems: "center" }]}>
+      <Header title={ticket ? "EDIT TICKET" : "NEW TICKET"} />
+
+      {!isLoggedIn &&
         <TextInput
-          style={[Styles.boxStyle, {backgroundColor: boxes,  color: text, width: "85%", margin: "2%" }]}
+          style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
           textColor={text}
           outlineColor={outline.activeOutlineColor}
           activeOutlineColor={outline.outlineColor}
@@ -68,65 +103,79 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           }}
           label="Name"
           mode={"outlined"}
-          value={value.name}
-          onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, name: text }))}
+          value={value.nickname}
+          onChangeText={handleChange("nickname")}
         />
-        <View
+      }
+      <View
+        style={{
+          zIndex: 2,
+          width: "85%",
+          marginTop: "1.5%"
+        }}>
+        <DropDownPicker
+          closeAfterSelecting={true}
+          listMode="SCROLLVIEW"
+          placeholder={"Room"}
+          value={room}
+          setValue={setRoom}
+          items={dropdownItems}
+          open={open}
+          setOpen={setOpen}
+          modalAnimationType={"slide"}
           style={{
-            width: "85%"
+            backgroundColor: boxes,
+            borderColor: outline.activeOutlineColor,
+            borderRadius: 4
           }}
-        >
-          <DropDown
-            label={"Room"}
-            mode={"outlined"}
-            visible={showDropDown}
-            showDropDown={() => setShowDropDown(true)}
-            onDismiss={() => setShowDropDown(false)}
-            value={value.room}
-            setValue={(selectedRoom: any) => setValue((prevValue) => ({ ...prevValue, room: selectedRoom }))}
-            list={dropdownItems}
-            activeColor={"grey"}
-            dropDownContainerHeight={300}
-            theme={{
-              colors: { background: boxes, outline: 'transparent', primary: 'red', onSurface: text, onSurfaceVariant: text,
-            }}}
-            dropDownItemStyle={{backgroundColor: boxes}}
-            dropDownItemTextStyle={{color: text}}
-            dropDownStyle={{backgroundColor: 'transparent'}}
-            dropDownItemSelectedStyle={{backgroundColor: background}}
-            dropDownItemSelectedTextStyle={{color: text}}
-          />
+          textStyle={{
+            color: text
+          }}
+          scrollViewProps={{
+            nestedScrollEnabled: true
+          }}
+          dropDownContainerStyle={{
+            position: "relative",
+            top: 0,
+            backgroundColor: boxes,
+            borderColor: outline.activeOutlineColor
+          }}
 
-        </View>
-        <TextInput
-          style={[Styles.boxStyle, {backgroundColor: boxes,  color: text, width: "85%", margin: "2%" }]}
-          textColor={text}
-          outlineColor={outline.activeOutlineColor}
-          activeOutlineColor={outline.outlineColor}
-          theme={{
-            colors: {
-              background: background,
-              onSurfaceVariant: outline.outlineColor
-            }
-          }}
-          mode={"outlined"}
-          label={"Description"}
-          placeholderTextColor={text2}
-          value={value.description}
-          multiline={true}
-          onChangeText={(text) => setValue((prevValue) => ({ ...prevValue, description: text }))}
         />
 
-        <Button
-        style={[Styles.buttonStyle,{backgroundColor: buttons.backgroundColor, width: 230, height: 50, margin: "2%" }]}
-        labelStyle={[Styles.buttonStyle, {color: text}]}
-          onPress={handleCreateTicket}
-        >
-         {ticket ? 'SAVE TICKET':  'CREATE TICKET'}
-        </Button>
       </View>
-    );
-  }
-;
+      <TextInput
+        style={[Styles.textInput, { backgroundColor: boxes, color: text, minHeight: 48 }]}
+        textColor={text}
+        outlineColor={outline.activeOutlineColor}
+        activeOutlineColor={outline.outlineColor}
+        theme={{
+          colors: {
+            background: background,
+            onSurfaceVariant: outline.outlineColor
+          }
+        }}
+        label="Description"
+        multiline={true}
+        mode={"outlined"}
+        value={value.description}
+        onChangeText={handleChange("description")}
+        textAlignVertical="center"
+      />
+      {validation && (
+
+        <Text style={{ color: background == "#E0EEF7" ? "red" : "#f18ba5", fontSize: 20 }}>You need to fill all
+          fields!</Text>
+      )}
+      <Button
+        style={[Styles.buttonStyle, { backgroundColor: buttons.backgroundColor, margin: "2%", height: 48 }]}
+        labelStyle={[{ color: text }]}
+        onPress={handleCreateTicket}
+      >
+        {ticket ? "SAVE TICKET" : "CREATE TICKET"}
+      </Button>
+    </View>
+  );
+};
 
 export default Ticket;

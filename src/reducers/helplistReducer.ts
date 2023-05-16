@@ -1,12 +1,16 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import { Course } from '../features/List'
+import { TicketWithId } from '../types/ticket'
 
 export type HelplistState = {
-    helplist: Array<Course>
+    helplist: {[courseKey: string]: Array<TicketWithId>},
+    isConnected: boolean,
+    isLoadedCourse: {[key: string]: boolean}
 }
 
 const initialState = {
-    helplist: []
+    helplist: {},
+    isConnected: false,
+    isLoadedCourse: {}
 }
 
 const helplistReducer = createSlice({
@@ -15,18 +19,73 @@ const helplistReducer = createSlice({
     reducers: {
         setHelplist: (
             state: HelplistState,
-            { payload }: PayloadAction<Array<Course>>
+            { payload }: PayloadAction<{key: string, tickets: Array<TicketWithId>}>
         ) => {
-            state.helplist = payload
+            state.helplist = {
+                ...state.helplist, 
+                [payload.key]: [...state.helplist[payload.key] ?? [], ...payload.tickets]
+            }
+        },
+        addTicket: (
+            state: HelplistState,
+            { payload }: PayloadAction<{key: string, ticket: TicketWithId}>
+        ) => {
+            const currentlist = state.helplist[payload.key] ?? []
+            const exists = currentlist.map(({Id}) =>  {
+                if(Id === payload.ticket.Id) {
+                    return true
+                } else return false
+            })
+            if(exists.includes(true)) return
+            const list = [payload.ticket, ...currentlist]
+            const sortedList = list.sort((a, b) => { 
+                return Number(a.Id) - Number(b.Id)
+              })
+            state.helplist = {
+                ...state.helplist,
+                [payload.key]: sortedList
+            }
         },
         filterHelplist: (
             state: HelplistState,
-            { payload }: PayloadAction<Course>
+            { payload }: PayloadAction<{courseKey: string, ticketId: string}>
         ) => {
-
-            const filtered = state.helplist.filter((hl) => hl.Id === payload.Id)
-
-            state.helplist = filtered
+            const list = state.helplist[payload.courseKey] ??[]
+            const filtered = list.filter(({ Id }) => Id !== payload.ticketId)
+            state.helplist = {
+                ...state.helplist,
+                [payload.courseKey]: filtered
+            }
+        },
+        updateTicket: (
+            state: HelplistState,
+            { payload }: PayloadAction<{courseKey: string, ticket: TicketWithId}>
+        ) => {
+            const filtered = state.helplist[payload.courseKey].map((t) => {
+                if (t.Id === payload.ticket.Id) {
+                    return payload.ticket
+                }
+                return t
+            })
+            state.helplist = {
+                ...state.helplist,
+                [payload.courseKey]: filtered
+            }
+        },
+        setIsConnected: (
+            state: HelplistState,
+            { payload }: PayloadAction<boolean>
+        ) => {
+            state.isConnected = payload
+        },
+        setIsLoaded: (
+            state: HelplistState,
+            { payload }: PayloadAction<{key: string, isLoaded: boolean}>
+        ) => {
+            state.isLoadedCourse = {
+                ...state.isLoadedCourse, 
+                [payload.key]: payload.isLoaded
+            }
         }
     }
 

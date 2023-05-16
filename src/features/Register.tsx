@@ -1,19 +1,18 @@
 import React, { useState, useContext } from 'react';
-import { ThemeContext } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/ThemeContext';
 import {
-  Image,
   View,
-  Text, // Add this import
   Alert,
 } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, TextInput, IconButton } from 'react-native-paper';
 import Styles from '../styles/styles';
-import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
+import { Logo } from '../Components/CustomComponents';
+import { isValidPassword } from '../utils';
   
-
-function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
-  const { background, text, buttons, boxes, outline, iconColor, checkUncheck } = useContext(ThemeContext)
+function Register({ route, navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
+  const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(ThemeContext)
 
 
   // State for error message
@@ -26,7 +25,8 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
   const [confirmPassword, setConfirmPassword] = useState('');
   const [discordtag, setDiscordtag] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true);
+  const [secureTextEntryConfirm, setSecureTextEntryConfirm] = useState(true);
+
 
   const isValidEmail = (email: string) => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -35,8 +35,8 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
 
   const handleRegister = async () => {
     // Check if all fields are filled
-    if (!email || !username || !password || !confirmPassword || !discordtag) {
-      Alert.alert('Error', 'All boxes needs to be filled.')
+    if (!email || !username || !password || !confirmPassword) {
+      Alert.alert('Error', 'You need to fill all required boxes.')
       return;
     }
 
@@ -45,8 +45,8 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
       Alert.alert('Error', 'Please enter a valid email.')
       return;
     }
-    
-    // Check if the passwords match  
+
+    // Check if the passwords match
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match.');
       return;
@@ -56,7 +56,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, username, discordtag, password }),
+      body: JSON.stringify({ email, nickname: username, discordtag, password }),
     };
 
     // Password requirements
@@ -66,13 +66,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
     const hasNumber = /\d/.test(password);
     const hasSymbol = /\W|_/.test(password);
   
-    if (
-      password.length >= minLength &&
-      hasUpperCase &&
-      hasLowerCase &&
-      hasNumber &&
-      hasSymbol
-    ) 
+    if (isValidPassword(password)) 
     {
       try {
         const response = await fetch(
@@ -80,19 +74,18 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           requestOptions,
         );
         const data = await response.json();
-  
-        console.log(response.status);
-  
+
         if (response.ok) {
           Alert.alert('Success', 'Account successfully registered!')
           navigation.navigate('LoginScreen');
         } else {
-          console.log('Registration failed:', data);
+          console.error("Registration failed: ", data)
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Registration failed")
+        
       }
-    } 
+    }
     else {
       let errMsg = 'Password must:';
       if (password.length < minLength) {
@@ -115,81 +108,88 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
     }
   };
 
+  const handleNavigate = () => {
+    navigation.navigate('LoginScreen')
+  }
+
   return (
-      <View style={[Styles.view, { backgroundColor: background, flex: 1, height: '100%' }]}>
-      <Image
-        style={Styles.image}
-        source={require('.././img/halpy3.png')} />
+    
+      <View style={[{ backgroundColor: background, height: '100%'}]}>
+        
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start'}}>
+          <IconButton
+            icon="arrow-left"
+            iconColor={text}
+            onPress={handleNavigate}
+          />
+        </View>
+      <Logo/>
+      <View style={[{alignItems: 'center'}]}>
       <TextInput
-        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+        style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+        textColor={text}
+        outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
         label="Email"
         mode="outlined"
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-
         onChangeText={text => setEmail(text)}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
       />
-      <View style={{ height: "2%" }}></View>
       <TextInput
-        style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+        style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+        textColor={text}
+        outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
         label="Nickname"
         mode="outlined"
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-
         onChangeText={text => setUsername(text)}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
       />
-      <View style={{ height: "2%" }}></View>
       <TextInput
-       style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+       style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+       textColor={text}
+       outlineColor={outline.activeOutlineColor}
+         activeOutlineColor={outline.outlineColor}
+         theme={{
+           colors: {
+             background: background,
+             onSurfaceVariant: outline.outlineColor
+           }
+         }}
         label="Discord Tag"
         mode="outlined"
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
         onChangeText={text => setDiscordtag(text)}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
       />
-      <View style={{ height: "2%" }}></View>
       <TextInput
-       style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+       style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+       textColor={text}
+       outlineColor={outline.activeOutlineColor}
+         activeOutlineColor={outline.outlineColor}
+         theme={{
+           colors: {
+             background: background,
+             onSurfaceVariant: outline.outlineColor
+           }
+         }}
         label="Password"
         mode="outlined"
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-
         onChangeText={text => setPassword(text)}
         secureTextEntry={secureTextEntry}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
         right={
           <TextInput.Icon
-            icon="eye"
+            icon={secureTextEntry ? 'eye-off': 'eye'}
             iconColor={iconColor}
+            style={{height: 48, width: 48}}
             onPress={() => {
               setSecureTextEntry(!secureTextEntry);
               return false;
@@ -197,39 +197,37 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
           />
         }
       />
-      <View style={{ height: "2%" }}></View>
       <TextInput
-       style={[Styles.boxStyle, { backgroundColor: background, color: text, width: "85%", height: 50, margin: "2%", marginBottom: 10 }]}
+       style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
+       textColor={text}
+       outlineColor={outline.activeOutlineColor}
+         activeOutlineColor={outline.outlineColor}
+         theme={{
+           colors: {
+             background: background,
+             onSurfaceVariant: outline.outlineColor
+           }
+         }}
         label="Confirm password"
         mode="outlined"
-        textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-
         onChangeText={text => setConfirmPassword(text)}
-        secureTextEntry={secureTextEntry}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
+        secureTextEntry={secureTextEntryConfirm}
         right={
           <TextInput.Icon
-            icon="eye"
+            icon={secureTextEntryConfirm ? 'eye-off': 'eye'}
             iconColor={iconColor}
+            style={{height: 48, width: 48}}
             onPress={() => {
-              setSecureTextEntry(!secureTextEntry);
+              setSecureTextEntryConfirm(!secureTextEntryConfirm);
               return false;
             }}
           />
         }
       />
-      <View style={{ height: "6%" }}></View>
       <Button
         style={[
           Styles.buttonStyle,
-          {backgroundColor: buttons.backgroundColor, height: "8%", width: "40%", alignSelf: "center" },
+          {backgroundColor: buttons.backgroundColor, margin: '2%' },
         ]}
         mode="contained"
         textColor={text}
@@ -239,6 +237,7 @@ function Register({ navigation }: StackScreenProps<RootStackParamList, 'Register
         REGISTER
       </Button>
       <View style={{ height: "4%" }}></View>
+  </View>
   </View>
   );
 }

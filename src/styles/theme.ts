@@ -9,6 +9,7 @@ export const theme: CustomTheme = {
            activeOutlineColor: "#201C24"
         },
         background: "#E0EEF7",
+        barContent: "dark-content",
         boxes: "#FFFFFF",
         buttons: {
             backgroundColor: "#94CCFF",
@@ -22,7 +23,11 @@ export const theme: CustomTheme = {
             backgroundColor: "#94CCFF",
         },   
         iconColor: '#201C24',
-        checkUncheck: '#0079C0'
+        checkUncheck: '#0079C0',
+        icon: {
+            active: "#0070C0",
+            inactive: "#000000"
+        }
         
     },
     dark: {
@@ -33,19 +38,23 @@ export const theme: CustomTheme = {
             activeOutlineColor: '#0070C0'
         } ,
         background: "#004082",
+        barContent: "light-content",
         boxes: "#0070C0",
         buttons: {
             backgroundColor: "#0070C0",
             queueButton: "#004082"
         },
         listItem_light:{ 
-            backgroundColor: "#94CCFF",
+            backgroundColor: "#0070C0",
         },
         listItem_dark: {
             backgroundColor: "#004082",
         } ,
         iconColor:'#E0E0E0',
-        checkUncheck:'#FFFFFF'
-        
+        checkUncheck:'#FFFFFF',
+        icon: {
+            active: "#FFFFFF",
+            inactive: "#a9a9a9"
+        }
     }
 }

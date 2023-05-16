@@ -1,4 +1,6 @@
+import { ArchiveState } from "../reducers/archiveReducer";
 import { HelplistState } from "../reducers/helplistReducer";
+import { QueueState } from "../reducers/queueReducer";
 import { ThemeState } from "../reducers/themeReducer";
 import { UserState } from "../reducers/userReducer";
 
@@ -10,26 +12,40 @@ export type RouteType = {
 
 export type RootStackParamList = {
     CreateScreen: undefined
-    Edit: {name: string, description: string, room: string, id: string}
+    Edit: {nickname: string, description: string, room: string | null, id: string, placement: number}
     LoginScreen: undefined
     LabQueues: undefined
-    ArchiveScreen: undefined
+    ArchiveScreen: { course: string }
     HelpListScreen: { course: string }
-    Queue: {name: string, description: string, room: string, id: string}
-    SettingScreen: undefined
+    Queue: {nickname: string, description: string, room: string | null, id: string, placement: number}
+    SettingScreen: { previousScreen?: string } | undefined
     Register: undefined
     ChangePassword: undefined
-  };
+    RegisterDiscord: {
+      email: string;
+      discordTag: string;
+      discordId: string;
+    }
+    ForgottenPassword: undefined
+    PrivacyPolicy: { previousScreen: string } | undefined;
+    };
 
   export type Login = {
     email: string
     password: string
   }
 
-  
+  export type DiscordLogin = {
+    email: string
+    discordTag: string
+}
+
+
 
   export interface AppState {
     user: UserState
     helplist: HelplistState
+    archive: ArchiveState
     theme: ThemeState
+    queue: QueueState
 }

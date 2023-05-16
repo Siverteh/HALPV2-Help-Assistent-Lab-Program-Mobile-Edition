@@ -51,6 +51,8 @@ build-job:
     - rm -rf android
     - npm i react-native-eject
     - npx react-native eject
+    # Insert the line into the Gradle file
+    - sed -i "/defaultConfig {/a         manifestPlaceholders = [ appAuthRedirectScheme:'com.halp' ]" android/app/build.gradle
     - npm install
 
     - adb kill-server && adb start-server

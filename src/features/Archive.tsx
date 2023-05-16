@@ -1,43 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useContext } from 'react'
 import React from 'react';
-import ListComponent, { Course } from './List'
+import ListComponent from './List'
 import { useSelector } from 'react-redux';
-import { AppState } from '../types';
+import { AppState, RootStackParamList } from '../types';
+import { IconButton } from 'react-native-paper';
+import { StackScreenProps } from '@react-navigation/stack';
+import { ThemeContext } from '../Components/ThemeContext';
+import { TicketWithId } from '../types/ticket';
+import { useArchive } from '../hook/useArchive';
 
+const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'ArchiveScreen'>) => {
 
-const Archive = () => {
-
-  const [tiggerFetch, setTiggerFetch] = useState<boolean>(false)
   const { user: { token }} = useSelector((state: AppState) => state.user)
-  const course = ''
+  const { course } = route.params
+  const { text } = useContext(ThemeContext)
+  const { isLoaded, archive} = useSelector((state: AppState) => state.archive)
 
-  const [data, setData] = useState<Array<Course>>([])
+  useArchive(course)
 
-  useEffect(() => {
-    fetch(`https://chanv2.duckdns.org:7006/api/Archive?course=${course}`, {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-    })
-        .then(response => response.json())
-        .then((data) => {
-            const newDataMapper = data.map((d: any) => {
-                return {
-                Id: d.id,
-                Nickname: d.nickname,
-                Description: d.description,
-                Room: d.room
-            }})
-            setData(newDataMapper)
-        })
-        .catch((error) => console.log('error: ', error))
-        //.finally(() => setLoading(false))
-  })
+  const updateCourse = (updatedData: TicketWithId) => {
 
-
-  const updateCourse = async (updatedData: Course) => {
-
-      const link = "https://chanv2.duckdns.org:7006/api/Archive?id=" + updatedData.Id
+    const id = updatedData.Id
+      const link = "https://chanv2.duckdns.org:7006/api/Archive?id=" +  id
       
       fetch(link, {
         method: 'PUT',
@@ -47,17 +31,26 @@ const Archive = () => {
         },
         body: JSON.stringify([updatedData])
       })
-      .then(() => setTiggerFetch(true))
-      .catch((error) => console.error(error))
+      .catch((error) => console.error("Failed to update ticket from archive: ", error))
   };
+
+  const handleNavigate = () => {
+    navigation.navigate('HelpListScreen', { course })
+  }
   
   return (
     <ListComponent
-      title='Archive'
-      urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Archive?course=${course}`}
+      title={`ARCHIVE ${course}`}
+      loading={!isLoaded[course]}
       onUpdate={updateCourse}
-      data={data}
-    />
+      data={archive[course] ?? []}
+    >
+      <IconButton
+        icon="arrow-left"
+        iconColor={text}
+        onPress={handleNavigate}     
+      />
+    </ListComponent>
   );
 };
 

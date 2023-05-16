@@ -1,27 +1,29 @@
 import { View, Text, TouchableOpacity, ViewStyle  } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { ComponentProps, forwardRef } from 'react';
-import { StyleSheet } from 'react-native';
-import DropDown from 'react-native-paper-dropdown';
-import { Provider, DefaultTheme } from 'react-native-paper';
+import React, { useContext } from 'react';
+import Styles from "../styles/styles";
+import { ThemeContext } from './ThemeContext';
+import { Image } from 'react-native';
 
 
-
-
-
-// Header component
 interface Props {
-  title: string;
-  titleStyle: object;
+  title?: string;
 }
-export const Header = ({ title, titleStyle }: Props) => {
-  return (
-    <View>
-      <Text style={titleStyle}>{title}</Text>
-    </View>
-  );
-};
 
+export const Logo = () => {
+  return (
+    <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
+  )
+}
+export const Header = ({ title }: Props) => {
+  const { text } = useContext(ThemeContext)
+  return (
+      <>
+        <Logo/>
+        <Text style={[Styles.Header, {color: text} ]}>{title}</Text>
+      </>
+  );
+}
 
 // Descripton component
 interface DescriptionItemProps {
@@ -54,11 +56,7 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
   }) => {
     return (
       <TouchableOpacity onPress={onPress}>
-        {checked ? (
-          <MaterialCommunityIcons name="checkbox-blank-outline" style={iconStyle} size={size} />
-        ) : (
-          <MaterialCommunityIcons name="checkbox-blank-outline" style={iconStyle} size={size} />
-        )}
+        <MaterialCommunityIcons name="archive-outline" style={iconStyle} size={size} />
       </TouchableOpacity>
     );
   };
@@ -90,10 +88,10 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
     textStyle,
     titleStyle,
   }) => {
-   
-    const firstSentence = description.split('. ')[0];
-    const subtitle = firstSentence + (firstSentence !== description ? '.' : '');
-
+    const sentences = description.split('. ');
+    const firstSentence = sentences[0];
+    const remainingSentences = sentences.slice(1).join('. ');
+  
     return (
       <View style={style}>
         <TouchableOpacity
@@ -102,16 +100,21 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-          }}>
+          }}
+        >
           <View style={{ flex: 1 }}>
             <Text style={titleStyle}>{title}</Text>
-            <Text style={textStyle} numberOfLines={1}>
-              {subtitle}
-            </Text>
+            {expanded ? (
+              <Text style={textStyle}>{description}</Text>
+            ) : (
+              <Text style={textStyle} numberOfLines={1}>
+                {firstSentence}
+              </Text>
+            )}
           </View>
           <View>
-            <Text style={textStyle}>Room:{room}</Text>
-            </View>         
+            <Text style={textStyle}>Room: {room}</Text>
+          </View>
           <TouchableOpacity
             onPress={onCheck}
             style={{
@@ -119,36 +122,16 @@ export const Customcheckbox: React.FC<CustomCheckboxProps> = (
               justifyContent: 'center',
               margin: 10,
             }}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-           <Customcheckbox checked={checked} onPress={onCheck} iconStyle={textStyle}  />
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Customcheckbox checked={checked} onPress={onCheck} iconStyle={textStyle} />
           </TouchableOpacity>
         </TouchableOpacity>
         {expanded && (
-          <View >
-            <Text style={textStyle}>{description}</Text>
+          <View>
+            <Text style={textStyle}>{remainingSentences}</Text>
           </View>
         )}
       </View>
     );
   };
-
-  //custom dropdown component
-type DropDownProps = ComponentProps<typeof DropDown>;
-const customTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'transparent',
-  },
-};
-
-const CustomDropDown: React.FC<DropDownProps> = (props) => {
-  return (
-    <Provider theme={customTheme}>
-      <DropDown {...props} />
-    </Provider>
-  );
-};
-
-  export default {Header, CustomAccordion, Customcheckbox, CustomDropDown}
-

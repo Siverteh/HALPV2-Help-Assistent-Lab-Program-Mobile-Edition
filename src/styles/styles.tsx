@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { shadow } from "react-native-paper";
 
 const Styles = StyleSheet.create({
   logo: {
@@ -7,55 +6,35 @@ const Styles = StyleSheet.create({
     height: "25%",
     resizeMode: "contain"
   },
-  boxStyle: {
-    padding: 0,
-    borderRadius: 0,
+  listlogo: {
+    width: "100%",
+    height: "25%",
+    resizeMode: "contain"
   },
   buttonStyle: {
     borderRadius: 4,
+    width: '50%',
+    height: 45,
     justifyContent: 'center'
   },
-
-  textStyle: {
-    fontFamily: 'Roboto',
-  },
-  Header:{
+  Header: {
     fontSize: 24,
-    height: 100,
-    padding: 30,
+    marginBottom: "5%",
     fontFamily: "Roboto",
     textAlign: "center"
   },
-  list: {
-    padding: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    //elevation: 5
-  },
-  view: {
-    alignItems: "center",
-    width: "100%",
-    height: "90%"
-    },
   textInput: {
-    width: "85%"
+    width: "85%",
+    margin: 5
   },
   text_lg: {
     fontWeight: "bold",
     alignItems: "center",
     textAlign: "center"
-    },
+  },
   text_sm: {
     alignSelf: "center",
     textAlignVertical: "center",
-  },
-  image: {
-    alignSelf: "center",
-    width: "100%",
-    height: "25%",
-    aspectRatio:1
   }
 });
 

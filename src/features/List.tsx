@@ -1,49 +1,31 @@
-import { useContext, useEffect, useState } from 'react'
-import { View, Image, ScrollView, Text } from 'react-native'
-import { List } from "react-native-paper";
-import Styles from "../styles/styles";
-import { Header, CustomAccordion } from "../Components/CustomComponents"
+import { useContext, useState } from 'react'
+import { View, ScrollView, Text } from 'react-native'
+import { ActivityIndicator, List } from "react-native-paper";
+import { CustomAccordion, Header } from "../Components/CustomComponents"
 import React from 'react'
-import { Dimensions } from 'react-native'
-import { ThemeContext } from '../Components/GlobalHook'
-
-export type Course = {
-    Id: string;
-    Nickname: string;
-    Description: string;
-    Room: string;
-}
-
-type CourseRes = {
-    id: string;
-    nickname: string;
-    description: string;
-    room: string;
-}
+import { ThemeContext } from '../Components/ThemeContext'
+import { TicketWithId } from '../types/ticket';
 
 type Props = {
     title: string,
-    urlLive: string
-    onUpdate: (data: Course) => Promise<void>
-    data: Array<Course>
+    loading: boolean
+    onUpdate: (data: TicketWithId) => void
+    data: Array<TicketWithId>
+    children?: JSX.Element
 }
 
 
 const ListComponent = ({
-    title,
-    onUpdate,
-    data: dataprop
+  title,
+  onUpdate,
+  data,
+  loading,
+  children
 }: Props) => {
-  const windowHeight = Dimensions.get('window').height;
-  const { background, text, listItem_dark, listItem_light  } = useContext(ThemeContext)
+  const { background, text, listItem_dark, listItem_light, icon: {active} } = useContext(ThemeContext)
 
   const [checked, setChecked] = useState(new Map());
   const [expanded, setExpanded] = useState(new Map())
-  const [data, setData] = useState<Array<Course>>(dataprop)
-
-  useEffect(() => {
-    setData(dataprop)
-  }, [dataprop])
 
   const handleCheck = (id: string) => {
     const currentChecked = checked.get(id) || false
@@ -52,13 +34,8 @@ const ListComponent = ({
     const updatedItem = data.find(item => item.Id === id);
 
     if (updatedItem) {
-    
-        setData((prev) => {
-            const filteredData = prev.filter(item => item.Id !== id);
-            return filteredData
-        })
 
-        onUpdate(updatedItem)
+      onUpdate(updatedItem)
     }
 
   }
@@ -68,38 +45,45 @@ const ListComponent = ({
     setExpanded(new Map(expanded.set(id, !currentExpanded)));
   }
 
-  console.log(data, dataprop)
-
   return (
-    <View style={{backgroundColor: background,  height: windowHeight }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}></View>
-      <Image style={[Styles.logo]} source={require('.././img/halpy3.png')} />
-      <Header titleStyle= {[Styles.Header, {color: text} ]}  title={title} />
+    <View style={{ backgroundColor: background, height: '100%', }}>
+     <View style={{height: "-10%"}} />
+      <Header title={title} />
+      <View style={{marginTop: "-50%"}} />
+      {children}
+      <View style={{marginTop: "40%"}} />
       <ScrollView style={{ flex: 1 }}>
+        {loading ? (
+          <ActivityIndicator size="large" color={active} />
+        ): (
+        <>
         {data && data.length > 0 ? (
           <List.Section>
-            {data.map((item, index) =>  (
+            {data.map((item, index) => (
               <CustomAccordion
                 key={item.Id}
                 title={item.Nickname}
                 room={item.Room}
-                style={index % 2 === 0 ? listItem_light : listItem_dark }
-                titleStyle= {{
-                  color: text, 
-                  paddingHorizontal: 16,
+                style={index % 2 === 0 ? listItem_light : listItem_dark}
+                titleStyle={{
+                  color: text,
                   paddingVertical: 2,
-                  fontSize: 14,
-                  }}
+                  fontSize: 20,
+                  paddingHorizontal: 15,
+                }}
                 expanded={expanded.get(item.Id) || false}
                 onPress={() => handleExpand(item.Id)}
                 description={item.Description}
                 onCheck={() => handleCheck(item.Id)}
                 checked={checked.get(item.Id) || false}
-                textStyle={{color: text}}/>
+                textStyle={{ color: text, paddingHorizontal: 15,
+                }} />
             ))}
           </List.Section>
         ) : (
-          <Text style={{ textAlign: 'center' }} >No requests yet</Text>
+          <Text style={{ textAlign: 'center', color: text, fontSize: 20 }} >List is empty</Text>
+        )}
+        </>
         )}
       </ScrollView>
     </View>

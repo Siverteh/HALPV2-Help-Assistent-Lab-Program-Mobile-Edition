@@ -1,5 +1,5 @@
 import Ticket from "./Ticket"
-import { Ticket as TicketProp } from "../types/ticket"
+import { Ticket as TicketProp, TicketExpanded as TicketExpandedProp  } from "../types/ticket"
 import { RootStackParamList } from "../types"
 import { StackScreenProps } from "@react-navigation/stack"
 
@@ -18,9 +18,9 @@ const EditTicket = ({ route, navigation }: StackScreenProps<RootStackParamList, 
               },
               body: JSON.stringify(ticketProp)
             })
-            .then(() => navigation.navigate('Queue', {...ticketProp, id: ticket.id}))
+            .then(() => navigation.navigate('Queue', {...ticketProp, id: ticket.id, placement: ticket.placement}))
             .catch((error) => {
-            console.error(error);
+            console.error("Failed to edit ticket: ", error);
           })
     }
 
@@ -28,7 +28,7 @@ const EditTicket = ({ route, navigation }: StackScreenProps<RootStackParamList, 
         <Ticket
             ticket={ticket}
             onSubmit={handleSubmit}
-            
+
         />
     )
 }

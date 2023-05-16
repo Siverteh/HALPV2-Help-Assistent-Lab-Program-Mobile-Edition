@@ -1,71 +1,149 @@
-import { useState, useEffect } from 'react'
+import { useContext } from 'react'
 import React from 'react';
-import ListComponent, { Course } from './List'
+import ListComponent from './List'
 import { StackScreenProps } from '@react-navigation/stack'
 import { AppState, RootStackParamList } from '../types'
-import RNEventSource from "react-native-event-source"
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { IconButton, Button } from 'react-native-paper';
+import { ThemeContext } from '../Components/ThemeContext';
+import { View } from 'react-native'
+import { useSignalR } from '../hook/useSignalR';
+import { actions as helplistAction } from '../reducers/helplistReducer';
+import { actions as archiveActions} from '../reducers/archiveReducer';
+import { TicketWithId } from '../types/ticket';
+import Styles from "../styles/styles";
+import { useArchive } from '../hook/useArchive';
+import { useHelplist } from '../hook/useHelplist';
 
-const Helplist = ({ route }:  StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
 
-  const [tiggerFetch, setTiggerFetch] = useState<boolean>(false)
+const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
+
   const { course } = route.params
-  const [data, setData] = useState<Array<Course>>([])
-  const { user: { token }} = useSelector((state: AppState) => state.user)
 
-  // const es = new RNEventSource(`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`);
+  useArchive(course)
+  useHelplist(course)
+  
+  const { user: { token } } = useSelector((state: AppState) => state.user)
+  const { text, background } = useContext(ThemeContext)
+  const state = useSelector((state: AppState) => state.helplist)
 
-  // es.addEventListener("message", (event) => {
-  //   const jsonobject: any = event.data;
-  //   console.log("res: ", jsonobject)
-  //   if (jsonobject) {
-  //     setData(jsonobject)
-  //   }
-  // })
 
-  useEffect(() => {
-    fetch(`https://chanv2.duckdns.org:7006/api/Helplist?course=${course}`, {
-      headers: {
-        "Authorization": `Bearer ${token}`
+  const { connection } = useSignalR(course)
+  const dispatch = useDispatch()
+
+  connection.on("AddToHelplist", (id, nickname, description, room) => 
+    {
+      console.log("add to helplist ", id)
+    dispatch(helplistAction.addTicket({
+      key: course,
+      ticket: {
+        Id: id,
+        Nickname: nickname,
+        Description: description,
+        Room: room
       }
-  })
-        .then(response => response.json())
-        .then((data) => {
-            console.log('data: ', data)
-            const newDataMapper = data.map((d: any) => {
-                return {
-                Id: d.id,
-                Nickname: d.nickname,
-                Description: d.description,
-                Room: d.room
-            }})
-            setData(newDataMapper)
-        })
-        .catch((error) => console.log('error: ', error))
-        //.finally(() => setLoading(false))
-  }, [course])
+    }))
+    }
+  )
 
-  const updateCourse = async (updatedData: Course) => {
+  connection.on("AddToArchive", (id, nickname, description, status, room) => 
+  {
+    console.log("add to archive ", id)
+  dispatch(archiveActions.addArchive({
+    courseKey: course,
+    ticket: {
+      Id: id,
+      Nickname: nickname,
+      Description: description,
+      Room: room
+    }
+  }))
+  }
+)
 
-      const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.Id
-      
-      fetch(link, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify([updatedData])
-      })
-      .then(() => setTiggerFetch(true))
-      .catch((error) => console.error(error))
-  };
+
+connection.on("RemoveFromArchive", (id) => 
+{
+  console.log("removed from archive ", id)
+  dispatch(archiveActions.filterArchive({courseKey: course, ticketId: id}))
+}
+)
+
+  
+connection.on("UpdateHelplist", (id, nickname, description, room) => {
+  dispatch(helplistAction.updateTicket({
+    courseKey: course,
+    ticket: {
+      Id: id,
+      Nickname: nickname,
+      Description: description,
+      Room: room
+    }
+  }))
+})
+
+  connection.on("RemovedByUser",
+    (id) => dispatch(helplistAction.filterHelplist({courseKey: course, ticketId: id}))
+);
+
+connection.on("RemoveFromHelplist",
+    (id) =>{ 
+    console.log("Remove from helplist", id)
+      dispatch(helplistAction.filterHelplist({courseKey: course, ticketId: id}))
+    });
+
+
+  const updateCourse = (updatedData: TicketWithId) => {
+    const id = updatedData.Id
+
+    const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + id
+
+    fetch(link, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify([updatedData])
+    })
+      .catch((error) => console.error("Failed to update ticket from helplist: ", error))
+  }
+
+  const handleClick = () => {
+    navigation.navigate('ArchiveScreen', { course })
+  }
+
+  const handleNavigate = () => {
+    navigation.navigate('LabQueues')
+  }
+
   return (
     <ListComponent
-      title='Helplist'
-      urlLive={`https://chanv2.duckdns.org:7006/api/SSE/Helplist?course=${course}`}
+      title={`HELPLIST ${course}`}
+      loading={!state.isLoadedCourse[course]}
       onUpdate={updateCourse}
-      data={data}
-    />
+      data={state.helplist[course] ?? []}
+    >
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View>
+          <IconButton
+            icon="arrow-left"
+            iconColor={text}
+            onPress={handleNavigate}
+          />
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-end'}}>
+          <Button style={[Styles.buttonStyle, { backgroundColor: background, margin: '2%' }]}
+            mode="contained"
+            textColor={text}
+            onPress={handleClick}
+            contentStyle={{ flexDirection: 'row-reverse', height: "100%", width: "100%" }}
+            icon= "archive-outline">
+            Archive
+          </Button>
+        </View>
+      </View>
+    </ListComponent>
   );
 };
 

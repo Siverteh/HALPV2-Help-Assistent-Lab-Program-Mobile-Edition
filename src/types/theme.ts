@@ -1,3 +1,4 @@
+import { StatusBarStyle } from "react-native"
 
 type  buttons = {
     backgroundColor: string,
@@ -21,6 +22,7 @@ export type Theme = {
     text: string
     text2: string
     background: string
+    barContent: StatusBarStyle | null | undefined
     outline: outline
     boxes: string
     buttons:  buttons
@@ -28,6 +30,10 @@ export type Theme = {
     listItem_light: listItem_light
     iconColor: string
     checkUncheck: string
+    icon: {
+        active: string,
+        inactive: string
+    }
   };
 
 export type CustomTheme = {

@@ -1,7 +1,7 @@
 import Styles from "../styles/styles";
 import { Button, Text, Modal, Portal, TextInput, Checkbox } from "react-native-paper";
 import { TabView, TabBar } from 'react-native-tab-view';
-import { Dimensions, FlatList, TouchableOpacity, useColorScheme, View } from 'react-native';
+import { FlatList, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import * as React from 'react';
 import DropDown from "react-native-paper-dropdown";
 import { useContext, useState } from "react";
@@ -11,34 +11,38 @@ import {useSelector} from 'react-redux';
 
 interface UserProps {
   isAdmin: any;
+  role: string;
   courses: string;
   id: string;
   nickname: string;
 }
 import { AppState, RootStackParamList } from "../types";
 import { StackScreenProps } from "@react-navigation/stack";
-import { ThemeContext, themeHook } from '../Components/GlobalHook';
+import { ThemeContext } from '../Components/ThemeContext';
 import { useDispatch } from "react-redux";
 import { actions } from "../reducers/userReducer";
-import { head } from "lodash";
+import { Header } from "../Components/CustomComponents";
+import { themeHook } from '../hook/themeHook'
+import { asyncStorageHook } from "../hook/asyncStorageHook";
+import { set } from "lodash";
+import { isValidEmail } from "../utils";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
-  const { background, text, outline } = useContext(ThemeContext)
+  const { background, text, outline, boxes } = useContext(ThemeContext)
 
   return (
     <>
-      <View style={{ height: '7%' }}></View>
       <TextInput
-        style={{ width: "80%" }}
+        style={[Styles.textInput, {backgroundColor: boxes,  color: text }]}
         textColor={text}
-        activeOutlineColor={outline.activeOutlineColor}
-        outlineColor={outline.outlineColor}
-        theme={{
-          colors: {
-            background: background,
-            onSurfaceVariant: outline.outlineColor
-          }
-        }}
+        outlineColor={outline.activeOutlineColor}
+          activeOutlineColor={outline.outlineColor}
+          theme={{
+            colors: {
+              background: background,
+              onSurfaceVariant: outline.outlineColor
+            }
+          }}
         label={lable}
         mode="outlined"
         defaultValue={defaultValue}
@@ -50,16 +54,15 @@ const Text_Input_CB = (lable: string, defaultValue: string = '', password: boole
 }
 
 
-const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
+const Button_ = ( Value: string, onPress: () => void, width: string = '50%') => {
   const { buttons, outline } = useContext(ThemeContext)
 
   return (
     <>
-      <View style={{ height: "5%" }}></View>
-      <Button style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, height: Height, width: "60%" }]}
+      <Button
+        style={[Styles.buttonStyle, {backgroundColor: buttons.backgroundColor, margin: '2%', width: width, height: 48 }]}
         mode="contained"
         textColor={outline.outlineColor}
-        contentStyle={{ flexDirection: 'row-reverse', height: "100%", width: "100%" }}
         onPress={onPress}>
         {Value}
       </Button>
@@ -68,7 +71,7 @@ const Button_ = ( Value: string, onPress: any, Height: string = '8%') => {
 }
 
 const Settings = ({navigation}: any ) => {
-  const { background} = useContext(ThemeContext);
+  const { background, text} = useContext(ThemeContext);
   const { onChangeTheme} = themeHook();
   const { user: {email, nickname, discordTag, id, token }} = useSelector((state: AppState) => state.user)
   const dispatch = useDispatch()
@@ -81,27 +84,36 @@ const Settings = ({navigation}: any ) => {
   const [discord, setDiscord] = useState(discordTag);
   const [error, setError] = useState('');
 
-  const [isExserviceModalVisible, setIsExserviceModalVisible] = React.useState(false);
-  const openExserviceModal = () => setIsExserviceModalVisible(true);
-  const closeExserviceModal = () => setIsExserviceModalVisible(false);
+  // const [isExserviceModalVisible, setIsExserviceModalVisible] = React.useState(false);
+  // const openExserviceModal = () => setIsExserviceModalVisible(true);
+  // const closeExserviceModal = () => setIsExserviceModalVisible(false);
 
   const [isDeleteModalVisible, setIsDeleteModalVisible] = React.useState(false);
   const openDeleteModal = () => setIsDeleteModalVisible(true);
   const closeDeleteModal = () => setIsDeleteModalVisible(false);
+  const { setItem } = asyncStorageHook()
 
-
-
-  const screenHeight = Dimensions.get("window").height;
-  const containerStyle = {backgroundColor: background, height: screenHeight * 0.45, width: "70%", borderRadius: 20 };
+  const {height} = useWindowDimensions();
+  const containerStyle = {backgroundColor: background, height: height * 0.45, width: "70%", borderRadius: 20 };
 
   const handleLogout = () => {
+    setItem('@remember_me_login', 'false')
+    setItem('@user_email', '')
+    setItem('@user_token', '')
+    setItem('@Ticket', '')
     dispatch(actions.setUser({
+      id: undefined,
+      nickname: undefined,
+      discordTag: undefined,
+      email: undefined,
+      role: undefined,
+      token: undefined,
       isLoggedIn: false
   }))
   }
   const handleChangeProfile = () => {
 
-    if (!(newEmail.includes('@') && newEmail.includes('.'))) {
+    if (!isValidEmail(newEmail)) {
       setError("Invalid Email");
       return;
     }
@@ -112,7 +124,7 @@ const Settings = ({navigation}: any ) => {
       email: newEmail,
       discordTag: discord
     };
-    console.log(data);
+
     fetch('https://chanv2.duckdns.org:7006/api/User', {
       method: "PUT",
       headers: {
@@ -124,17 +136,18 @@ const Settings = ({navigation}: any ) => {
       .then((response) => {
         if (response.ok) {
           closeProfileModal();
-          console.log('ok');
         }
       })
       .catch((error) => {
-        console.log('1');
-        console.error(error);
+        console.error("Failed to update user: ", error);
       });
   }
 
   const closeProfileModalError = () => {
     setError('');
+    setNewEmail(email ?? '');
+    setDiscord(discordTag ?? '');
+    setName(nickname ?? '');
     closeProfileModal();
   }
 
@@ -156,34 +169,40 @@ const Settings = ({navigation}: any ) => {
         }
       })
       .catch((error) => {
-        console.log('1');
-        console.error(error);
+        console.error("Failed to delete user: ", error);
       });
   }
 
   return (
 
-    <View style={[{backgroundColor: background, justifyContent: 'center', alignItems: 'center', height: screenHeight * 0.70 }]}>
-      {Button_( "PROFILE", openProfileModal)}
-      {Button_( "PASSWORD", ()=>navigation.navigate('ChangePassword'))}
-      {Button_("EXTERNAL-SERVICE", openExserviceModal)}
+    <View style={[{backgroundColor: background, alignItems: 'center', height: height * 0.70 }]}>
+      <View style={[{ margin: "2%"}]}/>
+      {Button_( "EDIT PROFILE", openProfileModal)}
+      {Button_( "CHANGE PASSWORD", ()=>navigation.navigate('ChangePassword'))}
+      {/*Button_("EXTERNAL-SERVICE", openExserviceModal)*/}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
-      {Button_("THEME", () => onChangeTheme() )}
+      {Button_("CHANGE THEME", () => onChangeTheme() )}
+      {Button_("PRIVACY POLICY", () => navigation.navigate('PrivacyPolicy', { previousScreen: 'SettingScreen' }))}
       {Button_("LOG OUT", handleLogout)}
 
       <Portal>
         <Modal visible={isProfileModalVisible} onDismiss={closeProfileModalError} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8 }]}>
           {Text_Input_CB( "Name", name, false, setName)}
           {Text_Input_CB("Discord", discord, false, setDiscord)}
-          <Text style={{ color: 'red',marginTop:'5%', marginBottom:'-10%' }}>{error}</Text>
           {Text_Input_CB("Email", newEmail, false, setNewEmail)}
-          {Button_("SAVE", handleChangeProfile, '15%')}
+          <Text style={{ color: background == '#E0EEF7' ? 'red' : '#f18ba5', fontSize: 20 }}>{error}</Text>
+          {Button_("SAVE", handleChangeProfile)}
         </Modal>
-        <Modal visible={isExserviceModalVisible} onDismiss={closeExserviceModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
+        {/* <Modal visible={isExserviceModalVisible} onDismiss={closeExserviceModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
           {Button_("CONECT DISCORD", closeExserviceModal, '30%')}
-        </Modal>
-        <Modal visible={isDeleteModalVisible} onDismiss={closeDeleteModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: screenHeight * 0.20 }]} >
-          {Button_("DELETE ACCOUNT", handleDeleteAccount, '30%')}
+        </Modal> */}
+        <Modal visible={isDeleteModalVisible} onDismiss={closeDeleteModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, height: height * 0.20 }]} >
+          <Text style={{ color: text, fontSize: 20, justifyContent: 'center', width: '75%' }}>Are you sure you want to delete your account?</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} >
+            {Button_("YES", handleDeleteAccount, '30%')}
+            <View style={{width: '5%'}}/>
+            {Button_("NO", closeDeleteModal, '30%')}
+          </View>
         </Modal>
       </Portal>
     </View>
@@ -191,20 +210,21 @@ const Settings = ({navigation}: any ) => {
 };
 
 const TimeEdit = React.memo(( ) => {
-  const { background, text, boxes } = useContext(ThemeContext);
+  const { background, text, boxes, listItem_dark, listItem_light } = useContext(ThemeContext);
   const [timeeditData, setTimeeditData] = useState<Array<{ id: string, courseLink: string }>>([]);
-  const { user: { token }} = useSelector((state: AppState) => state.user) 
-  const screenHeight = Dimensions.get("window").height;
+  const { user: { token }} = useSelector((state: AppState) => state.user)
+  const {height} = useWindowDimensions();
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(false);
   const openAddModal = () => setIsAddModalVisible(true);
   const closeAddModal = () => setIsAddModalVisible(false);
   const containerStyle = {
     backgroundColor: background,
-    height: screenHeight * 0.45,
-    width: "70%", 
-    borderRadius: 20 
+    height: height * 0.45,
+    width: "70%",
+    borderRadius: 20
   };
   const [newLink, setNewLink] = useState('');
+  const [error, setError] = useState('');
 
   const fetchData = () => {
     fetch('https://chanv2.duckdns.org:7006/api/Timeedit', {headers: {Authorization: `Bearer ${token}`}})
@@ -213,7 +233,7 @@ const TimeEdit = React.memo(( ) => {
         setTimeeditData(data);
       })
       .catch(error => {
-        console.error(error);
+        console.error("Failed to get timeedit links: ", error);
       });
   };
 
@@ -226,6 +246,11 @@ const TimeEdit = React.memo(( ) => {
 
 
   const handleAddNewLink = () => {
+    if (!newLink.endsWith('html')) {
+      setError('Invalid link, get a valid link from timeedit');
+      return;
+    }
+    setError('');
     fetch(`https://chanv2.duckdns.org:7006/api/Timeedit?link=${newLink}`, {
       method: 'POST',
       headers: {
@@ -243,11 +268,10 @@ const TimeEdit = React.memo(( ) => {
         setNewLink('');
       })
       .catch(error => {
-        console.error(error.response);
-        console.error(error);
+        console.error("Failed to post timeedit link: ", error);
       });
   }
-  
+
   const deleteItem = (index: number) => {
     const item = timeeditData[index];
     const newData = [...timeeditData];
@@ -265,20 +289,20 @@ const TimeEdit = React.memo(( ) => {
         console.log('Item deleted successfully', data);
       })
       .catch(error => {
-        console.error('Error deleting item', error);
+        console.error("Error deleting item ", error)
       });
   };
-  
+
 
   const renderItem = ({ item, index }: { item: { id: string, courseLink: string }, index: number }) => (
 
-    <View style={[{backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}]}>
+    <View style={[{backgroundColor: index % 2 == 0 ? listItem_light.backgroundColor : listItem_dark.backgroundColor, padding: 10}]}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
         style={{color: text, width:'80%'}}>
             {item.courseLink}
         </Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => deleteItem(index)}
           style={[{backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}]}>
           <Text style={{color: text}}>
@@ -289,23 +313,28 @@ const TimeEdit = React.memo(( ) => {
     </View>
   );
 
+  const handelCloseAddModal = () => {
+    setError('');
+    closeAddModal();
+  }
 
   return (
-    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center', height: screenHeight*0.66 }]}>
+    <View style={[{backgroundColor: background ,justifyContent: 'center', alignItems: 'center' }]}>
       <FlatList
         data={timeeditData}
         renderItem={renderItem}
         style={{ width: '100%' }}
         keyExtractor={item => item.id}
       />
-      {Button_("ADD NEW", openAddModal, '10%')}
-      <View style={{ height: '5%' }} />
+      {Button_("ADD NEW", openAddModal)}
+      <View style={{ height: 60 }} />
 
-      
+
       <Portal>
-        <Modal visible={isAddModalVisible} onDismiss={closeAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: screenHeight * 0.30 }]}>
+        <Modal visible={isAddModalVisible} onDismiss={handelCloseAddModal} contentContainerStyle={[containerStyle, { alignSelf: 'center', alignItems: 'center', opacity: 0.8, marginTop: '-35%', height: height * 0.30 }]}>
           {Text_Input_CB( "TimeEdit Link", newLink, false, setNewLink)}
-          {Button_("Add", handleAddNewLink, '25%')
+          <Text style={{ color: background == '#E0EEF7' ? 'red' : '#f18ba5', fontSize: 14, padding: 0 }}>{error}</Text>
+          {Button_("Add", handleAddNewLink)
           }
         </Modal>
       </Portal>
@@ -314,9 +343,8 @@ const TimeEdit = React.memo(( ) => {
 });
 
 
-const Roles = React.memo(() => {
-  const { background, text, listItem_dark, listItem_light, text2, buttons, boxes } = useContext(ThemeContext);
-  const screenHeight = Dimensions.get("window").height;
+const Roles = () => {
+  const { background, text, buttons, listItem_dark,listItem_light, boxes } = useContext(ThemeContext);
   const { user: { token }} = useSelector((state: AppState) => state.user) 
   const [showDropDown, setShowDropDown] = useState(false);
   const [courseList, setCourseList] = useState([]);
@@ -349,7 +377,8 @@ const Roles = React.memo(() => {
   React.useEffect(() => {
     fetchUsers();
     fetchCourse();
-  }, []);
+    console.log("fetching data");
+  }, [showDropDown, searchText, ]);
 
   const dropdownItems = [
     { value: "admin", label: "Admin" },
@@ -373,7 +402,7 @@ const Roles = React.memo(() => {
       course: selectedCourse,
       set: isChecked ? false : !checkedItems[itemId],
     };
-  
+
     fetch(url, {
       method: "PUT",
       headers: {
@@ -384,7 +413,6 @@ const Roles = React.memo(() => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log('ok');
           fetchUsers();
           setCheckedItems((prevState) => ({
             ...prevState,
@@ -393,28 +421,40 @@ const Roles = React.memo(() => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Failed to update roles: ", error);
       });
   };
 
   const renderItem = ({ item, index }: { item: UserProps; index: number }) => {
     const isAdmin = item.isAdmin;
+    if (isAdmin){
+      item.role = 'Admin'
+    } else if (item.courses.length > 0){
+      item.role = 'Student Assistant'
+    } else {
+        item.role = 'User'
+    }
+
   const isChecked =
     (selectedCourse && item.courses.includes(selectedCourse)) || isAdmin;
 
     return (
       <View
-        style={[
-          {backgroundColor: index % 2 == 0 ? boxes : background, padding: 10}
-        ]}
-      >
+        style={[{backgroundColor: index % 2 == 0 ? listItem_light.backgroundColor : listItem_dark.backgroundColor, padding: 10}]}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={[{color:text, width: "80%", fontSize: 22 }]}>
-            {item.nickname}
-          </Text>
+          <View style={{width: '80%'}}>
+            <Text style={[{color:text, width: "80%", fontSize: 22 }]}>
+              {item.nickname}
+            </Text>
+            <Text style={[{color:text, width: "80%", fontSize: 12 }]}>
+              {userData[index].role}
+            </Text>
+          </View>
           <Checkbox
             status={isChecked ? "checked" : "unchecked"}
             onPress={() => handleCheckboxChange(item.id, selectedCourse)}
+            color={text}
+            uncheckedColor={text}
           />
         </View>
       </View>
@@ -424,12 +464,10 @@ const Roles = React.memo(() => {
   const filteredData = userData.filter((item) =>
     item.nickname.toLowerCase().includes(searchText.toLowerCase())
   );
-
-  const handleChange = (text:string) => setSearchText(text)
-
+  
   return(
-    <View style={[{backgroundColor:background, justifyContent: 'center', alignItems: 'center', height: screenHeight*0.70 }]}>
-      <View style={{height:'5%', width:'90%', marginTop:'10%'}}>
+    <>
+    <View style={{ justifyContent : "center", marginLeft: '2%', width: '93%' }}>
         <DropDown
           label={"Search by Course + Admin"}
           mode={"outlined"}
@@ -439,55 +477,55 @@ const Roles = React.memo(() => {
           value={selectedCourse}
           setValue={setSelectedCourse}
           list={dropdownItems}
-          dropDownContainerHeight={300}
-          theme={{colors: {onSurface:text, background:buttons.backgroundColor, outline: 'transparent', onSurfaceVariant:text}}}
-          dropDownItemStyle={{backgroundColor: buttons.backgroundColor}}
+          dropDownContainerMaxHeight={300}
+          theme={{colors: {onSurface:text, background:boxes, outline: 'transparent', onSurfaceVariant:text}}}
+          dropDownItemStyle={{backgroundColor: boxes}}
           dropDownItemTextStyle={{color: text}}
           dropDownStyle={{backgroundColor: 'transparent'}}
           dropDownItemSelectedStyle={{backgroundColor: background}}
-          dropDownItemSelectedTextStyle={{color: text}}          
+          dropDownItemSelectedTextStyle={{color: text}}  
+          inputProps={{
+            style: {
+              ...Styles.textInput,
+              width: '100%'
+            }}
+          }       
         />
-      </View>
-      <View style={{ height: "5%", width: "93%", marginTop: "10%" }}>
+         </View>
       <SearchBar
-        placeholder="Search..."
-        onChangeText={handleChange}
+        placeholder="Search"
+        onChangeText={setSearchText}
         value={searchText}
         placeholderTextColor={text}
-        containerStyle={{ 
-          backgroundColor: "transparent", 
+        containerStyle={{
+          backgroundColor: "transparent",
           borderTopWidth: 0,
           borderBottomWidth: 0, }}
         inputContainerStyle={{
-          backgroundColor: buttons.backgroundColor,
-          width: '101%'
+          backgroundColor: boxes,
+          margin: 5
         }}
         inputStyle={{
           color: text,
           fontSize: 18,
         }}
       />
-      </View>
-      <View style={{height:'5%', width:'90%', marginTop:'10%'}}/>
       <FlatList 
         data={filteredData}
         renderItem={renderItem}
-        style={{width: '90%'}}
         keyExtractor={item => item.id}
       />
-        
-      
-    </View>
+    </>
   );
-});
+};
 const renderTabBar = (props: any) => {
   const { background, text} = useContext(ThemeContext);
-  const isDarkMode = useColorScheme() === 'dark';
+
   return (
     <TabBar
       {...props}
       indicatorStyle={[{backgroundColor: text}]}
-      style={[{backgroundColor: background, paddingTop: '11%' }]}
+      style={[{backgroundColor: background }]}
       labelStyle={[{color: text, fontSize: 18 }]}
       pressColor={{backgroundColor: background}}
     />
@@ -495,8 +533,7 @@ const renderTabBar = (props: any) => {
 };
 
 export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 'SettingScreen'>) {
-  const isDarkMode = useColorScheme() === 'dark';
-  const { background, text } = useContext(ThemeContext);
+  const { background } = useContext(ThemeContext);
   const { user: { role }} = useSelector((state: AppState) => state.user)
 
   const [index, setIndex] = React.useState(0);
@@ -505,7 +542,7 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
     { key: '2', title: 'TimeEdit' },
     { key: '3', title: 'Roles' },
   ]);
-  
+
   const renderScene = ({ route }: { route: { key: string } }) => {
 
     switch (route.key) {
@@ -522,31 +559,24 @@ export default function Tabs({navigation}: StackScreenProps<RootStackParamList, 
   if(role === 'Admin')
   {
     return (
-        <>
-          <Text style={
-            {color: text, backgroundColor: background, fontSize: 24, textAlign: 'center', paddingTop: '27%'}}
-            >
-              {routes[index].title}
-          </Text>
+      <View style={[{backgroundColor: background, height: '100%' }]}>
+        <Header title= {routes[index].title}/>
+
           <TabView
             navigationState={{ index, routes }}
             renderScene={renderScene}
             onIndexChange={setIndex}
             renderTabBar={renderTabBar}
             />
-      </>
+      </View>
     );
   } else {
     return (
-      <>
-        <Text style={
-          {color: text, backgroundColor: background, fontSize: 40, textAlign: 'center', paddingTop: '27%'}}
-          >
-            {routes[0].title}
-        </Text>
+      <View style={[{backgroundColor: background, height: '100%' }]}>
+        <Header title= {routes[0].title}/>
         <View style={{height: '5%', width: '100%', backgroundColor: background}}/>
         <Settings navigation={navigation} />
-      </>
+      </View>
     );    
   }
 }
