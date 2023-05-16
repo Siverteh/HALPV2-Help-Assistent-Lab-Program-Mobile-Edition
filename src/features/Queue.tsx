@@ -22,23 +22,18 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
   const [queue, setQueue] = useState<number>(ticket.placement)
   const {setItem} = asyncStorageHook()
   const dispatch = useDispatch()
-  // useQueue(navigation)
-
   const { connection, stateConnection } = useSignalR()
   stateConnection()
   connection.on("Queue",
     (id, count, counter, course) => {
       if (ticket.id === id) {
         if (count === 1) {
-          console.log("kommer inn")
           setItem('@Ticket', String(id))
           
           dispatch(actions.setIsLoadedQueue(false))
         }
         if (counter === 0) {
           setItem('@Ticket', '')
-
-          // navigation.navigate('CreateScreen');
           setQueue(counter)
         }
         else {

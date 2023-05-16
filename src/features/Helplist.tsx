@@ -69,8 +69,9 @@ connection.on("RemoveFromArchive", (id) =>
 }
 )
 
-  
+
 connection.on("UpdateHelplist", (id, nickname, description, room) => {
+  console.log("updated by user: ", id, room)
   dispatch(helplistAction.updateTicket({
     courseKey: course,
     ticket: {

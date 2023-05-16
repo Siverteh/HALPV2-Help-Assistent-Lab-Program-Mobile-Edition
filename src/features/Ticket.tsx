@@ -34,7 +34,9 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
   const [roomList, setRoomList] = useState<string[]>([]);
 
   React.useEffect(() => {
+    if (!ticket){
       setValue((prevValue) => ({ ...prevValue, nickname: nickname ?? "" }));
+    }
   }, [nickname]);
 
   const fetchRooms = async () => {
@@ -81,6 +83,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
       setRoom(null);
       setValidation(false);
     }
+    
     await onSubmit(ticketData);
   };
 
