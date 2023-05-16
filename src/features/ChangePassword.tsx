@@ -21,7 +21,7 @@ import { Header } from '../Components/CustomComponents';
 function ChangePassword({ navigation }: StackScreenProps<RootStackParamList, 'ChangePassword'>): JSX.Element {
 
   
-  const { user: { email }} = useSelector((state: AppState) => state.user)
+  const { user: { email, token }} = useSelector((state: AppState) => state.user)
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [secureTextEntryRepeat, setSecureTextEntryRepeat] = useState(true);
@@ -57,25 +57,37 @@ function ChangePassword({ navigation }: StackScreenProps<RootStackParamList, 'Ch
       hasSymbol
     ) {
       try {
-        const response = await axios.put('http://chanv2.duckdns.org:5084/api/user/changePassword', {
-          email: email,
-          oldPassword: currentPassword,
-          newPassword: newPassword,
-        });
-
+        const response = fetch('https://chanv2.duckdns.org:7006/api/user/changePassword', {
+          method: "PUT",
+          headers: { 
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}` 
+          },
+          body: JSON.stringify(
+            {
+            email: email,
+            oldPassword: currentPassword,
+            newPassword: newPassword,
+          }
+        )}).then((response) => {
         if (response.status === 204) {
           Alert.alert('Success', 'Password changed successfully!');
           navigation.goBack();
         }
         else if (response.status === 401) {
           Alert.alert('Error', 'Incorrect current password!');
+          
         }
         else {
           Alert.alert('Error', 'An error occurred while changing the password.');
         }
+      })
       } catch (error: any) 
       {
         Alert.alert('Error', 'Incorrect current password!');
+        
+        //console.log(error.response);
+          console.log('Here');
       }
     } else {
       let errMsg = 'Password must:';
