@@ -83,8 +83,8 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
     })
       .then(() => {
         
-        invokeUpdate(id)
-        dispatch(actions.filterHelplist({courseKey: course, ticketId: updatedData.Id}))
+        // invokeUpdate(id)
+        // dispatch(actions.filterHelplist({courseKey: course, ticketId: updatedData.Id}))
         // dispatch(archiveActions.setArchive({courseKey: course, tickets: [updatedData]}))
       })
       .catch((error) => console.error("Failed to update ticket from helplist: ", error))
