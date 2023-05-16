@@ -18,7 +18,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   const { text } = useContext(ThemeContext)
   const { isLoaded, archive} = useSelector((state: AppState) => state.archive)
   const dispatch = useDispatch()
-  const connection = useSignalR(course)
+  const { connection, startInvoke } = useSignalR(course)
 
   useEffect(() => {
     if (!isLoaded[course]) {
@@ -45,30 +45,40 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
       }
   }, [course])
 
-  connection.on("AddToArchive", (Id, Nickname, Description, Room) => 
+  connection.on("AddToArchive", (id, nickname, description, status, room) => 
   {
+    console.log("add to archive ", id)
   dispatch(actions.setArchive({
     courseKey: course,
     tickets: [{
-      Id: Id,
-      Nickname: Nickname,
-      Description: Description,
-      Room: Room
+      Id: id,
+      Nickname: nickname,
+      Description: description,
+      Room: room
     }]
   }))
   }
 )
 
-  connection.on("RemoveFromArchive", (Course, Id) => 
+  connection.on("RemoveFromArchive", (id) => 
   {
-    dispatch(actions.filterArchive({courseKey: Course, ticketId: Id}))
+    console.log("removed from helplist ", id)
+    dispatch(actions.filterArchive({courseKey: course, ticketId: id}))
     //dispatch(archiveActions.setArchive({courseKey: Course, tickets: [ticket]}))
   }
   )
 
+  const invokeUpdate = (id: string) => {
+    connection.stop()
+    startInvoke(course)
+          .then(() => connection.invoke("RemoveFromArchive", id))
+          .catch(err => console.error(err.toString()));
+  }
 
-  const updateCourse = async (updatedData: TicketWithId) => {
+  const updateCourse = (updatedData: TicketWithId) => {
 
+    const id = updatedData.Id
+  
       const link = "https://chanv2.duckdns.org:7006/api/Archive?id=" + updatedData.Id
       
       fetch(link, {
@@ -80,6 +90,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
         body: JSON.stringify([updatedData])
       })
       .then(() => {
+        invokeUpdate(id)
         // dispatch(actions.filterArchive({courseKey: course, ticketId: updatedData.Id}))
         // dispatch(helplistActions.setHelplist({key: course, tickets: [updatedData]}))
       })

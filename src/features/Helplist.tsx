@@ -22,7 +22,7 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
   const state = useSelector((state: AppState) => state.helplist)
   const dispatch = useDispatch()
 
-  const connection = useSignalR(course)
+  const { connection, startInvoke } = useSignalR(course)
 
   const dataMapper = (data: any) => data.map((d: any) => {
     return {
@@ -33,15 +33,16 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
     }
   })
 
-  connection.on("AddToHelplist", (Id, Nickname, Description, Room) => 
+  connection.on("AddToHelplist", (id, nickname, description, room) => 
     {
+      console.log("add to helplist ", id)
     dispatch(actions.setHelplist({
       key: course,
       tickets: [{
-        Id: Id,
-        Nickname: Nickname,
-        Description: Description,
-        Room: Room
+        Id: id,
+        Nickname: nickname,
+        Description: description,
+        Room: room
       }]
     }))
     }
@@ -64,9 +65,10 @@ connection.on("UpdateHelplist", (id, nickname, description, room) => {
     (id) => dispatch(actions.filterHelplist({courseKey: course, ticketId: id}))
 );
 
-  connection.on("RemoveFromHelplist", (Course, Id) => 
+  connection.on("RemoveFromHelplist", (id) => 
   {
-    dispatch(actions.filterHelplist({courseKey: Course, ticketId: Id}))
+    console.log("removed from helplist ", id)
+    dispatch(actions.filterHelplist({courseKey: course, ticketId: id}))
   }
   )
 
@@ -94,7 +96,16 @@ connection.on("UpdateHelplist", (id, nickname, description, room) => {
       }
   }, [course])
 
-  const updateCourse = async (updatedData: TicketWithId) => {
+  const invokeUpdate = (id: string) => {
+    connection.stop()
+    startInvoke(course)
+    .then(() => connection.invoke("RemoveFromHelplist", id))
+    .catch(err => console.error(err.toString()));
+  }
+
+  const updateCourse = (updatedData: TicketWithId) => {
+    // dispatch(actions.setIsConnected(true))
+    const id = updatedData.Id
 
     const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.Id
 
@@ -107,6 +118,7 @@ connection.on("UpdateHelplist", (id, nickname, description, room) => {
       body: JSON.stringify([updatedData])
     })
       .then(() => {
+        invokeUpdate(id)
         // dispatch(actions.filterHelplist({courseKey: course, ticketId: updatedData.Id}))
         // dispatch(archiveActions.setArchive({courseKey: course, tickets: [updatedData]}))
       })

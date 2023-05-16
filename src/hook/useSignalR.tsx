@@ -15,13 +15,13 @@ export const makeHubConnection = (accessToken: string, signalRUrl: string): HubC
     })
     .configureLogging({
       log: function (logLevel, message) {
-        //console.log('SIGNALR: ' + new Date().toISOString() + ': ' + message)
+        // console.log('SIGNALR: ' + new Date().toISOString() + ': ' + message)
       }
     })
     .build()
 }
 
-export const useSignalR = (groupName?: string) => {
+export const useSignalR = (course?: string) => {
   const state = useSelector((state: AppState) => state.helplist)
   const dispatch = useDispatch()
 
@@ -32,14 +32,13 @@ export const useSignalR = (groupName?: string) => {
 
   useEffect(() => {
     if (!state.isConnected) {
-
       connection.start()
         .then(() => {
-          if (groupName) {
-            connection.invoke("AddToGroup", groupName);          
+          if (course) {
+            connection.invoke("AddToGroup", course);          
           }
           else {
-            console.warn("Groupname is", groupName)
+            console.warn("Groupname is", course)
           }
         })
         .catch((error) => {
@@ -51,7 +50,17 @@ export const useSignalR = (groupName?: string) => {
     }
   }, [])
 
-  return connection
+  const startInvoke = (course: string) => {
+    return connection.start()
+    
+    // connection.start()
+    // .then(() => connection.invoke("AddToGroup", course))
+  }
+
+  return {
+    connection,
+    startInvoke
+  }
 
 }
   
