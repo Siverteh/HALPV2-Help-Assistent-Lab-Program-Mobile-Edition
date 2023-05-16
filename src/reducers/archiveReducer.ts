@@ -28,7 +28,8 @@ const archiveReducer = createSlice({
             state: ArchiveState,
             { payload }: PayloadAction<{courseKey: string, ticketId: string}>
         ) => {
-            const filtered = state.archive[payload.courseKey].filter(({ Id }) => Id !== payload.ticketId)
+            const list = state.archive[payload.courseKey] ?? []
+            const filtered = list.filter(({ Id }) => Id !== payload.ticketId)
         
             state.archive = {
                 ...state.archive,
