@@ -97,10 +97,8 @@ connection.on("UpdateHelplist", (id, nickname, description, room) => {
   }, [course])
 
   const invokeUpdate = (id: string) => {
-    connection.stop()
-    startInvoke(course)
-    .then(() => connection.invoke("RemoveFromHelplist", id))
-    .catch(err => console.error(err.toString()));
+    connection.start()
+      .then(() => connection.invoke("RemoveFromHelplist", id))
   }
 
   const updateCourse = (updatedData: TicketWithId) => {

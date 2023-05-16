@@ -50,16 +50,8 @@ export const useSignalR = (course?: string) => {
     }
   }, [])
 
-  const startInvoke = (course: string) => {
-    return connection.start()
-    
-    // connection.start()
-    // .then(() => connection.invoke("AddToGroup", course))
-  }
-
   return {
-    connection,
-    startInvoke
+    connection
   }
 
 }

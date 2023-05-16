@@ -69,8 +69,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   )
 
   const invokeUpdate = (id: string) => {
-    connection.stop()
-    startInvoke(course)
+    connection.start()
           .then(() => connection.invoke("RemoveFromArchive", id))
           .catch(err => console.error(err.toString()));
   }
