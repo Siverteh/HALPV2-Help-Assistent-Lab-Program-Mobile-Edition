@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react'
+import { useContext } from 'react'
 import React from 'react';
 import ListComponent from './List'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -6,13 +6,12 @@ import { AppState, RootStackParamList } from '../types'
 import { useDispatch, useSelector } from 'react-redux';
 import { IconButton, Button } from 'react-native-paper';
 import { ThemeContext } from '../Components/ThemeContext';
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { useSignalR } from '../hook/useSignalR';
-import { actions } from '../reducers/helplistReducer';
+import { actions as helplistAction } from '../reducers/helplistReducer';
 import { actions as archiveActions} from '../reducers/archiveReducer';
 import { TicketWithId } from '../types/ticket';
 import Styles from "../styles/styles";
-import { useListener } from '../hook/useListener';
 import { useArchive } from '../hook/useArchive';
 import { useHelplist } from '../hook/useHelplist';
 
@@ -30,15 +29,69 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
 
 
   const { connection } = useSignalR(course)
-  useListener(course)
+  const dispatch = useDispatch()
 
+  connection.on("AddToHelplist", (id, nickname, description, room) => 
+    {
+      console.log("add to helplist ", id)
+    dispatch(helplistAction.addTicket({
+      key: course,
+      ticket: {
+        Id: id,
+        Nickname: nickname,
+        Description: description,
+        Room: room
+      }
+    }))
+    }
+  )
 
-  const invokeUpdate = (id: string) => {
-    connection.stop()
-    connection.start()
-          .then(() => connection.invoke("RemoveFromHelplist", id))
-          .catch(err => console.error(err.toString()))
+  connection.on("AddToArchive", (id, nickname, description, status, room) => 
+  {
+    console.log("add to archive ", id)
+  dispatch(archiveActions.addArchive({
+    courseKey: course,
+    ticket: {
+      Id: id,
+      Nickname: nickname,
+      Description: description,
+      Room: room
+    }
+  }))
   }
+)
+
+
+connection.on("RemoveFromArchive", (id) => 
+{
+  console.log("removed from archive ", id)
+  dispatch(archiveActions.filterArchive({courseKey: course, ticketId: id}))
+  //dispatch(archiveActions.setArchive({courseKey: Course, tickets: [ticket]}))
+}
+)
+
+  
+connection.on("UpdateHelplist", (id, nickname, description, room) => {
+  dispatch(helplistAction.updateTicket({
+    courseKey: course,
+    ticket: {
+      Id: id,
+      Nickname: nickname,
+      Description: description,
+      Room: room
+    }
+  }))
+})
+
+  connection.on("RemovedByUser",
+    (id) => dispatch(helplistAction.filterHelplist({courseKey: course, ticketId: id}))
+);
+
+connection.on("RemoveFromHelplist",
+    (id) =>{ 
+    console.log("Remove from helplist", id)
+      dispatch(helplistAction.filterHelplist({courseKey: course, ticketId: id}))
+    });
 
 
   const updateCourse = (updatedData: TicketWithId) => {
@@ -54,12 +107,6 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
       },
       body: JSON.stringify([updatedData])
     })
-      .then(() => {
-        
-        // invokeUpdate(id)
-        // dispatch(actions.filterHelplist({courseKey: course, ticketId: updatedData.Id}))
-        // dispatch(archiveActions.setArchive({courseKey: course, tickets: [updatedData]}))
-      })
       .catch((error) => console.error("Failed to update ticket from helplist: ", error))
   }
 
@@ -70,7 +117,7 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
   const handleNavigate = () => {
     navigation.navigate('LabQueues')
   }
-  
+
   return (
     <ListComponent
       title={`HELPLIST ${course}`}

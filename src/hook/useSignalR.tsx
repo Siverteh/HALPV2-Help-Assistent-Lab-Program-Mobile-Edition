@@ -50,6 +50,11 @@ export const useSignalR = (course?: string) => {
     }
   }, [])
 
+  connection.onclose(() => {
+    console.log("SIGNALR CONNECTION CLOSED");
+    state.isConnected = false;
+  })
+
   return {
     connection
   }

@@ -24,6 +24,23 @@ const archiveReducer = createSlice({
                 [payload.courseKey]: [...payload.tickets, ...state.archive[payload.courseKey] ?? []]
             }
         },
+        addArchive: (
+            state: ArchiveState,
+            { payload }: PayloadAction<{courseKey: string, ticket: TicketWithId}>
+        ) => {
+            const currentlist = state.archive[payload.courseKey] ?? []
+            const exists = currentlist.includes(payload.ticket)
+            console.log(exists)
+            if(exists) return
+            const list = [payload.ticket, ...currentlist]
+            const sortedList = list.sort((a, b) => { 
+                return Number(a.Id) - Number(b.Id)
+              })
+            state.archive = {
+                ...state.archive,
+                [payload.courseKey]: sortedList
+            }
+        },
         filterArchive: (
             state: ArchiveState,
             { payload }: PayloadAction<{courseKey: string, ticketId: string}>

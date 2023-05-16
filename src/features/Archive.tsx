@@ -10,7 +10,6 @@ import { actions } from '../reducers/archiveReducer';
 import { actions as helplistActions } from '../reducers/helplistReducer';
 import { TicketWithId } from '../types/ticket';
 import { useSignalR } from '../hook/useSignalR';
-import { useListener } from '../hook/useListener';
 import { useArchive } from '../hook/useArchive';
 
 const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'ArchiveScreen'>) => {

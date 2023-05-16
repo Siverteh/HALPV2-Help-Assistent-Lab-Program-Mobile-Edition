@@ -26,6 +26,22 @@ const helplistReducer = createSlice({
                 [payload.key]: [...state.helplist[payload.key] ?? [], ...payload.tickets]
             }
         },
+        addTicket: (
+            state: HelplistState,
+            { payload }: PayloadAction<{key: string, ticket: TicketWithId}>
+        ) => {
+            const currentlist = state.helplist[payload.key] ?? []
+            const exists = currentlist.includes(payload.ticket)
+            if(exists) return
+            const list = [payload.ticket, ...currentlist]
+            const sortedList = list.sort((a, b) => { 
+                return Number(a.Id) - Number(b.Id)
+              })
+            state.helplist = {
+                ...state.helplist,
+                [payload.key]: sortedList
+            }
+        },
         filterHelplist: (
             state: HelplistState,
             { payload }: PayloadAction<{courseKey: string, ticketId: string}>
