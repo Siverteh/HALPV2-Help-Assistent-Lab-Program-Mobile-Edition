@@ -1,0 +1,513 @@
+8d4c85d  Sondre Horpestad               2023-05-16 Merge branch 'CHANV2-45/live-update' into 'main'
+3214865  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update removed console log
+35c5f50  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update update by user
+ea29408  Sondre Horpestad               2023-05-16 Merge branch 'Sprint_6' into 'main'
+65566c7  Sondre Horpestad               2023-05-16 Merge branch 'CHANV2-45/live-update' into 'Sprint_6'
+f02dc42  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update something
+fe02990  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update isloaded check
+f52f06d  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update queue
+2fb8de2  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update login validation
+ed8a3a8  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update revert changes
+e124c8f  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update testing
+e49fab9  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update bugfix
+11166a8  Charlotte Celine Thorjussen    2023-05-16 Merge branch 'CHANV2-45/live-update' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-45/live-update
+50ba71c  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update new function
+aaccbb7  Nikolai Eidsheim               2023-05-16 Removed the latest changes
+19e84a7  Charlotte Celine Thorjussen    2023-05-16 usehelplist and usearchive hook
+a1f251d  Nikolai Eidsheim               2023-05-16 Added ability to not receive too many signalr requests
+b41f761  Nikolai Eidsheim               2023-05-16 Added handling of ticketid in queue
+d00d583  Nikolai Eidsheim               2023-05-16 Merge branch 'CHANV2-45/live-update' of gitlab.internal.uia.no:sondreho/halp into CHANV2-45/live-update
+9802c82  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update redux
+4d8887e  Nikolai Eidsheim               2023-05-16 Merge branch 'CHANV2-45/live-update' of gitlab.internal.uia.no:sondreho/halp into CHANV2-45/live-update
+89d3342  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update test
+97670d9  Nikolai Eidsheim               2023-05-16 Merge branch 'CHANV2-45/live-update' of gitlab.internal.uia.no:sondreho/halp into CHANV2-45/live-update
+786c47e  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update something
+63af8fb  Nikolai Eidsheim               2023-05-16 Merge branch 'CHANV2-45/live-update' of gitlab.internal.uia.no:sondreho/halp into CHANV2-45/live-update
+ecc2026  Nikolai Eidsheim               2023-05-16 Testing in progress
+1a7f2fc  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update uselistener
+03d8868  Charlotte Celine Thorjussen    2023-05-16 til nico
+0ad5587  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update something something
+ceb8ac4  Charlotte Celine Thorjussen    2023-05-16 Merge branch 'Sprint_6' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-45/live-update
+b7a4864  Charlotte Celine Thorjussen    2023-05-16 CHANV2-45/live-update invoke singalr from here
+27c83c5  Nikolai Bunch Eidsheim         2023-05-16 Merge branch 'CHANV2-69/Cleanup-Fixed-Change-Password' into 'Sprint_6'
+64216bf  Sondre Horpestad               2023-05-16 CHANV2-69/Cleanup-Fixed-Change-Password Fixed reset password
+2376bda  Ole-Johan Øvreås               2023-05-15 Merge branch 'CHANV2-17/Register' into 'Sprint_6'
+f5f8c31  Ole-Johan Ovreas               2023-05-15 CHANV2-17/Register y
+be2badb  Ole-Johan Ovreas               2023-05-15 CHANV2-17/Register yes
+d055b4e  Sivert Espeland Husebø         2023-05-15 CHANV2-17/Register Temp dimension fixing
+da0165a  Sivert Espeland Husebø         2023-05-15 CHANV2-17/Register Fixed dimensions on login and privacy policy
+da66872  Ole-Johan Øvreås               2023-05-15 Merge branch 'CHANV2-17/Register' into 'Sprint_6'
+584458c  Sivert Espeland Husebø         2023-05-15 CHANV2-17/Register Added privacy policy button in settings
+09897ba  Sivert Espeland Husebø         2023-05-15 Merge branch 'Sprint_6' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-17/Register
+5b5b5f7  Ole-Johan Øvreås               2023-05-15 Merge branch 'CHANV2-74/Perfect-Queue-Updates' into 'Sprint_6'
+c6e6004  Sivert Espeland Husebø         2023-05-15 CHANV2-17/Register Added privacy policy button in settings
+229c3bf  Nikolai Eidsheim               2023-05-15 Fixed the queue
+81a4a90  Ole-Johan Øvreås               2023-05-15 Merge branch 'CHANV2-17/Register' into 'Sprint_6'
+a47e127  Sivert Espeland Husebø         2023-05-15 CHANV2-17/Register Made a new privacy policy screen for the application
+45a0ba7  Ole-Johan Øvreås               2023-05-15 Merge branch 'CHANV2-17/Register' into 'Sprint_6'
+a87d208  Sivert Espeland Husebø         2023-05-15 Merge branch 'Sprint_6' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-17/Register
+df3126d  Ole-Johan Øvreås               2023-05-15 Merge branch 'CHANV2-69/Cleanup-Adjusting-Sizes' into 'Sprint_6'
+bc12d8e  Sondre Horpestad               2023-05-15 Merge branch 'Sprint_6' of gitlab.internal.uia.no:sondreho/halp into CHANV2-69/Cleanup-Adjusting-Sizes
+06965d7  Sivert Espeland Husebø         2023-05-15 CHANV2-17/Register Added privacy policy, and return buttons for register and forgotten password
+60cf820  Sondre Horpestad               2023-05-15 CHANV2-69/Cleanup-Adjusting-Sizes Added role under name
+a0e2464  Sivert Espeland Husebø         2023-05-15 Merge branch 'Sprint_6' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-17/Register
+7af101e  Sivert Espeland Husebø         2023-05-15 CHANV2-17/Register Added privacy policy, and made return buttons for forgotten password og register
+b38d401  Ole-Johan Øvreås               2023-05-15 Merge branch 'CHANV2-100/ticketfix2' into 'Sprint_6'
+0501659  Ole-Johan Ovreas               2023-05-15 CHANV2-100/ticketfix2 syncing changes
+ff3e9a1  Ole-Johan Ovreas               2023-05-15 CHANV2-100/ticketfix2 syncing change
+d3faced  Ole-Johan Ovreas               2023-05-15 CHANV2-100/ticketfix2 sync
+14563d4  Ole-Johan Ovreas               2023-05-15 CHANV2-100/ticketfix2 synced with sprint_6
+86ec63e  Ole-Johan Ovreas               2023-05-15 CHANV2-100/ticketfix2 syncing changes
+91eef5f  Sondre Horpestad               2023-05-15 Merge branch 'Sprint_6' of gitlab.internal.uia.no:sondreho/halp into CHANV2-69/Cleanup-Adjusting-Sizes
+b93741e  Sondre Horpestad               2023-05-15 Merge branch 'CHANV2-37/bugfix-login' into 'Sprint_6'
+7004bc9  Sondre Horpestad               2023-05-15 CHANV2-69/Cleanup-Adjusting-Sizes Fixed stuff
+43d4033  Charlotte Celine Thorjussen    2023-05-15 CHANV2-37/bugfix-login login validation fix and some signalr
+1fd818c  Sivert Espeland Husebø         2023-05-15 CHANV2-17/Register Temp
+8fab1d7  Nikolai Bunch Eidsheim         2023-05-15 Merge branch 'CHANV2-72/Cleanup-helplist-archive' into 'Sprint_6'
+df66458  Markus Hagli                   2023-05-15 CHANV2-72/Cleanup-helplist-archive merged
+b9575c5  Markus Hagli                   2023-05-15 Merge branch 'Sprint_6' of gitlab.internal.uia.no:sondreho/halp into CHANV2-72/Cleanup-helplist-archive
+72182f0  Nikolai Bunch Eidsheim         2023-05-15 Merge branch 'CHANV2-69/Cleanup-Adjusting-Sizes' into 'Sprint_6'
+992a922  Markus Hagli                   2023-05-15 CHANV2-72/Cleanup-helplist-archive Updated list colors
+b2dd8e6  Sondre Horpestad               2023-05-15 CHANV2-69/Cleanup-Adjusting-Sizes Merged sprint 6 into it
+26964f3  Sondre Horpestad               2023-05-14 CHANV2-69/Cleanup-Adjusting-Sizes Adjusted sizes acording to google review
+d9afe63  Nikolai Bunch Eidsheim         2023-05-14 Merge branch 'CHANV2-100/ticketclean' into 'Sprint_6'
+4e4f063  Ole-Johan Ovreas               2023-05-14 CHANV2-100/ticketclean merged with sprint_6
+f4fbd14  Ole-Johan Ovreas               2023-05-14 CHANV2-100/ticketclean finished cleanup + fixed some discord login api stuff
+49b55c2  Nikolai Bunch Eidsheim         2023-05-14 Merge branch 'CHAN2-45/live-update' into 'Sprint_6'
+e595c4b  Nikolai Eidsheim               2023-05-14 Added receiver to remove from helplist
+f8b7969  Nikolai Eidsheim               2023-05-13 Live updates working concept with signalr
+82be761  Nikolai Bunch Eidsheim         2023-05-13 Merge branch 'sondreho-Sprint_6-patch-80203' into 'Sprint_6'
+b958452  Sondre Horpestad               2023-05-13 Updated isValidPassword to count '.' as a valid symbol
+c23f3b2  Ole-Johan Øvreås               2023-05-13 Merge branch 'CHANV2-72/Cleanup-helplist-archive' into 'Sprint_6'
+32d8063  Markus Hagli                   2023-05-13 Merge branch 'Sprint_6' of gitlab.internal.uia.no:sondreho/halp into CHANV2-72/Cleanup-helplist-archive
+bf80a47  Nikolai Bunch Eidsheim         2023-05-13 Merge branch 'CHANV2-58/Forgotten-Password' into 'Sprint_6'
+15c7075  Sivert Espeland Husebø         2023-05-13 CHANV2-58/Forgotten-Password Fixed colors on forgotten password
+8dcfd36  Sivert Espeland Husebø         2023-05-13 CHANV2-58/Forgotten-Password Fixed colors on forgotten pasword
+02af3ac  Markus Hagli                   2023-05-13 CHANV2-72/Cleanup-helplist-archive fixes
+ad92a74  Markus Hagli                   2023-05-12 CHANV2-72/Cleanup-helplist-archive added padding lists
+1038d19  Sondre Horpestad               2023-05-12 Merge branch 'CHANV2-72/Cleanup-helplist-archive' into 'Sprint_6'
+adfb60f  Markus Hagli                   2023-05-12 Merge branch 'Sprint_6' of gitlab.internal.uia.no:sondreho/halp into CHANV2-72/Cleanup-helplist-archive
+58d04ab  Markus Hagli                   2023-05-12 CHANV2-72/Cleanup-helplist added fixes
+8c0f25c  Sondre Horpestad               2023-05-12 Merge branch 'CHAN2-45/live-update' into 'Sprint_6'
+04a8a93  Charlotte Celine Thorjussen    2023-05-12 CHAN2-45/live-update typo
+1508f2d  Charlotte Celine Thorjussen    2023-05-12 CHAN2-45/live-update merge
+7fd86c8  Sondre Horpestad               2023-05-12 Merge branch 'CHANV2-100/ticketfix' into 'Sprint_6'
+76dfa00  Charlotte Celine Thorjussen    2023-05-12 CHAN2-45/live-update order
+0f7e2a4  Ole-Johan Ovreas               2023-05-12 Merge branch 'Sprint_6' of gitlab.internal.uia.no:sondreho/halp into CHANV2-100/ticketfix
+d694d9f  Ole-Johan Ovreas               2023-05-12 CHANV2-100/ticketfix syncing changes
+38a2e7d  Ole-Johan Ovreas               2023-05-12 CHANV2-100/ticketfix finally
+10e5586  Charlotte Celine Thorjussen    2023-05-12 CHAN2-45/live-update kommenter ut console.log
+15ae96d  Charlotte Celine Thorjussen    2023-05-12 Merge branch 'Sprint_6' of https://gitlab.internal.uia.no/sondreho/halp into CHAN2-45/live-update
+f2c2022  Sondre Horpestad               2023-05-12 Merge branch 'CHANV2-17/Register' into 'Sprint_6'
+9b2f8d0  Charlotte Celine Thorjussen    2023-05-12 CHAN2-45/live-update clear error
+82d099a  Sivert Espeland Husebø         2023-05-12 CHANV2-17/Register Fixed register and change password eye icons and color
+d03d2e3  Charlotte Celine Thorjussen    2023-05-12 CHAN2-45/live-update theme
+796e97d  Markus Hagli                   2023-05-12 Markus/fixhelplist/archive logo placement and archivebutton
+6cf770c  Charlotte Celine Thorjussen    2023-05-12 CHAN2-45/live-update theme
+2e6229d  Sondre Horpestad               2023-05-12 Merge branch 'CHANV2-69/Cleanup-Setting-Toolbar-Navigationbar' into 'Sprint_6'
+5009ddf  Charlotte Celine Thorjussen    2023-05-12 CHAN2-45/live-update queue with signalr
+8d47290  Sondre Horpestad               2023-05-12 CHANV2-69/Cleanup-Setting-Toolbar-Navigationbar Added a yes/no option to deleat user
+8c4bd6a  Sondre Horpestad               2023-05-12 CHANV2-69/Cleanup-Setting-Toolbar-Navigationbar Fixed error messages at settings and added so top and bottom bar change colour acording to theme
+5ada8da  Charlotte Celine Thorjussen    2023-05-12 CHAN2-45/live-update redux update
+8e78371  Sondre Horpestad               2023-05-12 Merge branch 'CHAN2-45/live-update' into 'Sprint_6'
+139f0a5  Charlotte Celine Thorjussen    2023-05-12 Merge branch 'Sprint_6' of https://gitlab.internal.uia.no/sondreho/halp into CHAN2-45/live-update
+e896415  Charlotte Celine Thorjussen    2023-05-12 CHAN2-45/live-update minor changes
+c97eb6e  Ole-Johan Øvreås               2023-05-11 Merge branch 'CHANV2-69/Cleanup' into 'Sprint_6'
+dc6d945  Sondre Horpestad               2023-05-11 Update test_api.py
+93be8c7  Charlotte Celine Thorjussen    2023-05-11 CHAN2-45/live-update removed comments
+2526064  Sondre Horpestad               2023-05-11 Update .gitlab-ci.yml file
+f31ef0c  Charlotte Celine Thorjussen    2023-05-11 CHAN2-45/live-update glemte at jeg hadde fjernet kode
+a2949c2  Charlotte Celine Thorjussen    2023-05-11 CHAN2-45/live-update live update- helplist
+05631f8  Sondre Horpestad               2023-05-11 Update .gitlab-ci.yml file
+862de97  Sondre Horpestad               2023-05-11 CHANV2-69/Cleanup Added the pictures
+bee23df  Sondre Horpestad               2023-05-11 CHANV2-69/Cleanup Added a icon to the app
+0add026  Sondre Horpestad               2023-05-11 CHANV2-69/Cleanup Fixed some errors
+fb335ee  Sondre Horpestad               2023-05-11 CHANV2-69/Cleanup Merged sprint 6 into it
+4e37274  Charlotte Celine Thorjussen    2023-05-11 CHANV2-69/Cleanup merge
+421b465  Charlotte Celine Thorjussen    2023-05-11 CHANV2-69/Cleanup remember me log in
+c29fef2  Sondre Horpestad               2023-05-10 CHANV2-69/Cleanup Added so user name is updated when logedin or out
+d4e5132  Sondre Horpestad               2023-05-10 CHANV2-69/Cleanup Fixed a error on the queue page
+2f66cac  Sondre Horpestad               2023-05-10 CHANV2-69/Cleanup Made a python script to convert the report to latex
+a2a9f9f  Ole-Johan Øvreås               2023-05-10 Merge branch 'CHANV2-8/Login-Discord' into 'Sprint_6'
+3933436  Ole-Johan Ovreas               2023-05-10 CHANV2-8/Login-Discord final changes
+901bdba  Ole-Johan Ovreas               2023-05-10 CHANV2-8/Login-Discord fixed merge things
+d423ad1  Ole-Johan Ovreas               2023-05-10 CHANV2-8/Login-Discord merged with sprint_6
+5299538  Charlotte Celine Thorjussen    2023-05-10 Merge branch 'Sprint_6' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-69/Cleanup
+ac0e6c9  Sondre Horpestad               2023-05-10 Merge branch 'CHANV2-57/Ticket-validation-logic' into 'Sprint_6'
+a4f0ef1  Sondre Horpestad               2023-05-10 Merge branch 'Sprint_6' into 'CHANV2-57/Ticket-validation-logic'
+41bb2b0  Ole-Johan Ovreas               2023-05-10 CHANV2-8/Login-Discord synced local changes
+e38f6fb  Ole-Johan Ovreas               2023-05-10 CHANV2-57/Ticket-validation-logic synced local changes with cloud
+eca58fc  Charlotte Celine Thorjussen    2023-05-09 CHANV2-69/Cleanup delete ticket if canceling the ticket from queue
+9bcae10  Sondre Horpestad               2023-05-05 Merge branch 'CHANV2-69/Cleanup' into 'Sprint_6'
+97fc005  Charlotte Celine Thorjussen    2023-05-05 CHANV2-69/Cleanup login validation
+f9e9749  Charlotte Celine Thorjussen    2023-05-05 CHANV2-69/Cleanup clear user data when user is logged out
+f08954a  Charlotte Celine Thorjussen    2023-05-05 CHANV2-69/Cleanup missing view style
+11fe3bf  Charlotte Celine Thorjussen    2023-05-05 CHANV2-69/Cleanup styling
+ad80e9f  Charlotte Celine Thorjussen    2023-05-05 CHANV2-69/Cleanup log in text color style
+f9271e9  Charlotte Celine Thorjussen    2023-05-05 CHANV2-69/Cleanup updated global styles, button, textinput and header
+95cb898  Sondre Horpestad               2023-05-05 CHANV2-69/Cleanup Moved the buttons on the standar settings page up, and removed space between filds in register
+283d0c7  Sondre Horpestad               2023-05-05 Merge branch 'CHANV2-69/Cleanup' of gitlab.internal.uia.no:sondreho/halp into CHANV2-69/Cleanup
+23c7901  Charlotte Celine Thorjussen    2023-05-05 CHANV2-69/Cleanup icon theme color, and added bearer token
+b8d8020  Charlotte Celine Thorjussen    2023-05-05 Merge branch 'Sprint_6' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-69/Cleanup
+9b1104b  Sondre Horpestad               2023-05-05 Merge branch 'Sprint_6' of gitlab.internal.uia.no:sondreho/halp into CHANV2-69/Cleanup
+c20aed8  Sondre Horpestad               2023-05-05 Merge branch 'Sprint_6' of gitlab.internal.uia.no:sondreho/halp into CHANV2-69/Cleanup
+d4b4b2c  Sondre Horpestad               2023-05-05 Merge branch 'CHANV2-65/redux' into 'Sprint_6'
+f009b2c  Charlotte Celine Thorjussen    2023-05-05 merge
+609343d  Charlotte Celine Thorjussen    2023-05-05 CHANV2-65/redux new navigation
+0b16fa6  Ole-Johan Ovreas               2023-05-05 CHANV2-57/Ticket-validation-logic merged sprint_6 into current branch
+76e3bf5  Ole-Johan Ovreas               2023-05-05 CHANV2-8/Login-Discord Logic for discord oauth finished
+ff1f20f  Ole-Johan Ovreas               2023-05-05 Merge branch 'CHANV2-69/Cleanup' of gitlab.internal.uia.no:sondreho/halp into CHANV2-8/Login-Discord
+8569653  Sondre Horpestad               2023-05-05 CHANV2-69/Cleanup Fixed some collor errors
+49c269c  Ole-Johan Ovreas               2023-05-05 CHANV2-8/Login-Discord merged with Sprint_6
+6653777  Ole-Johan Ovreas               2023-05-05 CHANV2-57/Ticket-validation-logic syncing local changes with cloud
+ff9ea03  Ole-Johan Ovreas               2023-05-04 CHANV2-8/Login-Discord syncing local changes
+d4e261b  Sondre Horpestad               2023-05-02 Merge branch 'Sprint_5' into 'main'
+633d47a  Sondre Horpestad               2023-05-02 Merge branch 'CHANV2-67/Ready-Release-Build' into 'Sprint_5'
+130a4bf  Nikolai Eidsheim               2023-05-02 Added android release build config
+cf0297b  Sondre Horpestad               2023-05-02 Merge branch 'CHANV2-41/Logic-Settings' into 'Sprint_5'
+5c84ca9  Sondre Horpestad               2023-05-02 CHANV2-41/Logic-Settings Added so admins and other users have different settings
+9c5dc51  Sondre Horpestad               2023-05-02 CHANV2-41/Logic-Settings Made a way to deleate the user
+cca72b6  Sondre Horpestad               2023-05-02 CHANV2-41/Logic-Settings Fixed in logging
+60416d5  Ole-Johan Ovreas               2023-05-01 CHANV2-57/Ticket-validation-logic syncing changes with cloud
+16a372d  Ole-Johan Ovreas               2023-04-29 CHANV2-57/Ticket-validation-logic updated local changes
+1b1d8f1  Ole-Johan Ovreas               2023-04-29 CHANV2-8/Login-Discord logic improved
+a90eeb3  Ole-Johan Ovreas               2023-04-29 Merge remote-tracking branch 'origin/Sprint_5' into CHANV2-8/Login-Discord
+c60c9c7  Sondre Horpestad               2023-04-28 Merge branch 'CHANV2-65/redux' of gitlab.internal.uia.no:sondreho/halp into CHANV2-41/Logic-Settings
+64e9d6c  Charlotte Celine Thorjussen    2023-04-28 bearer tokem
+888321f  Sondre Horpestad               2023-04-28 CHANV2-41/Logic-Settings Added bearer token in settings and fixed so the id comes frome the user
+86aa4b0  Sondre Horpestad               2023-04-28 CHANV2-41/Logic-Settings Pulled sprint 5 into it
+14c60b0  Sondre Horpestad               2023-04-28 Merge branch 'CHANV2-13/Testing-API' into 'Sprint_5'
+473e05f  Sondre Horpestad               2023-04-28 CHANV2-13/Testing-API Fixed a error
+60a5f33  Sondre Horpestad               2023-04-28 CHANV2-13/Testing-API Uppdated test to use bear token
+9a9936c  Sondre Horpestad               2023-04-28 Merge branch 'Sprint_5' of gitlab.internal.uia.no:sondreho/halp into CHANV2-13/Testing-API
+eccfa31  Sondre Horpestad               2023-04-28 Merge branch 'CHANV2-65/redux' into 'Sprint_5'
+982f2de  Sondre Horpestad               2023-04-28 CHANV2-13/Testing-API Added test for deleating tickets
+2f90856  Sondre Horpestad               2023-04-28 Merge branch 'CHANV2-54/Change-Password' into 'Sprint_5'
+653716e  Sivert Espeland Husebø         2023-04-28 CHANV2-54/Change-Password Added the need to enter current password when changing password
+f37c189  Charlotte Celine Thorjussen    2023-04-28 log out
+f1b83a5  Sondre Horpestad               2023-04-28 CHANV2-13/Testing-API Renaming and removing of a file
+d88534e  Sondre Horpestad               2023-04-26 CHANV2-13/Testing-API Patched tests
+b28bce4  Charlotte Celine Thorjussen    2023-04-25 added id in user obj'
+134befb  Sondre Horpestad               2023-04-25 CHANV2-13/Testing-API Refactored the code
+cb1fe03  Sondre Horpestad               2023-04-25 CHANV2-13/Testing-API Fixed some error and added test for confiming email
+83fbabe  Sondre Horpestad               2023-04-25 CHANV2-13/Testing-API Added tests for sign in with discord
+ebe457e  Sondre Horpestad               2023-04-25 CHANV2-13/Testing-API Added tests for register with discord
+abb723a  Ole-Johan Ovreas               2023-04-24 CHANV2-57/Ticket-validation-logic changed dropdown component
+a5408e0  Ole-Johan Ovreas               2023-04-24 CHANV2-8/Login-Discord successfully fetching discord user object
+75e79e6  Ole-Johan Ovreas               2023-04-24 CHANV2-8/Login-Discord merged with Sprint_5
+413a569  Ole-Johan Ovreas               2023-04-24 CHANV2-8/Login-Discord working oauth2 layout for discord
+a9259d8  Sondre Horpestad               2023-04-24 CHANV2-41/Logic-Settings Cleanup
+19d83ce  Sondre Horpestad               2023-04-24 CHANV2-41/Logic-Settings Pulled sprint 5 into it
+c8242d2  Ole-Johan Ovreas               2023-04-24 CHANV2-8/Login-Discord storing local changes
+4a6f646  Sondre Horpestad               2023-04-24 CHANV2-13/Testing-API Made 45 test for most of the api calls
+a68682d  Sondre Horpestad               2023-04-24 Merge branch 'CHANV2-61/Logic-change-password' into 'Sprint_5'
+5aad803  Sivert Espeland Husebø         2023-04-24 CHANV2-61/Logic-change-password Completed the logic for change password, and fixed the error messages in the register screen.
+9ae02d5  Ole-Johan Ovreas               2023-04-24 CHANV2-8/Login-Discord stash
+67dba10  Charlotte Celine Thorjussen    2023-04-24 Merge branch 'CHANV2-65/redux' into 'Sprint_5'
+81b3ab1  Charlotte Celine Thorjussen    2023-04-24 CHANV2-65/redux saved user info w react redux
+b75d831  Charlotte Celine Thorjussen    2023-04-24 Merge branch 'CHANV2-13/testing' into 'Sprint_5'
+b85b3a5  Sondre Horpestad               2023-04-24 Merge branch 'CHANV2-17/Register' into 'Sprint_5'
+e677908  Sivert Espeland Husebø         2023-04-24 CHANV2-17/Register Fixed account registration, and added error codes for having all boxes filled, and following password rules.
+2f8148b  Charlotte Celine Thorjussen    2023-04-24 CHANV2-13/testing cleam up
+42a4431  Charlotte Celine Thorjussen    2023-04-24 CHANV2-13/testing themehook w react redux
+41883e4  Ole-Johan Ovreas               2023-04-24 CHANV2-57/Ticket-validation-logic scaffolding for new dropdown
+2f402c9  Sondre Horpestad               2023-04-24 Merge branch 'Sprint_4' into 'main'
+2e58211  Sondre Horpestad               2023-04-24 Merge branch 'CHANV2-13/testing' into 'Sprint_4'
+1896fa0  Charlotte Celine Thorjussen    2023-04-24 CHANV2-13/testing merge
+c50d621  Sondre Horpestad               2023-04-24 Merge branch 'CHANV2-63/Mobile-Light-Mode' into 'Sprint_4'
+7865fff  Sondre Horpestad               2023-04-24 Merge branch 'Sprint_4' into 'CHANV2-63/Mobile-Light-Mode'
+d9f2abc  Markus Hagli                   2023-04-24 CHANV2-63/Mobile-Light-Mode merged in sprint_4
+63faa63  Sondre Horpestad               2023-04-24 Merge branch 'CHANV2-61/Logic-Change-Password' into 'Sprint_4'
+1a8938f  Charlotte Celine Thorjussen    2023-04-24 CHANV2-13/testing merge
+212727c  Markus Hagli                   2023-04-24 CHANV2-63/Mobile-Light-Mode added lightmode switch to mobiletheme
+dd91631  Charlotte Celine Thorjussen    2023-04-24 global design fix
+49ba0fc  Sivert Espeland Husebø         2023-04-24 Merge branch 'Sprint_4' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-61/Logic-Change-Password
+5b57435  Sivert Espeland Husebø         2023-04-24 CHANV2-61/Logic-Change-Password Changed the styling for ForgottenPassword.tsx and ChangePassword.tsx to match the global darkmode/lightmode styling.
+1ee8620  Sondre Horpestad               2023-04-24 CHANV2-41/Logic-Settings Changed http to https
+b2a8ef6  Sondre Horpestad               2023-04-21 CHANV2-41/Logic-Settings Added the posibility to change name, email, discord
+33def96  Ole-Johan Ovreas               2023-04-21 CHANV2-57/Ticket-validation-logic finetuned create ticket screen
+3cff876  Charlotte Celine Thorjussen    2023-04-21 testing themehook
+1ff2b93  Ole-Johan Ovreas               2023-04-21 CHANV2-57 merged with sprint_4
+4631c19  Sondre Horpestad               2023-04-21 Merge branch 'CHANV2-53/Logic-Roles' into 'Sprint_4'
+27e2fd0  Sondre Horpestad               2023-04-21 CHANV2-53/Logic-Roles Pulling sprint 4 into it for merging
+fd4ad0e  Ole-Johan Ovreas               2023-04-21 CHANV2-57/Ticket-validation-logic styling in progress
+0334ad9  Ole-Johan Ovreas               2023-04-21 CHANV2-57/Ticket-validation-logic pushing local changes
+aecf6ba  Charlotte Celine Thorjussen    2023-04-21 nav-bar darkmode
+86d5689  Sondre Horpestad               2023-04-21 CHANV2-53/Logic-Roles Cleanup
+50b6584  Sondre Horpestad               2023-04-21 CHANV2-53/Logic-Roles Added suport for changing admin users
+70eef25  Charlotte Celine Thorjussen    2023-04-20 renaming and logic changes in create and edit ticket
+9b81753  Sondre Horpestad               2023-04-19 Merge branch 'CHANV2-7/login' into 'Sprint_4'
+bd4fa8a  Charlotte Celine Thorjussen    2023-04-19 Merge branch 'Sprint_4' into 'CHANV2-7/login'
+672e575  Charlotte Celine Thorjussen    2023-04-19 hmm
+df1da03  Charlotte Celine Thorjussen    2023-04-19 added color to the navigation bar
+240c735  Charlotte Celine Thorjussen    2023-04-19 merge
+69d25a5  Sondre Horpestad               2023-04-18 Merge branch 'CHANV2-35/Create-global-stylesheet' into 'Sprint_4'
+432a938  Sondre Horpestad               2023-04-17 CHANV2-53/Logic-Roles Created the logic for adding and removing roles and search for students
+1677697  Charlotte Celine Thorjussen    2023-04-17 CHANV2-7/login validation
+b86beac  Ole-Johan Ovreas               2023-04-17 CHANV2-57/Ticket-validation-logic added framework for field validation
+d49b38e  Charlotte Celine Thorjussen    2023-04-17 CHANV2-7/login login nav
+0697d25  Markus Hagli                   2023-04-17 Merge branch 'Sprint_4' of gitlab.internal.uia.no:sondreho/halp into CHANV2-35/Create-global-stylesheet
+14ac236  Markus Hagli                   2023-04-17 updated themes
+a50ff82  Ole-Johan Øvreås               2023-04-17 Merge branch 'CHANV2-26/navigation-bugfix' into 'Sprint_4'
+aa0babb  Charlotte Celine Thorjussen    2023-04-17 CHANV2-26/navigation-bugfix merge
+6b4794c  Charlotte Celine Thorjussen    2023-04-17 Merge branch 'Sprint_4' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-26/navigation-bugfix
+6ef2714  Charlotte Celine Thorjussen    2023-04-17 CHANV2-26/navigation-bugfix merge
+05face9  Ole-Johan Øvreås               2023-04-17 Merge branch 'CHANV2-58/Forgotten-Password' into 'Sprint_4'
+d4bf87c  Ole-Johan Øvreås               2023-04-17 Merge branch 'CHANV2-26/navigation' into 'Sprint_4'
+6589662  Charlotte Celine Thorjussen    2023-04-17 Merge branch 'CHANV2-54/Change-Password' into 'Sprint_4'
+645176d  Sivert Espeland Husebø         2023-04-17 CHANV2-58/Forgotten-Password Added forgotten password screen design
+e16ee00  Charlotte Celine Thorjussen    2023-04-17 CHANV2-26/navigation-bugfix typing and some renaming
+d584f70  Sivert Espeland Husebø         2023-04-17 CHANV2-58/Forgotten-Password Added forgotten password design
+61dd3ca  Sivert Espeland Husebø         2023-04-17 CHANV2-54/Change-Password Added change password design
+7daf361  Sivert Espeland Husebø         2023-04-17 Merge branch 'Sprint_4' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-54/Change-Password
+6bd3828  Sivert Espeland Husebø         2023-04-17 CHANV2-54/Change-Password Created design for change password
+b978d78  Markus Hagli                   2023-04-17 CHANV2-35/Create-global-stylesheet updated colors
+e06c2dd  Charlotte Celine Thorjussen    2023-04-17 CHANV2-26/navigation send data from create to edit ticket
+6ab1fbe  Ole-Johan Øvreås               2023-04-17 Merge branch 'CHANV2-26/navigation' into 'Sprint_4'
+3f1036b  Charlotte Celine Thorjussen    2023-04-17 CHANV2-26/navigation merge conf
+4c27fbe  Charlotte Celine Thorjussen    2023-04-17 CHANV2-26/navigation navigation w params
+0a3ca71  Sondre Horpestad               2023-04-17 Merge branch 'Sprint_3' into 'main'
+c964198  Sondre Horpestad               2023-04-17 Merge branch 'CHANV2-39/Logic-Helplist' into 'Sprint_3'
+69c9501  Sondre Horpestad               2023-04-17 CHANV2-39/Logic-Helplist Fixed error
+b6ca5a6  Sondre Horpestad               2023-04-17 CHANV2-39/Logic-Helplist Merged into the sprint
+6fa342b  Sondre Horpestad               2023-04-17 Merge branch 'Sprint_3' of gitlab.internal.uia.no:sondreho/halp into CHANV2-39/Logic-Helplist
+881ba1c  Charlotte Celine Thorjussen    2023-04-17 CHANV2-26/navigation test
+318b2e7  Sondre Horpestad               2023-04-17 Merge branch 'CHANV2-48/logic-rework-createticket' into 'Sprint_3'
+759e31c  Ole-Johan Ovreas               2023-04-17 CHANV2-48/logic-rework-createticket final cleanup
+d9cffb7  Ole-Johan Ovreas               2023-04-17 CHANV2-48/logic-rework-createticket merged with sprint_3
+c0e6890  Ole-Johan Ovreas               2023-04-17 CHANV2-48/logic-rework-createticket cleanup
+31cb8e3  Sondre Horpestad               2023-04-17 Merge branch 'CHANV2-47/Logic-Register' into 'Sprint_3'
+1bfc813  Sivert Espeland Husebø         2023-04-17 Merge branch 'Sprint_3' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-47/Logic-Register
+c9ee259  Sondre Horpestad               2023-04-17 Merge branch 'CHANV2-33/Roles-Gui' into 'Sprint_3'
+8520e7f  Sondre Horpestad               2023-04-17 CHANV2-33/Roles-Gui Merged sprint_3 into the branch
+1d2f091  Markus Hagli                   2023-04-17 CHANV2-35/Create-global-stylesheet updated list color
+83c339a  Sondre Horpestad               2023-04-17 Merge branch 'Sprint_3' of gitlab.internal.uia.no:sondreho/halp into CHANV2-33/Roles-Gui
+a676747  Markus Hagli                   2023-04-16 CHANV2-35/Create-global-stylesheet working colors in archive and helplist
+17d3dfd  Markus Hagli                   2023-04-16 CHANV2-35/Create-global-stylesheet added themes
+d455fe2  Sondre Horpestad               2023-04-14 CHANV2-33/Roles-Gui Made a dropdown list, need to fix colour stuff
+21a7a3e  Sondre Horpestad               2023-04-14 Merge branch 'CHANV2-26/navigation-bar-2' into 'Sprint_3'
+6690e92  Charlotte Celine Thorjussen    2023-04-14 CHANV2-26/navigation-bar-2 removed some not used coded
+0d39296  Charlotte Celine Thorjussen    2023-04-14 Merge branch 'Sprint_3' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-26/navigation-bar-2
+a117700  Charlotte Celine Thorjussen    2023-04-14 CHANV2-26/navigation-bar-2 new navigation
+68962be  Ole-Johan Ovreas               2023-04-14 CHANV2-48/logic-rework-createticket Made logic for fetching rooms and displaying in a dropdown list
+16e463e  Sondre Horpestad               2023-04-14 Merge branch 'CHANV2-51/Lab-Queues-Logic' into 'Sprint_3'
+43d7b61  Charlotte Celine Thorjussen    2023-04-14 CHANV2-26/navigation-bar-2 added screens
+22332de  Charlotte Celine Thorjussen    2023-04-14 CHANV2-26/navigation-bar-2 merge
+a9e620b  Charlotte Celine Thorjussen    2023-04-14 CHANV2-26/navigation-bar-2 installed screens (help from sondre)
+7543ece  Charlotte Celine Thorjussen    2023-04-14 CHANV2-26/navigation-bar-2 navigation bar ish
+e15b4cf  Markus Hagli                   2023-04-14 CHANV2-39/Logic-Helplist update
+54da2d4  Sondre Horpestad               2023-04-13 CHANV2-51/Lab-Queues-Logic Turned of the visability of the scrollbar
+0e91fae  Sondre Horpestad               2023-04-13 CHANV2-51/Lab-Queues-Logic Added working buttons
+d04076a  Sivert Espeland Husebø         2023-04-11 CHANV2-47/Logic-Register Added register functionality and navigation[D[D[D[D[D[D[D[D[D[D[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C ddddddddddddddddddd   sivert[D[D[[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[r and navigation functionality
+b46d545  Sivert Espeland Husebø         2023-04-11 CHANV2-47/Logic-Register Added register functionality, and navigation functionality
+ac3af21  Markus Hagli                   2023-04-11 CHANV2-39/Logic-Helplist updated icon color
+d1a5729  Markus Hagli                   2023-04-11 CHANV2-39/Logic-Helplist color updated
+0a4511e  Sondre Horpestad               2023-04-11 Merge branch 'CHANV2-50/Lab-Queues-Design' into 'Sprint_3'
+8d86a64  Sondre Horpestad               2023-04-11 CHANV2-50/Lab-Queues-Design Made the designe for LabQueues
+c916bd9  Sondre Horpestad               2023-04-11 Merge branch 'Sprint_2' into 'main'
+117876c  Sondre Horpestad               2023-04-11 Merge branch 'CHANV2-39/Logic-Helplist' into 'Sprint_2'
+ed4bdd3  Markus Hagli                   2023-04-11 Merge branch 'Sprint_2' of gitlab.internal.uia.no:sondreho/halp into CHANV2-39/Logic-Helplist
+21d5eb3  Sivert Espeland Husebø         2023-04-11 Merge branch 'Sprint_2' of https://gitlab.internal.uia.no/sondreho/halp into Sprint_2
+89fbd76  Markus Hagli                   2023-04-11 CHANV2-39/Logic-Helplist update
+30d9b57  Sivert Espeland Husebø         2023-04-11 Merge branch 'Sprint_2' of https://gitlab.internal.uia.no/sondreho/halp into Sprint_2
+b932737  Sondre Horpestad               2023-04-11 Update .gitlab-ci.yml file
+b645021  Sondre Horpestad               2023-04-11 Merge branch 'CHANV2-38/Create-ticket-logic' into 'Sprint_2'
+6bb801d  Ole-Johan Ovreas               2023-04-11 Merge branch 'Sprint_2' of gitlab.internal.uia.no:sondreho/halp into CHANV2-38/Create-ticket-logic
+6396299  Ole-Johan Øvreås               2023-04-11 Merge branch 'CHANV2-41/Logic-Settings' into 'Sprint_2'
+f64710a  Sivert Espeland Husebø         2023-04-11 Added register file
+7b81bde  Markus Hagli                   2023-04-11 CHANV2-39/Logic-Helplist PUT working
+0c66fb8  Sondre Horpestad               2023-04-10 CHANV2-41/Logic-Settings Changed the fetching of timeedit data to do it once, then every minut or if somthing is added
+6a2a74f  Sondre Horpestad               2023-04-03 CHANV2-41/Logic-Settings Propper deleate, add and update TimeEdit
+4f258c9  Sondre Horpestad               2023-03-31 CHANV2-41/Logic-Settings Added TimeEdit page, and adding off new links
+fbac8a4  Markus Hagli                   2023-03-31 delete listitems
+7df18b7  Markus Hagli                   2023-03-31 working fetch
+8369a3d  Ole-Johan Ovreas               2023-03-31 CHANV2-38/Create-ticket-logic POST functional on HTTP. Input clears on code 200
+f9208bd  Ole-Johan Ovreas               2023-03-30 CHANV2-38/Create-ticket-logic added general setup for new ticket POST
+54da4f7  Sondre Horpestad               2023-03-30 CHANV2-41/Logic-Settings Moved the popup with text upward so the save button don't overlap with the keyboard
+45aa116  Sondre Horpestad               2023-03-30 CHANV2-41/Logic-Settings Cleaned the code up a litlle
+8286ce6  Sondre Horpestad               2023-03-30 CHANV2-41/Logic-Settings The settingspage have the feture it is supposed to have. Still need to add the api-calls and getting the user that is loged in
+f95c28d  Sondre Horpestad               2023-03-29 CHANV2-41/Logic-Settings Added pop up for the profile button
+4052c58  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+9bc78e2  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+ec4503b  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+8acf1c7  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+a41b4e7  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+1976285  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+a770a3c  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+f1c4f0a  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+2af4605  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+919904a  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+0fbd1d4  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+984f70e  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+f281990  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+dd252af  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+99e5c25  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+0fa8f6e  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+09ec54d  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+48beaeb  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+27b4200  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+0e1d453  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+9ffbac3  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+c0ff3af  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+9ec4f36  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+dba3d30  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+58670a6  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+4b8a8f7  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+977049b  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+8fb954b  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+67eba4d  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+d6a45fd  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+13daab1  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+1b8de0b  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+8f125a0  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+1ba7826  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+ba63458  Sondre Horpestad               2023-03-28 Update .gitlab-ci.yml file
+aa4e842  Sondre Horpestad               2023-03-27 Merge branch 'Evrything-into-one-screen' into 'Sprint_2'
+219cf04  Sondre Horpestad               2023-03-27 Merge branch 'Sprint_1' into 'main'
+cef658b  Sondre Horpestad               2023-03-27 Sprint_1 Added all the screen to be seen at once and removed dupe of picture
+fb9f597  Sondre Horpestad               2023-03-24 Merge branch 'CHANV2-30/Helplist-Design' into 'Sprint_1'
+93412fb  Markus Hagli                   2023-03-24 Merge branch 'Sprint_1' of gitlab.internal.uia.no:sondreho/halp into CHANV2-30/Helplist-Design
+817e8e4  Markus Hagli                   2023-03-24 updates
+713ac50  Sondre Horpestad               2023-03-24 Merge branch 'CHANV2-25/Create-Ticket' into 'Sprint_1'
+089ac29  Ole-Johan Ovreas               2023-03-24 CHANV2-25/Create-Ticket removed the edit ticket screen and fixed the create ticket screen
+9882a38  Ole-Johan Ovreas               2023-03-24 CHANV2-25/Create-Ticket updated dm and lm compatability
+fc9ec16  Ole-Johan Ovreas               2023-03-24 CHANV2-25/Create-Ticket merged sprint_1 into branch
+540b86b  Ole-Johan Ovreas               2023-03-24 CHANV2-25/Create-Ticket stashing changes before merge
+536e641  Markus Hagli                   2023-03-24 updates
+7bdf956  Markus Hagli                   2023-03-24 updates
+8fbf8f7  Sondre Horpestad               2023-03-24 Merge branch 'CHANV2-7/Login' into 'Sprint_1'
+6db04d6  Nikolai Eidsheim               2023-03-24 Changed from static dimensions to percentage
+36ff0fe  Ole-Johan Ovreas               2023-03-24 CHANV2-25/Create-Ticket made "edit ticket" screen
+860991c  Nikolai Eidsheim               2023-03-24 Merge finished
+362bded  Nikolai Eidsheim               2023-03-24 Merge branch 'Sprint_1' of gitlab.internal.uia.no:sondreho/halp into CHANV2-7/Login
+647e617  Markus Hagli                   2023-03-24 updates
+f902adf  Nikolai Eidsheim               2023-03-24 Fixed text colors
+7b3e365  Ole-Johan Ovreas               2023-03-23 CHANV2-25/Create-Ticket first "create ticket" iteration done
+5c59e1e  Ole-Johan Ovreas               2023-03-23 CHANV2-25/Create-Ticket merged sprint_1 into branch
+ae6dbf3  Ole-Johan Ovreas               2023-03-23 CHANV2-25/Create-Ticket swapped to paper
+48b9c51  Ole-Johan Øvreås               2023-03-23 Merge branch 'CHANV2-3/Ticket-Queue' into 'Sprint_1'
+760cd00  Sivert Espeland Husebø         2023-03-23 CHANV2-3/Ticket-Queue Merged with sprint1
+d34370b  Sivert Espeland Husebø         2023-03-23 CHANV2-3/Ticket-Queue Added front end for ticket queue screen that uses the stylesheet
+ed35742  Ole-Johan Ovreas               2023-03-23 CHANV2-25/Create-Ticket merged
+0145b33  Ole-Johan Ovreas               2023-03-23 CHANV2-25/Create-Ticket test commit
+c98698e  Nikolai Eidsheim               2023-03-23 Fixed light mode bug
+9e45260  Nikolai Eidsheim               2023-03-22 Fixed styles with added margin
+c14ac3f  Nikolai Eidsheim               2023-03-22 Worked on light and dark mode
+6642ee3  Nikolai Eidsheim               2023-03-22 Added login page
+ba52ad9  Markus Hagli                   2023-03-21 updates
+e02cb8f  Ole-Johan Øvreås               2023-03-21 Merge branch 'CHANV2-31/Settings_GUI' into 'Sprint_1'
+df6d039  Sondre Horpestad               2023-03-21 CHANV2-31/Settings_GUI Shortened a line
+483efa1  Sondre Horpestad               2023-03-20 CHANV2-31/Settings_GUI Changed the color of the TabBar and made a title
+a062842  Sondre Horpestad               2023-03-20 CHANV2-31/Settings_GUI Added the ability to change layout
+de32623  Nikolai Eidsheim               2023-03-20 Started work on Login
+80396df  Sondre Horpestad               2023-03-20 CHANV2-31/Settings_GUI Made the base settings page
+78f12e4  Sondre Horpestad               2023-03-20 Merge branch 'Sprint_1' of gitlab.internal.uia.no:sondreho/halp into CHANV2-31/Settings_GUI
+1f4b8f9  Sivert Espeland Husebø         2023-03-20 Merge branch 'Sprint_1' of https://gitlab.internal.uia.no/sondreho/halp into CHANV2-3/Ticket-Queue
+6735788  Sivert Espeland Husebø         2023-03-20 CHANV2-3/Ticket-Queue Made ticket queue
+6797ae5  Sondre Horpestad               2023-03-20 Merge branch 'CHANV2-35/stylesheet' into 'Sprint_1'
+559ce31  Ole-Johan Ovreas               2023-03-20 CHANV2-35/stylesheet Added initial stylesheet
+2411eb9  Ole-Johan Ovreas               2023-03-20 CHANV2-25/Create-Ticket added create ticket view
+ac9fe51  Sondre Horpestad               2023-03-20 CHANV2-31/Settings_GUI Updated
+b5971fb  Sondre Horpestad               2023-03-20 Test
+0ed5983  Sondre Horpestad               2023-03-20 CHANV2-31/Settings_GUI Fixed import in Ticket.tsx
+03ada0c  Markus Hagli                   2023-03-20 Branch add
+0a34262  Ole-Johan Ovreas               2023-03-20 made branch
+fcc089b  Sondre Horpestad               2023-03-20 Merge branch 'CHANV2-X/update-readme' into 'main'
+055f199  Nikolai Bunch Eidsheim         2023-03-20 Update README.md
+37db9c3  Sondre Horpestad               2023-03-16 Update .gitlab-ci.yml file
+0d7f04c  Sondre Horpestad               2023-03-16 Update .gitlab-ci.yml file
+48c66c8  Sondre Horpestad               2023-03-16 Update .gitlab-ci.yml file
+f919979  Sondre Horpestad               2023-03-16 Update .gitlab-ci.yml file
+0f570f4  Sondre Horpestad               2023-03-16 Update .gitlab-ci.yml file
+a77feb7  Sondre Horpestad               2023-03-16 Update .gitlab-ci.yml file
+e8093dd  Sondre Horpestad               2023-03-16 Update .gitlab-ci.yml file
+1cafa87  Sondre Horpestad               2023-03-16 Update .gitlab-ci.yml file
+16cb6e1  Sondre Horpestad               2023-03-16 Update .gitlab-ci.yml file
+5bd1408  Sondre Horpestad               2023-03-14 Update .gitlab-ci.yml file
+d6cead8  Sondre Horpestad               2023-03-14 Update .gitlab-ci.yml file
+af63655  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+7b8ca3a  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+e868329  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+12f76a5  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+2130d75  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+ad995fd  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+8e59121  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+1f88a24  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+797605f  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+93d365b  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+f9cdc9f  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+768b51b  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+0516fba  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+3b5b7eb  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+23ddbad  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+618d6bc  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+a65dcd2  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+599a789  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+31d3532  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+3c937ce  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+6538b68  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+aecc8dc  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+e8e99bf  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+c55f2ff  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+9c5d123  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+d26f022  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+9be0ea0  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+b616d7e  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+c3cb35a  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+dfbf1eb  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+d45a02c  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+48a443f  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+639e044  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+9429aa4  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+65efd44  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+3b772d4  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+09d25f3  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+8f189fc  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+0968782  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+2b52ee4  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+9372ea8  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+8b1f919  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+45cfb15  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+116c211  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+ed1d855  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+8b1a882  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+9b5d68e  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+1b18c63  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+04c367a  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+f8f0ab3  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+6e275ee  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+287a944  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+fed5c22  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+097bc20  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+25e420a  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+e02f686  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+54fab92  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+edc480b  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+0d1f2ae  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+853085d  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+94497cf  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+d5623ad  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+a17cbe4  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+bbe2e56  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+36e92e2  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+ab6842c  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+8845d0d  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+fae0e29  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+2dcbe27  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+34dc890  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+9bb1a04  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+da54054  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+6a574ef  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+de313ff  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+5235661  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+95e2337  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+d824714  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+4460a12  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+c1a0b1a  Sondre Horpestad               2023-03-13 Update .gitlab-ci.yml file
+57632a0  Sondre Horpestad               2023-03-01 Merge branch 'custom/setup' into 'main'
+009592c  Charlotte Celine Thorjussen    2023-03-01 ticket and queue
+2245aaf  Charlotte Celine Thorjussen    2023-03-01 setup suggestion
+4d014dc  Sondre Horpestad               2023-03-01 Updated git ignore and deleted local files
+dc0da99  Sondre Horpestad               2023-03-01 Merge branch 'custom/template' into 'main'
+74e86f3  Charlotte Celine Thorjussen    2023-03-01 initial commit
+715ae82  Sondre Horpestad               2023-02-06 Initial commit

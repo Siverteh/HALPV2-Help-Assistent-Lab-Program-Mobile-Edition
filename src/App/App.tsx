@@ -8,8 +8,10 @@ import { AppState } from "../types";
 import { useDispatch, useSelector } from "react-redux"
 import { ThemeContext } from "../Components/ThemeContext";
 import { actions } from "../reducers/userReducer";
+import { actions as actionsTheme} from "../reducers/themeReducer";
 import { asyncStorageHook } from "../hook/asyncStorageHook";
 import { delay, isEmpty } from "lodash";
+import { theme } from "../styles/theme";
 
 function App(): JSX.Element {
 
@@ -27,6 +29,8 @@ const {getItem, setItem} = asyncStorageHook()
 useEffect(() => {
   if (colorScheme) {
     setItem('@theme', colorScheme)
+    
+    dispatch(actionsTheme.setTheme(colorScheme === 'light' ? theme.light : theme.dark))
   }
 }, [colorScheme]);
 
