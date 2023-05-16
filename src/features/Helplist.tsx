@@ -66,7 +66,6 @@ connection.on("RemoveFromArchive", (id) =>
 {
   console.log("removed from archive ", id)
   dispatch(archiveActions.filterArchive({courseKey: course, ticketId: id}))
-  //dispatch(archiveActions.setArchive({courseKey: Course, tickets: [ticket]}))
 }
 )
 

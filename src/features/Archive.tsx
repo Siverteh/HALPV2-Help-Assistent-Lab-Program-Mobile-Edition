@@ -1,15 +1,12 @@
-import { useEffect, useContext } from 'react'
+import { useContext } from 'react'
 import React from 'react';
 import ListComponent from './List'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppState, RootStackParamList } from '../types';
 import { IconButton } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from '../Components/ThemeContext';
-import { actions } from '../reducers/archiveReducer';
-import { actions as helplistActions } from '../reducers/helplistReducer';
 import { TicketWithId } from '../types/ticket';
-import { useSignalR } from '../hook/useSignalR';
 import { useArchive } from '../hook/useArchive';
 
 const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'ArchiveScreen'>) => {
@@ -18,19 +15,8 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   const { course } = route.params
   const { text } = useContext(ThemeContext)
   const { isLoaded, archive} = useSelector((state: AppState) => state.archive)
-  const dispatch = useDispatch()
-  const { connection } = useSignalR(course)
 
   useArchive(course)
-  // useListener(course)
-
-
-  const invokeUpdate = (id: string) => {
-    connection.stop()
-    connection.start()
-          .then(() => connection.invoke("RemoveFromArchive", id))
-          .catch(err => console.error(err.toString()));
-  }
 
   const updateCourse = (updatedData: TicketWithId) => {
 
@@ -44,11 +30,6 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
           "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify([updatedData])
-      })
-      .then(() => {
-        // invokeUpdate(id)
-        // dispatch(actions.filterArchive({courseKey: course, ticketId: updatedData.Id}))
-        // dispatch(helplistActions.setHelplist({key: course, tickets: [updatedData]}))
       })
       .catch((error) => console.error("Failed to update ticket from archive: ", error))
   };
