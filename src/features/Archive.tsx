@@ -10,6 +10,7 @@ import { actions } from '../reducers/archiveReducer';
 import { actions as helplistActions } from '../reducers/helplistReducer';
 import { TicketWithId } from '../types/ticket';
 import { useSignalR } from '../hook/useSignalR';
+import { useListener } from '../hook/useListener';
 
 const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'ArchiveScreen'>) => {
 
@@ -19,6 +20,8 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   const { isLoaded, archive} = useSelector((state: AppState) => state.archive)
   const dispatch = useDispatch()
   const { connection } = useSignalR(course)
+
+  useListener(course)
 
   useEffect(() => {
     if (!isLoaded[course]) {
@@ -45,31 +48,9 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
       }
   }, [course])
 
-  connection.on("AddToArchive", (id, nickname, description, status, room) => 
-  {
-    console.log("add to archive ", id)
-  dispatch(actions.setArchive({
-    courseKey: course,
-    tickets: [{
-      Id: id,
-      Nickname: nickname,
-      Description: description,
-      Room: room
-    }]
-  }))
-  }
-)
-
-
-  connection.on("RemoveFromArchive", (id) => 
-  {
-    console.log("removed from archive ", id)
-    dispatch(actions.filterArchive({courseKey: course, ticketId: id}))
-    //dispatch(archiveActions.setArchive({courseKey: Course, tickets: [ticket]}))
-  }
-  )
 
   const invokeUpdate = (id: string) => {
+    connection.stop()
     connection.start()
           .then(() => connection.invoke("RemoveFromArchive", id))
           .catch(err => console.error(err.toString()));
@@ -78,8 +59,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   const updateCourse = (updatedData: TicketWithId) => {
 
     const id = updatedData.Id
-  
-      const link = "https://chanv2.duckdns.org:7006/api/Archive?id=" + updatedData.Id
+      const link = "https://chanv2.duckdns.org:7006/api/Archive?id=" +  id
       
       fetch(link, {
         method: 'PUT',
