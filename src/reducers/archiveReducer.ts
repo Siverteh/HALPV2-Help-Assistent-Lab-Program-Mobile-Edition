@@ -29,9 +29,12 @@ const archiveReducer = createSlice({
             { payload }: PayloadAction<{courseKey: string, ticket: TicketWithId}>
         ) => {
             const currentlist = state.archive[payload.courseKey] ?? []
-            const exists = currentlist.includes(payload.ticket)
-            console.log(exists)
-            if(exists) return
+            const exists = currentlist.map(({Id}) =>  {
+                if(Id === payload.ticket.Id) {
+                    return true
+                } else return false
+            })
+            if(exists.includes(true)) return
             const list = [payload.ticket, ...currentlist]
             const sortedList = list.sort((a, b) => { 
                 return Number(a.Id) - Number(b.Id)

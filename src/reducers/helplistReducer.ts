@@ -31,8 +31,12 @@ const helplistReducer = createSlice({
             { payload }: PayloadAction<{key: string, ticket: TicketWithId}>
         ) => {
             const currentlist = state.helplist[payload.key] ?? []
-            const exists = currentlist.includes(payload.ticket)
-            if(exists) return
+            const exists = currentlist.map(({Id}) =>  {
+                if(Id === payload.ticket.Id) {
+                    return true
+                } else return false
+            })
+            if(exists.includes(true)) return
             const list = [payload.ticket, ...currentlist]
             const sortedList = list.sort((a, b) => { 
                 return Number(a.Id) - Number(b.Id)
