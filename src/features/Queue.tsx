@@ -15,7 +15,7 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
   const ticket = route.params;
   const [queue, setQueue] = useState<number>(ticket.placement)
 
-  const { connection } = useSignalR()
+  const { connection } = useSignalR(ticket.id.toString())
 
   connection.on("Queue",
     (id, count, counter, course) => {
