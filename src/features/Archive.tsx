@@ -18,7 +18,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   const { text } = useContext(ThemeContext)
   const { isLoaded, archive} = useSelector((state: AppState) => state.archive)
   const dispatch = useDispatch()
-  const { connection, startInvoke } = useSignalR(course)
+  const { connection } = useSignalR(course)
 
   useEffect(() => {
     if (!isLoaded[course]) {
@@ -60,9 +60,10 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   }
 )
 
+
   connection.on("RemoveFromArchive", (id) => 
   {
-    console.log("removed from helplist ", id)
+    console.log("removed from archive ", id)
     dispatch(actions.filterArchive({courseKey: course, ticketId: id}))
     //dispatch(archiveActions.setArchive({courseKey: Course, tickets: [ticket]}))
   }

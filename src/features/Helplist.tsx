@@ -22,7 +22,7 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
   const state = useSelector((state: AppState) => state.helplist)
   const dispatch = useDispatch()
 
-  const { connection, startInvoke } = useSignalR(course)
+  const { connection } = useSignalR(course)
 
   const dataMapper = (data: any) => data.map((d: any) => {
     return {
@@ -65,12 +65,9 @@ connection.on("UpdateHelplist", (id, nickname, description, room) => {
     (id) => dispatch(actions.filterHelplist({courseKey: course, ticketId: id}))
 );
 
-  connection.on("RemoveFromHelplist", (id) => 
-  {
-    console.log("removed from helplist ", id)
-    dispatch(actions.filterHelplist({courseKey: course, ticketId: id}))
-  }
-  )
+connection.on("RemoveFromArchive",
+    (id) => dispatch(actions.filterHelplist({courseKey: course, ticketId: id}))
+);
 
   useEffect(() => {
     if (!state.isLoadedCourse[course]) {
@@ -102,7 +99,6 @@ connection.on("UpdateHelplist", (id, nickname, description, room) => {
   }
 
   const updateCourse = (updatedData: TicketWithId) => {
-    // dispatch(actions.setIsConnected(true))
     const id = updatedData.Id
 
     const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.Id
