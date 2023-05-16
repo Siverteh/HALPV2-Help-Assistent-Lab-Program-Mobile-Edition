@@ -2,8 +2,16 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 import { Ticket as TicketProp, TicketExpanded as TicketExpandedProp } from "../types/ticket";
 import Ticket from "./Ticket";
+import { asyncStorageHook } from "../hook/asyncStorageHook";
+import { useEffect } from "react";
+import { isEmpty } from "lodash";
+import { useQueue } from "../hook/useQueue";
 
 const CreateTicket = ({ navigation }: StackScreenProps<RootStackParamList, "CreateScreen">) => {
+  const {setItem} = asyncStorageHook()
+
+  useQueue(navigation)
+
   const handleSubmit = async (ticket: TicketProp) => {
     fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
       method: "POST",
@@ -16,6 +24,7 @@ const CreateTicket = ({ navigation }: StackScreenProps<RootStackParamList, "Crea
     })
       .then((res) => res.json())
       .then((ticketExpanded: TicketExpandedProp) => {
+        setItem('@Ticket', String(ticketExpanded.id))
         navigation.navigate("Queue", ticketExpanded );
       })
 

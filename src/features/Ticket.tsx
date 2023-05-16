@@ -34,9 +34,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
   const [roomList, setRoomList] = useState<string[]>([]);
 
   React.useEffect(() => {
-    if (isLoggedIn && !ticket) {
       setValue((prevValue) => ({ ...prevValue, nickname: nickname ?? "" }));
-    }
   }, [nickname]);
 
   const fetchRooms = async () => {

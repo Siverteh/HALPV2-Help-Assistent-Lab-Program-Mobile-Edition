@@ -7,6 +7,10 @@ import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from '../Components/ThemeContext';
 import { useSignalR } from '../hook/useSignalR';
+import { asyncStorageHook } from '../hook/asyncStorageHook';
+import { useQueue } from '../hook/useQueue';
+import { useDispatch } from 'react-redux';
+import { actions } from '../reducers/userReducer';
 
 
 const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Queue'>) => {
@@ -14,17 +18,28 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
   const { background, text, buttons, boxes  } = useContext(ThemeContext)
   const ticket = route.params;
   const [queue, setQueue] = useState<number>(ticket.placement)
+  const {setItem} = asyncStorageHook()
+  const dispatch = useDispatch()
+  useQueue(navigation)
 
-  const { connection } = useSignalR(ticket.id.toString())
-
+  const { connection } = useSignalR()
+  connection.start()
   connection.on("Queue",
     (id, count, counter, course) => {
       if (ticket.id == id) {
+        console.log(id, count, counter)
+        console.log("id: ", ticket.id)
+        if (count === 1) {
+          setItem('@Ticket', String(id))
+          dispatch(actions.setIsLoadedQueue(false))
+        }
         if (counter == 0) {
-          navigation.navigate('CreateScreen');
+          setItem('@Ticket', '')
+
+          // navigation.navigate('CreateScreen');
+          setQueue(counter)
         }
         else {
-          console.log("signalR: ", id, count, counter)
           setQueue(counter)
         }
       }
@@ -45,7 +60,10 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
         },
         body: JSON.stringify({id: ticket.id})
       })
-      .then(() => navigation.navigate('CreateScreen'))
+      .then(() => {
+        setItem('@Ticket', '')
+        navigation.navigate('CreateScreen')
+      })
       .catch((error) => {
       console.error("Failed to delete ticket: ", error);
     })
