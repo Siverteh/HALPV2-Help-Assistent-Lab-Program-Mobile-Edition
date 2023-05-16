@@ -13,52 +13,25 @@ import { actions as archiveActions} from '../reducers/archiveReducer';
 import { TicketWithId } from '../types/ticket';
 import Styles from "../styles/styles";
 import { useListener } from '../hook/useListener';
+import { useArchive } from '../hook/useArchive';
+import { useHelplist } from '../hook/useHelplist';
 
 
 const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
 
   const { course } = route.params
+
+  useArchive(course)
+  useHelplist(course)
+  
   const { user: { token } } = useSelector((state: AppState) => state.user)
   const { text, background } = useContext(ThemeContext)
   const state = useSelector((state: AppState) => state.helplist)
-  const dispatch = useDispatch()
+
 
   const { connection } = useSignalR(course)
   useListener(course)
 
-  const dataMapper = (data: any) => data.map((d: any) => {
-    return {
-      Id: d.id,
-      Nickname: d.nickname,
-      Description: d.description,
-      Room: d.room
-    }
-  })
-
-
-  useEffect(() => {
-    if (!state.isLoadedCourse[course]) {
-        fetch(
-          `https://chanv2.duckdns.org:7006/api/Helplist?course=${course}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${token}`
-            }
-          })
-            .then(response => response.json())
-            .then((data) => {
-                dispatch(actions.setHelplist({key: course, tickets: dataMapper(data)}))
-            })
-            .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
-            .catch((error) => {
-              console.error("Failed to get help list", error)
-            })
-            .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
-            .catch((error) => {
-              console.error("Failed to get helplist", error)
-            })
-      }
-  }, [course])
 
   const invokeUpdate = (id: string) => {
     connection.stop()
@@ -97,7 +70,7 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
   const handleNavigate = () => {
     navigation.navigate('LabQueues')
   }
-
+  
   return (
     <ListComponent
       title={`HELPLIST ${course}`}

@@ -11,6 +11,7 @@ import { actions as helplistActions } from '../reducers/helplistReducer';
 import { TicketWithId } from '../types/ticket';
 import { useSignalR } from '../hook/useSignalR';
 import { useListener } from '../hook/useListener';
+import { useArchive } from '../hook/useArchive';
 
 const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'ArchiveScreen'>) => {
 
@@ -21,32 +22,8 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   const dispatch = useDispatch()
   const { connection } = useSignalR(course)
 
+  useArchive(course)
   // useListener(course)
-
-  useEffect(() => {
-    if (!isLoaded[course]) {
-    fetch(`https://chanv2.duckdns.org:7006/api/Archive?course=${course}`, {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-    })
-        .then(response => response.json())
-        .then((data) => {
-            const newDataMapper = data.map((d: any) => {
-                return {
-                Id: d.id,
-                Nickname: d.nickname,
-                Description: d.description,
-                Room: d.room
-            }})
-             dispatch(actions.setArchive({courseKey: course, tickets: newDataMapper}))
-        })
-        .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
-        .catch((error) => {
-          console.error("Failed to get archive list", error)
-        })
-      }
-  }, [course])
 
 
   const invokeUpdate = (id: string) => {
