@@ -28,6 +28,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const [value, setValue] = useState<LoginType>({ password: "", email: "" });
   const [checked, setChecked] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [edited, setEdited] = useState({ password: false, email: false })
 
   const { height, width } = useWindowDimensions();
 
@@ -143,6 +144,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
 
 
   const handleChange = (name: string) => (text: string) => {
+    setEdited((prev) => ({...prev, [name]: true}))
     setValue((prev) => {
       return { ...prev, [name]: text } as any;
     });
@@ -153,7 +155,6 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const handlePrivacyPolicy = () => {
     navigation.navigate("PrivacyPolicy", { previousScreen: "LoginScreen" });
   };
-
 
   return (
     <ScrollView>
@@ -180,7 +181,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
           mode="outlined"
           value={value?.email ?? ""}
           onChangeText={handleChange("email")}
-          error={!isValidEmail(value.email)}
+          error={!edited['email'] ? false :!isValidEmail(value.email)}
         />
         <TextInput
           style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
@@ -209,7 +210,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
           }
           value={value?.password ?? ""}
           onChangeText={handleChange("password")}
-          error={!isValidPassword(value.password)}
+          error={!edited['password'] ? false : !isValidPassword(value.password)}
         />
         <View
           style={{ flexDirection: "row", justifyContent: "flex-start", width: width * 0.85, marginTop: height * 0.01 }}>

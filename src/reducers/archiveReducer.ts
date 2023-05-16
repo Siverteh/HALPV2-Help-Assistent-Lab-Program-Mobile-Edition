@@ -24,11 +24,32 @@ const archiveReducer = createSlice({
                 [payload.courseKey]: [...payload.tickets, ...state.archive[payload.courseKey] ?? []]
             }
         },
+        addArchive: (
+            state: ArchiveState,
+            { payload }: PayloadAction<{courseKey: string, ticket: TicketWithId}>
+        ) => {
+            const currentlist = state.archive[payload.courseKey] ?? []
+            const exists = currentlist.map(({Id}) =>  {
+                if(Id === payload.ticket.Id) {
+                    return true
+                } else return false
+            })
+            if(exists.includes(true)) return
+            const list = [payload.ticket, ...currentlist]
+            const sortedList = list.sort((a, b) => { 
+                return Number(a.Id) - Number(b.Id)
+              })
+            state.archive = {
+                ...state.archive,
+                [payload.courseKey]: sortedList
+            }
+        },
         filterArchive: (
             state: ArchiveState,
             { payload }: PayloadAction<{courseKey: string, ticketId: string}>
         ) => {
-            const filtered = state.archive[payload.courseKey].filter(({ Id }) => Id !== payload.ticketId)
+            const list = state.archive[payload.courseKey] ?? []
+            const filtered = list.filter(({ Id }) => Id !== payload.ticketId)
         
             state.archive = {
                 ...state.archive,

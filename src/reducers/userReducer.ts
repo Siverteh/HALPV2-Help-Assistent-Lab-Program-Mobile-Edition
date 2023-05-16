@@ -17,7 +17,7 @@ export type UserState = {
 const initialState = {
     user: {
         isLoggedIn: false
-    }
+    },
 }
 
 const userReducer = createSlice({

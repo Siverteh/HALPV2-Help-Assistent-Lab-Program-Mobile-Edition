@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react'
+import { useContext } from 'react'
 import React from 'react';
 import ListComponent from './List'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -6,50 +6,72 @@ import { AppState, RootStackParamList } from '../types'
 import { useDispatch, useSelector } from 'react-redux';
 import { IconButton, Button } from 'react-native-paper';
 import { ThemeContext } from '../Components/ThemeContext';
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { useSignalR } from '../hook/useSignalR';
-import { actions } from '../reducers/helplistReducer';
+import { actions as helplistAction } from '../reducers/helplistReducer';
 import { actions as archiveActions} from '../reducers/archiveReducer';
 import { TicketWithId } from '../types/ticket';
 import Styles from "../styles/styles";
+import { useArchive } from '../hook/useArchive';
+import { useHelplist } from '../hook/useHelplist';
 
 
 const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'HelpListScreen'>) => {
 
   const { course } = route.params
+
+  useArchive(course)
+  useHelplist(course)
+  
   const { user: { token } } = useSelector((state: AppState) => state.user)
   const { text, background } = useContext(ThemeContext)
   const state = useSelector((state: AppState) => state.helplist)
+
+
+  const { connection } = useSignalR(course)
   const dispatch = useDispatch()
 
-  const connection = useSignalR(course)
-
-  const dataMapper = (data: any) => data.map((d: any) => {
-    return {
-      Id: d.id,
-      Nickname: d.nickname,
-      Description: d.description,
-      Room: d.room
-    }
-  })
-
-  connection.on("AddToHelplist", (Id, Nickname, Description, Room) => 
+  connection.on("AddToHelplist", (id, nickname, description, room) => 
     {
-    dispatch(actions.setHelplist({
+      console.log("add to helplist ", id)
+    dispatch(helplistAction.addTicket({
       key: course,
-      tickets: [{
-        Id: Id,
-        Nickname: Nickname,
-        Description: Description,
-        Room: Room
-      }]
+      ticket: {
+        Id: id,
+        Nickname: nickname,
+        Description: description,
+        Room: room
+      }
     }))
     }
   )
 
+  connection.on("AddToArchive", (id, nickname, description, status, room) => 
+  {
+    console.log("add to archive ", id)
+  dispatch(archiveActions.addArchive({
+    courseKey: course,
+    ticket: {
+      Id: id,
+      Nickname: nickname,
+      Description: description,
+      Room: room
+    }
+  }))
+  }
+)
+
+
+connection.on("RemoveFromArchive", (id) => 
+{
+  console.log("removed from archive ", id)
+  dispatch(archiveActions.filterArchive({courseKey: course, ticketId: id}))
+}
+)
+
   
 connection.on("UpdateHelplist", (id, nickname, description, room) => {
-  dispatch(actions.updateTicket({
+  dispatch(helplistAction.updateTicket({
     courseKey: course,
     ticket: {
       Id: id,
@@ -61,42 +83,20 @@ connection.on("UpdateHelplist", (id, nickname, description, room) => {
 })
 
   connection.on("RemovedByUser",
-    (id) => dispatch(actions.filterHelplist({courseKey: course, ticketId: id}))
+    (id) => dispatch(helplistAction.filterHelplist({courseKey: course, ticketId: id}))
 );
 
-  connection.on("RemoveFromHelplist", (Course, Id) => 
-  {
-    dispatch(actions.filterHelplist({courseKey: Course, ticketId: Id}))
-  }
-  )
+connection.on("RemoveFromHelplist",
+    (id) =>{ 
+    console.log("Remove from helplist", id)
+      dispatch(helplistAction.filterHelplist({courseKey: course, ticketId: id}))
+    });
 
-  useEffect(() => {
-    if (!state.isLoadedCourse[course]) {
-        fetch(
-          `https://chanv2.duckdns.org:7006/api/Helplist?course=${course}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${token}`
-            }
-          })
-            .then(response => response.json())
-            .then((data) => {
-                dispatch(actions.setHelplist({key: course, tickets: dataMapper(data)}))
-            })
-            .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
-            .catch((error) => {
-              console.error("Failed to get help list", error)
-            })
-            .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
-            .catch((error) => {
-              console.error("Failed to get helplist", error)
-            })
-      }
-  }, [course])
 
-  const updateCourse = async (updatedData: TicketWithId) => {
+  const updateCourse = (updatedData: TicketWithId) => {
+    const id = updatedData.Id
 
-    const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + updatedData.Id
+    const link = "https://chanv2.duckdns.org:7006/api/Helplist?id=" + id
 
     fetch(link, {
       method: 'PUT',
@@ -106,10 +106,6 @@ connection.on("UpdateHelplist", (id, nickname, description, room) => {
       },
       body: JSON.stringify([updatedData])
     })
-      .then(() => {
-        // dispatch(actions.filterHelplist({courseKey: course, ticketId: updatedData.Id}))
-        // dispatch(archiveActions.setArchive({courseKey: course, tickets: [updatedData]}))
-      })
       .catch((error) => console.error("Failed to update ticket from helplist: ", error))
   }
 

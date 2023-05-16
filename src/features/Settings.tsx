@@ -100,6 +100,7 @@ const Settings = ({navigation}: any ) => {
     setItem('@remember_me_login', 'false')
     setItem('@user_email', '')
     setItem('@user_token', '')
+    setItem('@Ticket', '')
     dispatch(actions.setUser({
       id: undefined,
       nickname: undefined,

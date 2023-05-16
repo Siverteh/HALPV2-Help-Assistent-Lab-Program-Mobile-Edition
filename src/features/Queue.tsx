@@ -6,27 +6,42 @@ import Styles from '../styles/styles';
 import { AppState, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from '../Components/ThemeContext';
-import { Logo } from '../Components/CustomComponents';
 import { useSignalR } from '../hook/useSignalR';
-import { useSelector } from 'react-redux';
+import { asyncStorageHook } from '../hook/asyncStorageHook';
+import { useQueue } from '../hook/useQueue';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions } from '../reducers/queueReducer';
 
 
 const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Queue'>) => {
   const {height, width} = useWindowDimensions();
   const { background, text, buttons, boxes  } = useContext(ThemeContext)
-  const ticket = route.params;
+  // const ticket = route.params;
+  
+  const {ticket} = useSelector((state: AppState) => state.queue)
   const [queue, setQueue] = useState<number>(ticket.placement)
+  const {setItem} = asyncStorageHook()
+  const dispatch = useDispatch()
+  // useQueue(navigation)
 
-  const connection = useSignalR(ticket.id.toString())
-
+  const { connection, stateConnection } = useSignalR()
+  stateConnection()
   connection.on("Queue",
     (id, count, counter, course) => {
-      if (ticket.id == id) {
-        if (counter == 0) {
-          navigation.navigate('CreateScreen');
+      if (ticket.id === id) {
+        if (count === 1) {
+          console.log("kommer inn")
+          setItem('@Ticket', String(id))
+          
+          dispatch(actions.setIsLoadedQueue(false))
+        }
+        if (counter === 0) {
+          setItem('@Ticket', '')
+
+          // navigation.navigate('CreateScreen');
+          setQueue(counter)
         }
         else {
-          console.log("signalR: ", id, count, counter)
           setQueue(counter)
         }
       }
@@ -47,7 +62,10 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
         },
         body: JSON.stringify({id: ticket.id})
       })
-      .then(() => navigation.navigate('CreateScreen'))
+      .then(() => {
+        setItem('@Ticket', '')
+        navigation.navigate('CreateScreen')
+      })
       .catch((error) => {
       console.error("Failed to delete ticket: ", error);
     })

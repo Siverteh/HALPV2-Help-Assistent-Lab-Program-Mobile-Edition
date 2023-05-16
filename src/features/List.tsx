@@ -9,7 +9,7 @@ import { TicketWithId } from '../types/ticket';
 type Props = {
     title: string,
     loading: boolean
-    onUpdate: (data: TicketWithId) => Promise<void>
+    onUpdate: (data: TicketWithId) => void
     data: Array<TicketWithId>
     children?: JSX.Element
 }
@@ -61,7 +61,7 @@ const ListComponent = ({
           <List.Section>
             {data.map((item, index) => (
               <CustomAccordion
-                key={item.Id + index}
+                key={item.Id}
                 title={item.Nickname}
                 room={item.Room}
                 style={index % 2 === 0 ? listItem_light : listItem_dark}

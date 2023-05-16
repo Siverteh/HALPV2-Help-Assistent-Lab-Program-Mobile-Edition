@@ -1,9 +1,21 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList } from "../types";
+import { AppState, RootStackParamList } from "../types";
 import { Ticket as TicketProp, TicketExpanded as TicketExpandedProp } from "../types/ticket";
 import Ticket from "./Ticket";
+import { asyncStorageHook } from "../hook/asyncStorageHook";
+import { useQueue } from "../hook/useQueue";
+import { useEffect } from "react";
+import { actions } from "../reducers/queueReducer";
+import { useDispatch, useSelector } from "react-redux";
+
 
 const CreateTicket = ({ navigation }: StackScreenProps<RootStackParamList, "CreateScreen">) => {
+  const {setItem} = asyncStorageHook()
+  
+ useQueue(navigation)
+
+  const dispatch = useDispatch()
+
   const handleSubmit = async (ticket: TicketProp) => {
     fetch("https://chanv2.duckdns.org:7006/api/Ticket", {
       method: "POST",
@@ -16,6 +28,8 @@ const CreateTicket = ({ navigation }: StackScreenProps<RootStackParamList, "Crea
     })
       .then((res) => res.json())
       .then((ticketExpanded: TicketExpandedProp) => {
+        setItem('@Ticket', String(ticketExpanded.id))
+        dispatch(actions.setTicket(ticketExpanded))
         navigation.navigate("Queue", ticketExpanded );
       })
 

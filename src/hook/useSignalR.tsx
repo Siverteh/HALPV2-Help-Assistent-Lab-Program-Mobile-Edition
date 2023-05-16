@@ -6,6 +6,7 @@ import {
 import {AppState } from '../types'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '../reducers/helplistReducer';
+import { actions as actionsQueue } from '../reducers/queueReducer';
 
 export const makeHubConnection = (accessToken: string, signalRUrl: string): HubConnection => {
   return new HubConnectionBuilder()
@@ -15,14 +16,15 @@ export const makeHubConnection = (accessToken: string, signalRUrl: string): HubC
     })
     .configureLogging({
       log: function (logLevel, message) {
-        //console.log('SIGNALR: ' + new Date().toISOString() + ': ' + message)
+        // console.log('SIGNALR: ' + new Date().toISOString() + ': ' + message)
       }
     })
     .build()
 }
 
-export const useSignalR = (groupName?: string) => {
+export const useSignalR = (course?: string) => {
   const state = useSelector((state: AppState) => state.helplist)
+  const { isLoadedSignalR } = useSelector((state: AppState) => state.queue)
   const dispatch = useDispatch()
 
   const hub_endpoint = "https://chanv2.duckdns.org:7006/helplisthub"
@@ -31,16 +33,12 @@ export const useSignalR = (groupName?: string) => {
   const connection = makeHubConnection(accessToken, hub_endpoint)
 
   useEffect(() => {
-    if (!state.isConnected) {
-
+    if (!state.isConnected && course) {
       connection.start()
         .then(() => {
-          if (groupName) {
-            connection.invoke("AddToGroup", groupName);          
-          }
-          else {
-            console.warn("Groupname is", groupName)
-          }
+          // if (course) {
+            connection.invoke("AddToGroup", course);          
+          // }
         })
         .catch((error) => {
           console.error("SignalR error")
@@ -51,7 +49,23 @@ export const useSignalR = (groupName?: string) => {
     }
   }, [])
 
-  return connection
+  const stateConnection = () => {
+    if(!isLoadedSignalR){
+    connection.start()
+    
+    dispatch(actionsQueue.setIsStatedSignalR(true))
+    }
+  }
+
+  connection.onclose(() => {
+    console.log("SIGNALR CONNECTION CLOSED");
+    state.isConnected = false;
+  })
+
+  return {
+    connection,
+    stateConnection
+  }
 
 }
   
