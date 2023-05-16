@@ -3,37 +3,39 @@ import { View, useWindowDimensions } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import Styles from '../styles/styles';
-import { RootStackParamList } from '../types';
+import { AppState, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from '../Components/ThemeContext';
 import { useSignalR } from '../hook/useSignalR';
 import { asyncStorageHook } from '../hook/asyncStorageHook';
 import { useQueue } from '../hook/useQueue';
-import { useDispatch } from 'react-redux';
-import { actions } from '../reducers/userReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions } from '../reducers/queueReducer';
 
 
 const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Queue'>) => {
   const {height, width} = useWindowDimensions();
   const { background, text, buttons, boxes  } = useContext(ThemeContext)
-  const ticket = route.params;
+  // const ticket = route.params;
+  
+  const {ticket} = useSelector((state: AppState) => state.queue)
   const [queue, setQueue] = useState<number>(ticket.placement)
   const {setItem} = asyncStorageHook()
   const dispatch = useDispatch()
-  useQueue(navigation)
+  // useQueue(navigation)
 
   const { connection, stateConnection } = useSignalR()
   stateConnection()
   connection.on("Queue",
     (id, count, counter, course) => {
-      if (ticket.id == id) {
-        console.log(id, count, counter)
-        console.log("id: ", ticket.id)
+      if (ticket.id === id) {
         if (count === 1) {
+          console.log("kommer inn")
           setItem('@Ticket', String(id))
+          
           dispatch(actions.setIsLoadedQueue(false))
         }
-        if (counter == 0) {
+        if (counter === 0) {
           setItem('@Ticket', '')
 
           // navigation.navigate('CreateScreen');

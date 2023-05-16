@@ -11,17 +11,13 @@ type StateValue =  {
 }
 
 export type UserState = {
-    user: StateValue,
-    isLoadedQueue: boolean
-    isLoadedSignalR: boolean
+    user: StateValue
 }
 
 const initialState = {
     user: {
         isLoggedIn: false
     },
-    isLoadedQueue: false,
-    isLoadedSignalR: false
 }
 
 const userReducer = createSlice({
@@ -33,18 +29,6 @@ const userReducer = createSlice({
             { payload }: PayloadAction<Partial<StateValue>>
         ) => {
             state.user = {...state.user, ...payload}
-        },
-        setIsLoadedQueue: (
-            state: UserState,
-            { payload }: PayloadAction<boolean>
-        ) => {
-            state.isLoadedQueue = payload
-        },
-        setIsStatedSignalR: (
-            state: UserState,
-            { payload }: PayloadAction<boolean>
-        ) => {
-            state.isLoadedSignalR = payload
         }
     }
 

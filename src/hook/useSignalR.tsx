@@ -6,7 +6,7 @@ import {
 import {AppState } from '../types'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '../reducers/helplistReducer';
-import { actions as actionsUser } from '../reducers/userReducer';
+import { actions as actionsQueue } from '../reducers/queueReducer';
 
 export const makeHubConnection = (accessToken: string, signalRUrl: string): HubConnection => {
   return new HubConnectionBuilder()
@@ -24,7 +24,7 @@ export const makeHubConnection = (accessToken: string, signalRUrl: string): HubC
 
 export const useSignalR = (course?: string) => {
   const state = useSelector((state: AppState) => state.helplist)
-  const { isLoadedSignalR } = useSelector((state: AppState) => state.user)
+  const { isLoadedSignalR } = useSelector((state: AppState) => state.queue)
   const dispatch = useDispatch()
 
   const hub_endpoint = "https://chanv2.duckdns.org:7006/helplisthub"
@@ -53,7 +53,7 @@ export const useSignalR = (course?: string) => {
     if(!isLoadedSignalR){
     connection.start()
     
-    dispatch(actionsUser.setIsStatedSignalR(true))
+    dispatch(actionsQueue.setIsStatedSignalR(true))
     }
   }
 
