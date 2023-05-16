@@ -8,7 +8,7 @@ import { IconButton, Button } from 'react-native-paper';
 import { ThemeContext } from '../Components/ThemeContext';
 import { View, Text } from 'react-native'
 import { useSignalR } from '../hook/useSignalR';
-import { actions } from '../reducers/helplistReducer';
+import { actions as helplistAction } from '../reducers/helplistReducer';
 import { actions as archiveActions} from '../reducers/archiveReducer';
 import { TicketWithId } from '../types/ticket';
 import Styles from "../styles/styles";
@@ -36,7 +36,7 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
   connection.on("AddToHelplist", (id, nickname, description, room) => 
     {
       console.log("add to helplist ", id)
-    dispatch(actions.setHelplist({
+    dispatch(helplistAction.setHelplist({
       key: course,
       tickets: [{
         Id: id,
@@ -48,9 +48,33 @@ const Helplist = ({ route, navigation }: StackScreenProps<RootStackParamList, 'H
     }
   )
 
+  connection.on("AddToArchive", (id, nickname, description, status, room) => 
+  {
+    console.log("add to archive ", id)
+  dispatch(archiveActions.setArchive({
+    courseKey: course,
+    tickets: [{
+      Id: id,
+      Nickname: nickname,
+      Description: description,
+      Room: room
+    }]
+  }))
+  }
+)
+
+
+connection.on("RemoveFromArchive", (id) => 
+{
+  console.log("removed from archive ", id)
+  dispatch(archiveActions.filterArchive({courseKey: course, ticketId: id}))
+  //dispatch(archiveActions.setArchive({courseKey: Course, tickets: [ticket]}))
+}
+)
+
   
 connection.on("UpdateHelplist", (id, nickname, description, room) => {
-  dispatch(actions.updateTicket({
+  dispatch(helplistAction.updateTicket({
     courseKey: course,
     ticket: {
       Id: id,
@@ -62,12 +86,14 @@ connection.on("UpdateHelplist", (id, nickname, description, room) => {
 })
 
   connection.on("RemovedByUser",
-    (id) => dispatch(actions.filterHelplist({courseKey: course, ticketId: id}))
+    (id) => dispatch(helplistAction.filterHelplist({courseKey: course, ticketId: id}))
 );
 
-connection.on("RemoveFromArchive",
-    (id) => dispatch(actions.filterHelplist({courseKey: course, ticketId: id}))
-);
+connection.on("RemoveFromHelplist",
+    (id) =>{ 
+    console.log("Remove from helplist", id)
+      dispatch(helplistAction.filterHelplist({courseKey: course, ticketId: id}))
+    });
 
   useEffect(() => {
     if (!state.isLoadedCourse[course]) {
@@ -80,13 +106,13 @@ connection.on("RemoveFromArchive",
           })
             .then(response => response.json())
             .then((data) => {
-                dispatch(actions.setHelplist({key: course, tickets: dataMapper(data)}))
+                dispatch(helplistAction.setHelplist({key: course, tickets: dataMapper(data)}))
             })
-            .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
+            .finally(() => dispatch(helplistAction.setIsLoaded({key: course, isLoaded: true})))
             .catch((error) => {
               console.error("Failed to get help list", error)
             })
-            .finally(() => dispatch(actions.setIsLoaded({key: course, isLoaded: true})))
+            .finally(() => dispatch(helplistAction.setIsLoaded({key: course, isLoaded: true})))
             .catch((error) => {
               console.error("Failed to get helplist", error)
             })
