@@ -21,7 +21,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
   const dispatch = useDispatch()
   const { connection } = useSignalR(course)
 
-  useListener(course)
+  // useListener(course)
 
   useEffect(() => {
     if (!isLoaded[course]) {
@@ -71,7 +71,7 @@ const Archive = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'A
       })
       .then(() => {
         invokeUpdate(id)
-        // dispatch(actions.filterArchive({courseKey: course, ticketId: updatedData.Id}))
+        dispatch(actions.filterArchive({courseKey: course, ticketId: updatedData.Id}))
         // dispatch(helplistActions.setHelplist({key: course, tickets: [updatedData]}))
       })
       .catch((error) => console.error("Failed to update ticket from archive: ", error))
