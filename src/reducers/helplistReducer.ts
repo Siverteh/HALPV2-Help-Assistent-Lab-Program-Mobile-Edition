@@ -61,15 +61,16 @@ const helplistReducer = createSlice({
             state: HelplistState,
             { payload }: PayloadAction<{courseKey: string, ticket: TicketWithId}>
         ) => {
-            const filtered = state.helplist[payload.courseKey].map((t) => {
-                if (t.Id === payload.ticket.Id) {
-                    return payload.ticket
-                }
-                return t
-            })
+            console.log(payload.ticket)
+            const list = state.helplist[payload.courseKey] ??[]
+            const filtered = list.filter(({ Id }) => Id !== payload.ticket.Id)
+            const newList = [...filtered, payload.ticket]
+            const sortedList = newList.sort((a, b) => { 
+                return Number(a.Id) - Number(b.Id)
+              })
             state.helplist = {
                 ...state.helplist,
-                [payload.courseKey]: filtered
+                [payload.courseKey]: sortedList
             }
         },
         setIsConnected: (
