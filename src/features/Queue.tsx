@@ -24,6 +24,7 @@ const Queue = ({ route, navigation }:  StackScreenProps<RootStackParamList, 'Que
       if (ticket.id == id) {
         if (counter == 0) {
           navigation.navigate('CreateScreen');
+          id == -1;
         }
         else {
           console.log("signalR: ", id, count, counter)
