@@ -181,6 +181,7 @@ const Settings = ({navigation}: any ) => {
       {/*Button_("EXTERNAL-SERVICE", openExserviceModal)*/}
       {Button_("DELETE ACCOUNT", openDeleteModal)}
       {Button_("CHANGE THEME", () => onChangeTheme() )}
+      {Button_("PRIVACY POLICY", () => navigation.navigate('PrivacyPolicy', { previousScreen: 'SettingScreen' }))}
       {Button_("LOG OUT", handleLogout)}
 
       <Portal>
