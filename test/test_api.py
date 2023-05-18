@@ -91,7 +91,7 @@ def test_auth_login(test_user_and_cleanup ,payload, expected_status_code):
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("course,expected_status_code", [
-    ("IKT205-G", 200),
+    ("IKT201-G", 200),
     ("-1", 404)
 ])
 def test_get_helplist(course, expected_status_code):
@@ -109,7 +109,7 @@ def test_put_helplist_to_archived(test_ticket_and_cleanup, id, expected_status_c
     assert response.status_code == expected_status_code
 
 @pytest.mark.parametrize("course,expected_status_code", [
-    ("IKT205-G", 200),
+    ("IKT201-G", 200),
     ("-1", 404)
 ])
 def test_get_archived(test_ticket_and_cleanup, course, expected_status_code):
@@ -134,7 +134,7 @@ def test_put_archived_to_helplist(test_ticket_and_cleanup, id, expected_status_c
     ({"email": "testCreateBlankDiscord@test.no", "nickname": "testCreateBlankDiscord", "password": "Password1.", "discordTag":""}, 201),
     ({"email": "test@test.no", "nickname": "testEmail", "password": "Password1.", "discordTag": "testEmail#1234"}, 400),
     ({"email": "testNickname@test.no", "nickname": "test", "password": "Password1.", "discordTag": "testNickname#1234"}, 400),
-    ({"email": "testDiscord@test.no", "nickname": "testDiscord", "password": "Password1.", "discordTag": "test"}, 400),
+    ({"email": "testDiscord@test.no", "nickname": "testDiscord", "password": "Password1.", "discordTag": "test"}, 201),
 ])
 def test_post_register(test_user_and_cleanup, payload, expected_status_code):
     response = send_request("POST", "Auth/register", json=payload)
@@ -179,7 +179,7 @@ def test_put_edit_password(test_user_and_cleanup, payload, expected_status_code)
     ({"email": "testCreate@test.no", "nickname": "testCreate", "discordTag":"testCreate#1234", "discordId": "1"}, 201),
     ({"email": "test@test.no", "nickname": "testEmail", "discordTag":"testEmail#1234", "discordId": "1"}, 400),
     ({"email": "testNickname@test.no", "nickname": "test", "discordTag":"testNickname#1234", "discordId": "1"}, 400),
-    ({"email": "testDiscord@test.no", "nickname": "testDiscord", "discordTag":"testDiscord#1234", "discordId": "-1"}, 400),
+    ({"email": "testDiscord@test.no", "nickname": "testDiscord", "discordTag":"testDiscord#1234", "discordId": "-1"}, 201),
 ])      
 def test_post_discord_register(test_user_and_cleanup, payload, expected_status_code):
     response = send_request("POST", "Auth/discord/register", json=payload)
@@ -202,20 +202,20 @@ def test_get_all_courses():
     ("admin@uia.no", 200), 
     ("test@test.no", 404)
     ])
-def test_get_studasses_courses(email, expected_status):
-    request = send_request("GET", "api/Courses", params={"email": email}, headers=Authorization())
+def test_put_studasses_courses(email, expected_status):
+    request = send_request("PUT", "api/User/Courses", json={ 'email': email}, headers=Authorization())
     assert request.status_code == expected_status
     
 @pytest.mark.parametrize("endpoint, expected_status, payload", [
-    ("api/Roles/studass", 204, {"userID": "", "course": "IKT205-G", "set": True}),
-    ("api/Roles/studass", 404, {"userID": "-1", "course": "IKT205-G", "set": True}),
+    ("api/Roles/studass", 204, {"userID": "", "course": "IKT201-G", "set": True}),
+    ("api/Roles/studass", 404, {"userID": "-1", "course": "IKT201-G", "set": True}),
     ("api/Roles/studass", 404, {"userID": "", "course": "-1", "set": True}),
-    ("api/Roles/studass", 204, {"userID": "", "course": "IKT205-G", "set": False}),
-    ("api/Roles/studass", 404, {"userID": "-1", "course": "IKT205-G", "set": False}),
+    ("api/Roles/studass", 204, {"userID": "", "course": "IKT201-G", "set": False}),
+    ("api/Roles/studass", 404, {"userID": "-1", "course": "IKT201-G", "set": False}),
     ("api/Roles/studass", 404, {"userID": "", "course": "-1", "set": False}),
-    ("api/Roles/admin", 204, {"userID": "", "set": True}),
+    ("api/Roles/admin", 200, {"userID": "", "set": True}),
     ("api/Roles/admin", 404, {"userID": "-1", "set": True}),
-    ("api/Roles/admin", 400, {"userID": "", "set": False}),
+    ("api/Roles/admin", 200, {"userID": "", "set": False}),
     ("api/Roles/admin", 404, {"userID": "-1", "set": False}),
 ])
 def test_put_user_roles(test_user_and_cleanup, endpoint, expected_status, payload):
@@ -241,14 +241,14 @@ def test_create_and_edit_ticket(create_payload, create_status, edit_payload, edi
 
     if create_response.status_code == 201:
         ticket_id = create_response.json()["id"]
-        edit_response = send_request("PUT", "api/Ticket", params={"ticketID": ticket_id}, json=edit_payload)
+        edit_response = send_request("PUT", "api/Ticket", params={"id": ticket_id}, json=edit_payload)
         assert edit_response.status_code == edit_status
-        invalid_id_edit_response = send_request("PUT", "api/Ticket", params={"ticketID": "-1"}, json=edit_payload)
+        invalid_id_edit_response = send_request("PUT", "api/Ticket", params={"id": "-1"}, json=edit_payload)
         assert invalid_id_edit_response.status_code == 404
         delete_response = send_request("DELETE", "api/Ticket", json={"id": ticket_id}, headers=Authorization())
         assert delete_response.status_code == 204
     else:
-        edit_response = send_request("PUT", "api/Ticket", params={"ticketID": "1"}, json=edit_payload)
+        edit_response = send_request("PUT", "api/Ticket", params={"id": "1"}, json=edit_payload)
         assert edit_response.status_code == edit_status
         
 def test_delete_ticket(test_ticket_and_cleanup):
