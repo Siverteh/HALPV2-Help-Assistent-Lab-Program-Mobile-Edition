@@ -33,12 +33,10 @@ export const useSignalR = (course?: string) => {
   const connection = makeHubConnection(accessToken, hub_endpoint)
 
   useEffect(() => {
-    if (!state.isConnected && course) {
+    if (!state.isConnected || course) {
       connection.start()
         .then(() => {
-          // if (course) {
-            connection.invoke("AddToGroup", course);          
-          // }
+            connection.invoke("AddToGroup", course);
         })
         .catch((error) => {
           console.error("SignalR error")
@@ -47,7 +45,7 @@ export const useSignalR = (course?: string) => {
 
       dispatch(actions.setIsConnected(true))
     }
-  }, [])
+  }, [course])
 
   const stateConnection = () => {
     if(!isLoadedSignalR){

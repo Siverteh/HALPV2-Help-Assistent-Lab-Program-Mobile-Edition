@@ -70,10 +70,16 @@ connection.on("RemoveFromArchive", (id) =>
 )
 
 
-connection.on("UpdateHelplist", (id, nickname, description, room) => {
-  console.log("updated by user: ", id, room)
+connection.on("UpdateHelplist", (id, nickname, description, room, Course) => {
+  console.log("updated by user: ", id)
+  if(course !== Course) {
+    dispatch(helplistAction.filterHelplist({
+      courseKey: course,
+      ticketId: id
+    }))
+  }
   dispatch(helplistAction.updateTicket({
-    courseKey: course,
+    courseKey: Course,
     ticket: {
       Id: id,
       Nickname: nickname,

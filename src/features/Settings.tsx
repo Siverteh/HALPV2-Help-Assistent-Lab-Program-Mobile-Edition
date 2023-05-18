@@ -1,7 +1,7 @@
 import Styles from "../styles/styles";
 import { Button, Text, Modal, Portal, TextInput, Checkbox } from "react-native-paper";
 import { TabView, TabBar } from 'react-native-tab-view';
-import { FlatList, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { FlatList, ScrollView, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import * as React from 'react';
 import DropDown from "react-native-paper-dropdown";
 import { useContext, useState } from "react";
@@ -24,7 +24,6 @@ import { actions } from "../reducers/userReducer";
 import { Header } from "../Components/CustomComponents";
 import { themeHook } from '../hook/themeHook'
 import { asyncStorageHook } from "../hook/asyncStorageHook";
-import { set } from "lodash";
 import { isValidEmail } from "../utils";
 
 const Text_Input_CB = (lable: string, defaultValue: string = '', password: boolean = false, onChangeText: (text: string) => void) => {
@@ -92,8 +91,8 @@ const Settings = ({navigation}: any ) => {
   const openDeleteModal = () => setIsDeleteModalVisible(true);
   const closeDeleteModal = () => setIsDeleteModalVisible(false);
   const { setItem } = asyncStorageHook()
+  const { height } = useWindowDimensions();
 
-  const {height} = useWindowDimensions();
   const containerStyle = {backgroundColor: background, height: height * 0.45, width: "70%", borderRadius: 20 };
 
   const handleLogout = () => {
@@ -105,6 +104,7 @@ const Settings = ({navigation}: any ) => {
       id: undefined,
       nickname: undefined,
       discordTag: undefined,
+      role: undefined,
       email: undefined,
       token: undefined,
       isLoggedIn: false
@@ -174,7 +174,7 @@ const Settings = ({navigation}: any ) => {
   }
 
   return (
-
+    <ScrollView>
     <View style={[{backgroundColor: background, alignItems: 'center', height: height * 0.70 }]}>
       <View style={[{ margin: "2%"}]}/>
       {Button_( "EDIT PROFILE", openProfileModal)}
@@ -206,6 +206,7 @@ const Settings = ({navigation}: any ) => {
         </Modal>
       </Portal>
     </View>
+    </ScrollView>
   );
 };
 

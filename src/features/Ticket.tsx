@@ -131,6 +131,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
           listMode="SCROLLVIEW"
           placeholder={"Room"}
           value={room}
+          onPress={()=>fetchRooms()}
           setValue={setRoom}
           items={dropdownItems}
           open={open}
