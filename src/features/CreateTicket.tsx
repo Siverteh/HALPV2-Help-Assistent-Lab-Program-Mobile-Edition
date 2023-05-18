@@ -1,12 +1,11 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { AppState, RootStackParamList } from "../types";
+import { RootStackParamList } from "../types";
 import { Ticket as TicketProp, TicketExpanded as TicketExpandedProp } from "../types/ticket";
 import Ticket from "./Ticket";
 import { asyncStorageHook } from "../hook/asyncStorageHook";
 import { useQueue } from "../hook/useQueue";
-import { useEffect } from "react";
 import { actions } from "../reducers/queueReducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 
 const CreateTicket = ({ navigation }: StackScreenProps<RootStackParamList, "CreateScreen">) => {

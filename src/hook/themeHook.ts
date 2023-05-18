@@ -4,9 +4,7 @@ import { actions } from '../reducers/themeReducer';
 import { theme } from '../styles/theme';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import { delay } from 'lodash';
-import { asyncStorageHook } from './asyncStorageHook';
-import { useEffect } from 'react';
-
+import { asyncStorageHook } from './asyncStorageHook'
 export const themeHook = () => {
   const state = useSelector((state: AppState) => state.theme)
 
