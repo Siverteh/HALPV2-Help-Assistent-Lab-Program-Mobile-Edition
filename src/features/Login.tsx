@@ -20,6 +20,8 @@ import { ThemeContext } from "../Components/ThemeContext";
 import { authorize } from "react-native-app-auth";
 import { isValidEmail, isValidPassword } from "../utils";
 import { Icon } from "react-native-elements";
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+
 
 function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen">): JSX.Element {
   const dispatch = useDispatch();
@@ -31,6 +33,8 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
   const [edited, setEdited] = useState({ password: false, email: false })
 
   const { height, width } = useWindowDimensions();
+  const tabBarHeight = useBottomTabBarHeight();
+  const viewHeight = height - tabBarHeight;
 
   const {
     setItem
@@ -160,11 +164,12 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
     <ScrollView>
       <View style={{
         backgroundColor: background,
-        height: height,
+        height: viewHeight,
         alignItems: "center",
         justifyContent: "center",
         marginTop: 0
       }}>
+        <View style={{marginTop: "-10%"}}></View>
         <Logo />
         <TextInput
           style={[Styles.textInput, { backgroundColor: boxes, color: text }]}
