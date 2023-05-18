@@ -106,7 +106,6 @@ const Settings = ({navigation}: any ) => {
       nickname: undefined,
       discordTag: undefined,
       email: undefined,
-      role: undefined,
       token: undefined,
       isLoggedIn: false
   }))
@@ -135,6 +134,7 @@ const Settings = ({navigation}: any ) => {
     })
       .then((response) => {
         if (response.ok) {
+          dispatch(actions.setUser({ id: id, nickname: name, discordTag: discord, email: newEmail, token: token, isLoggedIn: true }))
           closeProfileModal();
         }
       })
