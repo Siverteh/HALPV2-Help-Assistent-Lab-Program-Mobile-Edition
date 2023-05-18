@@ -270,7 +270,7 @@ function Login({ navigation }: StackScreenProps<RootStackParamList, "LoginScreen
           mode="text"
           textColor={text}
           onPress={handleRegister}>
-          REGISTER AS A USER
+          REGISTER AS A NEW USER
         </Button>
         <Text
           style={[Styles.text_lg, { color: text, marginTop: height * 0.01 }]}>

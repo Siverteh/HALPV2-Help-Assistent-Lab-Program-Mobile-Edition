@@ -39,7 +39,7 @@ function ForgottenPassword({ navigation }: StackScreenProps<RootStackParamList, 
         <View style={[{alignItems: 'center'}]}>
         <TextInput
           style={[Styles.textInput, { color: text, backgroundColor: boxes }]}
-          label="Current Password"
+          label="Email Address"
           mode="outlined"
           textColor={text}
           outlineColor={outline.activeOutlineColor}
