@@ -3,6 +3,8 @@ import { ThemeContext } from '../Components/ThemeContext';
 import {
   View,
   Alert,
+  ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import { Button, TextInput, IconButton } from 'react-native-paper';
 import Styles from '../styles/styles';
@@ -10,10 +12,13 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { Logo } from '../Components/CustomComponents';
 import { isValidPassword } from '../utils';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
   
 function Register({ route, navigation }: StackScreenProps<RootStackParamList, 'Register'>): JSX.Element {
   const { background, text, outline, iconColor, buttons, boxes, checkUncheck  } = useContext(ThemeContext)
-
+  const { height, width } = useWindowDimensions();
+  const tabBarHeight = useBottomTabBarHeight();
+  const viewHeight = height - tabBarHeight;
 
   // State for error message
   const [errorMessage, setErrorMessage] = useState('');
@@ -113,7 +118,14 @@ function Register({ route, navigation }: StackScreenProps<RootStackParamList, 'R
   }
 
   return (
-    
+    <ScrollView>
+    <View style={{
+        backgroundColor: background,
+        height: viewHeight,
+        width: width,
+        justifyContent: "center",
+        marginTop: 0
+      }}>
       <View style={[{ backgroundColor: background, height: '100%'}]}>
         
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start'}}>
@@ -239,6 +251,8 @@ function Register({ route, navigation }: StackScreenProps<RootStackParamList, 'R
       <View style={{ height: "4%" }}></View>
   </View>
   </View>
+  </View>
+  </ScrollView>
   );
 }
 

@@ -3,13 +3,14 @@ import { TextInput, Button, Text } from "react-native-paper";
 import { useState, useContext } from "react";
 import Styles from "../styles/styles";
 import * as React from "react";
-import { View } from "react-native";
+import { ScrollView, View, useWindowDimensions } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { ThemeContext } from "../Components/ThemeContext";
 import { useSelector } from "react-redux";
 import { AppState } from "../types";
 import { Header } from "../Components/CustomComponents";
 import { isEmpty } from "lodash";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 type Props = {
   ticket?: TicketProp
@@ -20,7 +21,10 @@ type Props = {
 const Ticket = ({ onSubmit, ticket }: Props) => {
   const [validation, setValidation] = useState(false);
   const { user: { nickname, isLoggedIn } } = useSelector((state: AppState) => state.user);
-  const { background, text, buttons, boxes, text2, outline } = useContext(ThemeContext);
+  const { background, text, buttons, boxes, outline } = useContext(ThemeContext);
+  const { height } = useWindowDimensions();
+  const tabBarHeight = useBottomTabBarHeight();
+  const viewHeight = height - tabBarHeight;
 
 
   const [value, setValue] = React.useState<Omit<TicketProp, "room">>({
@@ -89,6 +93,12 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
 
 
   return (
+    <ScrollView>
+    <View style={{
+        backgroundColor: background,
+        height: viewHeight,
+        justifyContent: "center"
+      }}>
     <View style={[{ backgroundColor: background, flex: 1, alignItems: "center" }]}>
       <Header title={ticket ? "EDIT TICKET" : "NEW TICKET"} />
 
@@ -160,6 +170,7 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         }}
         label="Description"
         multiline={true}
+        maxLength={500}
         mode={"outlined"}
         value={value.description}
         onChangeText={handleChange("description")}
@@ -178,6 +189,8 @@ const Ticket = ({ onSubmit, ticket }: Props) => {
         {ticket ? "SAVE TICKET" : "CREATE TICKET"}
       </Button>
     </View>
+    </View>
+    </ScrollView>
   );
 };
 

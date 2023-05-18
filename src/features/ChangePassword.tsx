@@ -3,9 +3,10 @@ import {
   Text,
   View,
   Alert,
+  ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 
-import axios from 'axios';
 import { useSelector } from "react-redux"
 
 import { Button, IconButton, TextInput } from 'react-native-paper';
@@ -16,6 +17,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { ThemeContext } from '../Components/ThemeContext';
 import { AppState, RootStackParamList } from '../types';
 import { Header } from '../Components/CustomComponents';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 
 function ChangePassword({ navigation }: StackScreenProps<RootStackParamList, 'ChangePassword'>): JSX.Element {
@@ -27,6 +29,9 @@ function ChangePassword({ navigation }: StackScreenProps<RootStackParamList, 'Ch
   const [secureTextEntryRepeat, setSecureTextEntryRepeat] = useState(true);
   const [secureTextEntryCurrent, setSecureTextEntryCurrent] = useState(true);
   const { background, text, boxes, buttons, outline, iconColor  } = useContext(ThemeContext)
+  const { height, width } = useWindowDimensions();
+  const tabBarHeight = useBottomTabBarHeight();
+  const viewHeight = height - tabBarHeight;
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -118,6 +123,12 @@ const handleNavigate = () => {
 }
 
 return (
+  <ScrollView>
+    <View style={{
+        backgroundColor: background,
+        height: viewHeight,
+        justifyContent: "center"
+      }}>
   <View style={{ backgroundColor: background, height: '100%' }}>
     <IconButton
         icon="arrow-left"
@@ -224,6 +235,7 @@ return (
         </Button>
     </View>
   </View>
+  </View></ScrollView>
 );
 }
 export default ChangePassword;
