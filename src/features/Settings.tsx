@@ -119,7 +119,7 @@ const Settings = ({navigation}: any ) => {
     setError("");
     const data = {
       id: id,
-      nickname: nickname,
+      nickname: name,
       email: newEmail,
       discordTag: discord
     };
